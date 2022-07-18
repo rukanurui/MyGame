@@ -41,7 +41,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     WindowsApp* winApp = nullptr;
     DXCommon* dxCommon = nullptr;
     FbxModel* model1 = nullptr;
-    FBXobj3d* object1 = nullptr;
+    FbxModel* model2 = nullptr;
+    FBXobj3d* Otin = nullptr;
+    FBXobj3d* cube = nullptr;
     Camera* camera = nullptr;
 
    /* Audio* audio = nullptr;*/
@@ -159,25 +161,34 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     FBXobj3d::SetDevice(dxCommon->GetDevice());
     //カメラをセット
     FBXobj3d::SetCamera(camera);
-    camera->SetEye({ 0,10.0f,10.0f });
+    /*camera->SetTarget({ 0,0,0 });
+    camera->UpdateViewMatrix();
+    camera->Update(winApp->window_width, winApp->window_height);*/
+
 
     FBXobj3d::CreateGraphicsPipeline();
 
     //FbxLoader::GetInstance()->LoadModelFromFile("cube");
     model1=FbxLoader::GetInstance()->LoadModelFromFile("boneTest");
+    model2 = FbxLoader::GetInstance()->LoadModelFromFile("cube");
 
-    object1 = new FBXobj3d;
-    object1->Initialize();
-    object1->SetModel(model1);
+    Otin = new FBXobj3d;
+    Otin->Initialize();
+    Otin->SetPosition({ 0.0f,0.0f,0.0f });
+    Otin->SetModel(model1);
    
-
+    cube = new FBXobj3d;
+    cube->Initialize();
+    cube->SetPosition({ 10.0f,0.0f,0.0f });
+    cube->SetModel(model1);
     
   
 #pragma endregion 描画初期化処理
 
     int counter = 0; // アニメーションの経過時間カウンター
 
-    object1->PlayAnimation();
+    Otin->PlayAnimation();
+    cube->PlayAnimation();
 
     while (true)  // ゲームループ
     {
@@ -203,8 +214,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
             sprite->Update();
         }
 
-        object1->Update();
-
+        Otin->Update();
+        cube->Update();
 
         // DirectX毎フレーム処理　ここまで
 #pragma endregion DirectX毎フレーム処理
@@ -217,7 +228,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 
         //レンダ―テクスチャへの描画
-        postEffect->PreDrawScene(dxCommon->GetCommandList());
+        //postEffect->PreDrawScene(dxCommon->GetCommandList());
 
         
 
@@ -228,9 +239,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         //3dオブジェクトの描画
         //object3d->Draw();
 
-        object1->Draw(cmdList);
-
-        postEffect->PostDrawScene(dxCommon->GetCommandList());
+        //postEffect->PostDrawScene(dxCommon->GetCommandList());
 
         //描画前処理
         dxCommon->PreDraw();
@@ -239,13 +248,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         Object3d::PostDraw();
 
         // ４．描画コマンドここから
-       
+
+        Otin->Draw(cmdList);//otintin
+        cube->Draw(cmdList);//cube
 
         // スプライト共通コマンド
         spriteCommon->PreDraw();
 
         //ポストエフェクトの描画
-        postEffect->Draw(dxCommon->GetCommandList());
+        //postEffect->Draw(dxCommon->GetCommandList());
 
         // スプライト描画
 
@@ -288,8 +299,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
        // FbxLoader::GetInstance()->Finalize();
 
-        delete object1;
+        delete Otin;
         delete model1;
+        delete cube;
+        delete model2;
         delete postEffect;
 
         winApp->Finalize();

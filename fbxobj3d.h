@@ -58,6 +58,8 @@ public://メンバ関数
 	//Fbxアニメーション再生
 	void PlayAnimation();
 
+	void SetPosition(XMFLOAT3 position) { this->position = position; }
+
 
 protected://メンバ変数
 	//定数バッファ
@@ -67,7 +69,7 @@ protected://メンバ変数
 	// ローカルスケール
 	XMFLOAT3 scale = { 1,1,1 };
 	// X,Y,Z軸回りのローカル回転角
-	XMFLOAT3 rotation = { 0,45,0 };
+	XMFLOAT3 rotation = { 0,0,0 };
 	// ローカル座標
 	XMFLOAT3 position = { 0,0,0 };
 	// ローカルワールド変換行列
