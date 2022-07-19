@@ -1,6 +1,7 @@
 #pragma once
 
 #include <DirectXMath.h>
+
 using namespace DirectX;
 
 class Camera
@@ -22,6 +23,7 @@ public: // メンバ関数
 	void Update(int window_width, int window_height);
 	void UpdateViewMatrix();
 	void UpdateProjectionMatrix(int window_width, int window_height);
+
 	void MoveVector(XMFLOAT3 move);
 
 	//Getter
@@ -67,9 +69,9 @@ private://メンバ変数
 	static XMMATRIX matProjection;
 	// ビュープロジェクション行列
 	static XMMATRIX matViewProjection;
-	// 視点座標
+	// カメラの座標
 	static XMFLOAT3 eye;
-	// 注視点座標
+	// 注視点座標(見てる場所)
 	static XMFLOAT3 target;
 	// 上方向ベクトル
 	static XMFLOAT3 up;
