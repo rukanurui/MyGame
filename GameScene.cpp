@@ -84,7 +84,15 @@ void GameScene::Update()
     Otin->Update();
     cube->Update();
 
+    //操作
+    if (input->PushKey(DIK_A)) Velocity.x = 0.1f;
+    else
+    {
+        Velocity.x = 0;
+    }
 
+
+    camera->MoveVector(Velocity);
 
     camera->Update(WindowsApp::window_width, WindowsApp::window_height);
 
@@ -100,7 +108,7 @@ void GameScene::Draw()
     //spriteCommon->PreDraw();
 
     //obj、スプライトの描画
-    object3d->Draw();
+    //object3d->Draw();
 
     //FBX描画
     Otin->Draw(cmdList);//otintin

@@ -61,6 +61,17 @@ private://メンバ変数
 	Object3d* object3d = object3d->Create();
 	model* Model = model::LoadFromOBJ("skydome");
 
+	//操作用変数
+
+	XMFLOAT3 Pos{ 0,0,0 };//座標
+	
+	XMFLOAT3 Velocity{ 0,0,0 };//速度
+	
+
+	float adsx = 0;//注視点x軸速度
+	float adsy = 0;//注視点y軸速度
+	float adsz = 0;//注視点z軸速度
+
 
 };
 

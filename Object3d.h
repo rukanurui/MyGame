@@ -6,9 +6,6 @@
 #include <DirectXMath.h>
 #include <d3dx12.h>
 #include "model.h"
-#include "Modelfbx.h"
-#include "FbxLoader.h"
-#include "fbxsdk.h"
 
 
 /// <summary>

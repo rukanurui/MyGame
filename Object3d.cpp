@@ -222,7 +222,6 @@ bool Object3d::InitializeGraphicsPipeline()
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
-		
 	};
 
 	// グラフィックスパイプラインの流れを設定
@@ -274,12 +273,9 @@ bool Object3d::InitializeGraphicsPipeline()
 
 	// ルートパラメータ
 	CD3DX12_ROOT_PARAMETER rootparams[3];
-	//CBV(座標返還用)
 	rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
-	//SRV(テクスチャ)
 	rootparams[1].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[2].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
-
 
 	// スタティックサンプラー
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
@@ -309,6 +305,13 @@ bool Object3d::InitializeGraphicsPipeline()
 	return true;
 }
 
+
+//void Object3d::CreateModel()
+//{
+//
+//	
+//}
+
 void Object3d::UpdateViewMatrix()
 {
 	// ビュー行列の更新
@@ -329,9 +332,6 @@ bool Object3d::Initialize()
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&constBuffB0));
-
-
-	
 
 
 	return true;
@@ -369,9 +369,6 @@ void Object3d::Update()
 	constMap->mat = matWorld * matView * matProjection;	// 行列の合成
 	constBuffB0->Unmap(0, nullptr);
 
-	
-
-	
 
 }
 
@@ -386,8 +383,6 @@ void Object3d::Draw()
 
 	// 定数バッファビューをセット
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
-	//// 定数バッファビューをセット(スキン)
-	//cmdList->SetGraphicsRootConstantBufferView(3, constBuffSkin->GetGPUVirtualAddress());
 
 	// 描画コマンド
 	//cmdList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
