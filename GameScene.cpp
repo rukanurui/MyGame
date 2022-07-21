@@ -84,15 +84,41 @@ void GameScene::Update()
     Otin->Update();
     cube->Update();
 
+    
+
+    if (input->PushclickLeft())
+    {
+        input->Mousemove();
+        adsVelocity.x = input->GetVelx();
+        adsVelocity.y = input->GetVely();
+        camera->SetRoatation(adsVelocity);
+    }
+    else
+    {
+        adsVelocity.x = 0;
+        adsVelocity.y = 0;
+    }
+
     //‘€ì
     if (input->PushKey(DIK_A)) Velocity.x = 0.1f;
     else
     {
-        Velocity.x = 0;
+        if (input->PushKey(DIK_D)) Velocity.x = -0.1f;
+    }
+    
+    if (!input->PushKey(DIK_A) && !input->PushKey(DIK_D)) Velocity.x = 0;
+
+    if (input->PushKey(DIK_S)) Velocity.z = 0.1f;
+    else
+    {
+        if (input->PushKey(DIK_W)) Velocity.z = -0.1f;
     }
 
+    if (!input->PushKey(DIK_W) && !input->PushKey(DIK_S)) Velocity.z = 0;
 
     camera->MoveVector(Velocity);
+
+    camera->MoveTarget(adsVelocity);
 
     camera->Update(WindowsApp::window_width, WindowsApp::window_height);
 

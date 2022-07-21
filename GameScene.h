@@ -66,12 +66,10 @@ private://メンバ変数
 	XMFLOAT3 Pos{ 0,0,0 };//座標
 	
 	XMFLOAT3 Velocity{ 0,0,0 };//速度
-	
 
-	float adsx = 0;//注視点x軸速度
-	float adsy = 0;//注視点y軸速度
-	float adsz = 0;//注視点z軸速度
+	XMFLOAT3 adsVelocity{ 0,0,0 };//注視点速度
 
+	XMFLOAT3 cameraroatation{ 0,0,0 };
 
 };
 

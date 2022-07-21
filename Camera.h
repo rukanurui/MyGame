@@ -24,7 +24,12 @@ public: // メンバ関数
 	void UpdateViewMatrix();
 	void UpdateProjectionMatrix(int window_width, int window_height);
 
+	//カメラ座標と注視点同時移動
 	void MoveVector(XMFLOAT3 move);
+	//注視点のみ移動
+	void MoveTarget(XMFLOAT3 move);
+
+
 
 	//Getter
 	//ビュー行列関連
@@ -37,6 +42,8 @@ public: // メンバ関数
 	const XMFLOAT3& GetTarget() { return target; }
 
 	const XMFLOAT3& GetUp() {return up;}
+
+	const XMFLOAT3& GetRoatation() { return rotation; }
 
 
 	//プロジェクション行列関連
@@ -59,7 +66,7 @@ public: // メンバ関数
 
 	void SetViewMatrix(XMMATRIX viewmatrix);
 
-
+	void SetRoatation(XMFLOAT3 roatation);
 
 
 private://メンバ変数
@@ -69,6 +76,10 @@ private://メンバ変数
 	static XMMATRIX matProjection;
 	// ビュープロジェクション行列
 	static XMMATRIX matViewProjection;
+	//ワールド行列
+	static XMMATRIX matWorld;
+	// X,Y,Z軸回りのローカル回転角
+	static XMFLOAT3 rotation;
 	// カメラの座標
 	static XMFLOAT3 eye;
 	// 注視点座標(見てる場所)

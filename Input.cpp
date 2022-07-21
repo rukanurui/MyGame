@@ -19,10 +19,15 @@ void Input::Initialize(WindowsApp* winApp)
 
     //ComPtr<IDirectInputDevice8> devkeyboard = nullptr;
     result = dinput->CreateDevice(GUID_SysKeyboard, &devkeyboard, NULL);
+    result = dinput->CreateDevice(GUID_SysMouse, &devmouse, NULL);
     //入力データ形式のセット
-    result = devkeyboard->SetDataFormat(&c_dfDIKeyboard); // 標準形式
+    result = devkeyboard->SetDataFormat(&c_dfDIKeyboard); //標準形式
+    result = devmouse->SetDataFormat(&c_dfDIMouse); //標準形式
     //排他制御レベルのセット
     result = devkeyboard->SetCooperativeLevel(
+        winApp->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
+
+    result = devmouse->SetCooperativeLevel(
         winApp->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
 }
 
@@ -33,11 +38,18 @@ void Input::Update()
 
     //前回のキー入力を保存
     memcpy(oldkey, key, sizeof(key));
-
+    
     //キーボード情報の取得開始
     result = devkeyboard->Acquire();
     
     result = devkeyboard->GetDeviceState(sizeof(key), key);
+
+    //マウス情報の取得開始
+    result = devmouse->Acquire();
+    //前回のマウス入力を保存
+    oldmouse = mouse;
+
+    result = devmouse->GetDeviceState(sizeof(mouse), &mouse);
 }
 
 Input* Input::GetInstance()
@@ -66,4 +78,33 @@ bool Input::TriggerKey(BYTE keyNumber)
     //そうでなければfalse
     return false;
 }
+
+bool Input::PushclickLeft()
+{
+    if (mouse.rgbButtons[0])
+    {
+        return true;
+    }
+    return false;
+}
+
+bool Input::TriggerclickLeft(BYTE mouseNumber)
+{
+    return false;
+}
+
+void Input::Mousemove()
+{
+    if (mouse.lX > 0) velx = 0.01f;
+
+    if (mouse.lX < 0)velx = -0.01f;
+
+    //if (mouse.lY > 0) vely = -0.01f;
+
+    //if (mouse.lY < 0)vely = 0.01f;
+
+
+}
+
+
 

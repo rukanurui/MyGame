@@ -4,9 +4,11 @@ using namespace DirectX;
 XMMATRIX Camera::matView = {};
 XMMATRIX Camera::matProjection = {};
 XMMATRIX Camera::matViewProjection = {};
+XMMATRIX Camera::matWorld = {};
 XMFLOAT3 Camera::eye = { 0, 0, 10.0f };
 XMFLOAT3 Camera::target = { 0, 0, 0 };
 XMFLOAT3 Camera::up = { 0, 1, 0 };
+XMFLOAT3 Camera::rotation = { 0, 0, 0 };
 
 void Camera::Initialize(int window_width, int window_height)
 {
@@ -32,9 +34,21 @@ void Camera::Initialize(int window_width, int window_height)
 
 void Camera::Update(int window_width, int window_height)
 {
+	XMMATRIX matScale, matRot, matTrans;
+
+	// スケール、回転、平行移動行列の計算
+	matRot = XMMatrixIdentity();
+	matRot *= XMMatrixRotationX(XMConvertToRadians(rotation.x));
+	matRot *= XMMatrixRotationY(XMConvertToRadians(rotation.y));
+
+	// ワールド行列の合成
+	matWorld = XMMatrixIdentity(); // 変形をリセット
+	//matWorld *= matScale; // ワールド行列にスケーリングを反映
+	matWorld *= matRot; // ワールド行列に回転を反映
+	//matWorld *= matTrans; // ワールド行列に平行移動を反映
 	
 	UpdateProjectionMatrix(window_width, window_height);
-	matViewProjection = matView * matProjection;
+	matViewProjection = matView * matProjection * matWorld;
 }
 
 void Camera::UpdateViewMatrix()
@@ -74,6 +88,11 @@ void Camera::SetUp(XMFLOAT3 up)
 	UpdateViewMatrix();
 }
 
+void Camera::SetRoatation(XMFLOAT3 roatation)
+{
+	Camera::rotation = roatation;
+}
+
 void Camera::MoveVector(XMFLOAT3 move)
 {
 	XMFLOAT3 eye_moved = GetEye();
@@ -88,5 +107,15 @@ void Camera::MoveVector(XMFLOAT3 move)
 	target_moved.z += move.z;
 
 	SetEye(eye_moved);
+	SetTarget(target_moved);
+}
+
+void Camera::MoveTarget(XMFLOAT3 move)
+{
+	XMFLOAT3 target_moved = GetTarget();
+
+	target_moved.x += move.x;
+	target_moved.y += move.y;
+
 	SetTarget(target_moved);
 }
