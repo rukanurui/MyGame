@@ -10,8 +10,18 @@ XMFLOAT3 Camera::target = { 0, 0, 0 };
 XMFLOAT3 Camera::up = { 0, 1, 0 };
 XMFLOAT3 Camera::rotation = { 0, 0, 0 };
 
-void Camera::Initialize(int window_width, int window_height)
+
+
+Camera::Camera(Input* input)
 {
+	assert(input);
+
+	this->input = input;
+}
+
+void Camera::Initialize(int window_width, int window_height,Input* input)
+{
+	
 	
 	// ビュー行列の生成
 	matView = XMMatrixLookAtLH(
@@ -19,11 +29,7 @@ void Camera::Initialize(int window_width, int window_height)
 		XMLoadFloat3(&target),
 		XMLoadFloat3(&up));
 
-	// 平行投影による射影行列の生成
-	//constMap->mat = XMMatrixOrthographicOffCenterLH(
-	//	0, window_width,
-	//	window_height, 0,
-	//	0, 1);
+	
 	// 透視投影による射影行列の生成
 	matProjection = XMMatrixPerspectiveFovLH(
 		XMConvertToRadians(60.0f),
@@ -46,15 +52,33 @@ void Camera::Update(int window_width, int window_height)
 	//matWorld *= matScale; // ワールド行列にスケーリングを反映
 	matWorld *= matRot; // ワールド行列に回転を反映
 	//matWorld *= matTrans; // ワールド行列に平行移動を反映
+
+
 	
 	UpdateProjectionMatrix(window_width, window_height);
-	matViewProjection = matView * matProjection * matWorld;
+	matViewProjection = matView * matProjection;
 }
 
 void Camera::UpdateViewMatrix()
 {
+
+	if (input->PushclickLeft())
+	{
+		// 注視点から視点へのベクトルと、上方向ベクトル
+		XMVECTOR vTargetEye = { 0.0f, 0.0f, 10.0f, 1.0f };
+		XMVECTOR vUp = { 0.0f, 1.0f, 0.0f, 0.0f };
+		//// 注視点からずらした位置に視点座標を決定
+		const XMFLOAT3& Target = GetTarget();
+		SetEye({ Target.x + vTargetEye.m128_f32[0], Target.y + vTargetEye.m128_f32[1], Target.z + vTargetEye.m128_f32[2] });
+		SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });
+	}
+	
+
 	// ビュー行列の更新
 	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
+
+
+
 }
 
 void Camera::UpdateProjectionMatrix(int window_width, int window_height)

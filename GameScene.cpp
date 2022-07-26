@@ -17,7 +17,8 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     this->spriteCommon = spritecommon;
 
     //ƒJƒƒ‰¶¬
-    camera->Initialize(WindowsApp::window_width, WindowsApp::window_height);
+    camera = new Camera(this->input);
+    camera->Initialize(WindowsApp::window_width, WindowsApp::window_height,this->input);
 
 
 #pragma region •`‰æ‰Šú‰»ˆ—

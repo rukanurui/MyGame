@@ -1,6 +1,10 @@
 #pragma once
 
 #include <DirectXMath.h>
+#include"Input.h"
+
+#define DIRECTINPUT_VERSION     0x0800   // DirectInputのバージョン指定
+
 
 using namespace DirectX;
 
@@ -17,8 +21,10 @@ private:
 
 public: // メンバ関数
 
+	//コンストラクタ
+	Camera(Input* input);
 	//初期化
-	void Initialize(int window_width, int window_height);
+	void Initialize(int window_width, int window_height,Input* input);
 	//更新
 	void Update(int window_width, int window_height);
 	void UpdateViewMatrix();
@@ -70,6 +76,7 @@ public: // メンバ関数
 
 
 private://メンバ変数
+	Input* input=nullptr;
 	// ビュー行列
 	static XMMATRIX matView;
 	// 射影行列
