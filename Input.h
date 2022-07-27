@@ -11,6 +11,12 @@ class Input
 public:
 	template<class T>using ComPtr = Microsoft::WRL::ComPtr<T>;
 	
+public:
+	struct MouseMove {
+		LONG    lX;
+		LONG    lY;
+		LONG    lZ;
+	};
 
 public: //メンバ関数
 	//初期化
@@ -52,6 +58,8 @@ public: //メンバ関数
 	bool TriggerclickLeft(BYTE mouseNumber);
 
 	void Mousemove();
+
+	MouseMove GetMouseMove();
 
 private: //メンバ変数
 	//キーボードのデバイス

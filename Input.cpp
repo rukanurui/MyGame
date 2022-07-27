@@ -106,5 +106,14 @@ void Input::Mousemove()
 
 }
 
+Input::MouseMove Input::GetMouseMove()
+{
+    MouseMove tmp;
+    tmp.lX = mouse.lX;
+    tmp.lY = mouse.lY;
+    tmp.lZ = mouse.lZ;
+    return tmp;
+}
+
 
 

@@ -2,6 +2,7 @@
 
 #include <DirectXMath.h>
 #include"Input.h"
+#include"WindowsApp.h"
 
 #define DIRECTINPUT_VERSION     0x0800   // DirectInputのバージョン指定
 
@@ -22,7 +23,7 @@ private:
 public: // メンバ関数
 
 	//コンストラクタ
-	Camera(Input* input);
+	Camera(Input* input,WindowsApp* windows);
 	//初期化
 	void Initialize(int window_width, int window_height,Input* input);
 	//更新
@@ -31,11 +32,12 @@ public: // メンバ関数
 	void UpdateProjectionMatrix(int window_width, int window_height);
 
 	//カメラ座標と注視点同時移動
-	void MoveVector(XMFLOAT3 move);
+	void MoveVector(const XMVECTOR& move);
 	//注視点のみ移動
-	void MoveTarget(XMFLOAT3 move);
+	void MoveTarget(const XMVECTOR& move);
 
 
+	void CurrentUpdate();
 
 	//Getter
 	//ビュー行列関連
@@ -77,6 +79,7 @@ public: // メンバ関数
 
 private://メンバ変数
 	Input* input=nullptr;
+	WindowsApp* windows = nullptr;
 	// ビュー行列
 	static XMMATRIX matView;
 	// 射影行列
@@ -95,6 +98,18 @@ private://メンバ変数
 	static XMFLOAT3 up;
 	// アスペクト比
 	float aspectRatio = 1.0f;
+	//フラグ
+	bool viewDirtyFlag = false;
+	// 回転行列
+	XMMATRIX matRot = DirectX::XMMatrixIdentity();
+	// スケーリング
+	float scaleX = 1.0f;
+	float scaleY = 1.0f;
+
+	XMFLOAT3 Velocity{ 0,0,0 };//速度
+
+	// カメラ注視点までの距離
+	float distance = 10;
 
 };
 

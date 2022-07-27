@@ -24,6 +24,7 @@
 #include "Modelfbx.h"
 #include "Camera.h"
 #include "GameScene.h"
+#include"WindowsApp.h"
 
 class GameScene
 {
@@ -39,7 +40,7 @@ protected: // エイリアス
 public://メンバ関数
 
 	//初期化
-	void Initialize(DXCommon* dxcommon, Input* input, Audio* audio, SpriteCommon* spritecommon);
+	void Initialize(DXCommon* dxcommon, Input* input, Audio* audio, SpriteCommon* spritecommon,WindowsApp*windows);
 	//更新
 	void Update();
 	//描画
@@ -48,6 +49,7 @@ public://メンバ関数
 	void Finalize();
 
 private://メンバ変数
+	WindowsApp * windows = nullptr;
 	Input* input = nullptr;
 	DXCommon* dxCommon = nullptr;
 	DebugText* debugText;

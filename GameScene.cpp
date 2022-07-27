@@ -7,7 +7,7 @@
 
 using namespace DirectX;
 
-void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, SpriteCommon* spritecommon)
+void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, SpriteCommon* spritecommon,WindowsApp*windows)
 {
     //ポインタ置き場
     
@@ -15,9 +15,10 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     this->input = input;
     this->audio = audio;
     this->spriteCommon = spritecommon;
+    this->windows = windows;
 
     //カメラ生成
-    camera = new Camera(this->input);
+    camera = new Camera(this->input,this->windows);
     camera->Initialize(WindowsApp::window_width, WindowsApp::window_height,this->input);
 
 
@@ -85,42 +86,7 @@ void GameScene::Update()
     Otin->Update();
     cube->Update();
 
-    
-
-    if (input->PushclickLeft())
-    {
-        input->Mousemove();
-        adsVelocity.x = input->GetVelx();
-        adsVelocity.y = input->GetVely();
-        camera->SetRoatation(adsVelocity);
-    }
-    else
-    {
-        adsVelocity.x = 0;
-        adsVelocity.y = 0;
-    }
-
-    //操作
-    if (input->PushKey(DIK_A)) Velocity.x = 0.1f;
-    else
-    {
-        if (input->PushKey(DIK_D)) Velocity.x = -0.1f;
-    }
-    
-    if (!input->PushKey(DIK_A) && !input->PushKey(DIK_D)) Velocity.x = 0;
-
-    if (input->PushKey(DIK_S)) Velocity.z = 0.1f;
-    else
-    {
-        if (input->PushKey(DIK_W)) Velocity.z = -0.1f;
-    }
-
-    if (!input->PushKey(DIK_W) && !input->PushKey(DIK_S)) Velocity.z = 0;
-
-    camera->MoveVector(Velocity);
-
-    camera->MoveTarget(adsVelocity);
-
+    camera->CurrentUpdate();
     camera->Update(WindowsApp::window_width, WindowsApp::window_height);
 
 }

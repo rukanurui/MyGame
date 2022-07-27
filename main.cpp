@@ -82,7 +82,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
   
     // ゲームシーンの初期化
     gameScene = new GameScene();
-    gameScene->Initialize(dxCommon, input, audio,spriteCommon);
+    gameScene->Initialize(dxCommon, input, audio,spriteCommon,winApp);
     
 #pragma endregion 描画初期化処理
 
