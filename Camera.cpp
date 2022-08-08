@@ -148,6 +148,16 @@ void Camera::SetRoatation(XMFLOAT3 roatation)
 	Camera::rotation = roatation;
 }
 
+void Camera::SetmouseX(float mouseX)
+{
+	Camera::CurretmouseX = mouseX;
+}
+
+void Camera::SetmouseY(float mouseY)
+{
+	Camera::CurretmouseY = mouseY;
+}
+
 void Camera::MoveVector(const XMVECTOR& move)
 {
 	XMFLOAT3 eye_moved = GetEye();
@@ -181,9 +191,21 @@ void Camera::CurrentUpdate()
 	viewDirtyFlag = false;
 	float angleX = 0;
 	float angleY = 0;
+
 	// マウスの入力を取得
 	Input::MouseMove mouseMove = input->GetMouseMove();
-	if (input->PushclickLeft())
+
+	if (mouseMove.lX==CurretmouseX)
+	{
+		float dy = mouseMove.lX * scaleX;
+		float dx = mouseMove.lY * scaleY;
+
+		angleX = -dy * XM_PI;
+		angleY = -dx * XM_PI;
+		viewDirtyFlag = true;
+	}
+
+	if (mouseMove.lY == CurretmouseY)
 	{
 		float dy = mouseMove.lX * scaleX;
 		float dx = mouseMove.lY * scaleY;
@@ -193,7 +215,7 @@ void Camera::CurrentUpdate()
 		viewDirtyFlag = true;
 	}
 
-	//操作
+	//座標の操作
 	if (input->PushKey(DIK_A) || input->PushKey(DIK_D))
 	{
 		if (input->PushKey(DIK_A)) Velocity.x = -0.1f;

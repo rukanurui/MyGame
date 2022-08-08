@@ -99,11 +99,6 @@ void Input::Mousemove()
 
     if (mouse.lX < 0)velx = -0.1f;
 
-    //if (mouse.lY > 0) vely = -0.01f;
-
-    //if (mouse.lY < 0)vely = 0.01f;
-
-
 }
 
 Input::MouseMove Input::GetMouseMove()

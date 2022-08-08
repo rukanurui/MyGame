@@ -76,6 +76,10 @@ public: // メンバ関数
 
 	void SetRoatation(XMFLOAT3 roatation);
 
+	void SetmouseX(float mouseX);
+
+	void SetmouseY(float mouseY);
+
 
 private://メンバ変数
 	Input* input=nullptr;
@@ -103,8 +107,11 @@ private://メンバ変数
 	// 回転行列
 	XMMATRIX matRot = DirectX::XMMatrixIdentity();
 	// スケーリング
-	float scaleX = 1.0f;
-	float scaleY = 1.0f;
+	float scaleX = 0.5f;
+	float scaleY = 0.5f;
+
+	float CurretmouseX = 0;
+	float CurretmouseY = 0;
 
 	XMFLOAT3 Velocity{ 0,0,0 };//速度
 

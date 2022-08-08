@@ -79,6 +79,15 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
 void GameScene::Update()
 {
 
+    // マウスの入力を取得
+    Input::MouseMove mouseMove = input->GetMouseMove();
+
+    CurretmouseX = mouseMove.lX;
+    CurretmouseY = mouseMove.lY;
+
+    camera->SetmouseX(CurretmouseX);
+    camera->SetmouseY(CurretmouseY);
+
     //スプライト更新
     //obj更新
     object3d->Update();
