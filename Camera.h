@@ -3,6 +3,7 @@
 #include <DirectXMath.h>
 #include"Input.h"
 #include"WindowsApp.h"
+#include"pad.h"
 
 #define DIRECTINPUT_VERSION     0x0800   // DirectInputのバージョン指定
 
@@ -84,6 +85,7 @@ public: // メンバ関数
 private://メンバ変数
 	Input* input=nullptr;
 	WindowsApp* windows = nullptr;
+	//pad* Pad = nullptr;
 	// ビュー行列
 	static XMMATRIX matView;
 	// 射影行列

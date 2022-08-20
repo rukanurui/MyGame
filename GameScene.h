@@ -26,6 +26,7 @@
 #include "GameScene.h"
 #include"WindowsApp.h"
 
+
 class GameScene
 {
 protected: // エイリアス
@@ -50,6 +51,7 @@ public://メンバ関数
 
 private://メンバ変数
 	WindowsApp * windows = nullptr;
+	//pad* Pad = nullptr;
 	Input* input = nullptr;
 	DXCommon* dxCommon = nullptr;
 	DebugText* debugText;

@@ -215,6 +215,30 @@ void Camera::CurrentUpdate()
 		viewDirtyFlag = true;
 	}
 
+	//pad‚Ì“ü—Í
+	/*Pad->Update();
+
+	if (Pad->state.Gamepad.sThumbLX!=0)
+	{
+		float dy = Pad->state.Gamepad.sThumbLX * scaleX;
+		float dx = Pad->state.Gamepad.sThumbLY * scaleY;
+
+		angleX = -dy * XM_PI;
+		angleY = -dx * XM_PI;
+		viewDirtyFlag = true;
+	}
+
+	if (Pad->state.Gamepad.sThumbLY != 0)
+	{
+		float dy = Pad->state.Gamepad.sThumbLX * scaleX;
+		float dx = Pad->state.Gamepad.sThumbLY * scaleY;
+
+		angleX = -dy * XM_PI;
+		angleY = -dx * XM_PI;
+		viewDirtyFlag = true;
+	}*/
+
+
 	//À•W‚Ì‘€ì
 	if (input->PushKey(DIK_A) || input->PushKey(DIK_D))
 	{

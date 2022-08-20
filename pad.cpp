@@ -1,5 +1,6 @@
 #include "pad.h"
 
+
 void pad::Update()
 {
     XInputGetState(0, &state);
@@ -26,17 +27,9 @@ void pad::Update()
         state.Gamepad.sThumbLY = 0;
     }
 
-
     vibration.wLeftMotorSpeed = 0;
     vibration.wRightMotorSpeed = 0;
     XInputSetState(0, &vibration);
 
-
 }
 
-void pad::PreUpdate()
-{
-    Old_iPad_left = iPad_left, Old_iPad_right = iPad_right, iOld_Pad_up = iPad_up, Old_iPad_down = iPad_down;
-    Old_iPad_leftshoulder = iPad_leftshoulder, Old_iPad_rightshoulder = iPad_rightshoulder;
-    Old_iPad_A = iPad_A, Old_iPad_B = iPad_B, Old_iPad_X = iPad_X, Old_iPad_Y = iPad_Y;
-}
