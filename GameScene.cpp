@@ -40,11 +40,18 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     
 
     //OBJ生成
-    //model* Model = model::LoadFromOBJ("skydome");
-    //3dオブジェクト生成
-    //Object3d* object3d = Object3d::Create();
+    Back = model::LoadFromOBJ("skydome");
+    //3Dオブジェクト生成
+    Backobj = Object3d::Create();
     //モデル紐づけ
-    object3d->SetModel(Model);
+    Backobj->SetModel(Back);
+
+    //OBJ生成
+    ground = model::LoadFromOBJ("ground");
+    //3Dオブジェクト生成
+    groundobj = Object3d::Create();
+    //モデル紐づけ
+    groundobj->SetModel(Back);
 
     //スプライトの生成
 
@@ -72,7 +79,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
 
     int counter = 0; // アニメーションの経過時間カウンター
 
-    Otin->PlayAnimation();
+    //Otin->PlayAnimation();
     cube->PlayAnimation();
 }
 
@@ -90,7 +97,8 @@ void GameScene::Update()
 
     //スプライト更新
     //obj更新
-    object3d->Update();
+    Backobj->Update();
+    groundobj->Update();
     //FBX更新
     Otin->Update();
     cube->Update();
@@ -110,7 +118,11 @@ void GameScene::Draw()
     //spriteCommon->PreDraw();
 
     //obj、スプライトの描画
-    //object3d->Draw();
+    Backobj->Draw();
+    groundobj->Draw();
+
+    //objの描画後処理
+    Object3d::PostDraw();
 
     //FBX描画
     Otin->Draw(cmdList);//otintin
@@ -118,10 +130,9 @@ void GameScene::Draw()
 
     // デバッグテキスト描画
     //debugText->DrawAll();
-
-    //objの描画後処理
-    Object3d::PostDraw();
 }
+
+    
 
 void GameScene::Finalize()
 {

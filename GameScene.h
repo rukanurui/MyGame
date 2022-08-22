@@ -62,8 +62,10 @@ private://ƒƒ“ƒo•Ï”
 	FbxModel* model2 = nullptr;
 	FBXobj3d* Otin = nullptr;
 	FBXobj3d* cube = nullptr;
-	Object3d* object3d = object3d->Create();
-	model* Model = model::LoadFromOBJ("skydome");
+	model* Back = nullptr;
+	Object3d* Backobj = nullptr;
+	model* ground = nullptr;
+	Object3d* groundobj = nullptr;
 
 	float CurretmouseX = 0;
 	float CurretmouseY = 0;
