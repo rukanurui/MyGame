@@ -23,8 +23,8 @@
 #include "FBXobj3d.h"
 #include "Modelfbx.h"
 #include "Camera.h"
-#include "GameScene.h"
-#include"WindowsApp.h"
+#include "Pbullet.h"
+
 
 
 class GameScene
@@ -57,18 +57,35 @@ private://ÉÅÉìÉoïœêî
 	DebugText* debugText;
 	Audio* audio = nullptr;
 	Camera* camera = nullptr;
+
+
 	SpriteCommon* spriteCommon = nullptr;
 	FbxModel* model1 = nullptr;
 	FbxModel* model2 = nullptr;
+	FbxModel* modelfloor = nullptr;
+	FbxModel* modelwall = nullptr;
+	FbxModel* modelballet = nullptr;
 	FBXobj3d* Otin = nullptr;
 	FBXobj3d* cube = nullptr;
-	model* Back = nullptr;
-	Object3d* Backobj = nullptr;
-	model* ground = nullptr;
-	Object3d* groundobj = nullptr;
+	FBXobj3d* floor = nullptr;
+	FBXobj3d* floor2 = nullptr;
+	FBXobj3d* wall = nullptr;
+	FBXobj3d* wall2 = nullptr;
+	FBXobj3d* ballet = nullptr;
+	
+	Pbullet* bullet = nullptr;
 
 	float CurretmouseX = 0;
 	float CurretmouseY = 0;
+
+	float oldposy = 0;
+
+	XMFLOAT3 bulpos;
+	int bulflag = 0;
+
+	float movex = 0;
+	float movey = 0;
+	float movez = 0;
 
 
 };

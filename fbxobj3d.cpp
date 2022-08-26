@@ -31,6 +31,14 @@ void FBXobj3d::Initialize()
 		nullptr,
 		IID_PPV_ARGS(&constBuffSkin));
 
+	ConstBufferDataSkin* constMapSkin = nullptr;
+	result = constBuffSkin->Map(0, nullptr, (void**)&constMapSkin);
+	for (int i = 0; i < MAX_BONES; i++)
+	{
+		constMapSkin->bones[i] = XMMatrixIdentity();
+	}
+	constBuffSkin->Unmap(0, nullptr);
+
 	//1ƒtƒŒ[ƒ€‚ÌŠÔ‚ğ60FPS‚ÅŒÅ’è
 	frameTime.SetTime(0, 0, 0, 1, 0, FbxTime::EMode::eFrames60);
 

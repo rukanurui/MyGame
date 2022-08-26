@@ -5,8 +5,8 @@ XMMATRIX Camera::matView = {};
 XMMATRIX Camera::matProjection = {};
 XMMATRIX Camera::matViewProjection = {};
 XMMATRIX Camera::matWorld = {};
-XMFLOAT3 Camera::eye = { 0, 0, -10.0f };
-XMFLOAT3 Camera::target = { 0, 0, 0 };
+XMFLOAT3 Camera::eye = { 0, 5, 0.0f };
+XMFLOAT3 Camera::target = { 0, 5, 0 };
 XMFLOAT3 Camera::up = { 0, 1, 0 };
 XMFLOAT3 Camera::rotation = { 0, 0, 0 };
 
@@ -192,6 +192,8 @@ void Camera::CurrentUpdate()
 	float angleX = 0;
 	float angleY = 0;
 
+	float oldeye = eye.y;
+
 	// マウスの入力を取得
 	Input::MouseMove mouseMove = input->GetMouseMove();
 
@@ -273,7 +275,14 @@ void Camera::CurrentUpdate()
 		move = XMVector3Transform(move, matRot);
 		MoveTarget(move);
 		viewDirtyFlag = true;
+
+		
 	}
+
+	if (target.y <= 5)target.y = 5;//注視点が0以下になりそうだったら
+
+	if (target.y >= 5)target.y = 5;//注視点が5以上になりそうだったら
+	
 	
 
 	if (viewDirtyFlag)
@@ -288,6 +297,12 @@ void Camera::CurrentUpdate()
 		matRot = matRotNew * matRot;
 
 		// 注視点から視点へのベクトルと、上方向ベクトル
+
+		if (target.y >= 10 && eye.y <= 9) distance = 7;
+		else
+		{
+			distance = 10;
+		}
 		XMVECTOR vTargetEye = { 0.0f, 0.0f, -distance, 1.0f };
 		XMVECTOR vUp = { 0.0f, 1.0f, 0.0f, 0.0f };
 		// ベクトルを回転
@@ -295,8 +310,10 @@ void Camera::CurrentUpdate()
 		vUp = XMVector3Transform(vUp, matRot);
 		// 注視点からずらした位置に視点座標を決定
 		const XMFLOAT3& Target = GetTarget();
+		
 		SetEye({ Target.x + vTargetEye.m128_f32[0], Target.y + vTargetEye.m128_f32[1], Target.z + vTargetEye.m128_f32[2] });
 		SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });
+
 	}
 
 

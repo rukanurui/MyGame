@@ -41,13 +41,13 @@ void FbxLoader::ParseSkin(FbxModel* fbxmodel, FbxMesh* fbxMesh)
         static_cast<FbxSkin*>(fbxMesh->GetDeformer(0, FbxDeformer::eSkin));
     //スキニング情報がなければ終了
     if (fbxSkin == nullptr) {
-        ////各頂点について処理
-        //for (int i = 0; i < fbxmodel->vertices.size(); i++)
-        //{
-        //    //最初のボーン(単に行列)の影響100%にする
-        //    fbxmodel->vertices[i].boneIndex[0] = 0;
-        //    fbxmodel->vertices[i].boneweight[0] = 1.0f;
-        //}
+        //各頂点について処理
+        for (int i = 0; i < fbxmodel->vertices.size(); i++)
+        {
+            //最初のボーン(単に行列)の影響100%にする
+            fbxmodel->vertices[i].boneIndex[0] = 0;
+            fbxmodel->vertices[i].boneweight[0] = 1.0f;
+        }
         return;
     }
     //ボーン配列の参照
