@@ -18,7 +18,6 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     this->windows = windows;
 
 
-    bullet = new Pbullet();
 
     //カメラ生成
     camera = new Camera(this->input,this->windows);
@@ -111,7 +110,11 @@ void GameScene::Update()
     camera->SetmouseX(CurretmouseX);
     camera->SetmouseY(CurretmouseY);
 
-    if (bulflag==0) bulpos = camera->GetEye();
+    if (bulflag == 0)
+    {
+        bulpos = camera->GetEye();
+        bulpos.z -= 1.0f;
+    }
 
     //スプライト更新
     
@@ -138,11 +141,11 @@ void GameScene::Update()
 
     if (bulflag==1)
     {
-        bulpos.z += 0.5f;
-
-        if (bulpos.z = 20)
+        bulpos.z += 0.1f;
+        ballet->SetPosition(bulpos);
+        if (bulpos.z >= 20)
         {
-            bulflag = 0;
+           bulflag = 0;
         }
     }
 
