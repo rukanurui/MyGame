@@ -1,4 +1,5 @@
 #pragma once
+#include<Windows.h>
 #pragma comment (lib, "xinput.lib")
 #include <xinput.h>
 

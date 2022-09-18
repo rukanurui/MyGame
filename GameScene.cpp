@@ -113,7 +113,7 @@ void GameScene::Update()
     if (bulflag == 0)
     {
         bulpos = camera->GetEye();
-        bulpos.z -= 1.0f;
+        //bulpos.z -= 1.0f;
     }
 
     //スプライト更新
