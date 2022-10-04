@@ -23,6 +23,7 @@
 #include "FBXobj3d.h"
 #include "Modelfbx.h"
 #include "Camera.h"
+#include"Player.h"
 #include "Pbullet.h"
 
 
@@ -57,6 +58,7 @@ private://ƒƒ“ƒo•Ï”
 	DebugText* debugText;
 	Audio* audio = nullptr;
 	Camera* camera = nullptr;
+	Player* player = nullptr;
 
 
 	SpriteCommon* spriteCommon = nullptr;

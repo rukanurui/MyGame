@@ -4,6 +4,7 @@
 #include"Input.h"
 #include"WindowsApp.h"
 #include"pad.h"
+#include"Player.h"
 
 #define DIRECTINPUT_VERSION     0x0800   // DirectInputのバージョン指定
 

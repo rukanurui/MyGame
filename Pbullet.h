@@ -22,6 +22,7 @@ protected: // エイリアス
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public:
+	void Initialize();
 	void create(XMFLOAT3 bulpos,int flag);
 	void update();
 	void deleate(int flag);

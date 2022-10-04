@@ -1,5 +1,9 @@
 #include "Pbullet.h"
 
+void Pbullet::Initialize()
+{
+}
+
 void Pbullet::create(XMFLOAT3 bulpos,int flag)
 {
 	pos = bulpos;

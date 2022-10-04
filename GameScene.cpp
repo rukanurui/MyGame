@@ -110,6 +110,10 @@ void GameScene::Update()
     camera->SetmouseX(CurretmouseX);
     camera->SetmouseY(CurretmouseY);
 
+
+    //
+    player->Update();
+
     if (bulflag == 0)
     {
         bulpos = camera->GetEye();
