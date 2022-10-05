@@ -92,6 +92,9 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     ballet->SetPosition({ 0.0f,5.0f,0.0f });
     ballet->SetModel(modelballet);
 
+    player = new Player();
+    player->Initialize(this->input);
+
     int counter = 0; // アニメーションの経過時間カウンター
 
     Otin->PlayAnimation();
@@ -111,15 +114,6 @@ void GameScene::Update()
     camera->SetmouseY(CurretmouseY);
 
 
-    //
-    player->Update();
-
-    if (bulflag == 0)
-    {
-        bulpos = camera->GetEye();
-        //bulpos.z -= 1.0f;
-    }
-
     //スプライト更新
     
     //FBX更新
@@ -138,14 +132,11 @@ void GameScene::Update()
     camera->Update(WindowsApp::window_width, WindowsApp::window_height);
 
     //ゲーム本編
-    if (input->PushKey(DIK_SPACE))
-    {
-        bulflag = 1;
-    }
+    
+    player->Update();
 
     if (bulflag==1)
     {
-        bulpos.z += 0.1f;
         ballet->SetPosition(bulpos);
         if (bulpos.z >= 20)
         {
@@ -176,8 +167,6 @@ void GameScene::Draw()
    // floor2->Draw(cmdList);
     wall->Draw(cmdList);
     //wall2->Draw(cmdList);
-
-    if (bulflag==1) ballet->Draw(cmdList);
 
     // デバッグテキスト描画
     //debugText->DrawAll();

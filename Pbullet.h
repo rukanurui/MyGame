@@ -8,6 +8,11 @@
 #include <DirectXMath.h>
 #include <d3dx12.h>
 #include "Input.h"
+#include "fbxsdk.h"
+#include "FbxLoader.h"
+
+#include "FBXobj3d.h"
+#include "Modelfbx.h"
 
 
 class Pbullet
@@ -19,21 +24,27 @@ protected: // エイリアス
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
+	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public:
-	void Initialize();
-	void create(XMFLOAT3 bulpos,int flag);
+	void Initialize(FbxModel* model);
+	void create(FbxModel* model,const XMFLOAT3& Playerpos,const XMFLOAT3& velocity);
 	void update();
 	void deleate(int flag);
 	void draw();
+	
 
 private:
-
+	//座標
 	XMFLOAT3 pos{ 0,0,0 };
-
+	//速度
+	XMFLOAT3 Vel{ 0,0,0 };//速度
 	bool colisionflag;
-
 	bool areaflag;
+
+	//3Dモデル
+	FBXobj3d* ballet = nullptr;
+	FbxModel* modelballet = nullptr;
 };
 

@@ -1,18 +1,29 @@
 #include "Pbullet.h"
 
-void Pbullet::Initialize()
+void Pbullet::Initialize(FbxModel*model)
 {
+	modelballet = FbxLoader::GetInstance()->LoadModelFromFile("bullet");
 }
 
-void Pbullet::create(XMFLOAT3 bulpos,int flag)
+void Pbullet::create(FbxModel* model,const XMFLOAT3& Playerpos, const XMFLOAT3& velocity)
 {
-	pos = bulpos;
-	flag = 1;
+	assert(model);
+	modelballet = model;
+	modelballet = FbxLoader::GetInstance()->LoadModelFromFile("bullet");
+	ballet = new FBXobj3d;
+	ballet->Initialize();
+	ballet->SetPosition({ 0.0f,5.0f,0.0f });
+	ballet->SetModel(modelballet);
+
+	pos = Playerpos;
+	Vel = velocity;
 }
 
 void Pbullet::update()
 {
-	pos.z += 0.1f;
+	ballet->Update();
+	pos.z += Vel.z;
+
 }
 
 void Pbullet::deleate(int flag)
@@ -25,5 +36,7 @@ void Pbullet::deleate(int flag)
 
 void Pbullet::draw()
 {
-	
+	// コマンドリストの取得
+	ID3D12GraphicsCommandList* cmdList = dxCommon->GetCommandList();
+	ballet->Draw()
 }

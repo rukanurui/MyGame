@@ -75,6 +75,7 @@ private://ƒƒ“ƒo•Ï”
 	FBXobj3d* wall2 = nullptr;
 	FBXobj3d* ballet = nullptr;
 	
+	Player* player = nullptr;
 	Pbullet* bullet = nullptr;
 
 	float CurretmouseX = 0;
