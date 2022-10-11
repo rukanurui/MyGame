@@ -1,16 +1,24 @@
 #pragma once
-#include "Camera.h"
 #include"Pbullet.h"
 #include"Input.h"
 #include <DirectXMath.h>
-#include "fbxsdk.h"
-#include "FbxLoader.h"
-
-#include "FBXobj3d.h"
-#include "Modelfbx.h"
+//#include "fbxsdk.h"
+//#include "FbxLoader.h"
+//
+//#include "FBXobj3d.h"
+//#include "Modelfbx.h"
 
 class Player
 {
+protected: // エイリアス
+// Microsoft::WRL::を省略
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+	// DirectX::を省略
+	using XMFLOAT2 = DirectX::XMFLOAT2;
+	using XMFLOAT3 = DirectX::XMFLOAT3;
+	using XMFLOAT4 = DirectX::XMFLOAT4;
+	using XMVECTOR = DirectX::XMVECTOR;
+	using XMMATRIX = DirectX::XMMATRIX;
 
 public://メンバ関数
 	//初期化
@@ -24,38 +32,20 @@ public://メンバ関数
 
 	///Getter
 	// 座標の取得
-	const XMFLOAT3& GetPos() { return pos; }
-	//回転の取得
-	const XMFLOAT3& GetRoatation() { return rotation; }
+	const XMFLOAT3& GetPos() { return pos;}
 
 	///Setter
 	//座標
 	void SetPos(XMFLOAT3 pos);
-	//回転
-	void SetRoatation(XMFLOAT3 roatation);
 
 
 private://メンバ変数
 	Input* input = nullptr;
 	Pbullet* bullet = nullptr;
 
-	// ビュー行列
-	static XMMATRIX matView;
-	// 射影行列
-	static XMMATRIX matProjection;
-	// ビュープロジェクション行列
-	static XMMATRIX matViewProjection;
-	//ワールド行列
-	static XMMATRIX matWorld;
-	// X,Y,Z軸回りのローカル回転角
-	static XMFLOAT3 rotation;
 	// プレイヤーの座標
-	static XMFLOAT3 pos;
-	// 注視点座標(見てる場所)
-	static XMFLOAT3 target;
-	// 上方向ベクトル
-	static XMFLOAT3 up;
-
+	XMFLOAT3 pos = {0,0,0};
+	
 
 
 };

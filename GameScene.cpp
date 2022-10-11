@@ -87,7 +87,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     wall2->SetPosition({ -10.0f,18.0f,18.0f });
     wall2->SetModel(modelwall);
 
-    ballet = new FBXobj3d;
+    ballet = new Pbullet;
     ballet->Initialize();
     ballet->SetPosition({ 0.0f,5.0f,0.0f });
     ballet->SetModel(modelballet);
@@ -126,7 +126,7 @@ void GameScene::Update()
     floor2->Update();
     wall->Update();
     wall2->Update();
-    ballet->Update();
+    //ballet->Update();
 
     camera->CurrentUpdate();
     camera->Update(WindowsApp::window_width, WindowsApp::window_height);
@@ -135,15 +135,12 @@ void GameScene::Update()
     
     player->Update();
 
-    if (bulflag==1)
-    {
-        ballet->SetPosition(bulpos);
-        if (bulpos.z >= 20)
-        {
-           bulflag = 0;
-        }
-    }
 
+    //sprintf_s(pla, "%f", bullet->GetPos().z);
+
+    //debugText->Print(pla, 0, 0, 1.0f);
+
+    //ballet->SetPosition({Bulpos.x,Bulpos.y,Bulpos.z});
 }
 
 void GameScene::Draw()
@@ -167,9 +164,10 @@ void GameScene::Draw()
    // floor2->Draw(cmdList);
     wall->Draw(cmdList);
     //wall2->Draw(cmdList);
+    ballet->Draw(cmdList);
 
     // デバッグテキスト描画
-    //debugText->DrawAll();
+    debugText->DrawAll();
 }
 
     

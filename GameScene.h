@@ -58,8 +58,8 @@ private://ƒƒ“ƒo•Ï”
 	DebugText* debugText;
 	Audio* audio = nullptr;
 	Camera* camera = nullptr;
-	Player* player = nullptr;
 
+	char pla[64];
 
 	SpriteCommon* spriteCommon = nullptr;
 	FbxModel* model1 = nullptr;
@@ -73,22 +73,23 @@ private://ƒƒ“ƒo•Ï”
 	FBXobj3d* floor2 = nullptr;
 	FBXobj3d* wall = nullptr;
 	FBXobj3d* wall2 = nullptr;
-	FBXobj3d* ballet = nullptr;
+
+	Pbullet* ballet = nullptr;
 	
 	Player* player = nullptr;
-	Pbullet* bullet = nullptr;
 
 	float CurretmouseX = 0;
 	float CurretmouseY = 0;
 
 	float oldposy = 0;
 
-	XMFLOAT3 bulpos;
 	int bulflag = 0;
 
 	float movex = 0;
 	float movey = 0;
 	float movez = 0;
+
+	XMFLOAT3 Bulpos;
 
 
 };

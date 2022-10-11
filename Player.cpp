@@ -12,7 +12,7 @@ void Player::Update()
 	if (input->PushKey(DIK_SPACE))
 	{
 		//’e‚Ì‘¬“x
-		const float bulspeed = 0.1f;
+		const float bulspeed = 10;
 		XMFLOAT3 Velocity{ 0,0,bulspeed };
 
 		//’e‚Ì¶¬‚Æ‰Šú‰»
@@ -23,7 +23,7 @@ void Player::Update()
 	//’e‚ÌXV
 	if (bullet)
 	{
-		bullet->update();
+		bullet->bulupdate();
 	}
 }
 

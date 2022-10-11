@@ -77,7 +77,6 @@ protected://メンバ変数
 	//モデル
 	FbxModel* fbxmodel = nullptr;
 
-private:
 	//デバイス
 	static ID3D12Device* device;
 	//カメラ
@@ -97,8 +96,6 @@ private:
 	FbxTime currentTime;
 	//アニメーション再生中
 	bool isPlay = false;
-
-	
 
 	//ルートシグネチャ
 	static ComPtr<ID3D12RootSignature> rootsignature;
