@@ -9,19 +9,6 @@ Pbullet::Pbullet() : FBXobj3d()
 
 void Pbullet::create(const XMFLOAT3& Playerpos, const XMFLOAT3& velocity)
 {
-	////FBX関連
-	////デバイスをセット
-	//FBXobj3d::SetDevice(dxCommon->GetDevice());
-	////カメラをセット
-	//FBXobj3d::SetCamera(camera);
-	////FBXパイプライン生成
-	//FBXobj3d::CreateGraphicsPipeline();
-	//modelballet = FbxLoader::GetInstance()->LoadModelFromFile("bullet");
-	//ballet = new FBXobj3d;
-	//ballet->Initialize();
-	//ballet->SetPosition({ 0.0f,5.0f,0.0f });
-	//ballet->SetModel(modelballet);
-
 	position = Playerpos;
 	Vel = velocity;
 }
@@ -99,7 +86,6 @@ void Pbullet::bulupdate()
 		constBufferTransform->Unmap(0, nullptr);
 	}
 
-	position.z += Vel.z;
 	
 }
 

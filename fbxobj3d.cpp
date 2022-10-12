@@ -11,6 +11,14 @@ ComPtr<ID3D12PipelineState> FBXobj3d::pipelinestate;
 ID3D12Device* FBXobj3d::device = nullptr;
 Camera* FBXobj3d::camera = nullptr;
 
+FBXobj3d::~FBXobj3d()
+{
+	if (collider)
+	{
+		delete collider;
+	}
+}
+
 void FBXobj3d::Initialize()
 {
 	HRESULT result;
@@ -41,6 +49,9 @@ void FBXobj3d::Initialize()
 
 	//1フレームの時間を60FPSで固定
 	frameTime.SetTime(0, 0, 0, 1, 0, FbxTime::EMode::eFrames60);
+
+	//クラス名の文字列を取得
+	name = typeid(*this).name();
 
 }
 
@@ -276,6 +287,13 @@ void FBXobj3d::Update()
 		constBufferTransform->Unmap(0, nullptr);
 	}
 
+
+	//当たり判定更新
+	if (collider)
+	{
+		collider->Update();
+	}
+
 }
 
 void FBXobj3d::Draw(ID3D12GraphicsCommandList* cmdList)
@@ -319,4 +337,10 @@ void  FBXobj3d::PlayAnimation()
 	currentTime = startTime;
 	//再生中状態にする
 	isPlay = true;
+}
+
+void FBXobj3d::SetCollider(BaseCollider* collider)
+{
+	collider->SetObject(this);
+	this->collider;
 }

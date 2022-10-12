@@ -1,7 +1,8 @@
 #pragma once
-#include "FBXobj3d.h"
+#include"fbxobj3d.h"
 
-class Pbullet : public FBXobj3d
+class Pbullet 
+: public FBXobj3d
 {
 
 public:
@@ -13,7 +14,7 @@ public:
 	
 	///Getter
 	// À•W‚Ìæ“¾
-	const XMFLOAT3& GetPos() { return position; }
+	const XMFLOAT3& GetPos(){ return position; }
 	////‰ñ“]‚Ìæ“¾
 	//const XMFLOAT3& GetRoatation() { return rotation; }
 	//
@@ -24,7 +25,7 @@ public:
 private:
 	
 	//‘¬“x
-	XMFLOAT3 Vel{ 0,0,0 };
+	XMFLOAT3 Vel={ 0,0,0 };
 	//bool colisionflag;
 	//bool areaflag;
 

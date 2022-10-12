@@ -19,12 +19,13 @@
 
 #include "fbxsdk.h"
 #include "FbxLoader.h"
-
 #include "FBXobj3d.h"
 #include "Modelfbx.h"
+
 #include "Camera.h"
 #include"Player.h"
 #include "Pbullet.h"
+#include"Enemy.h"
 
 
 
@@ -68,11 +69,12 @@ private://ÉÅÉìÉoïœêî
 	FbxModel* modelwall = nullptr;
 	FbxModel* modelballet = nullptr;
 	FBXobj3d* Otin = nullptr;
-	FBXobj3d* cube = nullptr;
+	Enemy* cube = nullptr;
 	FBXobj3d* floor = nullptr;
 	FBXobj3d* floor2 = nullptr;
 	FBXobj3d* wall = nullptr;
 	FBXobj3d* wall2 = nullptr;
+	FBXobj3d* wall3 = nullptr;
 
 	Pbullet* ballet = nullptr;
 	

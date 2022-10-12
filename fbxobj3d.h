@@ -9,7 +9,10 @@
 #include "FbxLoader.h"
 #include "fbxsdk.h"
 #include <string>
+#include"ColisionInfo.h"
+#include"BaseCollider.h"
 
+class BaseCollider;
 
 class FBXobj3d
 {
@@ -20,12 +23,7 @@ protected: // エイリアス
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
-	using XMMATRIX = DirectX::XMMATRIX;
-
-public:
-	//setter
-	static void SetDevice(ID3D12Device* device) { FBXobj3d::device = device; }
-	static void SetCamera(Camera* camera) { FBXobj3d::camera = camera; }
+	using XMMATRIX = DirectX::XMMATRIX;	
 
 public://サブクラス
 	//定数バッファ用データ構造体(座標変換)
@@ -45,20 +43,41 @@ public://サブクラス
 	};
 
 public://メンバ関数
+	//コンストラクタ
+	FBXobj3d();
+	//デストラクタ
+	virtual ~FBXobj3d();
 	//初期化
-	void Initialize();
+	virtual void Initialize();
 	//グラフィックスパイプラインの生成
 	static void CreateGraphicsPipeline();
 	//舞フレーム処理
-	void Update();
+	virtual void Update();
 	//モデルのセット
 	void SetModel(FbxModel* model) { this->fbxmodel = model; }
 	//描画
-	void Draw(ID3D12GraphicsCommandList* cmdList);
+	virtual void Draw(ID3D12GraphicsCommandList* cmdList);
 	//Fbxアニメーション再生
 	void PlayAnimation();
 
+	//衝突時コールバック関数
+	virtual void OnCollision(const CollisionInfo& info) {};
+
+	//getter
+	//ワールド行列のゲッター
+	const XMMATRIX& GetMatWorld() { return matWorld; }
+	
+	//setter
+	static void SetDevice(ID3D12Device* device) { FBXobj3d::device = device; }
+	static void SetCamera(Camera* camera) { FBXobj3d::camera = camera; }
+	//ポジションの変更
 	void SetPosition(XMFLOAT3 position) { this->position = position; }
+	//スケールの変更
+	void SetScale(XMFLOAT3 scale) { this->scale = scale; }
+	//角度の変更
+	void SetRotation(XMFLOAT3 rotation) { this->rotation = rotation; }
+	//コライダーのセット
+	void SetCollider(BaseCollider* collider);
 
 
 protected://メンバ変数
@@ -101,6 +120,11 @@ protected://メンバ変数
 	static ComPtr<ID3D12RootSignature> rootsignature;
 	//パイプラインステートオブジェ
 	static ComPtr<ID3D12PipelineState> pipelinestate;
+
+	//クラス名(デバッグ用)
+	const char* name = nullptr;
+	//コライダー
+	BaseCollider* collider = nullptr;
 
 
 };

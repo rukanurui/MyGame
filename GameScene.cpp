@@ -62,14 +62,16 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     Otin->SetPosition({ 0.0f,0.0f,0.0f });
     Otin->SetModel(model1);
 
-    cube = new FBXobj3d;
+    cube = new Enemy;
     cube->Initialize();
-    cube->SetPosition({ 10.0f,0.0f,10.0f });
+    cube->SetPosition({ 5.0f,5.0f,20.0f });
+    cube->SetScale({ 3.0f,3.0f,3.0f });
     cube->SetModel(model2);
 
     floor = new FBXobj3d;
     floor->Initialize();
-    floor->SetPosition({ 0.0f,-1.0f,0.0f });
+    floor->SetPosition({ -20.0f,-1.0f,-50.0f });
+    floor->SetScale({ 10.0f,0.5f,10.0f });
     floor->SetModel(modelfloor);
 
     floor2 = new FBXobj3d;
@@ -79,21 +81,34 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
          
     wall = new FBXobj3d;
     wall->Initialize();
-    wall->SetPosition({ 3.0f,18.0f,18.0f });
+    wall->SetPosition({ -30.0f,50.0f,100.0f });
+    wall->SetScale({ 200.0f,10.0f,0.5f });
+    wall->SetRotation({ 0.0f,0.0f,0.0f });
     wall->SetModel(modelwall);
 
     wall2 = new FBXobj3d;
     wall2->Initialize();
-    wall2->SetPosition({ -10.0f,18.0f,18.0f });
+    wall2->SetPosition({ -30.0f,50.0f,100.0f });
+    wall2->SetScale({ 20.0f,10.0f,1.0f });
+    wall2->SetRotation({ 0.0f,90.0f,0.0f });
     wall2->SetModel(modelwall);
+
+    wall3 = new FBXobj3d;
+    wall3->Initialize();
+    wall3->SetPosition({ 75.0f,50.0f,100.0f });
+    wall3->SetScale({ 20.0f,10.0f,1.0f });
+    wall3->SetRotation({ 0.0f,90.0f,0.0f });
+    wall3->SetModel(modelwall);
+
 
     ballet = new Pbullet;
     ballet->Initialize();
-    ballet->SetPosition({ 0.0f,5.0f,0.0f });
+    ballet->SetPosition({ 500.0f,5.0f,0.0f });
     ballet->SetModel(modelballet);
 
-    player = new Player();
-    player->Initialize(this->input);
+    player = new Player(ballet);
+    player->Initialize(WindowsApp::window_width, WindowsApp::window_height, this->input);
+    player->PlayerInitialize(this->input);
 
     int counter = 0; // アニメーションの経過時間カウンター
 
@@ -112,6 +127,8 @@ void GameScene::Update()
 
     camera->SetmouseX(CurretmouseX);
     camera->SetmouseY(CurretmouseY);
+    player->SetmouseX(CurretmouseX);
+    player->SetmouseY(CurretmouseY);
 
 
     //スプライト更新
@@ -126,21 +143,26 @@ void GameScene::Update()
     floor2->Update();
     wall->Update();
     wall2->Update();
-    //ballet->Update();
+    wall3->Update();
 
     camera->CurrentUpdate();
     camera->Update(WindowsApp::window_width, WindowsApp::window_height);
 
     //ゲーム本編
     
-    player->Update();
+  //player->CurrentUpdate();
+    player->PlayerUpdate();
+
+    if (input->PushKey(DIK_E))
+    {
+        cube->EnemyUpdate();
+    }
 
 
     //sprintf_s(pla, "%f", bullet->GetPos().z);
 
     //debugText->Print(pla, 0, 0, 1.0f);
 
-    //ballet->SetPosition({Bulpos.x,Bulpos.y,Bulpos.z});
 }
 
 void GameScene::Draw()
@@ -163,7 +185,8 @@ void GameScene::Draw()
     floor->Draw(cmdList);
    // floor2->Draw(cmdList);
     wall->Draw(cmdList);
-    //wall2->Draw(cmdList);
+    wall2->Draw(cmdList);
+    wall3->Draw(cmdList);
     ballet->Draw(cmdList);
 
     // デバッグテキスト描画

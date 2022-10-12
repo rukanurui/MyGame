@@ -101,6 +101,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
         //入力の更新
         input->Update();
+        // コマンドリストの取得
+        ID3D12GraphicsCommandList* cmdList = dxCommon->GetCommandList();
 
         gameScene->Update();
 
@@ -109,9 +111,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma region グラフィックスコマンド
 
-        // コマンドリストの取得
-        ID3D12GraphicsCommandList* cmdList = dxCommon->GetCommandList();
-
+       
         //レンダ―テクスチャへの描画
         //postEffect->PreDrawScene(dxCommon->GetCommandList());
 

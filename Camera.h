@@ -4,7 +4,7 @@
 #include"Input.h"
 #include"WindowsApp.h"
 #include"pad.h"
-#include"Player.h"
+//#include"Player.h"
 
 #define DIRECTINPUT_VERSION     0x0800   // DirectInputのバージョン指定
 
@@ -13,7 +13,7 @@ using namespace DirectX;
 
 class Camera
 {
-private:
+protected:
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
@@ -27,7 +27,7 @@ public: // メンバ関数
 	//コンストラクタ
 	Camera(Input* input,WindowsApp* windows);
 	//初期化
-	void Initialize(int window_width, int window_height,Input* input);
+	virtual void Initialize(int window_width, int window_height,Input* input);
 	//更新
 	void Update(int window_width, int window_height);
 	void UpdateViewMatrix();
@@ -83,7 +83,7 @@ public: // メンバ関数
 	void SetmouseY(float mouseY);
 
 
-private://メンバ変数
+protected://メンバ変数
 	Input* input=nullptr;
 	WindowsApp* windows = nullptr;
 	//pad* Pad = nullptr;
