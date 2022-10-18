@@ -9,8 +9,8 @@
 #include "WindowsApp.h"
 #include "DXCommon.h"
 
-#include "Object3d.h"
-#include "model.h"
+#include "3d/Object3d.h"
+#include "3d/model.h"
 #include "2d/SpriteCommon.h"
 #include "2d/Sprite.h"
 #include"2d/PostEffect.h"
@@ -18,9 +18,9 @@
 #include "Audio.h"
 
 #include "fbxsdk.h"
-#include "FbxLoader.h"
-#include "FBXobj3d.h"
-#include "Modelfbx.h"
+#include "3d/FbxLoader.h"
+#include "3d/FBXobj3d.h"
+#include "3d/Modelfbx.h"
 
 #include "Camera.h"
 #include"Player.h"

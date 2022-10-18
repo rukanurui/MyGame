@@ -1,5 +1,7 @@
 #include "FBXobj3d.h"
 #include <d3dcompiler.h>
+#include"../BaseCollider.h"
+#include "../CollisionManager.h"
 #pragma comment(lib,"d3dcompiler")
 
 using namespace Microsoft::WRL;
@@ -15,6 +17,7 @@ FBXobj3d::~FBXobj3d()
 {
 	if (collider)
 	{
+		CollisionManager::GetInstance()->RemoveCollider(collider);
 		delete collider;
 	}
 }
@@ -343,4 +346,8 @@ void FBXobj3d::SetCollider(BaseCollider* collider)
 {
 	collider->SetObject(this);
 	this->collider;
+	//コリジョンマネージャーに登録
+	CollisionManager::GetInstance()->ADDCollider(collider);
+	//コライダーを更新しておく
+	collider->Update();
 }

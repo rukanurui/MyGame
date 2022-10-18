@@ -7,6 +7,7 @@ class BaseCollider;
 
 //Õ“Ëî•ñ
 struct CollisionInfo
+
 {
 protected:
 	// DirectX::‚ğÈ—ª

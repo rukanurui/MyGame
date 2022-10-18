@@ -5,12 +5,12 @@
 #include <DirectXMath.h>
 #include <d3dx12.h>
 #include "Modelfbx.h"
-#include "Camera.h"
+#include "../Camera.h"
 #include "FbxLoader.h"
 #include "fbxsdk.h"
 #include <string>
-#include"ColisionInfo.h"
-#include"BaseCollider.h"
+#include"../ColisionInfo.h"
+
 
 class BaseCollider;
 
@@ -44,7 +44,7 @@ public://サブクラス
 
 public://メンバ関数
 	//コンストラクタ
-	FBXobj3d();
+	FBXobj3d() = default;
 	//デストラクタ
 	virtual ~FBXobj3d();
 	//初期化

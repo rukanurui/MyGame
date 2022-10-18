@@ -1,5 +1,5 @@
 #pragma once
-#include"fbxobj3d.h"
+#include"3d/fbxobj3d.h"
 
 class Pbullet 
 : public FBXobj3d

@@ -9,15 +9,15 @@
 
 #include "WindowsApp.h"
 #include "DXCommon.h"
-#include "Object3d.h"
-#include "model.h"
+#include "3d/Object3d.h"
+#include "3d/model.h"
 #include "2d/SpriteCommon.h"
 #include "2d/Sprite.h"
 #include"2d/PostEffect.h"
 #include "DebugText.h"
 #include "Audio.h"
 
-#include "FbxLoader.h"
+#include "3d/FbxLoader.h"
 
 #include "GameScene.h"
 

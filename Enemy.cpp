@@ -4,6 +4,32 @@
 Enemy::Enemy() : FBXobj3d()
 {
 }
+
+//Enemy* Enemy::Create()
+//{
+//	//3Dオブジェクトのインスタンスを生成
+//	Enemy* instance = new Enemy();
+//	if (instance == nullptr) {
+//		return nullptr;
+//	}
+//
+//	// 初期化
+//	if (!instance->Initialize()) {
+//		delete instance;
+//		assert(0);
+//	}
+//	return instance;
+//}
+
+bool Enemy::EnemyInitialize()
+{
+	//コライダーの追加
+	float radius = 1.5f;
+	//半径分だけ足元から浮いた座標を球の中心にする
+	SetCollider(new SphereCollider(XMVECTOR({ 0,radius,0,0 }), radius));
+	return true;
+}
+
 void Enemy::EnemyUpdate()
 {
 	if (scale.x >= 1)
@@ -77,6 +103,20 @@ void Enemy::EnemyUpdate()
 		constMap->camerapos = camerapos;
 		constBufferTransform->Unmap(0, nullptr);
 	}
+
+	////当たり判定更新
+	//if (collider)
+	//{
+	//	collider->Update();
+	//}
+}
+
+
+void Enemy::OnCollision(const CollisionInfo& info)
+{
+	//デバッグテキスト表示
+	
+
 }
 ;
 
