@@ -20,10 +20,16 @@ void Player::PlayerUpdate()
 	{
 		//’e‚Ì‘¬“x
 		const float bulspeed = 0.1f;
-		XMFLOAT3 Velocity{ 0,0,bulspeed };
+		XMVECTOR Velocity{ 0,0,bulspeed };
+
+		Velocity={ target.x - eye.x, target.y - eye.y, target.z - eye.z };
+
+		Velocity = XMVector3Normalize(Velocity) * bulspeed;
+
+		//‘¬“xƒxƒNƒgƒ‹‚ğ©‹@‚ÌŒü‚«‚É‡‚í‚¹‚Ä‰ñ“]‚³‚¹‚é
+		//Velocity=target
 
 		//’e‚Ì¶¬‚Æ‰Šú‰»
-		
 		bullet->create(eye, Velocity);
 	}
 

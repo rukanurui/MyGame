@@ -1,8 +1,10 @@
+#pragma once
 #include "GameScene.h"
 
 #include <cassert>
 #include <sstream>
 #include <iomanip>
+#include"CollisionManager.h"
 
 
 using namespace DirectX;
@@ -42,6 +44,8 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     
     //スプライトの生成
 
+    collisionManager = CollisionManager::GetInstance();
+
 
     //FBX関連
     //デバイスをセット
@@ -65,8 +69,36 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     cube = new Enemy;
     cube->Initialize();
     cube->SetPosition({ 5.0f,5.0f,20.0f });
-    cube->SetScale({ 3.0f,3.0f,3.0f });
+    cube->SetScale({ 1.0f,1.0f,1.0f });
     cube->SetModel(model2);
+    cube->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 },5.0f));
+
+    //爆散する敵
+    for (int i = 0; i < 8; i++)
+    {
+        DivCube[i] = nullptr;
+        DivCube[i] = new Enemy;
+        DivCube[i]->Initialize();
+        if (i<=1)
+        {
+            DivCube[i]->SetPosition({ 10.0f + 1.0f * i,5.0f,20.0f});
+        }
+        if (i >1&&i<=3)
+        {
+            DivCube[i]->SetPosition({ 10.0f + 1.0f * i-2.0f,5.0f-1.0f,20.0f });
+        }
+        if (i > 3 && i <= 5)
+        {
+            DivCube[i]->SetPosition({ 10.0f + 1.0f * i-4,5.0f,21.0f });
+        }
+        if (i > 5 && i <= 8)
+        {
+            DivCube[i]->SetPosition({ 10.0f + 1.0f * i-6 ,5.0f-1.0f,21.0f });
+        }
+        DivCube[i]->SetScale({ 0.5f,0.5f,0.5f });
+        DivCube[i]->SetModel(model2);
+    }
+
 
     floor = new FBXobj3d;
     floor->Initialize();
@@ -106,9 +138,13 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     ballet->SetPosition({ 500.0f,5.0f,0.0f });
     ballet->SetModel(modelballet);
 
+    
+    
+
     player = new Player(ballet);
     player->Initialize(WindowsApp::window_width, WindowsApp::window_height, this->input);
     player->PlayerInitialize(this->input);
+    ballet->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 3.0f));
 
     int counter = 0; // アニメーションの経過時間カウンター
 
@@ -139,6 +175,10 @@ void GameScene::Update()
 
     Otin->Update();
     cube->Update();
+    for (int i = 0; i < 8; i++)
+    {
+        DivCube[i]->Update();
+    }
     floor->Update();
     floor2->Update();
     wall->Update();
@@ -147,16 +187,30 @@ void GameScene::Update()
 
     camera->CurrentUpdate();
     camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+   //player->CurrentUpdate();
+    //player->Update(WindowsApp::window_width, WindowsApp::window_height);
 
     //ゲーム本編
     
-  //player->CurrentUpdate();
     player->PlayerUpdate();
 
-    if (input->PushKey(DIK_E))
+    if(input->PushKey(DIK_E))
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            DivCube[i]->EnemyUpdate();
+        }
+    }
+
+    //すべての衝突をチェック
+    collisionManager->CheckAllCollisions();
+
+    
+
+    /*if (input->PushKey(DIK_E))
     {
         cube->EnemyUpdate();
-    }
+    }*/
 
 
     //sprintf_s(pla, "%f", bullet->GetPos().z);
@@ -182,6 +236,10 @@ void GameScene::Draw()
     //FBX描画
     Otin->Draw(cmdList);//otintin
     cube->Draw(cmdList);//cube
+    for (int i = 0; i < 8; i++)
+    {
+        DivCube[i]->Draw(cmdList);
+    }
     floor->Draw(cmdList);
    // floor2->Draw(cmdList);
     wall->Draw(cmdList);

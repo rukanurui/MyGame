@@ -7,16 +7,19 @@ Pbullet::Pbullet() : FBXobj3d()
 
 
 
-void Pbullet::create(const XMFLOAT3& Playerpos, const XMFLOAT3& velocity)
+void Pbullet::create(const XMFLOAT3& Playerpos, const XMVECTOR& velocity)
 {
 	position = Playerpos;
+	position.y = 5.0f;
 	Vel = velocity;
 }
 
 void Pbullet::bulupdate()
 {
 
-	position.z += Vel.z;
+	position.x+=Vel.m128_f32[0];
+	position.y += Vel.m128_f32[1];
+	position.z += Vel.m128_f32[2];
 
 
 	HRESULT result;
@@ -87,6 +90,11 @@ void Pbullet::bulupdate()
 	}
 
 	
+}
+
+void Pbullet::OnCollision(const CollisionInfo& info)
+{
+
 }
 
 //void Pbullet::SetPos(XMFLOAT3 pos)

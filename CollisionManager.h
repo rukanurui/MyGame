@@ -1,4 +1,8 @@
 #pragma once
+#include"CollisionPrimitive.h"
+#include"RayCastHit.h"
+
+#include<d3d12.h>
 #include<forward_list>
 
 class BaseCollider;
@@ -21,6 +25,9 @@ public://メンバ関数
 
 	//全ての衝突チェック
 	void CheckAllCollisions();
+
+	//レイとすべてのコライダーとの衝突判定
+	bool RayCast(const Ray& ray, RayCastHit* hitinfo = nullptr, float MaxDistance = D3D12_FLOAT32_MAX);
 
 private:
 	CollisionManager() = default;

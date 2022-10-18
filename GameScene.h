@@ -28,6 +28,7 @@
 #include"Enemy.h"
 
 
+class CollisionManager;
 
 class GameScene
 {
@@ -59,6 +60,8 @@ private://メンバ変数
 	DebugText* debugText;
 	Audio* audio = nullptr;
 	Camera* camera = nullptr;
+	//衝突マネージャー
+	CollisionManager* collisionManager = nullptr;
 
 	char pla[64];
 
@@ -70,6 +73,7 @@ private://メンバ変数
 	FbxModel* modelballet = nullptr;
 	FBXobj3d* Otin = nullptr;
 	Enemy* cube = nullptr;
+	Enemy* DivCube[10];
 	FBXobj3d* floor = nullptr;
 	FBXobj3d* floor2 = nullptr;
 	FBXobj3d* wall = nullptr;
