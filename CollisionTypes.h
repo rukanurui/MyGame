@@ -7,6 +7,8 @@ enum CollisionShapeType
 
 	COLLISIONSHAPE_SPHERE,//‹…
 
+	COLLISIONSHAPE_PLANE,//•½–Ê
+
 };
 
 class CollisionTypes

@@ -66,6 +66,8 @@ private://ƒƒ“ƒo•Ï”
 	char pla[64];
 
 	SpriteCommon* spriteCommon = nullptr;
+	Sprite* tuto = nullptr;
+	Sprite* tex = nullptr;
 	FbxModel* model1 = nullptr;
 	FbxModel* model2 = nullptr;
 	FbxModel* modelfloor = nullptr;
@@ -74,6 +76,7 @@ private://ƒƒ“ƒo•Ï”
 	FBXobj3d* Otin = nullptr;
 	Enemy* cube = nullptr;
 	Enemy* DivCube[10];
+	Enemy* PartCube[100];
 	FBXobj3d* floor = nullptr;
 	FBXobj3d* floor2 = nullptr;
 	FBXobj3d* wall = nullptr;
@@ -94,6 +97,10 @@ private://ƒƒ“ƒo•Ï”
 	float movex = 0;
 	float movey = 0;
 	float movez = 0;
+
+	int resetflag = 0;
+
+	XMVECTOR eVel[100];
 
 	XMFLOAT3 Bulpos;
 

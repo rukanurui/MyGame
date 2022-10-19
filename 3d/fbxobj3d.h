@@ -66,6 +66,8 @@ public://メンバ関数
 	//getter
 	//ワールド行列のゲッター
 	const XMMATRIX& GetMatWorld() { return matWorld; }
+
+	const XMFLOAT3& GetPos() { return position; }
 	
 	//setter
 	static void SetDevice(ID3D12Device* device) { FBXobj3d::device = device; }

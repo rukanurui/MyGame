@@ -36,6 +36,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     GameScene* gameScene = nullptr;
     Audio* audio = nullptr;
     Object3d* object3d = nullptr;
+    SpriteCommon* spriteCommon = nullptr;
 
 #pragma region WindowsAPI初期化
     winApp = new WindowsApp();
@@ -61,8 +62,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
      Object3d::StaticInitialize(dxCommon->GetDevice(), WindowsApp::window_width, WindowsApp::window_height);
 
     // スプライト共通部分の初期化
-    SpriteCommon* spriteCommon = new SpriteCommon();
+    spriteCommon = new SpriteCommon();
     spriteCommon->Initialize(dxCommon->GetDevice(),dxCommon->GetCommandList(),winApp->window_width,winApp->window_height);
+
+
 
     // DirectX初期化処理　ここまで
 #pragma endregion DirectX初期化処理
@@ -70,12 +73,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma region 描画初期化処理
 
     //ポストエフェクト用テクスチャの読み込み
-    spriteCommon->LoadTexture(100,L"Resources/White1x1.png");
-    int PFnum = 100;
+   /* spriteCommon->LoadTexture(100,L"Resources/White1x1.png");
+    int PFnum = 100;*/
     //ポストエフェクトの初期化
-    PostEffect* postEffect = PostEffect::Create(spriteCommon, PFnum, { 0,0 }, false, false);
+    //PostEffect* postEffect = PostEffect::Create(spriteCommon, PFnum, { 0,0 }, false, false);
     //postEffect->SetSize({ (float)500.0f,500.0f });
     //postEffect->TransferVertexBuffer();
+
+    spriteCommon->LoadTexture(3, L"Resources/tuto.png");
+    //スプライトの生成
+    Sprite* tuto = Sprite::Create(spriteCommon, 3);
+    tuto->SetPosition({ 0,0,0 });
+    tuto->SetRotation({ (float)(rand() % 360) });
+    //tuto->SetSize({ (float)(rand() % 400), (float)(rand() % 100) });
+    tuto->TransferVertexBuffer();
 
     //FBXローダーの初期化
     FbxLoader::GetInstance()->Initialize(dxCommon->GetDevice());
@@ -103,7 +114,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         input->Update();
         // コマンドリストの取得
         ID3D12GraphicsCommandList* cmdList = dxCommon->GetCommandList();
-
+        
         gameScene->Update();
 
         // DirectX毎フレーム処理　ここまで
@@ -147,7 +158,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
        //FbxLoader::GetInstance()->Finalize();
 
-        delete postEffect;
+        //delete postEffect;
 
         winApp->Finalize();
         delete winApp;

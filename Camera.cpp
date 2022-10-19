@@ -282,6 +282,12 @@ void Camera::CurrentUpdate()
 	if (target.y <= 5)target.y = 5;//’‹“_‚ª0ˆÈ‰º‚É‚È‚è‚»‚¤‚¾‚Á‚½‚ç
 
 	if (target.y >= 5)target.y = 5;//’‹“_‚ª5ˆÈã‚É‚È‚è‚»‚¤‚¾‚Á‚½‚ç
+
+	if (eye.y <= 3)
+	{
+		eye.y = 5;
+		target.y = eye.y+distance;//’‹“_‚ª0ˆÈ‰º‚É‚È‚è‚»‚¤‚¾‚Á‚½‚ç
+	}
 	
 	
 

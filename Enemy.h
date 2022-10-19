@@ -12,13 +12,23 @@ public://メンバ関数
 
 	void EnemyUpdate();
 
+	void Enemycol(XMFLOAT3 pos,XMVECTOR vel);
+
 	//衝突時コールバック関数
 	void OnCollision(const CollisionInfo& info)override;
+
+	void EnemyDeleate();
+
+	void colReset();
 
 private:
 
 	float Div = 10;
 	XMVECTOR DivVel = { 0.1f,0.1f,0.1f };
+
+	int col = 0;
+
+	float G = -0.1;//重力加速度
 
 
 

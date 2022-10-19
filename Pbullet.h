@@ -16,7 +16,7 @@ public:
 	
 	///Getter
 	// À•W‚Ìæ“¾
-	const XMFLOAT3& GetPos(){ return position; }
+	//const XMFLOAT3& GetPos(){ return position; }
 	////‰ñ“]‚Ìæ“¾
 	//const XMFLOAT3& GetRoatation() { return rotation; }
 	//
