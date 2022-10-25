@@ -50,6 +50,10 @@ void Input::Update()
     //前回のマウス入力を保存
     oldmouse = mouse;
 
+    SetCursorPos(990, 540);
+
+    ShowCursor(FALSE);
+
     result = devmouse->GetDeviceState(sizeof(mouse), &mouse);
 }
 

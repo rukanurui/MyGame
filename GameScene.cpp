@@ -17,20 +17,20 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     this->input = input;
     this->audio = audio;
     this->spriteCommon = spritecommon;
-    this->windows = windows;
+    this->Windows = windows;
 
 
 
     //カメラ生成
-    camera = new Camera(this->input,this->windows);
+    camera = new Camera(this->input,this->Windows);
     camera->Initialize(WindowsApp::window_width, WindowsApp::window_height,this->input);
 
 
 #pragma region 描画初期化処理
 
 
-    spriteCommon = new SpriteCommon();
-    spriteCommon->Initialize(dxCommon->GetDevice(), dxCommon->GetCommandList(), windows->window_width, windows->window_height);
+    //spriteCommon = new SpriteCommon();
+    //spriteCommon->Initialize(dxCommon->GetDevice(), dxCommon->GetCommandList(), Windows->window_width, Windows->window_height);
 
     debugText = new DebugText();
     // デバッグテキスト用のテクスチャ番号を指定
@@ -44,20 +44,30 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     spriteCommon->LoadTexture(0, L"Resources/texture.png");
     spriteCommon->LoadTexture(1, L"Resources/house.png");
     spriteCommon->LoadTexture(3, L"Resources/tuto.png");
+    spriteCommon->LoadTexture(4, L"Resources/1432.png");
 
     
     //スプライトの生成
-    Sprite* tuto = Sprite::Create(spriteCommon, 3);
-    tuto->SetPosition({ 0,0,0 });
-    tuto->SetRotation({ (float)(rand() % 360) });
+    //Sprite* tuto = Sprite::Create(spriteCommon, 3);
+    //tuto->SetPosition({ 0,0,0 });
+    //tuto->SetRotation({ (float)(rand() % 360) });
     //tuto->SetSize({ (float)(rand() % 400), (float)(rand() % 100) });
-    tuto->TransferVertexBuffer();
+    //tuto->TransferVertexBuffer();
 
-    Sprite* tex = Sprite::Create(spriteCommon, 1);
-    tex->SetPosition({ 100,100,0 });
-    tex->SetRotation({ (float)(rand() % 360) });
+    //Sprite* tex = Sprite::Create(spriteCommon, 1);
+    //tex->SetPosition({ 100,100,0 });
+    //tex->SetRotation({ (float)(rand() % 360) });
     //tuto->SetSize({ (float)(rand() % 400), (float)(rand() % 100) });
-    tex->TransferVertexBuffer();
+    //tex->TransferVertexBuffer();
+
+    //Sprite* crosshair = Sprite::Create(spriteCommon, 4);
+    //crosshair->Create(spriteCommon, 4);
+    //crosshair->SetPosition({Windows->window_width/2,Windows->window_height/2,0 });
+    ///*crosshair->SetRotation({ (float)(rand() % 360) });*/
+    //tuto->SetSize({ (float)(rand() % 400), (float)(rand() % 100) });
+    //crosshair->TransferVertexBuffer();
+
+
 
 
     collisionManager = CollisionManager::GetInstance();
@@ -205,6 +215,8 @@ void GameScene::Update()
     //スプライト更新
     //tex->Update();
     //tuto->Update();
+    //crosshair->Update();
+    
     
     //FBX更新
 
@@ -319,6 +331,7 @@ void GameScene::Update()
         resetflag = 0;
     }
 
+    
     //debugText->Print("Hello,DirectX!!", 200, 100);
 
     //sprintf_s(pla, "WASD : move");
@@ -333,11 +346,12 @@ void GameScene::Draw()
     ID3D12GraphicsCommandList* cmdList = dxCommon->GetCommandList();
     //obj描画前処理
     Object3d::PreDraw(dxCommon->GetCommandList());
-    // スプライト描画前処理
-    spriteCommon->PreDraw();
+    //// スプライト描画前処理
+    //spriteCommon->PreDraw();
 
-    //obj、スプライトの描画
-    //tuto->Draw();
+    ////obj、スプライトの描画
+    ////tuto->Draw();
+    //crosshair->Draw();
     //objの描画後処理
     Object3d::PostDraw();
 

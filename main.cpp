@@ -65,6 +65,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     spriteCommon = new SpriteCommon();
     spriteCommon->Initialize(dxCommon->GetDevice(),dxCommon->GetCommandList(),winApp->window_width,winApp->window_height);
 
+    spriteCommon->LoadTexture(4, L"Resources/1432.png");
+
+    Sprite* crosshair = Sprite::Create(spriteCommon, 4);
+    //crosshair->Create(spriteCommon, 4);
+    crosshair->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    /*crosshair->SetRotation({ (float)(rand() % 360) });*/
+    //tuto->SetSize({ (float)(rand() % 400), (float)(rand() % 100) });
+    crosshair->TransferVertexBuffer();
 
 
     // DirectX初期化処理　ここまで
@@ -80,20 +88,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     //postEffect->SetSize({ (float)500.0f,500.0f });
     //postEffect->TransferVertexBuffer();
 
-    spriteCommon->LoadTexture(3, L"Resources/tuto.png");
-    //スプライトの生成
-    Sprite* tuto = Sprite::Create(spriteCommon, 3);
-    tuto->SetPosition({ 0,0,0 });
-    tuto->SetRotation({ (float)(rand() % 360) });
-    //tuto->SetSize({ (float)(rand() % 400), (float)(rand() % 100) });
-    tuto->TransferVertexBuffer();
-
     //FBXローダーの初期化
     FbxLoader::GetInstance()->Initialize(dxCommon->GetDevice());
   
     // ゲームシーンの初期化
     gameScene = new GameScene();
     gameScene->Initialize(dxCommon, input, audio,spriteCommon,winApp);
+
+    char pla[64];
     
 #pragma endregion 描画初期化処理
 
@@ -114,6 +116,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         input->Update();
         // コマンドリストの取得
         ID3D12GraphicsCommandList* cmdList = dxCommon->GetCommandList();
+        crosshair->Update();
         
         gameScene->Update();
 
@@ -131,9 +134,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         //描画前処理
         dxCommon->PreDraw();
 
+
         // ４．描画コマンドここから
         
+        // スプライト描画前処理
+        
+
+        //obj、スプライトの描画
+        //tuto->Draw();
+       
         gameScene->Draw();
+
+        spriteCommon->PreDraw();
+
+        crosshair->Draw();
 
         //ポストエフェクトの描画
         //postEffect->Draw(dxCommon->GetCommandList());

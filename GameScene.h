@@ -53,7 +53,7 @@ public://ƒƒ“ƒoŠÖ”
 	void Finalize();
 
 private://ƒƒ“ƒo•Ï”
-	WindowsApp * windows = nullptr;
+	WindowsApp * Windows = nullptr;
 	//pad* Pad = nullptr;
 	Input* input = nullptr;
 	DXCommon* dxCommon = nullptr;
@@ -68,6 +68,7 @@ private://ƒƒ“ƒo•Ï”
 	SpriteCommon* spriteCommon = nullptr;
 	Sprite* tuto = nullptr;
 	Sprite* tex = nullptr;
+	Sprite* crosshair = nullptr;
 	FbxModel* model1 = nullptr;
 	FbxModel* model2 = nullptr;
 	FbxModel* modelfloor = nullptr;

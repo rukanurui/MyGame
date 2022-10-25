@@ -38,6 +38,8 @@ public:
 
 public:
 
+    
+
     void Initialize(SpriteCommon* spriteCommon, UINT texNumber,XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY);
 
     //頂点バッファの転送
@@ -48,7 +50,7 @@ public:
     void Update();
 
     //コンストラクタ
-
+    //Sprite(SpriteCommon* spriteCommon);
     void SetPosition(const DirectX::XMFLOAT3& position) { positiona = position; }
     void SetRotation(float rotation) { rotationa = rotation; }
     void SetSize(const DirectX::XMFLOAT2& size) { sizea = size; }

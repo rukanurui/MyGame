@@ -5,7 +5,7 @@ XMMATRIX Camera::matView = {};
 XMMATRIX Camera::matProjection = {};
 XMMATRIX Camera::matViewProjection = {};
 XMMATRIX Camera::matWorld = {};
-XMFLOAT3 Camera::eye = { 0, 5, 0.0f };
+XMFLOAT3 Camera::eye = { 0, 4, 0.0f };
 XMFLOAT3 Camera::target = { 0, 5, 0 };
 XMFLOAT3 Camera::up = { 0, 1, 0 };
 XMFLOAT3 Camera::rotation = { 0, 0, 0 };
@@ -202,8 +202,16 @@ void Camera::CurrentUpdate()
 		float dy = mouseMove.lX * scaleX;
 		float dx = mouseMove.lY * scaleY;
 
-		angleX = -dy * XM_PI;
-		angleY = -dx * XM_PI;
+		angleX = -dx * XM_PI;
+		angleY = -dy * XM_PI;
+		angleculentX += angleX;
+		angleculentY += angleY;
+
+		if (angleculentY >= 90)
+		{
+			angleculentX = 90;
+		}
+
 		viewDirtyFlag = true;
 	}
 
@@ -214,6 +222,14 @@ void Camera::CurrentUpdate()
 
 		angleX = -dx * XM_PI;
 		angleY = -dy * XM_PI;
+		angleculentX += angleX;
+		angleculentY += angleY;
+
+		if (angleculentY>=90)
+		{
+			angleculentX = 90;
+		}
+
 		viewDirtyFlag = true;
 	}
 
@@ -285,7 +301,7 @@ void Camera::CurrentUpdate()
 
 	if (eye.y <= 3)
 	{
-		eye.y = 5;
+		eye.y = 4;
 		target.y = eye.y+distance;//注視点が0以下になりそうだったら
 	}
 	
@@ -297,6 +313,10 @@ void Camera::CurrentUpdate()
 		XMMATRIX matRotNew = XMMatrixIdentity();
 		matRotNew *= XMMatrixRotationX(-angleX);
 		matRotNew *= XMMatrixRotationY(-angleY);
+
+		//ここにangle処理
+
+
 		// 累積の回転行列を合成
 		// ※回転行列を累積していくと、誤差でスケーリングがかかる危険がある為
 		// クォータニオンを使用する方が望ましい
@@ -309,6 +329,8 @@ void Camera::CurrentUpdate()
 		{
 			distance = 10;
 		}
+
+
 		XMVECTOR vTargetEye = { 0.0f, 0.0f, -distance, 1.0f };
 		XMVECTOR vUp = { 0.0f, 1.0f, 0.0f, 0.0f };
 		// ベクトルを回転

@@ -113,6 +113,9 @@ protected://ƒƒ“ƒo•Ï”
 	float scaleX = 0.5f;
 	float scaleY = 0.5f;
 
+	float angleculentX = 0.0f;
+	float angleculentY = 0.0f;
+
 	float CurretmouseX = 0;
 	float CurretmouseY = 0;
 
