@@ -120,6 +120,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         
         gameScene->Update();
 
+        if (input->PushKey(DIK_ESCAPE))
+        {
+            break;
+        }
+
         // DirectX毎フレーム処理　ここまで
 #pragma endregion DirectX毎フレーム処理
 

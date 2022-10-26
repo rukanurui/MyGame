@@ -172,6 +172,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pad.cpp" />
     <ClCompile Include="Pbullet.cpp" />
+    <ClCompile Include="PlaneCollider.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="RayCastHit.cpp" />
     <ClCompile Include="SphereCollider.cpp" />
@@ -278,6 +279,7 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="pad.h" />
     <ClInclude Include="Pbullet.h" />
+    <ClInclude Include="PlaneCollider.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RayCastHit.h" />
     <ClInclude Include="SphereCollider.h" />

@@ -28,6 +28,7 @@
 #include"Enemy.h"
 
 
+
 class CollisionManager;
 
 class GameScene
@@ -62,30 +63,40 @@ private://メンバ変数
 	Camera* camera = nullptr;
 	//衝突マネージャー
 	CollisionManager* collisionManager = nullptr;
+	SpriteCommon* spriteCommon = nullptr;
+	
 
 	char pla[64];
 
-	SpriteCommon* spriteCommon = nullptr;
+	//スプライト
 	Sprite* tuto = nullptr;
 	Sprite* tex = nullptr;
 	Sprite* crosshair = nullptr;
+
+	//3dモデル(地形など)
 	FbxModel* model1 = nullptr;
 	FbxModel* model2 = nullptr;
 	FbxModel* modelfloor = nullptr;
 	FbxModel* modelwall = nullptr;
 	FbxModel* modelballet = nullptr;
-	FBXobj3d* Otin = nullptr;
-	Enemy* cube = nullptr;
-	Enemy* DivCube[10];
-	Enemy* PartCube[100];
 	FBXobj3d* floor = nullptr;
 	FBXobj3d* floor2 = nullptr;
 	FBXobj3d* wall = nullptr;
 	FBXobj3d* wall2 = nullptr;
 	FBXobj3d* wall3 = nullptr;
 
-	Pbullet* ballet = nullptr;
+	//3dモデル(敵)
+	FBXobj3d* Otin = nullptr;
+	Enemy* cube = nullptr;
+	Enemy* Stage1[5];
+	Enemy* PartCube1[100];
+	Enemy* PartCube2[100];
+	Enemy* PartCube3[100];
+	Enemy* PartCube4[100];
+	Enemy* PartCube5[100];
 	
+	//自機関連
+	Pbullet* ballet = nullptr;
 	Player* player = nullptr;
 
 	float CurretmouseX = 0;

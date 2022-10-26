@@ -5,6 +5,7 @@
 #include <sstream>
 #include <iomanip>
 #include"CollisionManager.h"
+#include"Collision.h"
 
 
 using namespace DirectX;
@@ -92,50 +93,6 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     Otin->SetPosition({ 0.0f,0.0f,0.0f });
     Otin->SetModel(model1);
 
-    cube = new Enemy;
-    cube->Initialize();
-    cube->SetPosition({ 5.0f,5.0f,20.0f });
-    cube->SetScale({ 1.0f,1.0f,1.0f });
-    cube->SetModel(model2);
-    cube->SetCollider(new SphereCollider(XMVECTOR{ 0,5.0f,0,0 },5.0f));
-
-    //爆散する敵
-    for (int i = 0; i < 8; i++)
-    {
-        DivCube[i] = nullptr;
-        DivCube[i] = new Enemy;
-        DivCube[i]->Initialize();
-        if (i<=1)
-        {
-            DivCube[i]->SetPosition({ 100.0f + 1.0f * i,5.0f,20.0f});
-        }
-        if (i >1&&i<=3)
-        {
-            DivCube[i]->SetPosition({ 100.0f + 1.0f * i-2.0f,5.0f-1.0f,20.0f });
-        }
-        if (i > 3 && i <= 5)
-        {
-            DivCube[i]->SetPosition({ 100.0f + 1.0f * i-4,5.0f,21.0f });
-        }
-        if (i > 5 && i <= 8)
-        {
-            DivCube[i]->SetPosition({ 100.0f + 1.0f * i-6 ,5.0f-1.0f,21.0f });
-        }
-        DivCube[i]->SetScale({ 0.5f,0.5f,0.5f });
-        DivCube[i]->SetModel(model2);
-    }
-
-    for (int i = 0; i < 100; i++)
-    {
-        PartCube[i] = nullptr;
-        PartCube[i] = new Enemy;
-        PartCube[i]->Initialize();
-        PartCube[i]->SetPosition({ 100.0f + 1.0f * i,5.0f,20.0f });
-        PartCube[i]->SetScale({ 0.5f,0.5f,0.5f });
-        PartCube[i]->SetModel(model2);
-    }
-
-
     floor = new FBXobj3d;
     floor->Initialize();
     floor->SetPosition({ -20.0f,-1.0f,-50.0f });
@@ -169,19 +126,52 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     wall3->SetModel(modelwall);
 
 
+    //プレイヤー関連処理
     ballet = new Pbullet;
     ballet->Initialize();
     ballet->SetPosition({ 500.0f,5.0f,0.0f });
     ballet->SetScale({ 1.0f,1.0f,1.0f });
     ballet->SetModel(modelballet);
-    //ballet->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 3.0f));
+    ballet->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
     
-    
-
     player = new Player(ballet);
     player->Initialize(WindowsApp::window_width, WindowsApp::window_height, this->input);
     player->PlayerInitialize(this->input);
     
+
+    //敵関連処理
+    cube = new Enemy;
+    cube->Initialize();
+    cube->SetPosition({ 5.0f,5.0f,20.0f });
+    cube->SetScale({ 1.0f,1.0f,1.0f });
+    cube->SetModel(model2);
+    cube->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+
+    for (int i = 0; i < 5; i++)
+    {
+        Stage1[i] = nullptr;
+        Stage1[i] = new Enemy;
+        Stage1[i]->Initialize();
+        Stage1[i]->SetScale({1.0f,1.0f,1.0f});
+        Stage1[i]->SetModel(model2);
+    }
+
+    Stage1[0]->SetPosition({ 15.0f,5.0f,10.0f });
+    Stage1[1]->SetPosition({ 15.0f,10.0f,10.0f });
+    Stage1[2]->SetPosition({ 10.0f,5.0f,20.0f });
+    Stage1[3]->SetPosition({ 35.0f,5.0f,5.0f });
+    Stage1[4]->SetPosition({ 25.0f,10.0f,30.0f });
+
+    //爆散する敵
+    for (int i = 0; i < 100; i++)
+    {
+        PartCube1[i] = nullptr;
+        PartCube1[i] = new Enemy;
+        PartCube1[i]->Initialize();
+        PartCube1[i]->SetPosition({ 100.0f + 1.0f * i,5.0f,20.0f });
+        PartCube1[i]->SetScale({ 0.5f,0.5f,0.5f });
+        PartCube1[i]->SetModel(model2);
+    }
 
     int counter = 0; // アニメーションの経過時間カウンター
 
@@ -211,7 +201,6 @@ void GameScene::Update()
     player->SetmouseX(CurretmouseX);
     player->SetmouseY(CurretmouseY);
 
-
     //スプライト更新
     //tex->Update();
     //tuto->Update();
@@ -220,31 +209,29 @@ void GameScene::Update()
     
     //FBX更新
 
-    //cube->SetPosition({movex,movey,movez});
-
-
     Otin->Update();
-    cube->Update();
-    for (int i = 0; i < 8; i++)
-    {
-        DivCube[i]->Update();
-    }
-
-    for (int i = 0; i < 100; i++)
-    {
-        PartCube[i]->Update();
-    }
+    
     floor->Update();
     floor2->Update();
     wall->Update();
     wall2->Update();
     wall3->Update();
+
+    cube->Update();
+    for (int i = 0; i < 5; i++)
+    {
+        Stage1[i]->Update();
+    }
+    for (int i = 0; i < 100; i++)
+    {
+        PartCube1[i]->Update();
+    }
+
+
     ballet->Update();
 
     camera->CurrentUpdate();
     camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-   //player->CurrentUpdate();
-    //player->Update(WindowsApp::window_width, WindowsApp::window_height);
 
     //ゲーム本編
     
@@ -258,12 +245,12 @@ void GameScene::Update()
         }
     }*/
 
-    ////すべての衝突をチェック
-    collisionManager->CheckAllCollisions();
+    
+
     XMFLOAT3 bulpos = ballet->GetPos();
     XMFLOAT3 epos = cube->GetPos();
 
-    //玉と敵の当たり判定
+    //弾と敵の当たり判定
     XMVECTOR position_sub = XMVectorSet(
         bulpos.x - epos.x,
         bulpos.y - epos.y,
@@ -300,39 +287,33 @@ void GameScene::Update()
                 eVel[i].m128_f32[2] *= -1;
             }
 
-            PartCube[i]->Enemycol(cube->GetPos(),eVel[i]);
+            PartCube1[i]->Enemycol(cube->GetPos(),eVel[i]);
+
         }
-
-        cube->EnemyDeleate();   
     }
-
-    /*for (int i = 0; i < 8; i++)
-    {
-        DivCube[i]->EnemyUpdate();
-    }*/
 
     for (int i = 0; i < 100; i++)
     {
-        PartCube[i]->EnemyUpdate();
+        PartCube1[i]->EnemyUpdate();
     }
+
+    //弾と床の当たり判定
+    //Collision::CheckSpere2Plane();
+
+    //すべての衝突をチェック
+    collisionManager->CheckAllCollisions();
 
     if (resetflag==1)
     {
         for (int i = 0; i < 100; i++)
         {
-            /*camera->SetEye({ 0,5,0 });
-            camera->SetTarget({ 0,5,0 });
-            camera->SetUp({ 0,1,0 });
-            camera->SetRoatation({ 0,0,0 });*/
-            PartCube[i]->SetPosition({ 100.0f + 1.0f * i,5.0f,20.0f });
-            PartCube[i]->colReset();
+            PartCube1[i]->SetPosition({ 100.0f + 1.0f * i,5.0f,20.0f });
+            PartCube1[i]->colReset();
         }
         cube->SetPosition({ 5.0f,5.0f,20.0f });
         resetflag = 0;
     }
 
-    
-    //debugText->Print("Hello,DirectX!!", 200, 100);
 
     //sprintf_s(pla, "WASD : move");
 
@@ -357,21 +338,25 @@ void GameScene::Draw()
 
     //FBX描画
     Otin->Draw(cmdList);//otintin
-    cube->Draw(cmdList);//cube
-    /*for (int i = 0; i < 8; i++)
-    {
-        DivCube[i]->Draw(cmdList);
-    }*/
-
-    for (int i = 0; i < 100; i++)
-    {
-        PartCube[i]->Draw(cmdList);
-    }
+   
+    //ステージオブジェクト
     floor->Draw(cmdList);
-   // floor2->Draw(cmdList);
     wall->Draw(cmdList);
     wall2->Draw(cmdList);
     wall3->Draw(cmdList);
+
+    //敵関連
+    cube->Draw(cmdList);//cube
+    for (int i = 0; i < 5; i++)
+    {
+        Stage1[i]->Draw(cmdList);
+    }
+
+    for (int i = 0; i < 100; i++)
+    {
+        PartCube1[i]->Draw(cmdList);
+    }
+
     ballet->Draw(cmdList);
 
     // デバッグテキスト描画

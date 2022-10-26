@@ -29,6 +29,9 @@ public://メンバ関数
 	//レイとすべてのコライダーとの衝突判定
 	bool RayCast(const Ray& ray, RayCastHit* hitinfo = nullptr, float MaxDistance = D3D12_FLOAT32_MAX);
 
+	//平面と球のコライダーとの衝突判定
+
+
 private:
 	CollisionManager() = default;
 	CollisionManager(const CollisionManager&) = delete;

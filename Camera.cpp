@@ -6,7 +6,7 @@ XMMATRIX Camera::matProjection = {};
 XMMATRIX Camera::matViewProjection = {};
 XMMATRIX Camera::matWorld = {};
 XMFLOAT3 Camera::eye = { 0, 4, 0.0f };
-XMFLOAT3 Camera::target = { 0, 5, 0 };
+XMFLOAT3 Camera::target = { 0, 4, 0 };
 XMFLOAT3 Camera::up = { 0, 1, 0 };
 XMFLOAT3 Camera::rotation = { 0, 0, 0 };
 
@@ -197,7 +197,7 @@ void Camera::CurrentUpdate()
 	// マウスの入力を取得
 	Input::MouseMove mouseMove = input->GetMouseMove();
 
-	if (mouseMove.lX==CurretmouseX)
+	if (mouseMove.lX==CurretmouseX || mouseMove.lY == CurretmouseY)
 	{
 		float dy = mouseMove.lX * scaleX;
 		float dx = mouseMove.lY * scaleY;
@@ -207,31 +207,10 @@ void Camera::CurrentUpdate()
 		angleculentX += angleX;
 		angleculentY += angleY;
 
-		if (angleculentY >= 90)
-		{
-			angleculentX = 90;
-		}
 
 		viewDirtyFlag = true;
 	}
 
-	if (mouseMove.lY == CurretmouseY)
-	{
-		float dy = mouseMove.lX * scaleX;
-		float dx = mouseMove.lY * scaleY;
-
-		angleX = -dx * XM_PI;
-		angleY = -dy * XM_PI;
-		angleculentX += angleX;
-		angleculentY += angleY;
-
-		if (angleculentY>=90)
-		{
-			angleculentX = 90;
-		}
-
-		viewDirtyFlag = true;
-	}
 
 	//padの入力
 	/*Pad->Update();
@@ -299,11 +278,11 @@ void Camera::CurrentUpdate()
 
 	if (target.y >= 5)target.y = 5;//注視点が5以上になりそうだったら
 
-	if (eye.y <= 3)
-	{
-		eye.y = 4;
-		target.y = eye.y+distance;//注視点が0以下になりそうだったら
-	}
+	//if (eye.y <= 3)
+	//{
+	//	eye.y = 4;
+	//	target.y = eye.y+distance;//注視点が0以下になりそうだったら
+	//}
 	
 	
 
@@ -311,10 +290,25 @@ void Camera::CurrentUpdate()
 	{
 		// 追加回転分の回転行列を生成
 		XMMATRIX matRotNew = XMMatrixIdentity();
+		//ここにangle処理
+		//上に一定以上向いたら
+		if (angleculentX >= 1.2f)
+		{
+			angleculentX -= 0.1f;
+			angleX -= 0.1f;
+
+		}
+
+		//下に一定以上向いたら
+		if (angleculentX <= -1.2f)
+		{
+			angleculentX += 0.1f;
+			angleX += 0.1f;
+		}
+
+
 		matRotNew *= XMMatrixRotationX(-angleX);
 		matRotNew *= XMMatrixRotationY(-angleY);
-
-		//ここにangle処理
 
 
 		// 累積の回転行列を合成
@@ -324,10 +318,10 @@ void Camera::CurrentUpdate()
 
 		// 注視点から視点へのベクトルと、上方向ベクトル
 
-		if (target.y >= 10 && eye.y <= 9) distance = 7;
+		if (target.y >= 10 && eye.y <= 9) distance = 5;
 		else
 		{
-			distance = 10;
+			distance = 5;
 		}
 
 

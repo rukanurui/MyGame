@@ -134,10 +134,7 @@ void Enemy::EnemyUpdate()
 			constBufferTransform->Unmap(0, nullptr);
 		}
 	}
-
-
 	
-
 	////“–‚½‚è”»’èXV
 	//if (collider)
 	//{

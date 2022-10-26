@@ -16,7 +16,7 @@ void Player::PlayerInitialize(Input* Input)
 void Player::PlayerUpdate()
 {
 
-	if (input->PushKey(DIK_SPACE))
+	if (input->TriggerKey(DIK_SPACE))
 	{
 		//’e‚Ì‘¬“x
 		const float bulspeed = 0.1f;

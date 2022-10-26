@@ -77,7 +77,7 @@ bool Input::PushKey(BYTE keyNumber)
 bool Input::TriggerKey(BYTE keyNumber)
 {
     //‘O‰ñ‰Ÿ‚µ‚Ä‚È‚­A¡‰ñ‰Ÿ‚µ‚Ä‚¢‚é
-    if (oldkey[keyNumber]==0&&key[keyNumber]==1) {
+    if (!oldkey[keyNumber] && key[keyNumber]) {
         return true;
     }
     //‚»‚¤‚Å‚È‚¯‚ê‚Îfalse
@@ -95,6 +95,10 @@ bool Input::PushclickLeft()
 
 bool Input::TriggerclickLeft(BYTE mouseNumber)
 {
+    if (!oldmouse.rgbButtons[0] && mouse.rgbButtons[0])
+    {
+        return true;
+    }
     return false;
 }
 
