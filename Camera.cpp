@@ -199,8 +199,8 @@ void Camera::CurrentUpdate()
 
 	if (mouseMove.lX==CurretmouseX || mouseMove.lY == CurretmouseY)
 	{
-		float dy = mouseMove.lX * scaleX;
-		float dx = mouseMove.lY * scaleY;
+		float dy = (mouseMove.lX * scaleX)/2;
+		float dx = (mouseMove.lY * scaleY)/2;
 
 		angleX = -dx * XM_PI;
 		angleY = -dy * XM_PI;
@@ -292,18 +292,18 @@ void Camera::CurrentUpdate()
 		XMMATRIX matRotNew = XMMatrixIdentity();
 		//‚±‚±‚Éangleˆ—
 		//ã‚Éˆê’èˆÈãŒü‚¢‚½‚ç
-		if (angleculentX >= 1.2f)
+		if (angleculentX >= 1.0f)
 		{
-			angleculentX -= 0.1f;
-			angleX -= 0.1f;
+			angleculentX -= 0.05f;
+			angleX -= 0.05f;
 
 		}
 
 		//‰º‚Éˆê’èˆÈãŒü‚¢‚½‚ç
 		if (angleculentX <= -1.2f)
 		{
-			angleculentX += 0.1f;
-			angleX += 0.1f;
+			angleculentX += 0.05f;
+			angleX += 0.05f;
 		}
 
 
@@ -334,7 +334,7 @@ void Camera::CurrentUpdate()
 		const XMFLOAT3& Target = GetTarget();
 		
 		SetEye({ Target.x + vTargetEye.m128_f32[0], Target.y + vTargetEye.m128_f32[1], Target.z + vTargetEye.m128_f32[2] });
-		SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });
+		//SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });
 
 	}
 

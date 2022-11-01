@@ -27,12 +27,15 @@ public:
 	//衝突時コールバック関数
 	void OnCollision(const CollisionInfo& info)override;
 
+
 private:
 	
 	//速度
 	XMVECTOR Vel={ 0,0,0 };
 	//bool colisionflag;
 	//bool areaflag;
+
+	int aliveflag = 0;
 
 };
 

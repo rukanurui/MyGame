@@ -88,11 +88,8 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     modelwall = FbxLoader::GetInstance()->LoadModelFromFile("wall");
     modelballet = FbxLoader::GetInstance()->LoadModelFromFile("bullet");
 
-    Otin = new FBXobj3d;
-    Otin->Initialize();
-    Otin->SetPosition({ 0.0f,0.0f,0.0f });
-    Otin->SetModel(model1);
-
+    //地形3dオブジェクト
+    //床
     floor = new FBXobj3d;
     floor->Initialize();
     floor->SetPosition({ -20.0f,-1.0f,-50.0f });
@@ -104,27 +101,30 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     floor2->SetPosition({ -11.3f,0.5f,0.2f });
     floor2->SetModel(modelfloor);
          
-    wall = new FBXobj3d;
+    //壁
+    wall = new Wall;
     wall->Initialize();
     wall->SetPosition({ -30.0f,50.0f,100.0f });
     wall->SetScale({ 200.0f,10.0f,0.5f });
     wall->SetRotation({ 0.0f,0.0f,0.0f });
     wall->SetModel(modelwall);
+    wall->SetCollider(new BoxCollider(XMVECTOR{ 0,0,0,0 }, 20.0f));
 
-    wall2 = new FBXobj3d;
+    wall2 = new Wall;
     wall2->Initialize();
     wall2->SetPosition({ -30.0f,50.0f,100.0f });
     wall2->SetScale({ 20.0f,10.0f,1.0f });
     wall2->SetRotation({ 0.0f,90.0f,0.0f });
     wall2->SetModel(modelwall);
+    wall2->SetCollider(new BoxCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
 
-    wall3 = new FBXobj3d;
+    wall3 = new Wall;
     wall3->Initialize();
     wall3->SetPosition({ 75.0f,50.0f,100.0f });
     wall3->SetScale({ 20.0f,10.0f,1.0f });
     wall3->SetRotation({ 0.0f,90.0f,0.0f });
     wall3->SetModel(modelwall);
-
+    wall3->SetCollider(new BoxCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
 
     //プレイヤー関連処理
     ballet = new Pbullet;
@@ -145,7 +145,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     cube->SetPosition({ 5.0f,5.0f,20.0f });
     cube->SetScale({ 1.0f,1.0f,1.0f });
     cube->SetModel(model2);
-    cube->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+    cube->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 },1.0f));
 
     for (int i = 0; i < 5; i++)
     {
@@ -162,6 +162,11 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     Stage1[3]->SetPosition({ 35.0f,5.0f,5.0f });
     Stage1[4]->SetPosition({ 25.0f,10.0f,30.0f });
 
+    for (int i = 0; i < 5; i++)
+    {
+        Stage1[i]->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+    }
+
     //爆散する敵
     for (int i = 0; i < 100; i++)
     {
@@ -174,9 +179,6 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     }
 
     int counter = 0; // アニメーションの経過時間カウンター
-
-    Otin->PlayAnimation();
-    //cube->PlayAnimation();
 
 
 
@@ -209,15 +211,14 @@ void GameScene::Update()
     
     //FBX更新
 
-    Otin->Update();
     
     floor->Update();
     floor2->Update();
     wall->Update();
     wall2->Update();
     wall3->Update();
-
     cube->Update();
+
     for (int i = 0; i < 5; i++)
     {
         Stage1[i]->Update();
@@ -227,25 +228,18 @@ void GameScene::Update()
         PartCube1[i]->Update();
     }
 
-
-    ballet->Update();
-
     camera->CurrentUpdate();
     camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+
+    
 
     //ゲーム本編
     
     player->PlayerUpdate();
 
-    /*if(input->PushKey(DIK_E))
-    {
-        for (int i = 0; i < 8; i++)
-        {
-            DivCube[i]->EnemyUpdate();
-        }
-    }*/
-
+    //ballet->Update();
     
+    cube->EnemyUpdate();
 
     XMFLOAT3 bulpos = ballet->GetPos();
     XMFLOAT3 epos = cube->GetPos();
@@ -297,8 +291,7 @@ void GameScene::Update()
         PartCube1[i]->EnemyUpdate();
     }
 
-    //弾と床の当たり判定
-    //Collision::CheckSpere2Plane();
+
 
     //すべての衝突をチェック
     collisionManager->CheckAllCollisions();
@@ -337,7 +330,6 @@ void GameScene::Draw()
     Object3d::PostDraw();
 
     //FBX描画
-    Otin->Draw(cmdList);//otintin
    
     //ステージオブジェクト
     floor->Draw(cmdList);
@@ -382,7 +374,6 @@ void GameScene::Finalize()
     //}
     //sprites.clear();
 
-    delete Otin;
     delete model1;
     delete cube;
     delete model2;

@@ -37,6 +37,19 @@ void CollisionManager::CheckAllCollisions()
 				}
 			}
 
+			//‹…‚Æ’¼•û‘Ì
+			if (colA->GetShapeType() == COLLISIONSHAPE_SPHERE &&
+				colB->GetShapeType() == COLLISIONSHAPE_BOX)
+			{
+				Sphere* SphereA = dynamic_cast<Sphere*>(colA);
+				Box* BoxB = dynamic_cast<Box*>(colB);
+				DirectX::XMVECTOR inter;
+				if (Collision::CheckSphere2Box(*SphereA, *BoxB, &inter)) {
+					colA->OnCollision(CollisionInfo(colB->GetObject3d(), colB, inter));
+					colB->OnCollision(CollisionInfo(colA->GetObject3d(), colA, inter));
+				}
+			}
+
 		}
 	}
 }

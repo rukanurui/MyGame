@@ -134,12 +134,12 @@ void Enemy::EnemyUpdate()
 			constBufferTransform->Unmap(0, nullptr);
 		}
 	}
-	
-	////当たり判定更新
-	//if (collider)
-	//{
-	//	collider->Update();
-	//}
+
+	//当たり判定更新
+	if (collider)
+	{
+		collider->Update();
+	}
 }
 
 void Enemy::Enemycol(XMFLOAT3 pos,XMVECTOR vel)
@@ -237,18 +237,14 @@ void Enemy::OnCollision(const CollisionInfo& info)
 		constBufferTransform->Unmap(0, nullptr);
 	}
 
-	////当たり判定更新
-	//if (collider)
-	//{
-	//	collider->Update();
-	//}
+	//当たり判定更新
+	if (collider)
+	{
+		collider->Update();
+	}
 }
 
 
-void Enemy::EnemyDeleate()
-{
-	position.x = 100.0f;
-}
 
 void Enemy::colReset()
 {

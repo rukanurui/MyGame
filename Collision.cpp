@@ -40,6 +40,48 @@ bool Collision::CheckSphere2Sphere(const Sphere& sphere, const Sphere& sphere2, 
 	return false;
 }
 
+bool Collision::CheckSphere2Box(const Sphere& sphere, const Box& box, DirectX::XMVECTOR* inter)
+{
+	float sqDistance = 0.0f;
+	float pos;
+
+	//x²•ûŒü‚Ì‹——£‚Ì‚Qæ‚ğ‰ÁZ
+	pos = sphere.center.m128_f32[0];
+	if (pos < box.minpos.m128_f32[0])
+	{
+		sqDistance += (box.minpos.m128_f32[0] - pos) * (box.minpos.m128_f32[0] - pos);
+	}
+	else if (pos > box.maxpos.m128_f32[0])
+	{
+		sqDistance += (pos - box.maxpos.m128_f32[0]) * (pos - box.maxpos.m128_f32[0]);
+	}
+
+	//y²•ûŒü‚Ì‹——£‚Ì‚Qæ‚ğ‰ÁZ
+	pos = sphere.center.m128_f32[1];
+	if (pos < box.minpos.m128_f32[1])
+	{
+		sqDistance += (box.minpos.m128_f32[1] - pos) * (box.minpos.m128_f32[1] - pos);
+	}
+	else if (pos > box.maxpos.m128_f32[1])
+	{
+		sqDistance += (pos - box.maxpos.m128_f32[1]) * (pos - box.maxpos.m128_f32[1]);
+	}
+
+	//z²•ûŒü‚Ì‹——£‚Ì‚Qæ‚ğ‰ÁZ
+	pos = sphere.center.m128_f32[2];
+	if (pos < box.minpos.m128_f32[2])
+	{
+		sqDistance += (box.minpos.m128_f32[2] - pos) * (box.minpos.m128_f32[2] - pos);
+	}
+	else if (pos > box.maxpos.m128_f32[2])
+	{
+		sqDistance += (pos - box.maxpos.m128_f32[2]) * (pos - box.maxpos.m128_f32[2]);
+	}
+
+	return sqDistance < sphere.radius* sphere.radius;
+
+}
+
 bool Collision::CheckRay2Plane(const Ray& ray, const Plane& plane, float* distance, DirectX::XMVECTOR* inter)
 {
 	const float epsilon = 1.0e-5f;//Œë·‹zû—p‚Ì”÷¬‚È’l

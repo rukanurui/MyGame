@@ -345,9 +345,25 @@ void  FBXobj3d::PlayAnimation()
 void FBXobj3d::SetCollider(BaseCollider* collider)
 {
 	collider->SetObject(this);
-	this->collider;
+
+	this->collider =collider;
 	//コリジョンマネージャーに登録
 	CollisionManager::GetInstance()->ADDCollider(collider);
+
+	XMMATRIX matScale, matRot, matTrans;
+	// スケール、回転、平行移動行列の計算
+	matScale = XMMatrixScaling(scale.x, scale.y, scale.z);
+	matRot = XMMatrixIdentity();
+	matRot *= XMMatrixRotationZ(XMConvertToRadians(rotation.z));
+	matRot *= XMMatrixRotationX(XMConvertToRadians(rotation.x));
+	matRot *= XMMatrixRotationY(XMConvertToRadians(rotation.y));
+	matTrans = XMMatrixTranslation(position.x, position.y, position.z);
+
+	// ワールド行列の合成
+	matWorld = XMMatrixIdentity(); // 変形をリセット
+	matWorld *= matScale; // ワールド行列にスケーリングを反映
+	matWorld *= matRot; // ワールド行列に回転を反映
+	matWorld *= matTrans; // ワールド行列に平行移動を反映
 	//コライダーを更新しておく
 	collider->Update();
 }

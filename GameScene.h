@@ -26,6 +26,7 @@
 #include"Player.h"
 #include "Pbullet.h"
 #include"Enemy.h"
+#include"Wall.h"
 
 
 
@@ -81,12 +82,11 @@ private://ÉÅÉìÉoïœêî
 	FbxModel* modelballet = nullptr;
 	FBXobj3d* floor = nullptr;
 	FBXobj3d* floor2 = nullptr;
-	FBXobj3d* wall = nullptr;
-	FBXobj3d* wall2 = nullptr;
-	FBXobj3d* wall3 = nullptr;
+	Wall* wall = nullptr;
+	Wall* wall2 = nullptr;
+	Wall* wall3 = nullptr;
 
 	//3dÉÇÉfÉã(ìG)
-	FBXobj3d* Otin = nullptr;
 	Enemy* cube = nullptr;
 	Enemy* Stage1[5];
 	Enemy* PartCube1[100];

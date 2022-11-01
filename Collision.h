@@ -17,7 +17,11 @@ public:
 	/// <returns>交差しているか否か</returns>
 	static bool CheckSpere2Plane(const Sphere& sphere, const Plane& plane, DirectX::XMVECTOR* inter= nullptr);
 
+	//球と球
 	static bool CheckSphere2Sphere(const Sphere& sphere, const Sphere& sphere2, DirectX::XMVECTOR* inter = nullptr);
+
+	//球とAABB
+	static bool CheckSphere2Box(const Sphere& sphere, const Box& box, DirectX::XMVECTOR* inter = nullptr);
 
 	/// <summary>
 	/// 球と法線付き三角形の当たり判定

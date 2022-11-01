@@ -16,6 +16,20 @@ struct Sphere
 	float radius = 1.0f;
 };
 
+//直方体
+struct Box
+{
+	//中心座標
+	DirectX::XMVECTOR center = { 0,0,0,1 };
+	//1番小さい座標
+	DirectX::XMVECTOR minpos = { 0,0,0,1 };
+	//1番大きい座標
+	DirectX::XMVECTOR maxpos = { 0,0,0,1 };
+
+	//半径
+	float radius = 1.0f;
+};
+
 ///<summary>
 ///平面
 ///</summary>
