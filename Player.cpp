@@ -19,7 +19,7 @@ void Player::PlayerUpdate()
 	if (input->TriggerKey(DIK_SPACE))
 	{
 		//’e‚Ì‘¬“x
-		const float bulspeed = 0.1f;
+		const float bulspeed = 0.5f;
 		XMVECTOR Velocity{ 0,0,bulspeed };
 
 		Velocity={ target.x - eye.x, target.y - eye.y, target.z - eye.z };

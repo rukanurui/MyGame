@@ -204,7 +204,7 @@ void FbxLoader::ParseNodeRecursive(FbxModel* model, FbxNode* fbxNode, Node* pare
 
     //形式変換して代入
     node.rotation = { (float)rotation[0],(float)rotation[1], (float)rotation[2], 0.0f };
-    node.rotation = { (float)scaling[0],(float)scaling[1], (float)scaling[2], 0.0f };
+    node.scaling = { (float)scaling[0],(float)scaling[1], (float)scaling[2], 0.0f };
     node.translation = { (float)translation[0],(float)translation[1], (float)translation[2], 0.0f };
 
     //回転角をDegree(度)からラジアンに変換
@@ -219,6 +219,11 @@ void FbxLoader::ParseNodeRecursive(FbxModel* model, FbxNode* fbxNode, Node* pare
     matTranslation = XMMatrixTranslationFromVector(node.translation);
 
     //ローカル変形行列の計算
+
+
+
+
+
     node.transform = XMMatrixIdentity();
     node.transform *= matScaling;
     node.transform *= matRotation;

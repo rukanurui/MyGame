@@ -24,8 +24,9 @@ void CollisionManager::CheckAllCollisions()
 		{
 			BaseCollider* colA = *itA;
 			BaseCollider* colB = *itB;
+
 			//ともに球
-			if (colA->GetShapeType()==COLLISIONSHAPE_SPHERE&&
+			 if (colA->GetShapeType()==COLLISIONSHAPE_SPHERE&&
 				colB->GetShapeType()==COLLISIONSHAPE_SPHERE)
 			{
 				Sphere* SphereA = dynamic_cast<Sphere*>(colA);
@@ -37,6 +38,53 @@ void CollisionManager::CheckAllCollisions()
 				}
 			}
 
+			 //球と直方体
+			 if (colA->GetShapeType() == COLLISIONSHAPE_SPHERE &&
+				 colB->GetShapeType() == COLLISIONSHAPE_BOX)
+			 {
+
+				 Sphere* SphereA = dynamic_cast<Sphere*>(colA);
+				 Box* BoxB = dynamic_cast<Box*>(colB);
+				 DirectX::XMVECTOR inter;
+
+				 if (Collision::CheckSphere2Box(*SphereA, *BoxB, &inter))
+				 {
+					 colA->OnCollision(CollisionInfo(colB->GetObject3d(), colB, inter));
+					 colB->OnCollision(CollisionInfo(colA->GetObject3d(), colA, inter));
+				 }
+			 }
+
+			//球と直方体反対
+			else if (colA->GetShapeType() == COLLISIONSHAPE_BOX &&
+				colB->GetShapeType() == COLLISIONSHAPE_SPHERE)
+			{
+				Box* BoxA = dynamic_cast<Box*>(colA);
+				Sphere* SphereB = dynamic_cast<Sphere*>(colB);
+				DirectX::XMVECTOR inter;
+				if (Collision::CheckSphere2Box(*SphereB, *BoxA, &inter)) {
+					colA->OnCollision(CollisionInfo(colB->GetObject3d(), colB, inter));
+					colB->OnCollision(CollisionInfo(colA->GetObject3d(), colA, inter));
+				}
+			}
+
+		}
+	}
+}
+
+void CollisionManager::CheckBoxShere() 
+{
+	std::forward_list<BaseCollider*>::iterator itA;
+	std::forward_list<BaseCollider*>::iterator itB;
+	//全ての組み合わせについて総当たりチェック
+	itA = colliders.begin();
+	for (; itA != colliders.end(); ++itA)
+	{
+		itB = itA;
+		++itB;
+		for (; itB != colliders.end(); ++itB)
+		{
+			BaseCollider* colA = *itA;
+			BaseCollider* colB = *itB;
 			//球と直方体
 			if (colA->GetShapeType() == COLLISIONSHAPE_SPHERE &&
 				colB->GetShapeType() == COLLISIONSHAPE_BOX)
@@ -49,9 +97,22 @@ void CollisionManager::CheckAllCollisions()
 					colB->OnCollision(CollisionInfo(colA->GetObject3d(), colA, inter));
 				}
 			}
+			/*else if(colA->GetShapeType() == COLLISIONSHAPE_BOX &&
+				colB->GetShapeType() == COLLISIONSHAPE_SPHERE)
+			{
+				Box* BoxA = dynamic_cast<Box*>(colA);
+				Sphere* SphereB = dynamic_cast<Sphere*>(colB);
+				DirectX::XMVECTOR inter;
+				if (Collision::CheckSphere2Box(*SphereA, *BoxB, &inter)) {
+					colA->OnCollision(CollisionInfo(colB->GetObject3d(), colB, inter));
+					colB->OnCollision(CollisionInfo(colA->GetObject3d(), colA, inter));
+				}
+
+			}*/
 
 		}
 	}
+
 }
 
 bool CollisionManager::RayCast(const Ray& ray, RayCastHit* hitinfo, float MaxDistance)

@@ -82,55 +82,53 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     //FBXパイプライン生成
     FBXobj3d::CreateGraphicsPipeline();
     //file読み込み
+    
     model1 = FbxLoader::GetInstance()->LoadModelFromFile("boneTest");
     model2 = FbxLoader::GetInstance()->LoadModelFromFile("testfbx");
     modelfloor = FbxLoader::GetInstance()->LoadModelFromFile("floor");
-    modelwall = FbxLoader::GetInstance()->LoadModelFromFile("wall");
+    modelwall = FbxLoader::GetInstance()->LoadModelFromFile("wall2");
     modelballet = FbxLoader::GetInstance()->LoadModelFromFile("bullet");
 
     //地形3dオブジェクト
     //床
     floor = new FBXobj3d;
     floor->Initialize();
-    floor->SetPosition({ -20.0f,-1.0f,-50.0f });
-    floor->SetScale({ 10.0f,0.5f,10.0f });
+    floor->SetPosition({ 0.0f,-1.0f,0.0f });
+    floor->SetScale({ 1.0f,0.1f,1.0f });
     floor->SetModel(modelfloor);
+    floor->SetCollider(new BoxCollider(XMVECTOR{ 100.0f,0.7f,100.0f,0 }, 1.0f));
 
-    floor2 = new FBXobj3d;
-    floor2->Initialize();
-    floor2->SetPosition({ -11.3f,0.5f,0.2f });
-    floor2->SetModel(modelfloor);
          
     //壁
     wall = new Wall;
     wall->Initialize();
-    wall->SetPosition({ -30.0f,50.0f,100.0f });
-    wall->SetScale({ 200.0f,10.0f,0.5f });
+    wall->SetPosition({ -30.0f,0.0f,0.0f });
+    wall->SetScale({ 0.01f,0.1f,0.1f });
     wall->SetRotation({ 0.0f,0.0f,0.0f });
     wall->SetModel(modelwall);
-    wall->SetCollider(new BoxCollider(XMVECTOR{ 0,0,0,0 }, 20.0f));
+    wall->SetCollider(new BoxCollider(XMVECTOR{ 0.5f,100.0f,100.0f,0 }, 1.0f));
 
     wall2 = new Wall;
     wall2->Initialize();
-    wall2->SetPosition({ -30.0f,50.0f,100.0f });
-    wall2->SetScale({ 20.0f,10.0f,1.0f });
+    wall2->SetPosition({ 0.0f,0.0f,100.0f });
+    wall2->SetScale({ 0.01f,0.1f,0.1f });
     wall2->SetRotation({ 0.0f,90.0f,0.0f });
     wall2->SetModel(modelwall);
-    wall2->SetCollider(new BoxCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+    wall2->SetCollider(new BoxCollider(XMVECTOR{ 100.0f,100.0f,0.8f,0 }, 1.0f));
 
     wall3 = new Wall;
     wall3->Initialize();
-    wall3->SetPosition({ 75.0f,50.0f,100.0f });
-    wall3->SetScale({ 20.0f,10.0f,1.0f });
-    wall3->SetRotation({ 0.0f,90.0f,0.0f });
+    wall3->SetPosition({ 100.0f,0.0f,0.0f });
+    wall3->SetScale({ 0.01f,0.1f,0.1f });
+    wall3->SetRotation({ 0.0f,0.0f,0.0f });
     wall3->SetModel(modelwall);
-    wall3->SetCollider(new BoxCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+    wall3->SetCollider(new BoxCollider(XMVECTOR{ 0.8f,100.0f,100.0f,0 }, 1.0f));
 
     //プレイヤー関連処理
     ballet = new Pbullet;
     ballet->Initialize();
     ballet->SetPosition({ 500.0f,5.0f,0.0f });
-    ballet->SetScale({ 1.0f,1.0f,1.0f });
+    ballet->SetScale({ 0.01f,0.01f,0.01f });
     ballet->SetModel(modelballet);
     ballet->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
     
@@ -143,7 +141,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     cube = new Enemy;
     cube->Initialize();
     cube->SetPosition({ 5.0f,5.0f,20.0f });
-    cube->SetScale({ 1.0f,1.0f,1.0f });
+    cube->SetScale({ 0.01f,0.01f,0.01f });
     cube->SetModel(model2);
     cube->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 },1.0f));
 
@@ -152,7 +150,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
         Stage1[i] = nullptr;
         Stage1[i] = new Enemy;
         Stage1[i]->Initialize();
-        Stage1[i]->SetScale({1.0f,1.0f,1.0f});
+        Stage1[i]->SetScale({0.01f,0.01f,0.01f});
         Stage1[i]->SetModel(model2);
     }
 
@@ -174,7 +172,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
         PartCube1[i] = new Enemy;
         PartCube1[i]->Initialize();
         PartCube1[i]->SetPosition({ 100.0f + 1.0f * i,5.0f,20.0f });
-        PartCube1[i]->SetScale({ 0.5f,0.5f,0.5f });
+        PartCube1[i]->SetScale({ 0.005f,0.005f,0.005f });
         PartCube1[i]->SetModel(model2);
     }
 
@@ -213,7 +211,6 @@ void GameScene::Update()
 
     
     floor->Update();
-    floor2->Update();
     wall->Update();
     wall2->Update();
     wall3->Update();
@@ -330,7 +327,7 @@ void GameScene::Draw()
     Object3d::PostDraw();
 
     //FBX描画
-   
+
     //ステージオブジェクト
     floor->Draw(cmdList);
     wall->Draw(cmdList);
@@ -349,7 +346,10 @@ void GameScene::Draw()
         PartCube1[i]->Draw(cmdList);
     }
 
+    ////プレイヤー関連
     ballet->Draw(cmdList);
+
+    
 
     // デバッグテキスト描画
     debugText->DrawAll();

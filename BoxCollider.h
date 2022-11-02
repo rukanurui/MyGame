@@ -19,8 +19,8 @@ public:
 		offset(offset),
 		radius(radius)
 	{
-		//‹…Œ`ó
-		shapeType = COLLISIONSHAPE_SPHERE;
+		//’¼•û‘Ì
+		shapeType = COLLISIONSHAPE_BOX;
 	}
 
 	//XV
