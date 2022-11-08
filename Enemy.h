@@ -8,7 +8,7 @@ class Enemy : public FBXobj3d
 public://メンバ関数
 	Enemy();
 
-	bool EnemyInitialize();
+	void EnemyInitialize();
 
 	void EnemyUpdate();
 
@@ -20,6 +20,8 @@ public://メンバ関数
 
 	void colReset();
 
+	void move();
+
 private:
 
 	XMVECTOR DivVel = { 0.1f,0.1f,0.1f };
@@ -27,6 +29,8 @@ private:
 	int col = 0;
 
 	float G = -0.1;//重力加速度
+
+	XMVECTOR Vel = { 0,0,0 };
 
 
 

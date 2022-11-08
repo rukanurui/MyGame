@@ -6,6 +6,7 @@
 #include <iomanip>
 #include"CollisionManager.h"
 #include"Collision.h"
+#include"CollisionColor.h"
 
 
 using namespace DirectX;
@@ -107,6 +108,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     wall->SetRotation({ 0.0f,0.0f,0.0f });
     wall->SetModel(modelwall);
     wall->SetCollider(new BoxCollider(XMVECTOR{ 0.5f,100.0f,100.0f,0 }, 1.0f));
+    wall->WallInitialize();
 
     wall2 = new Wall;
     wall2->Initialize();
@@ -115,6 +117,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     wall2->SetRotation({ 0.0f,90.0f,0.0f });
     wall2->SetModel(modelwall);
     wall2->SetCollider(new BoxCollider(XMVECTOR{ 100.0f,100.0f,0.8f,0 }, 1.0f));
+    wall2->WallInitialize();
 
     wall3 = new Wall;
     wall3->Initialize();
@@ -123,6 +126,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     wall3->SetRotation({ 0.0f,0.0f,0.0f });
     wall3->SetModel(modelwall);
     wall3->SetCollider(new BoxCollider(XMVECTOR{ 0.8f,100.0f,100.0f,0 }, 1.0f));
+    wall3->WallInitialize();
 
     //プレイヤー関連処理
     ballet = new Pbullet;
@@ -131,6 +135,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     ballet->SetScale({ 0.01f,0.01f,0.01f });
     ballet->SetModel(modelballet);
     ballet->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+    ballet->BulInitialize();
     
     player = new Player(ballet);
     player->Initialize(WindowsApp::window_width, WindowsApp::window_height, this->input);
@@ -144,6 +149,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     cube->SetScale({ 0.01f,0.01f,0.01f });
     cube->SetModel(model2);
     cube->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 },1.0f));
+    cube->EnemyInitialize();
 
     for (int i = 0; i < 5; i++)
     {
@@ -163,17 +169,20 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     for (int i = 0; i < 5; i++)
     {
         Stage1[i]->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+        Stage1[i]->EnemyInitialize();
     }
 
-    //爆散する敵
+    //particle
     for (int i = 0; i < 100; i++)
     {
         PartCube1[i] = nullptr;
-        PartCube1[i] = new Enemy;
+        PartCube1[i] = new PartEnemy;
         PartCube1[i]->Initialize();
-        PartCube1[i]->SetPosition({ 100.0f + 1.0f * i,5.0f,20.0f });
+        PartCube1[i]->SetPosition({ 5.0f,5.0f,20.0f });
         PartCube1[i]->SetScale({ 0.005f,0.005f,0.005f });
         PartCube1[i]->SetModel(model2);
+        PartCube1[i]->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+        PartCube1[i]->PartInitialize();
     }
 
     int counter = 0; // アニメーションの経過時間カウンター
@@ -241,51 +250,51 @@ void GameScene::Update()
     XMFLOAT3 bulpos = ballet->GetPos();
     XMFLOAT3 epos = cube->GetPos();
 
-    //弾と敵の当たり判定
-    XMVECTOR position_sub = XMVectorSet(
-        bulpos.x - epos.x,
-        bulpos.y - epos.y,
-        bulpos.z - epos.z,
-        0
-    );
+    ////弾と敵の当たり判定
+    //XMVECTOR position_sub = XMVectorSet(
+    //    bulpos.x - epos.x,
+    //    bulpos.y - epos.y,
+    //    bulpos.z - epos.z,
+    //    0
+    //);
 
-    position_sub = XMVector3Length(position_sub);
-    float distance = position_sub.m128_f32[0];
-    //当たってたら
-    if (distance <= 1.2f + 1.2f)
-    {
+    //position_sub = XMVector3Length(position_sub);
+    //float distance = position_sub.m128_f32[0];
+    ////当たってたら
+    //if (distance <= 1.2f + 1.2f)
+    //{
 
-        for (int i = 0; i < 100; i++)
-        {
-            srand(rand());
-            int pcount = rand() % 10 + 1;
+    //    for (int i = 0; i < 100; i++)
+    //    {
+    //        srand(rand());
+    //        int pcount = rand() % 10 + 1;
 
-            eVel[i].m128_f32[0] = (float)rand() / RAND_MAX;
-            eVel[i].m128_f32[1] = (float)rand() / RAND_MAX;
-            eVel[i].m128_f32[2] = (float)rand() / RAND_MAX;
+    //        eVel[i].m128_f32[0] = (float)rand() / RAND_MAX;
+    //        eVel[i].m128_f32[1] = (float)rand() / RAND_MAX;
+    //        eVel[i].m128_f32[2] = (float)rand() / RAND_MAX;
 
-            //方向を設定
-            if (pcount >= 4)
-            {
-                eVel[i].m128_f32[0] *= -1;
-            }
-            if (pcount % 2 == 0)
-            {
-                eVel[i].m128_f32[1] *= -1;
-            }
-            if (pcount % 2 == 1)
-            {
-                eVel[i].m128_f32[2] *= -1;
-            }
+    //        //方向を設定
+    //        if (pcount >= 4)
+    //        {
+    //            eVel[i].m128_f32[0] *= -1;
+    //        }
+    //        if (pcount % 2 == 0)
+    //        {
+    //            eVel[i].m128_f32[1] *= -1;
+    //        }
+    //        if (pcount % 2 == 1)
+    //        {
+    //            eVel[i].m128_f32[2] *= -1;
+    //        }
 
-            PartCube1[i]->Enemycol(cube->GetPos(),eVel[i]);
+    //        PartCube1[i]->Enemycol(cube->GetPos(),eVel[i]);
 
-        }
-    }
+    //    }
+    //}
 
     for (int i = 0; i < 100; i++)
     {
-        PartCube1[i]->EnemyUpdate();
+        PartCube1[i]->PartUpdate();
     }
 
 
@@ -298,7 +307,7 @@ void GameScene::Update()
         for (int i = 0; i < 100; i++)
         {
             PartCube1[i]->SetPosition({ 100.0f + 1.0f * i,5.0f,20.0f });
-            PartCube1[i]->colReset();
+            //PartCube1[i]->colReset();
         }
         cube->SetPosition({ 5.0f,5.0f,20.0f });
         resetflag = 0;

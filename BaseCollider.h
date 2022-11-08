@@ -9,6 +9,7 @@
 class BaseCollider
 {
 public:
+	friend class CollisionManager;
 	BaseCollider() = default;
 
 	//仮想デストラクタ
@@ -20,6 +21,18 @@ public:
 
 	inline FBXobj3d* GetObject3d() {
 		return fbxobject;
+	}
+
+	inline void SetColor(unsigned short color) {
+		this->color = color;
+	}
+
+	inline void AddColor(unsigned short color) {
+		this->color |= color;
+	}
+
+	inline void RemoveColor(unsigned short color) {
+		this->color &= !color;
 	}
 
 	virtual void Update() = 0;
@@ -35,5 +48,7 @@ protected://メンバ変数
 	FBXobj3d* fbxobject = nullptr;
 	//形状タイプ
 	CollisionShapeType shapeType = SHAPE_UNKNOWN;
+	//当たり判定属性
+	unsigned short color = 0b1111111111111111;
 };
 

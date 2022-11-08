@@ -23,13 +23,10 @@ Enemy::Enemy() : FBXobj3d()
 //	return instance;
 //}
 
-bool Enemy::EnemyInitialize()
+void Enemy::EnemyInitialize()
 {
-	//コライダーの追加
-	float radius = 1.5f;
-	//半径分だけ足元から浮いた座標を球の中心にする
-	SetCollider(new SphereCollider(XMVECTOR({ 0,radius,0,0 }), radius));
-	return true;
+	//属性の追加
+	collider->SetColor(COLLISION_COLOR_ENEMY);
 }
 
 void Enemy::EnemyUpdate()
@@ -164,9 +161,9 @@ void Enemy::OnCollision(const CollisionInfo& info)
 {
 
 
-	if (scale.x >= 1)
+	if (scale.x >= 0.01f)
 	{
-		scale.x = 0.5; scale.y = 0.5; scale.z = 0.5;
+		scale.x = 0.005f; scale.y = 0.005f; scale.z = 0.005f;
 	}
 
 
@@ -249,6 +246,12 @@ void Enemy::OnCollision(const CollisionInfo& info)
 void Enemy::colReset()
 {
 	col = 0;
+}
+
+
+void Enemy::move()
+{
+
 }
 ;
 

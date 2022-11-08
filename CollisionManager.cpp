@@ -25,6 +25,12 @@ void CollisionManager::CheckAllCollisions()
 			BaseCollider* colA = *itA;
 			BaseCollider* colB = *itB;
 
+			//particleと敵の時はスキップ
+			if (colA->color==COLLISION_COLOR_ENEMY&&colB->color==COLLISION_COLOR_PART)
+			{
+				break;
+			}
+
 			//ともに球
 			 if (colA->GetShapeType()==COLLISIONSHAPE_SPHERE&&
 				colB->GetShapeType()==COLLISIONSHAPE_SPHERE)

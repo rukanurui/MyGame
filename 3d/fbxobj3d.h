@@ -10,7 +10,7 @@
 #include "fbxsdk.h"
 #include <string>
 #include"../ColisionInfo.h"
-
+#include"../CollisionColor.h"
 
 class BaseCollider;
 
@@ -127,6 +127,5 @@ protected://メンバ変数
 	const char* name = nullptr;
 	//コライダー
 	BaseCollider* collider = nullptr;
-
 
 };

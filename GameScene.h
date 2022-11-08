@@ -26,6 +26,7 @@
 #include"Player.h"
 #include "Pbullet.h"
 #include"Enemy.h"
+#include"PartEnemy.h"
 #include"Wall.h"
 
 
@@ -89,11 +90,11 @@ private://メンバ変数
 	//3dモデル(敵)
 	Enemy* cube = nullptr;
 	Enemy* Stage1[5];
-	Enemy* PartCube1[100];
-	Enemy* PartCube2[100];
-	Enemy* PartCube3[100];
-	Enemy* PartCube4[100];
-	Enemy* PartCube5[100];
+	PartEnemy* PartCube1[100];
+	PartEnemy* PartCube2[100];
+	PartEnemy* PartCube3[100];
+	PartEnemy* PartCube4[100];
+	PartEnemy* PartCube5[100];
 	
 	//自機関連
 	Pbullet* ballet = nullptr;

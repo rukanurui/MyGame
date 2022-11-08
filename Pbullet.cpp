@@ -15,6 +15,12 @@ void Pbullet::create(const XMFLOAT3& Playerpos, const XMVECTOR& velocity)
 	Vel = velocity;
 }
 
+void Pbullet::BulInitialize()
+{
+	//‘®«‚Ì’Ç‰Á
+	collider->SetColor(COLLISION_COLOR_PLAYER);
+}
+
 void Pbullet::bulupdate()
 {
 
@@ -180,16 +186,3 @@ void Pbullet::OnCollision(const CollisionInfo& info)
 	}
 
 }
-
-//void Pbullet::SetPos(XMFLOAT3 pos)
-//{
-//	Pbullet::position = pos;
-//}
-//
-//void Pbullet::deleate(int flag)
-//{
-//	if (position.z=20)
-//	{
-//		flag = 0;
-//	}
-//}
