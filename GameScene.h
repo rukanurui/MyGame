@@ -90,11 +90,12 @@ private://メンバ変数
 	//3dモデル(敵)
 	Enemy* cube = nullptr;
 	Enemy* Stage1[5];
-	PartEnemy* PartCube1[100];
-	PartEnemy* PartCube2[100];
-	PartEnemy* PartCube3[100];
-	PartEnemy* PartCube4[100];
-	PartEnemy* PartCube5[100];
+	PartEnemy* PartCube1[20];
+	PartEnemy* PartCube2[20];
+	PartEnemy* PartCube3[20];
+	PartEnemy* PartCube4[20];
+	PartEnemy* PartCube5[20];
+	PartEnemy* PartCube6[20];
 	
 	//自機関連
 	Pbullet* ballet = nullptr;

@@ -9,8 +9,13 @@ void PartEnemy::PartInitialize()
 	collider->SetColor(COLLISION_COLOR_PART);
 }
 
+
 void PartEnemy::OnCollision(const CollisionInfo& info)
 {
+
+	if (info.collider->color==2)
+	{
+
     if (col==0)
     {
        srand(rand());
@@ -36,11 +41,19 @@ void PartEnemy::OnCollision(const CollisionInfo& info)
     }
     
     col = 1;
+	}
 
 }
 
-void PartEnemy::PartUpdate()
+void PartEnemy::PartUpdate(XMFLOAT3 pos)
 {
+
+	if (col==0)
+	{
+		SetPosition({ pos });
+	}
+
+
 	if (col == 1)
 	{
 

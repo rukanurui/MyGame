@@ -14,7 +14,7 @@ public://ƒƒ“ƒoŠÖ”
 
 	void PartInitialize();
 
-	void PartUpdate();
+	void PartUpdate(XMFLOAT3 pos);
 
 
 private:

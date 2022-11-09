@@ -158,6 +158,7 @@
     <ClCompile Include="3d\Object3d.cpp" />
     <ClCompile Include="Audio.cpp" />
     <ClCompile Include="BaseCollider.cpp" />
+    <ClCompile Include="BoxCollider.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ColisionInfo.cpp" />
     <ClCompile Include="Collision.cpp" />
@@ -171,11 +172,13 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pad.cpp" />
+    <ClCompile Include="PartEnemy.cpp" />
     <ClCompile Include="Pbullet.cpp" />
     <ClCompile Include="PlaneCollider.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="RayCastHit.cpp" />
     <ClCompile Include="SphereCollider.cpp" />
+    <ClCompile Include="Wall.cpp" />
     <ClCompile Include="WindowsApp.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -266,9 +269,11 @@
     <ClInclude Include="3d\Object3d.h" />
     <ClInclude Include="Audio.h" />
     <ClInclude Include="BaseCollider.h" />
+    <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ColisionInfo.h" />
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="CollisionColor.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="CollisionPrimitive.h" />
     <ClInclude Include="CollisionTypes.h" />
@@ -278,11 +283,13 @@
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="pad.h" />
+    <ClInclude Include="PartEnemy.h" />
     <ClInclude Include="Pbullet.h" />
     <ClInclude Include="PlaneCollider.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RayCastHit.h" />
     <ClInclude Include="SphereCollider.h" />
+    <ClInclude Include="Wall.h" />
     <ClInclude Include="WindowsApp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

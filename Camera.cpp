@@ -199,8 +199,8 @@ void Camera::CurrentUpdate()
 
 	if (mouseMove.lX==CurretmouseX || mouseMove.lY == CurretmouseY)
 	{
-		float dy = (mouseMove.lX * scaleX)/2;
-		float dx = (mouseMove.lY * scaleY)/2;
+		float dy = (mouseMove.lX * scaleX)*0.168;
+		float dx = (mouseMove.lY * scaleY)*0.168;
 
 		angleX = -dx * XM_PI;
 		angleY = -dy * XM_PI;

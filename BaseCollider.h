@@ -48,6 +48,7 @@ protected://メンバ変数
 	FBXobj3d* fbxobject = nullptr;
 	//形状タイプ
 	CollisionShapeType shapeType = SHAPE_UNKNOWN;
+public:
 	//当たり判定属性
 	unsigned short color = 0b1111111111111111;
 };

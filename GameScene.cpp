@@ -87,7 +87,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     model1 = FbxLoader::GetInstance()->LoadModelFromFile("boneTest");
     model2 = FbxLoader::GetInstance()->LoadModelFromFile("testfbx");
     modelfloor = FbxLoader::GetInstance()->LoadModelFromFile("floor");
-    modelwall = FbxLoader::GetInstance()->LoadModelFromFile("wall2");
+    modelwall = FbxLoader::GetInstance()->LoadModelFromFile("colorwall");
     modelballet = FbxLoader::GetInstance()->LoadModelFromFile("bullet");
 
     //地形3dオブジェクト
@@ -103,8 +103,8 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     //壁
     wall = new Wall;
     wall->Initialize();
-    wall->SetPosition({ -30.0f,0.0f,0.0f });
-    wall->SetScale({ 0.01f,0.1f,0.1f });
+    wall->SetPosition({ -30.0f,10.0f,0.0f });
+    wall->SetScale({ 0.1f,0.5f,1.0f });
     wall->SetRotation({ 0.0f,0.0f,0.0f });
     wall->SetModel(modelwall);
     wall->SetCollider(new BoxCollider(XMVECTOR{ 0.5f,100.0f,100.0f,0 }, 1.0f));
@@ -113,7 +113,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     wall2 = new Wall;
     wall2->Initialize();
     wall2->SetPosition({ 0.0f,0.0f,100.0f });
-    wall2->SetScale({ 0.01f,0.1f,0.1f });
+    wall2->SetScale({ 0.1f,1.0f,1.0f });
     wall2->SetRotation({ 0.0f,90.0f,0.0f });
     wall2->SetModel(modelwall);
     wall2->SetCollider(new BoxCollider(XMVECTOR{ 100.0f,100.0f,0.8f,0 }, 1.0f));
@@ -173,7 +173,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     }
 
     //particle
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < 20; i++)
     {
         PartCube1[i] = nullptr;
         PartCube1[i] = new PartEnemy;
@@ -184,6 +184,67 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
         PartCube1[i]->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
         PartCube1[i]->PartInitialize();
     }
+
+    for (int i = 0; i < 20; i++)
+    {
+        PartCube2[i] = nullptr;
+        PartCube2[i] = new PartEnemy;
+        PartCube2[i]->Initialize();
+        PartCube2[i]->SetPosition({ 15.0f,5.0f,10.0f });
+        PartCube2[i]->SetScale({ 0.005f,0.005f,0.005f });
+        PartCube2[i]->SetModel(model2);
+        PartCube2[i]->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+        PartCube2[i]->PartInitialize();
+    }
+
+    for (int i = 0; i < 20; i++)
+    {
+        PartCube3[i] = nullptr;
+        PartCube3[i] = new PartEnemy;
+        PartCube3[i]->Initialize();
+        PartCube3[i]->SetPosition({ 15.0f,10.0f,10.0f });
+        PartCube3[i]->SetScale({ 0.005f,0.005f,0.005f });
+        PartCube3[i]->SetModel(model2);
+        PartCube3[i]->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+        PartCube3[i]->PartInitialize();
+    }
+
+    for (int i = 0; i < 20; i++)
+    {
+        PartCube4[i] = nullptr;
+        PartCube4[i] = new PartEnemy;
+        PartCube4[i]->Initialize();
+        PartCube4[i]->SetPosition({ 10.0f,5.0f,20.0f });
+        PartCube4[i]->SetScale({ 0.005f,0.005f,0.005f });
+        PartCube4[i]->SetModel(model2);
+        PartCube4[i]->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+        PartCube4[i]->PartInitialize();
+    }  
+
+    for (int i = 0; i < 20; i++)
+    {
+        PartCube5[i] = nullptr;
+        PartCube5[i] = new PartEnemy;
+        PartCube5[i]->Initialize();
+        PartCube5[i]->SetPosition({ 35.0f,5.0f,5.0f });
+        PartCube5[i]->SetScale({ 0.005f,0.005f,0.005f });
+        PartCube5[i]->SetModel(model2);
+        PartCube5[i]->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+        PartCube5[i]->PartInitialize();
+    }
+
+    for (int i = 0; i < 20; i++)
+    {
+        PartCube6[i] = nullptr;
+        PartCube6[i] = new PartEnemy;
+        PartCube6[i]->Initialize();
+        PartCube6[i]->SetPosition({ 25.0f,10.0f,30.0f });
+        PartCube6[i]->SetScale({ 0.005f,0.005f,0.005f });
+        PartCube6[i]->SetModel(model2);
+        PartCube6[i]->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+        PartCube6[i]->PartInitialize();
+    }
+
 
     int counter = 0; // アニメーションの経過時間カウンター
 
@@ -229,9 +290,15 @@ void GameScene::Update()
     {
         Stage1[i]->Update();
     }
-    for (int i = 0; i < 100; i++)
+
+    for (int i = 0; i < 20; i++)
     {
         PartCube1[i]->Update();
+        PartCube2[i]->Update();
+        PartCube3[i]->Update();
+        PartCube4[i]->Update();
+        PartCube5[i]->Update();
+        PartCube6[i]->Update();
     }
 
     camera->CurrentUpdate();
@@ -250,51 +317,14 @@ void GameScene::Update()
     XMFLOAT3 bulpos = ballet->GetPos();
     XMFLOAT3 epos = cube->GetPos();
 
-    ////弾と敵の当たり判定
-    //XMVECTOR position_sub = XMVectorSet(
-    //    bulpos.x - epos.x,
-    //    bulpos.y - epos.y,
-    //    bulpos.z - epos.z,
-    //    0
-    //);
-
-    //position_sub = XMVector3Length(position_sub);
-    //float distance = position_sub.m128_f32[0];
-    ////当たってたら
-    //if (distance <= 1.2f + 1.2f)
-    //{
-
-    //    for (int i = 0; i < 100; i++)
-    //    {
-    //        srand(rand());
-    //        int pcount = rand() % 10 + 1;
-
-    //        eVel[i].m128_f32[0] = (float)rand() / RAND_MAX;
-    //        eVel[i].m128_f32[1] = (float)rand() / RAND_MAX;
-    //        eVel[i].m128_f32[2] = (float)rand() / RAND_MAX;
-
-    //        //方向を設定
-    //        if (pcount >= 4)
-    //        {
-    //            eVel[i].m128_f32[0] *= -1;
-    //        }
-    //        if (pcount % 2 == 0)
-    //        {
-    //            eVel[i].m128_f32[1] *= -1;
-    //        }
-    //        if (pcount % 2 == 1)
-    //        {
-    //            eVel[i].m128_f32[2] *= -1;
-    //        }
-
-    //        PartCube1[i]->Enemycol(cube->GetPos(),eVel[i]);
-
-    //    }
-    //}
-
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < 20; i++)
     {
-        PartCube1[i]->PartUpdate();
+        PartCube1[i]->PartUpdate(cube->GetPos());
+        PartCube2[i]->PartUpdate(Stage1[0]->GetPos());
+        PartCube3[i]->PartUpdate(Stage1[1]->GetPos());
+        PartCube4[i]->PartUpdate(Stage1[2]->GetPos());
+        PartCube5[i]->PartUpdate(Stage1[3]->GetPos());
+        PartCube6[i]->PartUpdate(Stage1[4]->GetPos());
     }
 
 
@@ -304,7 +334,7 @@ void GameScene::Update()
 
     if (resetflag==1)
     {
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 10; i++)
         {
             PartCube1[i]->SetPosition({ 100.0f + 1.0f * i,5.0f,20.0f });
             //PartCube1[i]->colReset();
@@ -350,9 +380,14 @@ void GameScene::Draw()
         Stage1[i]->Draw(cmdList);
     }
 
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < 20; i++)
     {
         PartCube1[i]->Draw(cmdList);
+        PartCube2[i]->Draw(cmdList);
+        PartCube3[i]->Draw(cmdList);
+        PartCube4[i]->Draw(cmdList);
+        PartCube5[i]->Draw(cmdList);
+        PartCube6[i]->Draw(cmdList);
     }
 
     ////プレイヤー関連
