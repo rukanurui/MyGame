@@ -22,4 +22,7 @@ class QueryCallback
 public:
 	QueryCallback() = default;
 	virtual~QueryCallback() = default;
+
+	//交差時コールバック
+	virtual bool OnQueryHit(const QueryHit& info) = 0;
 };

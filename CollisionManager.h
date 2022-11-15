@@ -1,6 +1,7 @@
 #pragma once
 #include"CollisionPrimitive.h"
 #include"RayCastHit.h"
+#include"QueryCallback.h"
 
 #include<d3d12.h>
 #include<forward_list>
@@ -26,7 +27,8 @@ public://メンバ関数
 	//全ての衝突チェック
 	void CheckAllCollisions();
 
-
+	//コールバック用の衝突チェック(球)
+	void CheckQuerySphere(const Sphere& sphere,QueryCallback* callback,unsigned short color = (unsigned short)0xffffffff);
 
 	//レイとすべてのコライダーとの衝突判定
 	bool RayCast(const Ray& ray, RayCastHit* hitinfo = nullptr, float MaxDistance = D3D12_FLOAT32_MAX);

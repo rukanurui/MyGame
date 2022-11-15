@@ -66,6 +66,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     modelfloor = FbxLoader::GetInstance()->LoadModelFromFile("floor");
     modelwall = FbxLoader::GetInstance()->LoadModelFromFile("colorwall");
     modelballet = FbxLoader::GetInstance()->LoadModelFromFile("bullet");
+    modelBack = FbxLoader::GetInstance()->LoadModelFromFile("back");
 
     //地形3dオブジェクト
     //床
@@ -114,7 +115,13 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     wallBack->SetCollider(new BoxCollider(XMVECTOR{ 100.0f,100.0f,0.8f,0 }, 1.0f));
     wallBack->WallInitialize();
 
-
+    //背景
+    backsphere = new FBXobj3d;
+    backsphere->Initialize();
+    backsphere->SetPosition({ 0.0f,0.0f,0.0f });
+    backsphere->SetScale({ 1.0f,1.0f,1.0f });
+    backsphere->SetRotation({ 0.0f,0.0f,0.0f });
+    backsphere->SetModel(modelBack);
 
     //プレイヤー関連処理
     ballet = new Pbullet;
@@ -236,8 +243,6 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
 
     int counter = 0; // アニメーションの経過時間カウンター
 
-
-
 }
 
 void GameScene::Update()
@@ -247,6 +252,8 @@ void GameScene::Update()
     {
         resetflag = 1;
     }
+
+
 
     // マウスの入力を取得
     Input::MouseMove mouseMove = input->GetMouseMove();
@@ -263,27 +270,28 @@ void GameScene::Update()
     //tex->Update();
     //tuto->Update();
     //crosshair->Update();
-    
-    
-    //FBX更新
 
-    
+
+    //ゲーム本編
+
+    //描画のためにカメラの更新処理を一回呼び出す
+    if (firstfrag==0)
+    {
+        camera->CurrentUpdate();
+        camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+
+        firstfrag = 1;
+    }
+
+    //FBX更新
     floor->Update();
     wallLeft->Update();
     wallForward->Update();
     wallRight->Update();
     wallBack->Update();
-
-
-    //敵更新
     cube->Update();
-    cube->EnemyUpdate(player->GetEye());
-    for (int i = 0; i < 5; i++)
-    {
-        Stage1[i]->Update();
-        Stage1[i]->EnemyUpdate(player->GetEye());
-    }
-
+    ballet->Update();
+    backsphere->Update();
     for (int i = 0; i < 20; i++)
     {
         PartCube1[i]->Update();
@@ -293,32 +301,49 @@ void GameScene::Update()
         PartCube5[i]->Update();
         PartCube6[i]->Update();
     }
-
-    camera->CurrentUpdate();
-    camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-
-    
-
-    //ゲーム本編
-    
-    player->PlayerUpdate();
-
-
-
-    XMFLOAT3 bulpos = ballet->GetPos();
-    XMFLOAT3 epos = cube->GetPos();
-
-    for (int i = 0; i < 20; i++)
+    for (int i = 0; i < 5; i++)
     {
-        PartCube1[i]->PartUpdate(cube->GetPos());
-        PartCube2[i]->PartUpdate(Stage1[0]->GetPos());
-        PartCube3[i]->PartUpdate(Stage1[1]->GetPos());
-        PartCube4[i]->PartUpdate(Stage1[2]->GetPos());
-        PartCube5[i]->PartUpdate(Stage1[3]->GetPos());
-        PartCube6[i]->PartUpdate(Stage1[4]->GetPos());
+        Stage1[i]->Update();
     }
 
+    //自分が動いていたら更新処理
+    if (input->PushKey(DIK_W) || input->PushKey(DIK_A) || input->PushKey(DIK_S) || input->PushKey(DIK_D))
+    {
 
+        //敵更新
+        cube->EnemyUpdate(player->GetEye());
+        for (int i = 0; i < 5; i++)
+        {
+            Stage1[i]->EnemyUpdate(player->GetEye());
+        }
+
+        //particle更新        
+        for (int i = 0; i < 20; i++)
+        {
+            PartCube1[i]->PartUpdate(cube->GetPos());
+            PartCube2[i]->PartUpdate(Stage1[0]->GetPos());
+            PartCube3[i]->PartUpdate(Stage1[1]->GetPos());
+            PartCube4[i]->PartUpdate(Stage1[2]->GetPos());
+            PartCube5[i]->PartUpdate(Stage1[3]->GetPos());
+            PartCube6[i]->PartUpdate(Stage1[4]->GetPos());
+        }
+
+        //プレイy－更新
+        player->PlayerUpdate();
+
+        camera->CurrentUpdate();
+        camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+    }
+
+    //マウスだけ動いてる時
+    if (mouseMove.lX!=0 || mouseMove.lY!=0)
+    {
+       camera->CurrentUpdate();
+       //camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+      
+    }
+
+    
 
     //すべての衝突をチェック
     collisionManager->CheckAllCollisions();
@@ -364,6 +389,7 @@ void GameScene::Draw()
     wallForward->Draw(cmdList);
     wallRight->Draw(cmdList);
     wallBack->Draw(cmdList);
+    //backsphere->Draw(cmdList);
 
     //敵関連
     cube->Draw(cmdList);//cube
@@ -410,7 +436,43 @@ void GameScene::Finalize()
     //}
     //sprites.clear();
 
+    delete camera;
+    //delete Windows;
+    //delete input;
+    /*delete dxCommon;
+    delete audio;*/
+
+    
+
     delete model1;
     delete cube;
     delete model2;
+    delete modelballet;
+    delete modelfloor;
+    delete modelwall;
+    delete modelBack;
+
+    delete ballet;
+    delete wallBack;
+    delete wallForward;
+    delete wallLeft;
+    delete wallRight;
+    delete floor;
+    delete backsphere;
+
+    for (int i = 0; i < 20; i++)
+    {
+        delete PartCube1[i];
+        delete PartCube2[i];
+        delete PartCube3[i];
+        delete PartCube4[i];
+        delete PartCube5[i];
+        delete PartCube6[i];
+    }
+
+    for (int i = 0; i < 5; i++)
+    {
+        delete Stage1[i];
+    }
+
 }

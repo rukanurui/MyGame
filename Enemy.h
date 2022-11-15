@@ -36,5 +36,7 @@ private:
 
 	DebugText* Debugtext = nullptr;
 
+	
+
 };
 

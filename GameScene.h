@@ -88,6 +88,9 @@ private://メンバ変数
 	Wall* wallRight = nullptr;
 	Wall* wallBack = nullptr;
 
+	FbxModel* modelBack = nullptr;
+	FBXobj3d* backsphere = nullptr;
+
 	//3dモデル(敵)
 	Enemy* cube = nullptr;
 	Enemy* Stage1[5];
@@ -102,23 +105,15 @@ private://メンバ変数
 	Pbullet* ballet = nullptr;
 	Player* player = nullptr;
 
+	//ひとつ前のマウスの座標
 	float CurretmouseX = 0;
 	float CurretmouseY = 0;
 
-	float oldposy = 0;
-
-	int bulflag = 0;
-
-	float movex = 0;
-	float movey = 0;
-	float movez = 0;
-
+	//デバッグ用リセットフラグ
 	int resetflag = 0;
 
-	XMVECTOR eVel[100];
-
-	XMFLOAT3 Bulpos;
-
+	//カメラの更新処理用
+	int firstfrag = 0;
 
 };
 
