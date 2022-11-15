@@ -83,9 +83,10 @@ private://ƒƒ“ƒo•Ï”
 	FbxModel* modelballet = nullptr;
 	FBXobj3d* floor = nullptr;
 	FBXobj3d* floor2 = nullptr;
-	Wall* wall = nullptr;
-	Wall* wall2 = nullptr;
-	Wall* wall3 = nullptr;
+	Wall* wallLeft = nullptr;
+	Wall* wallForward = nullptr;
+	Wall* wallRight = nullptr;
+	Wall* wallBack = nullptr;
 
 	//3dƒ‚ƒfƒ‹(“G)
 	Enemy* cube = nullptr;

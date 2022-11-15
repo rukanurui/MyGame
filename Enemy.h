@@ -10,9 +10,8 @@ public://メンバ関数
 
 	void EnemyInitialize();
 
-	void EnemyUpdate();
+	void EnemyUpdate(XMFLOAT3 playerpos);
 
-	void Enemycol(XMFLOAT3 pos,XMVECTOR vel);
 
 	//衝突時コールバック関数
 	void OnCollision(const CollisionInfo& info)override;
@@ -24,7 +23,6 @@ public://メンバ関数
 
 private:
 
-	XMVECTOR DivVel = { 0.1f,0.1f,0.1f };
 
 	int col = 0;
 
@@ -32,7 +30,9 @@ private:
 
 	XMVECTOR Vel = { 0,0,0 };
 
+	XMVECTOR Playerpos;
 
+	XMVECTOR Vecpos;
 
 	DebugText* Debugtext = nullptr;
 

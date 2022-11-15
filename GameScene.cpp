@@ -34,42 +34,19 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     //spriteCommon = new SpriteCommon();
     //spriteCommon->Initialize(dxCommon->GetDevice(), dxCommon->GetCommandList(), Windows->window_width, Windows->window_height);
 
-    debugText = new DebugText();
+    //debugText = new DebugText();
     // デバッグテキスト用のテクスチャ番号を指定
     const int debugTextTexNumber = 2;
     // デバッグテキスト用のテクスチャ読み込み
-    spriteCommon->LoadTexture(debugTextTexNumber, L"Resources/debugfont.png");
+    //spriteCommon->LoadTexture(debugTextTexNumber, L"Resources/debugfont.png");
     // デバッグテキスト初期化
-    debugText->Initialize(spriteCommon, debugTextTexNumber);
+    //debugText->Initialize(spriteCommon, debugTextTexNumber);
 
     // スプライト共通テクスチャ読み込み
-    spriteCommon->LoadTexture(0, L"Resources/texture.png");
+   /* spriteCommon->LoadTexture(0, L"Resources/texture.png");
     spriteCommon->LoadTexture(1, L"Resources/house.png");
     spriteCommon->LoadTexture(3, L"Resources/tuto.png");
-    spriteCommon->LoadTexture(4, L"Resources/1432.png");
-
-    
-    //スプライトの生成
-    //Sprite* tuto = Sprite::Create(spriteCommon, 3);
-    //tuto->SetPosition({ 0,0,0 });
-    //tuto->SetRotation({ (float)(rand() % 360) });
-    //tuto->SetSize({ (float)(rand() % 400), (float)(rand() % 100) });
-    //tuto->TransferVertexBuffer();
-
-    //Sprite* tex = Sprite::Create(spriteCommon, 1);
-    //tex->SetPosition({ 100,100,0 });
-    //tex->SetRotation({ (float)(rand() % 360) });
-    //tuto->SetSize({ (float)(rand() % 400), (float)(rand() % 100) });
-    //tex->TransferVertexBuffer();
-
-    //Sprite* crosshair = Sprite::Create(spriteCommon, 4);
-    //crosshair->Create(spriteCommon, 4);
-    //crosshair->SetPosition({Windows->window_width/2,Windows->window_height/2,0 });
-    ///*crosshair->SetRotation({ (float)(rand() % 360) });*/
-    //tuto->SetSize({ (float)(rand() % 400), (float)(rand() % 100) });
-    //crosshair->TransferVertexBuffer();
-
-
+    spriteCommon->LoadTexture(4, L"Resources/1432.png");*/
 
 
     collisionManager = CollisionManager::GetInstance();
@@ -101,32 +78,43 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
 
          
     //壁
-    wall = new Wall;
-    wall->Initialize();
-    wall->SetPosition({ -30.0f,10.0f,0.0f });
-    wall->SetScale({ 0.1f,0.5f,1.0f });
-    wall->SetRotation({ 0.0f,0.0f,0.0f });
-    wall->SetModel(modelwall);
-    wall->SetCollider(new BoxCollider(XMVECTOR{ 0.5f,100.0f,100.0f,0 }, 1.0f));
-    wall->WallInitialize();
+    wallLeft = new Wall;
+    wallLeft->Initialize();
+    wallLeft->SetPosition({ -30.0f,10.0f,0.0f });
+    wallLeft->SetScale({ 0.1f,0.5f,1.0f });
+    wallLeft->SetRotation({ 0.0f,0.0f,0.0f });
+    wallLeft->SetModel(modelwall);
+    wallLeft->SetCollider(new BoxCollider(XMVECTOR{ 0.5f,100.0f,100.0f,0 }, 1.0f));
+    wallLeft->WallInitialize();
 
-    wall2 = new Wall;
-    wall2->Initialize();
-    wall2->SetPosition({ 0.0f,0.0f,100.0f });
-    wall2->SetScale({ 0.1f,1.0f,1.0f });
-    wall2->SetRotation({ 0.0f,90.0f,0.0f });
-    wall2->SetModel(modelwall);
-    wall2->SetCollider(new BoxCollider(XMVECTOR{ 100.0f,100.0f,0.8f,0 }, 1.0f));
-    wall2->WallInitialize();
+    wallForward = new Wall;
+    wallForward->Initialize();
+    wallForward->SetPosition({ 0.0f,0.0f,100.0f });
+    wallForward->SetScale({ 0.1f,1.0f,1.0f });
+    wallForward->SetRotation({ 0.0f,90.0f,0.0f });
+    wallForward->SetModel(modelwall);
+    wallForward->SetCollider(new BoxCollider(XMVECTOR{ 100.0f,100.0f,0.8f,0 }, 1.0f));
+    wallForward->WallInitialize();
 
-    wall3 = new Wall;
-    wall3->Initialize();
-    wall3->SetPosition({ 100.0f,0.0f,0.0f });
-    wall3->SetScale({ 0.01f,0.1f,0.1f });
-    wall3->SetRotation({ 0.0f,0.0f,0.0f });
-    wall3->SetModel(modelwall);
-    wall3->SetCollider(new BoxCollider(XMVECTOR{ 0.8f,100.0f,100.0f,0 }, 1.0f));
-    wall3->WallInitialize();
+    wallRight = new Wall;
+    wallRight->Initialize();
+    wallRight->SetPosition({ 100.0f,0.0f,0.0f });
+    wallRight->SetScale({ 0.01f,1.0f,1.0f });
+    wallRight->SetRotation({ 0.0f,0.0f,0.0f });
+    wallRight->SetModel(modelwall);
+    wallRight->SetCollider(new BoxCollider(XMVECTOR{ 0.8f,100.0f,100.0f,0 }, 1.0f));
+    wallRight->WallInitialize();
+
+    wallBack = new Wall;
+    wallBack->Initialize();
+    wallBack->SetPosition({ 0.0f,0.0f,-20.0f });
+    wallBack->SetScale({ 0.1f,1.0f,1.0f });
+    wallBack->SetRotation({ 0.0f,90.0f,0.0f });
+    wallBack->SetModel(modelwall);
+    wallBack->SetCollider(new BoxCollider(XMVECTOR{ 100.0f,100.0f,0.8f,0 }, 1.0f));
+    wallBack->WallInitialize();
+
+
 
     //プレイヤー関連処理
     ballet = new Pbullet;
@@ -281,14 +269,19 @@ void GameScene::Update()
 
     
     floor->Update();
-    wall->Update();
-    wall2->Update();
-    wall3->Update();
-    cube->Update();
+    wallLeft->Update();
+    wallForward->Update();
+    wallRight->Update();
+    wallBack->Update();
 
+
+    //敵更新
+    cube->Update();
+    cube->EnemyUpdate(player->GetEye());
     for (int i = 0; i < 5; i++)
     {
         Stage1[i]->Update();
+        Stage1[i]->EnemyUpdate(player->GetEye());
     }
 
     for (int i = 0; i < 20; i++)
@@ -310,9 +303,7 @@ void GameScene::Update()
     
     player->PlayerUpdate();
 
-    //ballet->Update();
-    
-    cube->EnemyUpdate();
+
 
     XMFLOAT3 bulpos = ballet->GetPos();
     XMFLOAT3 epos = cube->GetPos();
@@ -369,9 +360,10 @@ void GameScene::Draw()
 
     //ステージオブジェクト
     floor->Draw(cmdList);
-    wall->Draw(cmdList);
-    wall2->Draw(cmdList);
-    wall3->Draw(cmdList);
+    wallLeft->Draw(cmdList);
+    wallForward->Draw(cmdList);
+    wallRight->Draw(cmdList);
+    wallBack->Draw(cmdList);
 
     //敵関連
     cube->Draw(cmdList);//cube
@@ -396,7 +388,7 @@ void GameScene::Draw()
     
 
     // デバッグテキスト描画
-    debugText->DrawAll();
+    //debugText->DrawAll();
 }
 
     
@@ -409,7 +401,7 @@ void GameScene::Finalize()
     //delete Model;
 
     //デバッグテキスト解放
-    debugText->Finalize();
+    //debugText->Finalize();
     delete debugText;
 
     //スプライト解放

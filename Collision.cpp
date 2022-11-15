@@ -20,7 +20,7 @@ bool Collision::CheckSpere2Plane(const Sphere& sphere, const Plane& plane, Direc
 	return true;
 }
 
-bool Collision::CheckSphere2Sphere(const Sphere& sphere, const Sphere& sphere2, DirectX::XMVECTOR* inter)
+bool Collision::CheckSphere2Sphere(const Sphere& sphere, const Sphere& sphere2, DirectX::XMVECTOR* inter, DirectX::XMVECTOR* reject)
 {
 	// 中心点の距離の２乗 <= 半径の和の２乗　なら交差
 	float dist = XMVector3LengthSq(sphere.center - sphere2.center).m128_f32[0];
@@ -33,6 +33,13 @@ bool Collision::CheckSphere2Sphere(const Sphere& sphere, const Sphere& sphere2, 
 			// Aの半径が0の時座標はBの中心　Bの半径が0の時座標はAの中心　となるよう補完
 			float t = sphere2.radius / (sphere.radius + sphere2.radius);
 			*inter = XMVectorLerp(sphere.center, sphere2.center, t);
+		}
+		//押し出すベクトルを計算
+		if (reject)
+		{
+			float rejectLen = sphere.radius + sphere2.radius - sqrtf(dist);
+			*reject = XMVector3Normalize(sphere.center - sphere2.center);
+			*reject *= rejectLen;
 		}
 		return true;
 	}
