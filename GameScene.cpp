@@ -108,7 +108,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
 
     wallBack = new Wall;
     wallBack->Initialize();
-    wallBack->SetPosition({ 0.0f,0.0f,-20.0f });
+    wallBack->SetPosition({ 0.0f,0.0f,-25.0f });
     wallBack->SetScale({ 0.1f,1.0f,1.0f });
     wallBack->SetRotation({ 0.0f,90.0f,0.0f });
     wallBack->SetModel(modelwall);
@@ -135,6 +135,11 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     player = new Player(ballet);
     player->Initialize(WindowsApp::window_width, WindowsApp::window_height, this->input);
     player->PlayerInitialize(this->input);
+
+    playercol = new PlayerCol;
+    playercol->Initialize();
+    playercol->SetPosition({ 0,0,0 });
+    playercol->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 0.5f));
     
 
     //敵関連処理
@@ -271,82 +276,311 @@ void GameScene::Update()
     //tuto->Update();
     //crosshair->Update();
 
-
-    //ゲーム本編
-
-    //描画のためにカメラの更新処理を一回呼び出す
-    if (firstfrag==0)
+    //チュートリアル
+    if (scene==1)
     {
-        camera->CurrentUpdate();
-        camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-
-        firstfrag = 1;
-    }
-
-    //FBX更新
-    floor->Update();
-    wallLeft->Update();
-    wallForward->Update();
-    wallRight->Update();
-    wallBack->Update();
-    cube->Update();
-    ballet->Update();
-    backsphere->Update();
-    for (int i = 0; i < 20; i++)
-    {
-        PartCube1[i]->Update();
-        PartCube2[i]->Update();
-        PartCube3[i]->Update();
-        PartCube4[i]->Update();
-        PartCube5[i]->Update();
-        PartCube6[i]->Update();
-    }
-    for (int i = 0; i < 5; i++)
-    {
-        Stage1[i]->Update();
-    }
-
-    //自分が動いていたら更新処理
-    if (input->PushKey(DIK_W) || input->PushKey(DIK_A) || input->PushKey(DIK_S) || input->PushKey(DIK_D))
-    {
-
-        //敵更新
-        cube->EnemyUpdate(player->GetEye());
-        for (int i = 0; i < 5; i++)
+       /* if (tutoscene == 0)
         {
-            Stage1[i]->EnemyUpdate(player->GetEye());
+            if (input->TriggerKey(DIK_SPACE))goflag = 1;
+
+            if (goflag==1)
+            {
+                roat += 1.0f;
+                tutoroateation.x += roat;
+                camera->SetRoatation(tutoroateation);
+                camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+                if (tutoroateation.x >= 90)
+                {
+                    roat = 0;
+                    goflag = 0;
+                    tutoscene = 1;
+                }
+            }
         }
 
-        //particle更新        
+        if (tutoscene == 1)
+        {
+            if (input->TriggerKey(DIK_SPACE))goflag = 1;
+
+            if (goflag == 1)
+            {
+                roat += 1.0f;
+                tutoroateation.x += roat;
+                camera->SetRoatation(tutoroateation);
+                camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+                if (tutoroateation.x >= 180)
+                {
+                    roat = 0;
+                    goflag = 0;
+                    tutoscene = 2;
+                }
+            }
+        }
+
+        if (tutoscene == 2)
+        {
+            if (input->TriggerKey(DIK_SPACE))goflag = 1;
+
+            if (goflag == 1)
+            {
+                roat += 1.0f;
+                tutoroateation.x += roat;
+                camera->SetRoatation(tutoroateation);
+                camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+                if (tutoroateation.x >= 240)
+                {
+                    roat = 0;
+                    goflag = 0;
+                    tutoscene = 3;
+                }
+            }
+        }
+        if (tutoscene == 3)
+        {
+            if (input->TriggerKey(DIK_SPACE))goflag = 1;
+
+            if (goflag == 1)
+            {
+                roat += 1.0f;
+                tutoroateation.x += roat;
+                camera->SetRoatation(tutoroateation);
+                camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+                if (tutoroateation.x >= 240)
+                {
+                    roat = 0;
+                    goflag = 0;
+                    tutoscene = 4;
+                }
+            }
+        }
+        if (tutoscene == 4)
+        {
+            if (input->TriggerKey(DIK_SPACE))goflag = 1;
+
+            if (goflag == 1)
+            {
+                roat += 1.0f;
+                tutoroateation.x += roat;
+                camera->SetRoatation(tutoroateation);
+                camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+                if (tutoroateation.x >= 360)
+                {
+                    roat = 0;
+                    goflag = 0;
+                    tutoscene = 5;
+                }
+            }
+        }
+        if (tutoscene == 5)
+        {
+            if (input->TriggerKey(DIK_SPACE))
+            {
+                scene = 2;
+            }
+
+        }*/
+        //描画のためにカメラの更新処理を一回呼び出す
+if (firstfrag == 0)
+{
+    camera->CurrentUpdate();
+    camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+
+    firstfrag = 1;
+}
+
+        floor->Update();
+        wallLeft->Update();
+        wallForward->Update();
+        wallRight->Update();
+        wallBack->Update();
+        cube->Update();
+        ballet->Update();
+        backsphere->Update();
         for (int i = 0; i < 20; i++)
         {
-            PartCube1[i]->PartUpdate(cube->GetPos());
-            PartCube2[i]->PartUpdate(Stage1[0]->GetPos());
-            PartCube3[i]->PartUpdate(Stage1[1]->GetPos());
-            PartCube4[i]->PartUpdate(Stage1[2]->GetPos());
-            PartCube5[i]->PartUpdate(Stage1[3]->GetPos());
-            PartCube6[i]->PartUpdate(Stage1[4]->GetPos());
+         PartCube1[i]->Update();
+         PartCube2[i]->Update();
+         PartCube3[i]->Update();
+         PartCube4[i]->Update();
+         PartCube5[i]->Update();
+         PartCube6[i]->Update();
+        }
+        for (int i = 0; i < 5; i++)
+        {
+         Stage1[i]->Update();
+        }
+    
+    }
+
+
+    //ゲーム本編
+   if (scene==2)
+    {
+        //描画のためにカメラの更新処理を一回呼び出す
+        if (firstfrag == 1)
+        {
+            camera->CurrentUpdate();
+            camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+
+            firstfrag = 0;
         }
 
-        //プレイy－更新
-        player->PlayerUpdate();
+        //FBX更新
+        floor->Update();
+        wallLeft->Update();
+        wallForward->Update();
+        wallRight->Update();
+        wallBack->Update();
+        cube->Update();
+        ballet->Update();
+        backsphere->Update();
+        for (int i = 0; i < 20; i++)
+        {
+            PartCube1[i]->Update();
+            PartCube2[i]->Update();
+            PartCube3[i]->Update();
+            PartCube4[i]->Update();
+            PartCube5[i]->Update();
+            PartCube6[i]->Update();
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            Stage1[i]->Update();
+        }
 
-        camera->CurrentUpdate();
-        camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+        //自分が動いていたら更新処理
+        if (input->PushKey(DIK_W) || input->PushKey(DIK_A) || input->PushKey(DIK_S) || input->PushKey(DIK_D))
+        {
+
+            //敵更新
+            cube->EnemyUpdate(player->GetEye());
+            for (int i = 0; i < 5; i++)
+            {
+                Stage1[i]->EnemyUpdate(player->GetEye());
+            }
+
+            //particle更新        
+            for (int i = 0; i < 20; i++)
+            {
+                PartCube1[i]->PartUpdate(cube->GetPos());
+                PartCube2[i]->PartUpdate(Stage1[0]->GetPos());
+                PartCube3[i]->PartUpdate(Stage1[1]->GetPos());
+                PartCube4[i]->PartUpdate(Stage1[2]->GetPos());
+                PartCube5[i]->PartUpdate(Stage1[3]->GetPos());
+                PartCube6[i]->PartUpdate(Stage1[4]->GetPos());
+            }
+
+            //プレイy－更新
+            player->PlayerUpdate();
+
+            camera->CurrentUpdate();
+            camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+            playercol->SetPosition(player->GetEye());
+            playercol->colUpdate();
+        }
+
+
+        //マウスだけ動いてる時
+        if (mouseMove.lX != 0 || mouseMove.lY != 0)
+        {
+            camera->CurrentUpdate();
+            //camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+
+        }
+
+        //すべての衝突をチェック
+        collisionManager->CheckAllCollisions();
+
+        //プレイヤーに敵が当たったらシーン遷移
+        if (playercol->Gethit()==1)
+        {
+            scene = 3;//ゲームオーバー
+        }
+
+        if (cube->GetScaleX()<check&&
+            Stage1[0]->GetScaleX() < check&&
+            Stage1[1]->GetScaleX() < check&&
+            Stage1[2]->GetScaleX() < check&&
+            Stage1[3]->GetScaleX() < check&&
+            Stage1[4]->GetScaleX() < check)
+        {
+            scene = 4;//クリア
+        }
+
     }
 
-    //マウスだけ動いてる時
-    if (mouseMove.lX!=0 || mouseMove.lY!=0)
-    {
-       camera->CurrentUpdate();
-       //camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-      
-    }
+   if (scene==3)
+   {
+       //FBX更新
+       floor->Update();
+       wallLeft->Update();
+       wallForward->Update();
+       wallRight->Update();
+       wallBack->Update();
+       cube->Update();
+       ballet->Update();
+       backsphere->Update();
+       for (int i = 0; i < 20; i++)
+       {
+           PartCube1[i]->Update();
+           PartCube2[i]->Update();
+           PartCube3[i]->Update();
+           PartCube4[i]->Update();
+           PartCube5[i]->Update();
+           PartCube6[i]->Update();
+       }
+       for (int i = 0; i < 5; i++)
+       {
+           Stage1[i]->Update();
+       }
+       //particle更新        
+       for (int i = 0; i < 20; i++)
+       {
+           PartCube1[i]->PartUpdate(cube->GetPos());
+           PartCube2[i]->PartUpdate(Stage1[0]->GetPos());
+           PartCube3[i]->PartUpdate(Stage1[1]->GetPos());
+           PartCube4[i]->PartUpdate(Stage1[2]->GetPos());
+           PartCube5[i]->PartUpdate(Stage1[3]->GetPos());
+           PartCube6[i]->PartUpdate(Stage1[4]->GetPos());
+       }
+   }
 
-    
-
-    //すべての衝突をチェック
-    collisionManager->CheckAllCollisions();
+   if (scene == 4)
+   {
+       //FBX更新
+       floor->Update();
+       wallLeft->Update();
+       wallForward->Update();
+       wallRight->Update();
+       wallBack->Update();
+       cube->Update();
+       ballet->Update();
+       backsphere->Update();
+       for (int i = 0; i < 20; i++)
+       {
+           PartCube1[i]->Update();
+           PartCube2[i]->Update();
+           PartCube3[i]->Update();
+           PartCube4[i]->Update();
+           PartCube5[i]->Update();
+           PartCube6[i]->Update();
+       }
+       for (int i = 0; i < 5; i++)
+       {
+           Stage1[i]->Update();
+       }
+       //particle更新        
+       for (int i = 0; i < 20; i++)
+       {
+           PartCube1[i]->PartUpdate(cube->GetPos());
+           PartCube2[i]->PartUpdate(Stage1[0]->GetPos());
+           PartCube3[i]->PartUpdate(Stage1[1]->GetPos());
+           PartCube4[i]->PartUpdate(Stage1[2]->GetPos());
+           PartCube5[i]->PartUpdate(Stage1[3]->GetPos());
+           PartCube6[i]->PartUpdate(Stage1[4]->GetPos());
+       }
+   }
+  
 
     if (resetflag==1)
     {
@@ -415,6 +649,156 @@ void GameScene::Draw()
 
     // デバッグテキスト描画
     //debugText->DrawAll();
+}
+
+void GameScene::restart()
+{
+    //地形3dオブジェクト
+    //床    
+    floor->SetPosition({ 0.0f,-1.0f,0.0f });
+    floor->SetScale({ 1.0f,0.1f,1.0f });
+    floor->SetModel(modelfloor);
+    floor->SetCollider(new BoxCollider(XMVECTOR{ 100.0f,0.7f,100.0f,0 }, 1.0f));
+
+
+    //壁
+    wallLeft->SetPosition({ -30.0f,10.0f,0.0f });
+    wallLeft->SetScale({ 0.1f,0.5f,1.0f });
+    wallLeft->SetRotation({ 0.0f,0.0f,0.0f });
+    wallLeft->SetModel(modelwall);
+    wallLeft->SetCollider(new BoxCollider(XMVECTOR{ 0.5f,100.0f,100.0f,0 }, 1.0f));
+    wallLeft->WallInitialize();
+
+    wallForward->SetPosition({ 0.0f,0.0f,100.0f });
+    wallForward->SetScale({ 0.1f,1.0f,1.0f });
+    wallForward->SetRotation({ 0.0f,90.0f,0.0f });
+    wallForward->SetModel(modelwall);
+    wallForward->SetCollider(new BoxCollider(XMVECTOR{ 100.0f,100.0f,0.8f,0 }, 1.0f));
+    wallForward->WallInitialize();
+
+    wallRight->SetPosition({ 100.0f,0.0f,0.0f });
+    wallRight->SetScale({ 0.01f,1.0f,1.0f });
+    wallRight->SetRotation({ 0.0f,0.0f,0.0f });
+    wallRight->SetModel(modelwall);
+    wallRight->SetCollider(new BoxCollider(XMVECTOR{ 0.8f,100.0f,100.0f,0 }, 1.0f));
+    wallRight->WallInitialize();
+
+    wallBack->SetPosition({ 0.0f,0.0f,-20.0f });
+    wallBack->SetScale({ 0.1f,1.0f,1.0f });
+    wallBack->SetRotation({ 0.0f,90.0f,0.0f });
+    wallBack->SetModel(modelwall);
+    wallBack->SetCollider(new BoxCollider(XMVECTOR{ 100.0f,100.0f,0.8f,0 }, 1.0f));
+    wallBack->WallInitialize();
+
+    //背景
+    
+    backsphere->SetPosition({ 0.0f,0.0f,0.0f });
+    backsphere->SetScale({ 1.0f,1.0f,1.0f });
+    backsphere->SetRotation({ 0.0f,0.0f,0.0f });
+    backsphere->SetModel(modelBack);
+
+    //プレイヤー関連処理
+    ballet->SetPosition({ 500.0f,5.0f,0.0f });
+    ballet->SetScale({ 0.01f,0.01f,0.01f });
+    ballet->SetModel(modelballet);
+    ballet->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+    ballet->BulInitialize();
+
+    player = new Player(ballet);
+    player->Initialize(WindowsApp::window_width, WindowsApp::window_height, this->input);
+    player->PlayerInitialize(this->input);
+
+    
+    playercol->SetPosition({ 0,0,0 });
+    playercol->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 0.5f));
+
+
+    //敵関連処理
+    
+    cube->SetPosition({ 5.0f,5.0f,20.0f });
+    cube->SetScale({ 0.01f,0.01f,0.01f });
+    cube->SetModel(model2);
+    cube->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+    cube->EnemyInitialize();
+
+    for (int i = 0; i < 5; i++)
+    {
+        Stage1[i]->SetScale({ 0.01f,0.01f,0.01f });
+        Stage1[i]->SetModel(model2);
+    }
+
+    Stage1[0]->SetPosition({ 15.0f,5.0f,10.0f });
+    Stage1[1]->SetPosition({ 15.0f,10.0f,10.0f });
+    Stage1[2]->SetPosition({ 10.0f,5.0f,20.0f });
+    Stage1[3]->SetPosition({ 35.0f,5.0f,5.0f });
+    Stage1[4]->SetPosition({ 25.0f,10.0f,30.0f });
+
+    for (int i = 0; i < 5; i++)
+    {
+        Stage1[i]->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+        Stage1[i]->EnemyInitialize();
+    }
+
+    //particle
+    for (int i = 0; i < 20; i++)
+    {
+        PartCube1[i]->SetPosition({ 5.0f,5.0f,20.0f });
+        PartCube1[i]->SetScale({ 0.005f,0.005f,0.005f });
+        PartCube1[i]->SetModel(model2);
+        PartCube1[i]->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+        PartCube1[i]->PartInitialize();
+    }
+
+    for (int i = 0; i < 20; i++)
+    {
+      
+        PartCube2[i]->SetPosition({ 15.0f,5.0f,10.0f });
+        PartCube2[i]->SetScale({ 0.005f,0.005f,0.005f });
+        PartCube2[i]->SetModel(model2);
+        PartCube2[i]->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+        PartCube2[i]->PartInitialize();
+    }
+
+    for (int i = 0; i < 20; i++)
+    {
+       
+        PartCube3[i]->SetPosition({ 15.0f,10.0f,10.0f });
+        PartCube3[i]->SetScale({ 0.005f,0.005f,0.005f });
+        PartCube3[i]->SetModel(model2);
+        PartCube3[i]->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+        PartCube3[i]->PartInitialize();
+    }
+
+    for (int i = 0; i < 20; i++)
+    {
+       
+        PartCube4[i]->SetPosition({ 10.0f,5.0f,20.0f });
+        PartCube4[i]->SetScale({ 0.005f,0.005f,0.005f });
+        PartCube4[i]->SetModel(model2);
+        PartCube4[i]->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+        PartCube4[i]->PartInitialize();
+    }
+
+    for (int i = 0; i < 20; i++)
+    {
+       
+        PartCube5[i]->SetPosition({ 35.0f,5.0f,5.0f });
+        PartCube5[i]->SetScale({ 0.005f,0.005f,0.005f });
+        PartCube5[i]->SetModel(model2);
+        PartCube5[i]->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+        PartCube5[i]->PartInitialize();
+    }
+
+    for (int i = 0; i < 20; i++)
+    {
+       
+        PartCube6[i]->SetPosition({ 25.0f,10.0f,30.0f });
+        PartCube6[i]->SetScale({ 0.005f,0.005f,0.005f });
+        PartCube6[i]->SetModel(model2);
+        PartCube6[i]->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+        PartCube6[i]->PartInitialize();
+    }
+
 }
 
     

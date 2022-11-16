@@ -13,7 +13,7 @@ void PartEnemy::PartInitialize()
 void PartEnemy::OnCollision(const CollisionInfo& info)
 {
 
-	if (info.collider->color==2)
+	if (info.collider->color==4)
 	{
 
     if (col==0)

@@ -24,10 +24,13 @@
 
 #include "Camera.h"
 #include"Player.h"
+#include"PlayerCol.h"
+
 #include "Pbullet.h"
 #include"Enemy.h"
 #include"PartEnemy.h"
 #include"Wall.h"
+
 
 
 
@@ -50,8 +53,14 @@ public://メンバ関数
 	void Initialize(DXCommon* dxcommon, Input* input, Audio* audio, SpriteCommon* spritecommon,WindowsApp*windows);
 	//更新
 	void Update();
+	//シーン分岐
+	const int& GetScene() { return scene; }
+	const int& GettutoScene() { return tutoscene; }
+	void SetScene(int scene) { this->scene = scene; }
 	//描画
 	void Draw();
+
+	void restart();
 	//解放
 	void Finalize();
 
@@ -85,8 +94,11 @@ private://メンバ変数
 	FBXobj3d* floor2 = nullptr;
 	Wall* wallLeft = nullptr;
 	Wall* wallForward = nullptr;
+	Wall* wallTute = nullptr;
 	Wall* wallRight = nullptr;
 	Wall* wallBack = nullptr;
+
+
 
 	FbxModel* modelBack = nullptr;
 	FBXobj3d* backsphere = nullptr;
@@ -104,6 +116,7 @@ private://メンバ変数
 	//自機関連
 	Pbullet* ballet = nullptr;
 	Player* player = nullptr;
+	PlayerCol* playercol = nullptr;
 
 	//ひとつ前のマウスの座標
 	float CurretmouseX = 0;
@@ -114,6 +127,17 @@ private://メンバ変数
 
 	//カメラの更新処理用
 	int firstfrag = 0;
+
+	float check = 0.01f;
+
+	XMFLOAT3 tutoroateation{ 0.0f,0.0f,0.0f };
+
+	float roat = 0.0f;
+
+	//シーン
+	int scene = 1;
+	int tutoscene = 0;
+	int goflag = 0;
 
 };
 

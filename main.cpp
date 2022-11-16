@@ -65,14 +65,51 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     spriteCommon = new SpriteCommon();
     spriteCommon->Initialize(dxCommon->GetDevice(),dxCommon->GetCommandList(),winApp->window_width,winApp->window_height);
 
-    spriteCommon->LoadTexture(4, L"Resources/1432.png");
+    spriteCommon->LoadTexture(1, L"Resources/1432.png");
+    spriteCommon->LoadTexture(2, L"Resources/title.png");
+    spriteCommon->LoadTexture(3, L"Resources/gameover.png");
+    spriteCommon->LoadTexture(4, L"Resources/clear.png");
+    spriteCommon->LoadTexture(5, L"Resources/tutomove.png");
+    spriteCommon->LoadTexture(6, L"Resources/tutomouse.png");
+    spriteCommon->LoadTexture(7, L"Resources/tutoshot.png");
+    spriteCommon->LoadTexture(8, L"Resources/tutorule.png");
+    spriteCommon->LoadTexture(9, L"Resources/tutoend.png");
 
-    Sprite* crosshair = Sprite::Create(spriteCommon, 4);
-    //crosshair->Create(spriteCommon, 4);
+    Sprite* crosshair = Sprite::Create(spriteCommon, 1);
     crosshair->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
-    /*crosshair->SetRotation({ (float)(rand() % 360) });*/
-    //tuto->SetSize({ (float)(rand() % 400), (float)(rand() % 100) });
     crosshair->TransferVertexBuffer();
+
+    Sprite* title = Sprite::Create(spriteCommon, 2);
+    title->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    title->TransferVertexBuffer();
+
+    Sprite* gameover = Sprite::Create(spriteCommon, 3);
+    gameover->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    gameover->TransferVertexBuffer();
+
+    Sprite* clear = Sprite::Create(spriteCommon, 4);
+    clear->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    clear->TransferVertexBuffer();
+
+    Sprite* tutomove = Sprite::Create(spriteCommon, 5);
+    tutomove->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    tutomove->TransferVertexBuffer();
+
+    Sprite* tutomouse = Sprite::Create(spriteCommon, 6);
+    tutomouse->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    tutomouse->TransferVertexBuffer();
+
+    Sprite* tutoshot = Sprite::Create(spriteCommon, 7);
+    tutoshot->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    tutoshot->TransferVertexBuffer();
+
+    Sprite* tutorule = Sprite::Create(spriteCommon, 8);
+    tutorule->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    tutorule->TransferVertexBuffer();
+
+    Sprite* tutoend = Sprite::Create(spriteCommon, 9);
+    tutoend->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    tutoend->TransferVertexBuffer();
 
 
     // DirectX初期化処理　ここまで
@@ -96,6 +133,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     gameScene->Initialize(dxCommon, input, audio,spriteCommon,winApp);
 
     char pla[64];
+
+    int scene = 0;
+    int tutoscene = 0;
+    int wait = 0;
     
 #pragma endregion 描画初期化処理
 
@@ -112,13 +153,123 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma region DirectX毎フレーム処理
         // DirectX毎フレーム処理　ここから
 
+        if (scene==0)//タイトル
+        {
+            title->Update();
+            if (input->TriggerKey(DIK_SPACE))
+            {
+                scene = 1;
+                gameScene->SetScene(scene);
+            }
+        }
+
         //入力の更新
         input->Update();
         // コマンドリストの取得
         ID3D12GraphicsCommandList* cmdList = dxCommon->GetCommandList();
-        crosshair->Update();
+
+        if (scene==1)//チュートリアル
+        {
+            //tutoscene = gameScene->GettutoScene();
+            if (tutoscene==0)
+            {
+                if (input->TriggerKey(DIK_SPACE))tutoscene = 1;
+            }
+            
+            if (tutoscene==1)
+            {
+                wait++;
+                if (wait>=5)
+                {
+                    if (input->TriggerKey(DIK_SPACE))
+                    {
+                        tutoscene = 2; 
+                        wait = 0;
+                    }
+                }
+                
+            }
+            if (tutoscene == 2)
+            {
+                wait++;
+                if (wait >= 5)
+                {
+                    if (input->TriggerKey(DIK_SPACE))
+                    {
+                        tutoscene = 3;
+                        wait = 0;
+                    }
+                }
+            }
+            if (tutoscene == 3)
+            {
+                wait++;
+                if (wait >= 5)
+                {
+                    if (input->TriggerKey(DIK_SPACE))
+                    {
+                        tutoscene = 4;
+                        wait = 0;
+                    }
+                }
+            }
+            if (tutoscene == 4)
+            {
+                wait++;
+                if (wait >= 5)
+                {
+                    if (input->TriggerKey(DIK_SPACE))
+                    {
+                        wait++;
+                        if (wait >= 5)
+                        {
+                            if (input->TriggerKey(DIK_SPACE))
+                            {
+                                scene = 2;
+                                gameScene->SetScene(scene);
+                                tutoscene = 0;
+                                wait = 0;
+                            }
+                        }
+                    }
+                }
+            }
+            tutomouse->Update();
+            tutomove->Update();
+            tutoend->Update();
+            tutoshot->Update();
+            tutorule->Update();
+            gameScene->Update();
+        }
+
+        if (scene==2)//ゲーム
+        {
+            crosshair->Update();
+            gameScene->Update();
+            scene = gameScene->GetScene();
+        }
         
-        gameScene->Update();
+        //ゲームオーバー
+        if (scene==3)
+        {
+            /*if (input->TriggerKey(DIK_SPACE))
+            {
+                scene = 0;
+            }*/
+            gameScene->Update();
+            gameover->Update();
+        }
+
+        //クリア
+        if (scene==4)
+        {
+            /*if (input->TriggerKey(DIK_SPACE))
+            {
+                scene = 0;
+            }*/
+            gameScene->Update();
+            clear->Update();
+        }
 
         if (input->PushKey(DIK_ESCAPE))
         {
@@ -147,12 +298,28 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
         //obj、スプライトの描画
         //tuto->Draw();
-       
-        gameScene->Draw();
+
+        if (scene != 0)
+        {
+            gameScene->Draw();
+        }
 
         spriteCommon->PreDraw();
 
-        crosshair->Draw();
+        if (scene == 0)title->Draw();
+        if (scene==1)
+        {
+            if (tutoscene == 0)tutomove->Draw();
+            if (tutoscene == 1)tutomouse->Draw();
+            if (tutoscene == 2)tutoshot->Draw();
+            if (tutoscene == 3)tutorule->Draw();
+            if (tutoscene == 4)tutoend->Draw();
+        }
+        
+        if (scene == 2)crosshair->Draw();
+        if (scene == 3)gameover->Draw();
+        if (scene == 4)clear->Draw();
+        
 
         //ポストエフェクトの描画
         //postEffect->Draw(dxCommon->GetCommandList());

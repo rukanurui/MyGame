@@ -68,6 +68,10 @@ public://メンバ関数
 	const XMMATRIX& GetMatWorld() { return matWorld; }
 
 	const XMFLOAT3& GetPos() { return position; }
+
+	const XMFLOAT3& GetScale() { return scale; }
+
+	const float& GetScaleX() { return scale.x; }
 	
 	//setter
 	static void SetDevice(ID3D12Device* device) { FBXobj3d::device = device; }
@@ -81,6 +85,7 @@ public://メンバ関数
 	//コライダーのセット
 	void SetCollider(BaseCollider* collider);
 
+	//void UpdateWorld();
 
 protected://メンバ変数
 	//定数バッファ

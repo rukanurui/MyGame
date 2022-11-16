@@ -18,7 +18,7 @@ void Pbullet::create(const XMFLOAT3& Playerpos, const XMVECTOR& velocity)
 void Pbullet::BulInitialize()
 {
 	//‘®«‚Ì’Ç‰Á
-	collider->SetColor(COLLISION_COLOR_PLAYER);
+	collider->SetColor(COLLISION_COLOR_PBULET);
 }
 
 void Pbullet::bulupdate()

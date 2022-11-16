@@ -237,8 +237,10 @@ void Camera::CurrentUpdate()
 
 
 	//À•W‚Ì‘€ì
+	
 	if (input->PushKey(DIK_A) || input->PushKey(DIK_D))
 	{
+		
 		if (input->PushKey(DIK_A)) Velocity.x = -0.1f;
 		else
 		{
@@ -247,7 +249,33 @@ void Camera::CurrentUpdate()
 
 		if (!input->PushKey(DIK_A) && !input->PushKey(DIK_D)) Velocity.x = 0;
 
-		
+		if (eye.x<=-25.0f)
+		{
+			eye.x = -24.0f;
+			Velocity.x = 0;
+			Velocity.z = 0;
+		}
+
+		if (eye.x >= 95.0f)
+		{
+			eye.x = 94.0f;
+			Velocity.x = 0;
+			Velocity.z = 0;
+		}
+
+		if (eye.z <= -15.0f)
+		{
+			eye.z = -14.0f;
+			Velocity.x = 0;
+			Velocity.z = 0;
+		}
+
+		if (eye.z >= 95.0f)
+		{
+			eye.z = 94.0f;
+			Velocity.x = 0;
+			Velocity.z = 0;
+		}
 
 		XMVECTOR move = { Velocity.x,Velocity.y,0,0 };
 
@@ -264,6 +292,35 @@ void Camera::CurrentUpdate()
 			if (input->PushKey(DIK_W)) Velocity.z = 0.1f;
 		}
 		if (!input->PushKey(DIK_W) && !input->PushKey(DIK_S)) Velocity.z = 0;
+
+		if (eye.x <= -25.0f)
+		{
+			eye.x = -24.0f;
+			Velocity.x = 0;
+			Velocity.z = 0;
+		}
+
+		if (eye.x >= 95.0f)
+		{
+			eye.x = 94.0f;
+			Velocity.x = 0;
+			Velocity.z = 0;
+		}
+
+		if (eye.z <= -13.0f)
+		{
+			eye.z = -12.0f;
+			Velocity.x = 0;
+			Velocity.z = 0;
+		}
+
+		if (eye.z >= 95.0f)
+		{
+			eye.z = 94.0f;
+			Velocity.x = 0;
+			Velocity.z = 0;
+		}
+
 
 		XMVECTOR move = { 0,0,Velocity.z,0 };
 

@@ -114,7 +114,8 @@ void Enemy::EnemyUpdate(XMFLOAT3 playerpos)
 void Enemy::OnCollision(const CollisionInfo& info)
 {
 
-	if (info.collider->color==2)
+	//’e‚Æ“–‚½‚Á‚½Žž
+	if (info.collider->color==4)
 	{
 
 	if (scale.x >= 0.01f)
