@@ -1,9 +1,9 @@
 #pragma once
 #include"Pbullet.h"
-#include"Camera.h"
+#include"3d/fbxobj3d.h"
 
 
-class Player : public Camera
+class Player : public FBXobj3d
 {
 
 public://ƒƒ“ƒoŠÖ”
@@ -16,9 +16,12 @@ public://ƒƒ“ƒoŠÖ”
 	void Shot();
 
 
+
 private://ƒƒ“ƒo•Ï”
 	Input* input = nullptr;
 	//Pbullet* bullet = nullptr;
-Pbullet*bullet;
+	Pbullet*bullet;
+	XMFLOAT3 target{ 0,0,0 };
+	float distance = 5;
 };
 
