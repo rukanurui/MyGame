@@ -57,6 +57,8 @@ public://メンバ関数
 	const int& GetScene() { return scene; }
 	const int& GettutoScene() { return tutoscene; }
 	void SetScene(int scene) { this->scene = scene; }
+	//シーン遷移処理
+	void transrationScene();
 	//描画
 	void Draw();
 
@@ -98,14 +100,21 @@ private://メンバ変数
 	Wall* wallRight = nullptr;
 	Wall* wallBack = nullptr;
 
-
+	//2面
+	Wall* centerWall = nullptr;
+	Wall * crossWall = nullptr;
 
 	FbxModel* modelBack = nullptr;
 	FBXobj3d* backsphere = nullptr;
 
 	//3dモデル(敵)
+	//チュートリアル
 	Enemy* cube = nullptr;
 	Enemy* Stage1[5];
+	Enemybullet* Ebullet = nullptr;
+	//ステージ2
+	Enemy* stage2[5];
+	//パーティクル
 	PartEnemy* PartCube1[20];
 	PartEnemy* PartCube2[20];
 	PartEnemy* PartCube3[20];
@@ -121,6 +130,8 @@ private://メンバ変数
 	//ひとつ前のマウスの座標
 	float CurretmouseX = 0;
 	float CurretmouseY = 0;
+	//カメラ初期位置
+	XMFLOAT3 EyeInitialize = { 0,4,0 };
 
 	//デバッグ用リセットフラグ
 	int resetflag = 0;
@@ -138,6 +149,7 @@ private://メンバ変数
 	int scene = 1;
 	int tutoscene = 0;
 	int goflag = 0;
+	
 
 };
 

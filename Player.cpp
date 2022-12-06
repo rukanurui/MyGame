@@ -2,7 +2,7 @@
 #include "Player.h"
 
 
-Player::Player(Pbullet* bullet):FBXobj3d()
+Player::Player(Pbullet* bullet):Camera(input,windows)
 {
 	this->bullet = bullet;
 };
@@ -24,12 +24,13 @@ void Player::PlayerUpdate()
 		const float bulspeed = 1.5f;
 		XMVECTOR Velocity{ 0,0,bulspeed };
 
-		Velocity={ target.x - position.x, target.y - position.y, target.z - position.z };
+		//Velocity={ target.x - position.x, target.y - position.y, target.z - position.z };
+		Velocity = { target.x - eye.x, target.y - eye.y, target.z - eye.z };
 
 		Velocity = XMVector3Normalize(Velocity) * bulspeed;
 
 		//’e‚Ì¶¬‚Æ‰Šú‰»
-		bullet->create(position, Velocity);
+		bullet->create(eye, Velocity);
 	}
 
 	//’e‚ÌXV

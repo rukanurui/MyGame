@@ -3,14 +3,18 @@
 #include"SphereCollider.h"
 #include"DebugText.h"
 
+#include"EnemyBullet.h"
+
 class Enemy : public FBXobj3d
 {
 public://メンバ関数
 	Enemy();
 
-	void EnemyInitialize();
+	void EnemyInitialize(bool Shot);
 
 	void EnemyUpdate(XMFLOAT3 playerpos);
+
+	void Shot();
 
 
 	//衝突時コールバック関数
@@ -23,6 +27,7 @@ public://メンバ関数
 
 private:
 
+	Enemybullet* bullet = nullptr;
 
 	int col = 0;
 
@@ -35,6 +40,12 @@ private:
 	XMVECTOR Vecpos;
 
 	DebugText* Debugtext = nullptr;
+
+	//弾を打つ敵かどうか
+	bool Shot;
+
+	//弾のクールタイム
+	float count=0;
 
 	
 

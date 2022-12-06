@@ -11,7 +11,7 @@ Enemy::Enemy() : FBXobj3d()
 }
 
 
-void Enemy::EnemyInitialize()
+void Enemy::EnemyInitialize(bool Shot)
 {
 	//属性の追加
 	collider->SetColor(COLLISION_COLOR_ENEMY);
@@ -99,6 +99,52 @@ void Enemy::EnemyUpdate(XMFLOAT3 playerpos)
 
 	}
 	
+	if (Shot==TRUE)
+	{
+
+		count++;
+
+		//プレイヤーの座標
+		Playerpos.m128_f32[0] = playerpos.x;
+		Playerpos.m128_f32[1] = playerpos.y;
+		Playerpos.m128_f32[2] = playerpos.z;
+
+		//敵の座標
+		Vecpos.m128_f32[0] = position.x;
+		Vecpos.m128_f32[1] = position.y;
+		Vecpos.m128_f32[2] = position.z;
+
+		//差分ベクトルの計算
+		XMVECTOR Toenemy;
+		Toenemy = Playerpos - Vecpos;
+		Toenemy = XMVector3Normalize(Toenemy);
+
+		Vel = Toenemy * 0.12f;
+
+		if (count>=5)
+		{
+			count = 0;
+
+			//弾の速度
+			const float bulspeed = 1.5f;
+			XMVECTOR Velocity{ 0,0,bulspeed };
+
+			//Velocity={ target.x - position.x, target.y - position.y, target.z - position.z };
+			Velocity = { playerpos.x - position.x, playerpos.y - position.y, playerpos.z - position.z };
+
+			Velocity = XMVector3Normalize(Velocity) * bulspeed;
+
+			//弾の生成と初期化
+			bullet->create(position, Velocity);
+		}
+	}
+
+	if (bullet)
+	{
+		bullet->bulupdate();
+
+	}
+
 	Update();
 
 	//当たり判定更新

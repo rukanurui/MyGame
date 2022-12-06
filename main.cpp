@@ -260,7 +260,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
             gameover->Update();
         }
 
-        //クリア
+        //2面
         if (scene==4)
         {
             /*if (input->TriggerKey(DIK_SPACE))
@@ -318,7 +318,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         
         if (scene == 2)crosshair->Draw();
         if (scene == 3)gameover->Draw();
-        if (scene == 4)clear->Draw();
+        //if (scene == 4)clear->Draw();
         
 
         //ポストエフェクトの描画

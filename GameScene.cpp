@@ -149,7 +149,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     cube->SetScale({ 0.01f,0.01f,0.01f });
     cube->SetModel(model2);
     cube->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 },1.0f));
-    cube->EnemyInitialize();
+    cube->EnemyInitialize(TRUE);
 
     for (int i = 0; i < 5; i++)
     {
@@ -166,10 +166,17 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     Stage1[3]->SetPosition({ 35.0f,5.0f,5.0f });
     Stage1[4]->SetPosition({ 25.0f,10.0f,30.0f });
 
+    Ebullet = new Enemybullet;
+    Ebullet->Initialize();
+    Ebullet->BulInitialize();
+    Ebullet->SetScale({ 0.01f,0.01f,0.01f });
+    Ebullet->SetModel(modelballet);
+    Ebullet->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+
     for (int i = 0; i < 5; i++)
     {
         Stage1[i]->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
-        Stage1[i]->EnemyInitialize();
+        Stage1[i]->EnemyInitialize(FALSE);
     }
 
     //particle
@@ -380,6 +387,8 @@ void GameScene::Update()
 
         }*/
         //描画のためにカメラの更新処理を一回呼び出す
+
+
 if (firstfrag == 0)
 {
     camera->CurrentUpdate();
@@ -434,6 +443,7 @@ if (firstfrag == 0)
         cube->Update();
         ballet->Update();
         backsphere->Update();
+
         for (int i = 0; i < 20; i++)
         {
             PartCube1[i]->Update();
@@ -497,6 +507,7 @@ if (firstfrag == 0)
             scene = 3;//ゲームオーバー
         }
 
+        //敵を倒したら次のステージ
         if (cube->GetScaleX()<check&&
             Stage1[0]->GetScaleX() < check&&
             Stage1[1]->GetScaleX() < check&&
@@ -547,6 +558,15 @@ if (firstfrag == 0)
 
    if (scene == 4)
    {
+       //描画のためにカメラの更新処理を一回呼び出す
+       if (firstfrag == 0)
+       {
+           camera->CurrentUpdate();
+           camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+
+           firstfrag = 1;
+       }
+
        //FBX更新
        floor->Update();
        wallLeft->Update();
@@ -565,20 +585,33 @@ if (firstfrag == 0)
            PartCube5[i]->Update();
            PartCube6[i]->Update();
        }
-       for (int i = 0; i < 5; i++)
+      
+
+       //自分が動いていたら更新処理
+       if (input->PushKey(DIK_W) || input->PushKey(DIK_A) || input->PushKey(DIK_S) || input->PushKey(DIK_D))
        {
-           Stage1[i]->Update();
+
+           //プレイy－更新
+           player->PlayerUpdate();
+
+           camera->CurrentUpdate();
+           camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+           playercol->SetPosition(player->GetEye());
+           playercol->colUpdate();
        }
-       //particle更新        
-       for (int i = 0; i < 20; i++)
+
+
+       //マウスだけ動いてる時
+       if (mouseMove.lX != 0 || mouseMove.lY != 0)
        {
-           PartCube1[i]->PartUpdate(cube->GetPos());
-           PartCube2[i]->PartUpdate(Stage1[0]->GetPos());
-           PartCube3[i]->PartUpdate(Stage1[1]->GetPos());
-           PartCube4[i]->PartUpdate(Stage1[2]->GetPos());
-           PartCube5[i]->PartUpdate(Stage1[3]->GetPos());
-           PartCube6[i]->PartUpdate(Stage1[4]->GetPos());
+           camera->CurrentUpdate();
+           //camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+
        }
+
+       //すべての衝突をチェック
+       collisionManager->CheckAllCollisions();
+
    }
   
 
@@ -626,21 +659,25 @@ void GameScene::Draw()
     //backsphere->Draw(cmdList);
 
     //敵関連
-    cube->Draw(cmdList);//cube
-    for (int i = 0; i < 5; i++)
+    if (scene<4)
     {
-        Stage1[i]->Draw(cmdList);
-    }
+        cube->Draw(cmdList);//cube
+        for (int i = 0; i < 5; i++)
+        {
+            Stage1[i]->Draw(cmdList);
+        }
 
-    for (int i = 0; i < 20; i++)
-    {
-        PartCube1[i]->Draw(cmdList);
-        PartCube2[i]->Draw(cmdList);
-        PartCube3[i]->Draw(cmdList);
-        PartCube4[i]->Draw(cmdList);
-        PartCube5[i]->Draw(cmdList);
-        PartCube6[i]->Draw(cmdList);
+        for (int i = 0; i < 20; i++)
+        {
+            PartCube1[i]->Draw(cmdList);
+            PartCube2[i]->Draw(cmdList);
+            PartCube3[i]->Draw(cmdList);
+            PartCube4[i]->Draw(cmdList);
+            PartCube5[i]->Draw(cmdList);
+            PartCube6[i]->Draw(cmdList);
+        }
     }
+    
 
     ////プレイヤー関連
     ballet->Draw(cmdList);
@@ -719,7 +756,7 @@ void GameScene::restart()
     cube->SetScale({ 0.01f,0.01f,0.01f });
     cube->SetModel(model2);
     cube->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
-    cube->EnemyInitialize();
+    cube->EnemyInitialize(TRUE);
 
     for (int i = 0; i < 5; i++)
     {
@@ -736,7 +773,7 @@ void GameScene::restart()
     for (int i = 0; i < 5; i++)
     {
         Stage1[i]->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
-        Stage1[i]->EnemyInitialize();
+        Stage1[i]->EnemyInitialize(FALSE);
     }
 
     //particle
@@ -799,6 +836,17 @@ void GameScene::restart()
         PartCube6[i]->PartInitialize();
     }
 
+}
+
+void GameScene::transrationScene()
+{
+    if (scene==2)
+    {
+        camera->SetEye(EyeInitialize);
+
+
+    }
+    
 }
 
     
