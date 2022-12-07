@@ -1,7 +1,9 @@
 #pragma once
 #include"3d/fbxobj3d.h"
+#include "3d/FbxLoader.h"
+#include "3d/Modelfbx.h"
 #include"SphereCollider.h"
-#include"DebugText.h"
+
 
 #include"EnemyBullet.h"
 
@@ -14,8 +16,7 @@ public://メンバ関数
 
 	void EnemyUpdate(XMFLOAT3 playerpos);
 
-	void Shot();
-
+	void Attack(XMFLOAT3 playerpos);
 
 	//衝突時コールバック関数
 	void OnCollision(const CollisionInfo& info)override;
@@ -25,10 +26,14 @@ public://メンバ関数
 
 	void move();
 
+	void BulDraw(ID3D12GraphicsCommandList* cmdList);
+
 private:
 
-	Enemybullet* bullet = nullptr;
-
+	//ポインタ
+	FbxModel* modelballet = nullptr;
+	Enemybullet* bullet=nullptr;
+	
 	int col = 0;
 
 	float G = -0.1;//重力加速度
@@ -38,8 +43,6 @@ private:
 	XMVECTOR Playerpos;
 
 	XMVECTOR Vecpos;
-
-	DebugText* Debugtext = nullptr;
 
 	//弾を打つ敵かどうか
 	bool Shot;

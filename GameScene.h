@@ -111,7 +111,6 @@ private://メンバ変数
 	//チュートリアル
 	Enemy* cube = nullptr;
 	Enemy* Stage1[5];
-	Enemybullet* Ebullet = nullptr;
 	//ステージ2
 	Enemy* stage2[5];
 	//パーティクル

@@ -24,4 +24,5 @@ private:
 
 	int aliveflag = 0;
 
+
 };

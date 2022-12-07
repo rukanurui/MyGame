@@ -143,7 +143,8 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     
 
     //“GŠÖ˜Aˆ—
-    cube = new Enemy;
+    
+    cube = new Enemy();
     cube->Initialize();
     cube->SetPosition({ 5.0f,5.0f,20.0f });
     cube->SetScale({ 0.01f,0.01f,0.01f });
@@ -154,7 +155,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     for (int i = 0; i < 5; i++)
     {
         Stage1[i] = nullptr;
-        Stage1[i] = new Enemy;
+        Stage1[i] = new Enemy();
         Stage1[i]->Initialize();
         Stage1[i]->SetScale({0.01f,0.01f,0.01f});
         Stage1[i]->SetModel(model2);
@@ -165,13 +166,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     Stage1[2]->SetPosition({ 10.0f,5.0f,20.0f });
     Stage1[3]->SetPosition({ 35.0f,5.0f,5.0f });
     Stage1[4]->SetPosition({ 25.0f,10.0f,30.0f });
-
-    Ebullet = new Enemybullet;
-    Ebullet->Initialize();
-    Ebullet->BulInitialize();
-    Ebullet->SetScale({ 0.01f,0.01f,0.01f });
-    Ebullet->SetModel(modelballet);
-    Ebullet->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+    
 
     for (int i = 0; i < 5; i++)
     {
@@ -662,6 +657,7 @@ void GameScene::Draw()
     if (scene<4)
     {
         cube->Draw(cmdList);//cube
+        cube->BulDraw(cmdList);
         for (int i = 0; i < 5; i++)
         {
             Stage1[i]->Draw(cmdList);
