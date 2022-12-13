@@ -61,15 +61,17 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     FBXobj3d::CreateGraphicsPipeline();
     //file読み込み
     
-    model1 = FbxLoader::GetInstance()->LoadModelFromFile("boneTest");
+    //model1 = FbxLoader::GetInstance()->LoadModelFromFile("boneTest");
     model2 = FbxLoader::GetInstance()->LoadModelFromFile("testfbx");
     modelfloor = FbxLoader::GetInstance()->LoadModelFromFile("floor");
     modelwall = FbxLoader::GetInstance()->LoadModelFromFile("colorwall");
     modelballet = FbxLoader::GetInstance()->LoadModelFromFile("bullet");
     modelBack = FbxLoader::GetInstance()->LoadModelFromFile("back");
+   // modelgun = FbxLoader::GetInstance()->LoadModelFromFile("weapon");
 
     //地形3dオブジェクト
     //床
+
     floor = new FBXobj3d;
     floor->Initialize();
     floor->SetPosition({ 0.0f,-1.0f,0.0f });
@@ -141,6 +143,14 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     playercol->SetPosition({ 0,0,0 });
     playercol->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 0.5f));
     
+
+
+    /*gun = new FBXobj3d;
+    gun->Initialize();
+    gun->SetPosition({10.0f,11.0f,10.0f});
+    gun->SetScale({ 0.01f,0.01f,0.01f });
+    gun->SetModel(modelgun);*/
+   
 
     //敵関連処理
     
@@ -440,6 +450,8 @@ if (firstfrag == 0)
         ballet->Update();
         backsphere->Update();
 
+        //gun->Update();
+
         for (int i = 0; i < 20; i++)
         {
             PartCube1[i]->Update();
@@ -653,6 +665,7 @@ void GameScene::Draw()
     wallForward->Draw(cmdList);
     wallRight->Draw(cmdList);
     wallBack->Draw(cmdList);
+    //gun->Draw(cmdList);
     //backsphere->Draw(cmdList);
 
     //敵関連

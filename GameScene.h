@@ -92,8 +92,10 @@ private://ÉÅÉìÉoïœêî
 	FbxModel* modelfloor = nullptr;
 	FbxModel* modelwall = nullptr;
 	FbxModel* modelballet = nullptr;
+	FbxModel* modelgun = nullptr;
 	FBXobj3d* floor = nullptr;
 	FBXobj3d* floor2 = nullptr;
+	FBXobj3d* gun = nullptr;
 	Wall* wallLeft = nullptr;
 	Wall* wallForward = nullptr;
 	Wall* wallTute = nullptr;
