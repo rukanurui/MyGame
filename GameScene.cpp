@@ -429,6 +429,7 @@ if (firstfrag == 0)
             firstfrag = 0;
         }
 
+        
         //FBX更新
         floor->Update();
         wallLeft->Update();
@@ -452,6 +453,7 @@ if (firstfrag == 0)
         {
             Stage1[i]->Update();
         }
+       
 
         //自分が動いていたら更新処理
         if (input->PushKey(DIK_W) || input->PushKey(DIK_A) || input->PushKey(DIK_S) || input->PushKey(DIK_D))
@@ -484,13 +486,13 @@ if (firstfrag == 0)
             playercol->colUpdate();
         }
 
+        
 
         //マウスだけ動いてる時
         if (mouseMove.lX != 0 || mouseMove.lY != 0)
         {
             camera->CurrentUpdate();
             //camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-
         }
 
         //すべての衝突をチェック
