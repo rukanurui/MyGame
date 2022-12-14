@@ -26,7 +26,11 @@ public://ƒƒ“ƒoŠÖ”
 
 	void move();
 
+	void BulUpdate();
+
 	void BulDraw(ID3D12GraphicsCommandList* cmdList);
+
+	void setcol(int Col);
 
 private:
 

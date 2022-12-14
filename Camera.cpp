@@ -8,7 +8,7 @@ XMMATRIX Camera::matWorld = {};
 XMFLOAT3 Camera::eye = { 0, 4, 0.0f };
 XMFLOAT3 Camera::target = { 0, 4, 0 };
 XMFLOAT3 Camera::up = { 0, 1, 0 };
-XMFLOAT3 Camera::rotation = { 0, 0, 0 };
+XMFLOAT3 Camera::rotation = { 45, 0, 0 };
 
 
 
@@ -25,7 +25,7 @@ Camera::Camera(Input* input,WindowsApp*windows)
 
 void Camera::Initialize(int window_width, int window_height,Input* input)
 {
-	
+
 	// ビュー行列の生成
 	matView = XMMatrixLookAtLH(
 		XMLoadFloat3(&eye),
@@ -194,6 +194,8 @@ void Camera::CurrentUpdate()
 
 	float oldeye = eye.y;
 
+	XMFLOAT3 oldpos{ eye };
+
 	// マウスの入力を取得
 	Input::MouseMove mouseMove = input->GetMouseMove();
 
@@ -249,39 +251,49 @@ void Camera::CurrentUpdate()
 
 		if (!input->PushKey(DIK_A) && !input->PushKey(DIK_D)) Velocity.x = 0;
 
-		if (eye.x<=-25.0f)
+		/*if (eye.x <= -6.0f)
 		{
-			eye.x = -24.0f;
-			Velocity.x = 0;
+			eye.x = 1.0f;
+			Velocity.x = 0.1;
 			Velocity.z = 0;
 		}
 
-		if (eye.x >= 95.0f)
+		if (eye.z >= 6.0f && eye.x <= 10.0f)
 		{
-			eye.x = 94.0f;
-			Velocity.x = 0;
+			eye.z = 5.0f;
+			Velocity.x = 0.2f;
+			Velocity.z = -0.2;
+		}
+
+		if (eye.x >= 26.0f && eye.z <= 46.0f)
+		{
+			eye.x = 21.0f;
+			Velocity.x = -0.1;
 			Velocity.z = 0;
 		}
 
-		if (eye.z <= -15.0f)
+		if (eye.z >= 70.0f)
 		{
-			eye.z = -14.0f;
+			eye.x = 65.0f;
 			Velocity.x = 0;
-			Velocity.z = 0;
+			Velocity.z = -0.1;
 		}
 
-		if (eye.z >= 95.0f)
+		if (eye.z<=-6.0f)
 		{
-			eye.z = 94.0f;
+			eye.z = -1.0f;
+			Velocity.z = 0.1;
 			Velocity.x = 0;
-			Velocity.z = 0;
-		}
+		}*/
+
 
 		XMVECTOR move = { Velocity.x,Velocity.y,0,0 };
 
 		move = XMVector3Transform(move, matRot);
 		MoveVector(move);
 		viewDirtyFlag = true;
+
+		
 	}
 
 	if (input->PushKey(DIK_W) || input->PushKey(DIK_S))
@@ -293,40 +305,42 @@ void Camera::CurrentUpdate()
 		}
 		if (!input->PushKey(DIK_W) && !input->PushKey(DIK_S)) Velocity.z = 0;
 
-		if (eye.x <= -25.0f)
+
+		/*if (eye.x <= -6.0f)
 		{
-			eye.x = -24.0f;
-			Velocity.x = 0;
+			eye.x = 1.0f;
+			Velocity.x = 0.1;
 			Velocity.z = 0;
 		}
 
-		if (eye.x >= 95.0f)
+		if (eye.x >= 26.0f && eye.z <= 46.0f)
 		{
-			eye.x = 94.0f;
-			Velocity.x = 0;
+			eye.x = 21.0f;
+			Velocity.x = -0.1;
 			Velocity.z = 0;
 		}
 
-		if (eye.z <= -13.0f)
+		if (eye.z >= 70.0f)
 		{
-			eye.z = -12.0f;
+			eye.x = 65.0f;
 			Velocity.x = 0;
-			Velocity.z = 0;
+			Velocity.z = -0.1;
 		}
 
-		if (eye.z >= 95.0f)
+		if (eye.z <= -6.0f)
 		{
-			eye.z = 94.0f;
+			eye.z = -1.0f;
+			Velocity.z = 0.1;
 			Velocity.x = 0;
-			Velocity.z = 0;
-		}
+		}*/
 
-
+		
 		XMVECTOR move = { 0,0,Velocity.z,0 };
 
 		move = XMVector3Transform(move, matRot);
 		MoveTarget(move);
 		viewDirtyFlag = true;
+
 
 		
 	}
@@ -335,14 +349,7 @@ void Camera::CurrentUpdate()
 
 	if (target.y >= 5)target.y = 5;//注視点が5以上になりそうだったら
 
-	//if (eye.y <= 3)
-	//{
-	//	eye.y = 4;
-	//	target.y = eye.y+distance;//注視点が0以下になりそうだったら
-	//}
 	
-	
-
 	if (viewDirtyFlag)
 	{
 		// 追加回転分の回転行列を生成

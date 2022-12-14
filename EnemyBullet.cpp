@@ -113,6 +113,8 @@ void Enemybullet::OnCollision(const CollisionInfo& info)
 			Vel.m128_f32[1] = 0.0f;
 			Vel.m128_f32[2] = 0.0f;
 
+		
+
 			HRESULT result;
 			XMMATRIX matScale, matRot, matTrans;
 

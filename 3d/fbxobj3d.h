@@ -100,6 +100,7 @@ protected://メンバ変数
 	XMFLOAT3 position = { 0,0,0 };
 	// ローカルワールド変換行列
 	XMMATRIX matWorld;
+	XMMATRIX matScale, matRot, matTrans;
 	//モデル
 	FbxModel* fbxmodel = nullptr;
 

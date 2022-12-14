@@ -16,13 +16,14 @@ public:
 	//衝突時コールバック関数
 	void OnCollision(const CollisionInfo& info)override;
 
+	const bool& Gethit() { return dead; }
 
 private:
 
 	//速度
 	XMVECTOR Vel = { 0,0,0 };
 
-	int aliveflag = 0;
+	bool dead = false;
 
 
 };

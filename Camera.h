@@ -122,7 +122,7 @@ protected://メンバ変数
 	XMFLOAT3 Velocity{ 0,0,0 };//速度
 
 	// カメラ注視点までの距離
-	float distance = 5;
+	float distance = 1;
 
 };
 

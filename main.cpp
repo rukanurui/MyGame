@@ -92,7 +92,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     clear->TransferVertexBuffer();
 
     Sprite* tutomove = Sprite::Create(spriteCommon, 5);
-    tutomove->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    tutomove->SetPosition({ WindowsApp::window_width / 2,700,0});
+    XMFLOAT2 movesize = { 800,300 };
+    tutomove->SetSize(movesize);
     tutomove->TransferVertexBuffer();
 
     Sprite* tutomouse = Sprite::Create(spriteCommon, 6);
@@ -137,6 +139,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     int scene = 0;
     int tutoscene = 0;
     int wait = 0;
+    int count = 0;
     
 #pragma endregion 描画初期化処理
 
@@ -158,7 +161,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
             title->Update();
             if (input->TriggerKey(DIK_SPACE))
             {
-                scene = 1;
+                scene = 2;
                 gameScene->SetScene(scene);
             }
         }
@@ -244,31 +247,80 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
         if (scene==2)//ゲーム
         {
+
+            if (tutoscene == 0)
+            {
+                wait++;
+                if (wait >= 180&&input->PushKey(DIK_W) || input->PushKey(DIK_A) || input->PushKey(DIK_S) || input->PushKey(DIK_D))
+                {
+                    tutoscene = 1;
+                    wait = 0;
+                }
+            }
+
+            if (tutoscene == 1)
+            {
+                wait++;
+                if (wait >= 120)
+                {
+                    tutoscene = 2;
+                    wait = 0;
+                }
+            }
+
+            if (tutoscene == 2)
+            {
+                wait++;
+                if (wait >= 60)
+                {
+                    tutoscene = 3;
+                    wait = 0;
+                }
+            }
+
             crosshair->Update();
             gameScene->Update();
             scene = gameScene->GetScene();
+
+            tutomouse->Update();
+            tutomove->Update();
+            tutoend->Update();
+            tutoshot->Update();
+            tutorule->Update();
+            gameScene->Update();
         }
         
         //ゲームオーバー
         if (scene==3)
         {
-            /*if (input->TriggerKey(DIK_SPACE))
-            {
-                scene = 0;
-            }*/
+            
             gameScene->Update();
             gameover->Update();
+            if (input->TriggerKey(DIK_R))
+            {
+                //gameScene->Initialize(dxCommon, input, audio, spriteCommon, winApp);
+                gameScene->restart();
+                scene = 0;
+                tutoscene = 0;
+                wait = 0;
+                count = 0;
+            }
         }
 
         //2面
         if (scene==4)
         {
-            /*if (input->TriggerKey(DIK_SPACE))
-            {
-                scene = 0;
-            }*/
+            
             gameScene->Update();
             clear->Update();
+            if (input->TriggerKey(DIK_R))
+            {
+                gameScene->restart();
+                scene = 0;
+                tutoscene = 0;
+                wait = 0;
+                count = 0;
+            }
         }
 
         if (input->PushKey(DIK_ESCAPE))
@@ -307,18 +359,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         spriteCommon->PreDraw();
 
         if (scene == 0)title->Draw();
-        if (scene==1)
+        if (scene==2)
         {
             if (tutoscene == 0)tutomove->Draw();
             if (tutoscene == 1)tutomouse->Draw();
-            if (tutoscene == 2)tutoshot->Draw();
-            if (tutoscene == 3)tutorule->Draw();
-            if (tutoscene == 4)tutoend->Draw();
+            if (tutoscene == 2)tutorule->Draw();
         }
         
         if (scene == 2)crosshair->Draw();
         if (scene == 3)gameover->Draw();
-        //if (scene == 4)clear->Draw();
+        if (scene == 4)clear->Draw();
         
 
         //ポストエフェクトの描画

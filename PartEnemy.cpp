@@ -151,3 +151,8 @@ void PartEnemy::PartUpdate(XMFLOAT3 pos)
 		collider->Update();
 	}
 }
+
+void PartEnemy::setcol(int Col)
+{
+	col = Col;
+}
