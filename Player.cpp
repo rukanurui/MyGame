@@ -18,6 +18,18 @@ void Player::PlayerInitialize(Input* Input)
 	modelballet = FbxLoader::GetInstance()->LoadModelFromFile("bullet");
 	modelgun = FbxLoader::GetInstance()->LoadModelFromFile("gun");
 
+
+	//銃の生成と初期化
+	PlayerGun* newGun = new PlayerGun();
+	newGun->Initialize();
+	newGun->SetScale({ 0.01f,0.01f,0.01f });
+	newGun->SetModel(modelgun);
+	newGun->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+	newGun->GunInitialize();
+	newGun->staycreate(position);
+	//銃の登録
+	Pgun.reset(newGun);
+
 }
 
 void Player::MoveVector(const XMVECTOR& move)
@@ -51,27 +63,7 @@ void Player::PlayerUpdate()
 		return melee->Getdead();
 		});
 
-	HRESULT result;
-
-	// スケール、回転、平行移動行列の計算
-	matScale = XMMatrixScaling(scale.x, scale.y, scale.z);
-	matRot = XMMatrixIdentity();
-	matRot *= XMMatrixRotationZ(XMConvertToRadians(rotation.z));
-	matRot *= XMMatrixRotationX(XMConvertToRadians(rotation.x));
-	matRot *= XMMatrixRotationY(XMConvertToRadians(rotation.y));
-	matTrans = XMMatrixTranslation(position.x, position.y, position.z);
-
-	// ワールド行列の合成
-	matWorld = XMMatrixIdentity(); // 変形をリセット
-	matWorld *= matScale; // ワールド行列にスケーリングを反映
-	matWorld *= matRot; // ワールド行列に回転を反映
-	matWorld *= matTrans; // ワールド行列に平行移動を反映
-
-	const XMMATRIX& matViewProjection =
-		camera->GetViewProjectionMatrix();
-
-	//カメラ座標
-	const XMFLOAT3& camerapos = camera->GetEye();
+	UpdateWorld();
 
 	//当たり判定更新
 	if (collider)
@@ -140,7 +132,7 @@ void Player::PlayerUpdate()
 		//弾の登録
 		Guns.push_back(std::move(newGun));
 		//残弾減らす
-		magazin==0;
+		magazin=0;
 		//フラグ変更
 		have = false;
 	}
@@ -174,6 +166,16 @@ void Player::PlayerUpdate()
 		bullet->bulupdate();
 		bullet->Update();
 	}
+
+	//銃の更新
+	XMVECTOR Velocity{ 0,0,0};
+
+	Velocity = { target.x - position.x, target.y - position.y, target.z - position.z };
+
+	Velocity = XMVector3Normalize(Velocity);
+
+	Pgun->gunupdate(position, rotation);
+	Pgun->Update();
 
 	//投げた銃の更新
 	for (std::unique_ptr<PlayerGun>& gun : Guns)
@@ -218,6 +220,7 @@ void Player::throwgunUpdate()
 
 void Player::gunUpdate()
 {
+	Pgun->gunupdate(position, rotation);
 }
 
 void Player::BulDraw(ID3D12GraphicsCommandList* cmdList)
@@ -247,7 +250,11 @@ void Player::throwgunDraw(ID3D12GraphicsCommandList* cmdList)
 
 void Player::gunDraw(ID3D12GraphicsCommandList* cmdList)
 {
-
+	if (have==true)
+	{
+		Pgun->Draw(cmdList);
+	}
+	
 }
 
 void Player::OnCollision(const CollisionInfo& info)
@@ -268,28 +275,8 @@ void Player::OnCollision(const CollisionInfo& info)
 		wallhit = 0;
 	}
 
-
-	HRESULT result;
 	
-	// スケール、回転、平行移動行列の計算
-	matScale = XMMatrixScaling(scale.x, scale.y, scale.z);
-	matRot = XMMatrixIdentity();
-	matRot *= XMMatrixRotationZ(XMConvertToRadians(rotation.z));
-	matRot *= XMMatrixRotationX(XMConvertToRadians(rotation.x));
-	matRot *= XMMatrixRotationY(XMConvertToRadians(rotation.y));
-	matTrans = XMMatrixTranslation(position.x, position.y, position.z);
-
-	// ワールド行列の合成
-	matWorld = XMMatrixIdentity(); // 変形をリセット
-	matWorld *= matScale; // ワールド行列にスケーリングを反映
-	matWorld *= matRot; // ワールド行列に回転を反映
-	matWorld *= matTrans; // ワールド行列に平行移動を反映
-
-	const XMMATRIX& matViewProjection =
-		camera->GetViewProjectionMatrix();
-	
-	//カメラ座標
-	const XMFLOAT3& camerapos = camera->GetEye();
+	UpdateWorld();
 
 	//当たり判定更新
 	if (collider)

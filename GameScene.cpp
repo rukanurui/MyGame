@@ -66,7 +66,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     modelfloor = FbxLoader::GetInstance()->LoadModelFromFile("floor");
     modelwall = FbxLoader::GetInstance()->LoadModelFromFile("colorwall");
     modelBack = FbxLoader::GetInstance()->LoadModelFromFile("back");
-    modelglasswall = FbxLoader::GetInstance()->LoadModelFromFile("glasswall");
+    //modelglasswall = FbxLoader::GetInstance()->LoadModelFromFile("glasswall");
 
     //地形3dオブジェクト
     //床
@@ -185,7 +185,6 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
    
 
     //敵関連処理
-    
     cube = new Enemy();
     cube->Initialize();
     cube->SetPosition({ 20.0f,5.0f,70.0f });
@@ -487,6 +486,7 @@ if (firstfrag == 0)
         player->BulUpdate();
         player->meleeUpdate();
         player->throwgunUpdate();
+        player->gunUpdate();
 
         
         for (int i = 0; i < 20; i++)
@@ -542,6 +542,7 @@ if (firstfrag == 0)
             camera->Update(WindowsApp::window_width, WindowsApp::window_height);
             player->SetTarget(camera->GetTarget());
             player->SetPosition(camera->GetEye());
+            player->SetRotation(camera->GetRoatation());
             player->PlayerUpdate();
            
         }
@@ -553,6 +554,8 @@ if (firstfrag == 0)
         {
             camera->CurrentUpdate();
             player->SetTarget(camera->GetTarget());
+            player->SetRotation(camera->GetRoatation());
+            player->gunUpdate();
             //camera->Update(WindowsApp::window_width, WindowsApp::window_height);
         }
 
@@ -756,6 +759,7 @@ void GameScene::Draw()
      player->BulDraw(cmdList);
      player->meleeDraw(cmdList);
      player->throwgunDraw(cmdList);
+     player->gunDraw(cmdList);
     
 
     // デバッグテキスト描画

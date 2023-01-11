@@ -25,6 +25,8 @@ void melee::meleeInitialize()
 
 void melee::meleeupdate()
 {
+	position.x += Vel.m128_f32[0];
+	position.y += Vel.m128_f32[1];
 	position.z += Vel.m128_f32[2];
 
 	if (--timer<=0)

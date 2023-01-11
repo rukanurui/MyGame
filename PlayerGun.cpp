@@ -16,31 +16,27 @@ void PlayerGun::create(const XMFLOAT3& Playerpos, const XMVECTOR& velocity)
 	Vel = velocity;
 }
 
+void PlayerGun::staycreate(const XMFLOAT3& Playerpos)
+{
+	position = Playerpos;
+	//position.y -= 1.5f;
+	position.y = 4.0f;
+}
+
 void PlayerGun::GunInitialize()
 {
 	//属性の追加
 	collider->SetColor(COLLISION_COLOR_PBULET);
 }
 
-void PlayerGun::gunupdate()
+void PlayerGun::gunupdate(const XMFLOAT3& Playerpos,const XMFLOAT3& Rotation)
 {
 
+	position = Playerpos;
+	rotation = Rotation;
+
 	HRESULT result;
-	XMMATRIX matScale, matRot, matTrans;
-
-	// スケール、回転、平行移動行列の計算
-	matScale = XMMatrixScaling(scale.x, scale.y, scale.z);
-	matRot = XMMatrixIdentity();
-	matRot *= XMMatrixRotationZ(XMConvertToRadians(rotation.z));
-	matRot *= XMMatrixRotationX(XMConvertToRadians(rotation.x));
-	matRot *= XMMatrixRotationY(XMConvertToRadians(rotation.y));
-	matTrans = XMMatrixTranslation(position.x, position.y, position.z);
-
-	// ワールド行列の合成
-	matWorld = XMMatrixIdentity(); // 変形をリセット
-	matWorld *= matScale; // ワールド行列にスケーリングを反映
-	matWorld *= matRot; // ワールド行列に回転を反映
-	matWorld *= matTrans; // ワールド行列に平行移動を反映
+	UpdateWorld();
 
 	//こっからカメラ
 	//ビュープロジェクション行列

@@ -74,17 +74,22 @@ private://メンバ変数
 	FbxModel* modelgun = nullptr;
 
 	//銃本体
-	PlayerGun* Pgun;
+	std::unique_ptr<PlayerGun> Pgun;
+
 	//投げるときに生成される銃
 	std::list<std::unique_ptr<PlayerGun>> Guns;
-
 
 
 	std::list<std::unique_ptr<Pbullet>> bullets;
 	std::list<std::unique_ptr<melee>> melees;
 
+	//注視点
 	XMFLOAT3 target{ 0.0f,4.0f,0.0f };
+	//注視点までのきょり
 	float distance = 5.0f;
+
+	//持っている銃の場所決め(右下)
+	float gundistance;
 
 	//攻撃関連
 	//武器を持っているか

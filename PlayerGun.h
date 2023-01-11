@@ -9,7 +9,8 @@ public:
 	PlayerGun();
 	void GunInitialize();
 	void create(const XMFLOAT3& Playerpos, const XMVECTOR& velocity);
-	void gunupdate();
+	void staycreate(const XMFLOAT3& Playerpos);
+	void gunupdate(const XMFLOAT3& Playerpos, const XMFLOAT3& Rotation);
 	void throwgunUpdate();
 
 	//void deleate(int flag);
@@ -22,6 +23,9 @@ private:
 
 	//‘¬“x
 	XMVECTOR Vel = { 0,0,0 };
+
+	//Šp“x
+	XMFLOAT3 angle = { 0,0,0 };
 
 	bool release = false;
 	bool have = true;

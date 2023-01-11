@@ -87,7 +87,7 @@ public://メンバ関数
 	//コライダーのセット
 	void SetCollider(BaseCollider* collider);
 
-	//void UpdateWorld();
+	void UpdateWorld();
 
 protected://メンバ変数
 	//定数バッファ

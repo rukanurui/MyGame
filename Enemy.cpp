@@ -212,12 +212,12 @@ void Enemy::Attack(XMFLOAT3 playerpos)
 	//	position.z += callback.move.m128_f32[2];
 	//}
 
-	if (count >= 180)
+	if (count >= 300)
 	{
 		count = 0;
 
 		//’e‚Ì‘¬“x
-		const float bulspeed = 1.0f;
+		const float bulspeed = 0.5f;
 		XMVECTOR Velocity{ 0,0,bulspeed };
 
 		//Velocity={ target.x - position.x, target.y - position.y, target.z - position.z };
