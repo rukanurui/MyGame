@@ -1,33 +1,36 @@
-#include "Pbullet.h"
+#include "melee.h"
 
-Pbullet::Pbullet() : FBXobj3d()
+melee::melee() : FBXobj3d()
 {
-	
+
 }
 
 
 
-void Pbullet::create(const XMFLOAT3& Playerpos, const XMVECTOR& velocity)
+void melee::create(const XMFLOAT3& Playerpos, const XMVECTOR& velocity)
 {
 	position = Playerpos;
 	//position.y -= 1.5f;
-	position.y = 4.0f;
+	position.y = 5.0f;
 	Vel = velocity;
+	
+	position.z += Vel.m128_f32[2];
 }
 
-void Pbullet::BulInitialize()
+void melee::meleeInitialize()
 {
 	//‘®«‚Ì’Ç‰Á
 	collider->SetColor(COLLISION_COLOR_PBULET);
 }
 
-void Pbullet::bulupdate()
+void melee::meleeupdate()
 {
-
-	position.x += Vel.m128_f32[0];
-	position.y += Vel.m128_f32[1];
 	position.z += Vel.m128_f32[2];
 
+	if (--timer<=0)
+	{
+		dead = true;
+	}
 
 	HRESULT result;
 	XMMATRIX matScale, matRot, matTrans;
@@ -101,20 +104,17 @@ void Pbullet::bulupdate()
 	{
 		collider->Update();
 	}
-	
+
 }
 
-void Pbullet::OnCollision(const CollisionInfo& info)
+void melee::OnCollision(const CollisionInfo& info)
 {
 
-	if (info.collider->color != 2)
+	if (info.collider->color == 8)
 	{
 
 		dead = true;
 
-		Vel.m128_f32[0] = 0.0f;
-		Vel.m128_f32[1] = 0.0f;
-		Vel.m128_f32[2] = 0.0f;
 
 		HRESULT result;
 		XMMATRIX matScale, matRot, matTrans;

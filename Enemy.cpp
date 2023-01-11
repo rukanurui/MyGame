@@ -19,7 +19,7 @@ void Enemy::EnemyInitialize(bool shot)
 	modelballet = FbxLoader::GetInstance()->LoadModelFromFile("bullet");
 	count = 0;
 
-	if (bullet)
+	for (std::unique_ptr<Enemybullet>& bullet : bullets)
 	{
 		bullet->SetPosition(position);
 	}
@@ -131,6 +131,11 @@ void Enemy::Attack(XMFLOAT3 playerpos)
 {
 	count++;
 
+	//íeÇÃçÌèú
+	bullets.remove_if([](std::unique_ptr<Enemybullet>& bullet) {
+		return bullet->Gethit();
+		});
+
 	//if (count != 0)
 	//{
 	//	//ÉvÉåÉCÉÑÅ[ÇÃç¿ïW
@@ -221,7 +226,8 @@ void Enemy::Attack(XMFLOAT3 playerpos)
 		Velocity = XMVector3Normalize(Velocity) * bulspeed;
 
 		//íeÇÃê∂ê¨Ç∆èâä˙âª
-		Enemybullet* newBullet = new Enemybullet();
+		//Enemybullet* newBullet = new Enemybullet();
+		std::unique_ptr<Enemybullet>newBullet = std::make_unique<Enemybullet>();
 		newBullet->Initialize();
 		newBullet->SetScale({ 0.01f,0.01f,0.01f });
 		newBullet->SetModel(modelballet);
@@ -230,13 +236,14 @@ void Enemy::Attack(XMFLOAT3 playerpos)
 		newBullet->create(position, Velocity);
 		
 		//íeÇÃìoò^
-		bullet = newBullet;
+		bullets.push_back(std::move(newBullet));
 	}
 
-
-	if (bullet)
+	//íeÇÃçXêV
+	for (std::unique_ptr<Enemybullet>& bullet:bullets)
 	{
 		bullet->bulupdate();
+		bullet->Update();
 	}
 }
 
@@ -353,7 +360,7 @@ void Enemy::move()
 
 void Enemy::BulUpdate()
 {
-	if (bullet)
+	for (std::unique_ptr<Enemybullet>& bullet : bullets)
 	{
 		bullet->Update();
 	}
@@ -364,7 +371,7 @@ void Enemy::BulUpdate()
 void Enemy::BulDraw(ID3D12GraphicsCommandList* cmdList)
 {
 
-	if (bullet)
+	for (std::unique_ptr<Enemybullet>& bullet : bullets)
 	{
 		bullet->Draw(cmdList);
 	}

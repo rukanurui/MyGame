@@ -4,6 +4,8 @@
 #include "3d/Modelfbx.h"
 #include"SphereCollider.h"
 
+#include <memory>
+#include <list>
 
 #include"EnemyBullet.h"
 
@@ -36,7 +38,8 @@ private:
 
 	//ƒ|ƒCƒ“ƒ^
 	FbxModel* modelballet = nullptr;
-	Enemybullet* bullet=nullptr;
+	//Enemybullet* bullet=nullptr;
+	std::list<std::unique_ptr<Enemybullet>> bullets;
 	
 	int col = 0;
 

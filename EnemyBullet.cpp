@@ -109,6 +109,8 @@ void Enemybullet::OnCollision(const CollisionInfo& info)
 	{
 		if (info.collider->color != 8)
 		{
+			dead = true;
+
 			Vel.m128_f32[0] = 0.0f;
 			Vel.m128_f32[1] = 0.0f;
 			Vel.m128_f32[2] = 0.0f;

@@ -4,9 +4,8 @@
 #include"CollisionManager.h";
 
 
-Player::Player(Pbullet* bullet):FBXobj3d()
+Player::Player():FBXobj3d()
 {
-	this->bullet = bullet;
 };
 
 void Player::PlayerInitialize(Input* Input)
@@ -15,7 +14,10 @@ void Player::PlayerInitialize(Input* Input)
 	this->input = Input;
 	//‘®«‚Ì’Ç‰Á
 	collider->SetColor(COLLISION_COLOR_PLAYER);
-	
+
+	modelballet = FbxLoader::GetInstance()->LoadModelFromFile("bullet");
+	modelgun = FbxLoader::GetInstance()->LoadModelFromFile("gun");
+
 }
 
 void Player::MoveVector(const XMVECTOR& move)
@@ -34,7 +36,20 @@ void Player::MoveVector(const XMVECTOR& move)
 void Player::PlayerUpdate()
 {
 
-	
+	//’e‚Ìíœ
+	bullets.remove_if([](std::unique_ptr<Pbullet>& bullet) {
+		return bullet->Getdead();
+		});
+
+	//“Š‚°‚½e‚Ìíœ
+	Guns.remove_if([](std::unique_ptr<PlayerGun>& gun) {
+		return gun->Getdead();
+		});
+
+	//Ši“¬‚Ìíœ
+	melees.remove_if([](std::unique_ptr<melee>& melee) {
+		return melee->Getdead();
+		});
 
 	HRESULT result;
 
@@ -64,28 +79,174 @@ void Player::PlayerUpdate()
 		collider->Update();
 	}
 
+	ctime--;
+	mctime--;
 
-	if (input->TriggerKey(DIK_SPACE))
+	if (ctime <= 0)
+	{
+		ctime = 0;
+	}
+
+	if (mctime <= 0)
+	{
+		mctime = 0;
+	}
+
+
+	if (input->TriggerKey(DIK_SPACE)&&ctime<=0 && magazin>=1&&have==true)
 	{
 		//’e‚Ì‘¬“x
 		const float bulspeed = 1.5f;
 		XMVECTOR Velocity{ 0,0,bulspeed };
 
 		Velocity={ target.x - position.x, target.y - position.y, target.z - position.z };
-		//Velocity = { target.x - eye.x, target.y - eye.y, target.z - eye.z };
 
 		Velocity = XMVector3Normalize(Velocity) * bulspeed;
 
 		//’e‚Ì¶¬‚Æ‰Šú‰»
-		bullet->create(position, Velocity);
+		//bullet->create(position, Velocity);
+		std::unique_ptr<Pbullet>newBullet = std::make_unique<Pbullet>();
+		newBullet->Initialize();
+		newBullet->SetScale({ 0.01f,0.01f,0.01f });
+		newBullet->SetModel(modelballet);
+		newBullet->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+		newBullet->BulInitialize();
+		newBullet->create(position, Velocity);
+		//’e‚Ì“o˜^
+		bullets.push_back(std::move(newBullet));
+		ctime = 30;
+		//c’eŒ¸‚ç‚·
+		magazin--;
+	}
+
+	if (input->TriggerKey(DIK_Q) && have==true)
+	{
+		//’e‚Ì‘¬“x
+		const float bulspeed = 1.5f;
+		XMVECTOR Velocity{ 0,0,bulspeed };
+
+		Velocity = { target.x - position.x, target.y - position.y, target.z - position.z };
+
+		Velocity = XMVector3Normalize(Velocity) * bulspeed;
+
+		//’e‚Ì¶¬‚Æ‰Šú‰»
+		std::unique_ptr<PlayerGun>newGun = std::make_unique<PlayerGun>();
+		newGun->Initialize();
+		newGun->SetScale({ 0.01f,0.01f,0.01f });
+		newGun->SetModel(modelgun);
+		newGun->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+		newGun->GunInitialize();
+		newGun->create(position, Velocity);
+		//’e‚Ì“o˜^
+		Guns.push_back(std::move(newGun));
+		//c’eŒ¸‚ç‚·
+		magazin==0;
+		//ƒtƒ‰ƒO•ÏX
+		have = false;
+	}
+
+	if (input->TriggerKey(DIK_SPACE) && have==false&&mctime<=0)
+	{
+		//’e‚Ì‘¬“x
+		const float bulspeed = 0.7f;
+		XMVECTOR Velocity{ 0,0,bulspeed };
+
+		Velocity = { target.x - position.x, target.y - position.y, target.z - position.z };
+
+		Velocity = XMVector3Normalize(Velocity) * bulspeed;
+
+		//Ši“¬‚Ì¶¬‚Æ‰Šú‰»
+		std::unique_ptr<melee>newMelee = std::make_unique<melee>();
+		newMelee->Initialize();
+		newMelee->SetScale({ 0.05f,0.05f,0.01f });
+		newMelee->SetModel(modelballet);
+		newMelee->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+		newMelee->meleeInitialize();
+		newMelee->create(position, Velocity);
+		//Ši“¬‚Ì“o˜^
+		melees.push_back(std::move(newMelee));
+		mctime = 30;
 	}
 
 	//’e‚ÌXV
-	if (bullet)
+	for (std::unique_ptr<Pbullet>& bullet : bullets)
 	{
 		bullet->bulupdate();
+		bullet->Update();
 	}
 
+	//“Š‚°‚½e‚ÌXV
+	for (std::unique_ptr<PlayerGun>& gun : Guns)
+	{
+		gun->throwgunUpdate();
+		gun->Update();
+	}
+
+	//Ši“¬‚ÌXV
+	for (std::unique_ptr<melee>& melee : melees)
+	{
+		melee->meleeupdate();
+		melee->Update();
+	}
+
+
+}
+
+void Player::BulUpdate()
+{
+	for (std::unique_ptr<Pbullet>& bullet : bullets)
+	{
+		bullet->Update();
+	}
+}
+
+void Player::meleeUpdate()
+{
+	for (std::unique_ptr<melee>& melee : melees)
+	{
+		melee->Update();
+	}
+}
+
+void Player::throwgunUpdate()
+{
+	for (std::unique_ptr<PlayerGun>& gun : Guns)
+	{
+		gun->Update();
+	}
+}
+
+void Player::gunUpdate()
+{
+}
+
+void Player::BulDraw(ID3D12GraphicsCommandList* cmdList)
+{
+
+	for (std::unique_ptr<Pbullet>& bullet : bullets)
+	{
+		bullet->Draw(cmdList);
+	}
+}
+
+void Player::meleeDraw(ID3D12GraphicsCommandList* cmdList)
+{
+	for (std::unique_ptr<melee>& melee : melees)
+	{
+		melee->Draw(cmdList);
+	}
+}
+
+void Player::throwgunDraw(ID3D12GraphicsCommandList* cmdList)
+{
+	for (std::unique_ptr<PlayerGun>& gun : Guns)
+	{
+		gun->Draw(cmdList);
+	}
+}
+
+void Player::gunDraw(ID3D12GraphicsCommandList* cmdList)
+{
 
 }
 

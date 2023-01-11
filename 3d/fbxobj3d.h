@@ -71,6 +71,8 @@ public://ƒƒ“ƒoŠÖ”
 
 	const XMFLOAT3& GetScale() { return scale; }
 
+	const XMFLOAT3& GetRotation() { return rotation; }
+
 	const float& GetScaleX() { return scale.x; }
 	
 	//setter

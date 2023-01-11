@@ -26,7 +26,7 @@
 #include"Player.h"
 #include"PlayerCol.h"
 
-#include "Pbullet.h"
+
 #include"Enemy.h"
 #include"PartEnemy.h"
 #include"Wall.h"
@@ -92,11 +92,11 @@ private://メンバ変数
 	FbxModel* modelfloor = nullptr;
 	FbxModel* modelwall = nullptr;
 	FbxModel* modelglasswall = nullptr;
-	FbxModel* modelballet = nullptr;
-	FbxModel* modelgun = nullptr;
+	
+	
 	FBXobj3d* floor = nullptr;
 	FBXobj3d* floor2 = nullptr;
-	FBXobj3d* gun = nullptr;
+	
 
 	Wall* wallLeft = nullptr;
 	Wall* wallForward = nullptr;
@@ -137,7 +137,7 @@ private://メンバ変数
 	PartEnemy* PartCube6[20];
 	
 	//自機関連
-	Pbullet* ballet = nullptr;
+	
 	Player* player = nullptr;
 	PlayerCol* playercol = nullptr;
 

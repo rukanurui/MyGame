@@ -65,10 +65,8 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     model2 = FbxLoader::GetInstance()->LoadModelFromFile("testfbx");
     modelfloor = FbxLoader::GetInstance()->LoadModelFromFile("floor");
     modelwall = FbxLoader::GetInstance()->LoadModelFromFile("colorwall");
-    modelballet = FbxLoader::GetInstance()->LoadModelFromFile("bullet");
     modelBack = FbxLoader::GetInstance()->LoadModelFromFile("back");
     modelglasswall = FbxLoader::GetInstance()->LoadModelFromFile("glasswall");
-    modelgun = FbxLoader::GetInstance()->LoadModelFromFile("gun");
 
     //地形3dオブジェクト
     //床
@@ -175,21 +173,15 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     backsphere->SetModel(modelBack);
 
     //プレイヤー関連処理
-    ballet = new Pbullet;
-    ballet->Initialize();
-    ballet->SetPosition({ 500.0f,5.0f,0.0f });
-    ballet->SetScale({ 0.01f,0.01f,0.01f });
-    ballet->SetModel(modelballet);
-    ballet->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
-    ballet->BulInitialize();
     
-    player = new Player(ballet);
+    player = new Player();
     player->Initialize();
     player->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 0.5f));
     player->PlayerInitialize(this->input);
     player->SetPosition({ 0,4,0 });
     player->SetTarget({ 0,4,0 });
-   
+
+    
    
 
     //敵関連処理
@@ -445,7 +437,7 @@ if (firstfrag == 0)
         wallRight->Update();
         wallBack->Update();*/
         cube->Update();
-        ballet->Update();
+        player->BulUpdate();
         backsphere->Update();
         for (int i = 0; i < 20; i++)
         {
@@ -488,9 +480,13 @@ if (firstfrag == 0)
         wallBack->Update();*/
         cube->Update();
         cube->BulUpdate();
+        player->BulUpdate();
         Stage1[0]->BulUpdate();
-        ballet->Update();
+        //ballet->Update();
         backsphere->Update();
+        player->BulUpdate();
+        player->meleeUpdate();
+        player->throwgunUpdate();
 
         
         for (int i = 0; i < 20; i++)
@@ -547,10 +543,10 @@ if (firstfrag == 0)
             player->SetTarget(camera->GetTarget());
             player->SetPosition(camera->GetEye());
             player->PlayerUpdate();
-            
+           
         }
 
-        
+
 
         //マウスだけ動いてる時
         if (mouseMove.lX != 0 || mouseMove.lY != 0)
@@ -599,7 +595,7 @@ if (firstfrag == 0)
        wallRight->Update();
        wallBack->Update();*/
        cube->Update();
-       ballet->Update();
+       player->BulUpdate();
        backsphere->Update();
        for (int i = 0; i < 20; i++)
        {
@@ -644,7 +640,7 @@ if (firstfrag == 0)
        wallRight->Update();
        wallBack->Update();*/
        cube->Update();
-       ballet->Update();
+       player->BulUpdate();
        //backsphere->Update();
        for (int i = 0; i < 20; i++)
        {
@@ -733,32 +729,33 @@ void GameScene::Draw()
 
     //敵関連
     
-       cube->Draw(cmdList);//cube
-       cube->BulDraw(cmdList);
-       Stage1[0]->BulDraw(cmdList);
-       for (int i = 0; i < 1; i++)
-       {
-           Stage1[i]->Draw(cmdList);
-       }
-       for (int i = 0; i < 8; i++)
-        {
-           stage1wall[i]->Draw(cmdList);
-       }
+     cube->Draw(cmdList);//cube
+     cube->BulDraw(cmdList);
+     Stage1[0]->BulDraw(cmdList);
+     for (int i = 0; i < 1; i++)
+     {
+         Stage1[i]->Draw(cmdList);
+     }
+     for (int i = 0; i < 8; i++)
+      {
+         stage1wall[i]->Draw(cmdList);
+     }
 
-        for (int i = 0; i < 20; i++)
-        {
-            PartCube1[i]->Draw(cmdList);
-            /*PartCube2[i]->Draw(cmdList);
-            PartCube3[i]->Draw(cmdList);
-            PartCube4[i]->Draw(cmdList);
-            PartCube5[i]->Draw(cmdList);
-            PartCube6[i]->Draw(cmdList);*/
-        }
+     for (int i = 0; i < 20; i++)
+     {
+         PartCube1[i]->Draw(cmdList);
+         /*PartCube2[i]->Draw(cmdList);
+         PartCube3[i]->Draw(cmdList);
+         PartCube4[i]->Draw(cmdList);
+         PartCube5[i]->Draw(cmdList);
+         PartCube6[i]->Draw(cmdList);*/
+     }
     
 
-    ////プレイヤー関連
-    ballet->Draw(cmdList);
-
+    //プレイヤー関連
+     player->BulDraw(cmdList);
+     player->meleeDraw(cmdList);
+     player->throwgunDraw(cmdList);
     
 
     // デバッグテキスト描画
@@ -772,11 +769,11 @@ void GameScene::restart()
     firstfrag = 1;
 
     //プレイヤー関連処理
-    ballet->SetPosition({ 500.0f,5.0f,0.0f });
+   /* ballet->SetPosition({ 500.0f,5.0f,0.0f });
     ballet->SetScale({ 0.01f,0.01f,0.01f });
     ballet->SetModel(modelballet);
    
-    ballet->BulInitialize();
+    ballet->BulInitialize();*/
 
     player->Initialize();
     
@@ -786,11 +783,11 @@ void GameScene::restart()
     player->sethit(0);
 
 
-    XMFLOAT3 eyepos{ 0, 4, 0 };
+    XMFLOAT3 eyepos{ 0.0f, 4.0f, 0.0f };
     camera->SetEye(eyepos);
     camera->SetTarget(eyepos);
 
-    camera->CurrentUpdate();
+    //camera->CurrentUpdate();
     camera->Update(WindowsApp::window_width, WindowsApp::window_height);
    
 
@@ -877,7 +874,7 @@ void GameScene::restart()
    
     cube->Update();
     cube->BulUpdate();
-    ballet->Update();
+    player->BulUpdate();
     backsphere->Update();
 
     for (int i = 0; i < 20; i++)
@@ -942,12 +939,10 @@ void GameScene::Finalize()
     delete model1;
     delete cube;
     delete model2;
-    delete modelballet;
     delete modelfloor;
     delete modelwall;
     delete modelBack;
 
-    delete ballet;
     delete wallBack;
     delete wallForward;
     delete wallLeft;
