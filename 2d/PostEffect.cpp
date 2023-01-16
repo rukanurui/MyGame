@@ -208,22 +208,6 @@ void PostEffect::Initialize(SpriteCommon* spriteCommon, UINT texNumber, XMFLOAT2
 void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList)
 {
 
-    //if (Input::GetInstance()->TriggerKey(DIK_SPACE))
-    //{
-    //    //デスクリプタヒープにSRV作成
-    //    static int tex = 0;
-    //    //テクスチャ番号を0と1で切り替え
-    //    tex = (tex + 1) % 2;
-    //    D3D12_SHADER_RESOURCE_VIEW_DESC srvdesc{};//設定構造体
-    //    srvdesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-    //    srvdesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-    //    srvdesc.ViewDimension= D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
-    //    srvdesc.Texture2D.MipLevels = 1;
-    //    spriteCommona->GetDevice()->CreateShaderResourceView(texBuff[tex].Get(),//ビューと関連付けるバッファ
-    //        &srvdesc,
-    //        descHeapSRV->GetCPUDescriptorHandleForHeapStart()
-    //    );
-    //}
     
     //パイプラインステートの設定
     cmdList->SetPipelineState(pipelineState.Get());

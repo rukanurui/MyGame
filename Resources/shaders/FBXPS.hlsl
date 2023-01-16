@@ -31,9 +31,9 @@ PSOutput main(VSOutput input)
 	float4 specularColor = float4(1, 1, 1, 1);
 	float specular = specularColor * millar;
 	float diffuse = saturate(dot(-Light, input.normal));
-	float brightness = diffuse + 0.3f;
-	float4 shadecolor = float4(brightness, brightness, brightness, 1.0f);
-	//float brightness = ambient + diffuse + specular;
+	//float brightness = diffuse + 0.3f;
+	float brightness = ambient + diffuse + specular;
+	//float4 shadecolor = float4(brightness, brightness, brightness, 1.0f);
 	float4 phong = float4(brightness, brightness, brightness, 1.0f);
 	//float4 shadecolor = float4(1,0,0,1.0f);//単色で塗りつぶす
 	//陰影とテクスチャの色を合成

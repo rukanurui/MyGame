@@ -120,12 +120,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma region 描画初期化処理
 
     //ポストエフェクト用テクスチャの読み込み
-   /* spriteCommon->LoadTexture(100,L"Resources/White1x1.png");
-    int PFnum = 100;*/
+    spriteCommon->LoadTexture(100,L"Resources/White1x1.png");
+    int PFnum = 100;
     //ポストエフェクトの初期化
-    //PostEffect* postEffect = PostEffect::Create(spriteCommon, PFnum, { 0,0 }, false, false);
-    //postEffect->SetSize({ (float)500.0f,500.0f });
-    //postEffect->TransferVertexBuffer();
+    PostEffect* postEffect = PostEffect::Create(spriteCommon, PFnum, { 0,0 }, false, false);
+    postEffect->SetSize({ (float)500.0f,500.0f });
+    postEffect->TransferVertexBuffer();
 
     //FBXローダーの初期化
     FbxLoader::GetInstance()->Initialize(dxCommon->GetDevice());
@@ -334,10 +334,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma region グラフィックスコマンド
 
        
-        //レンダ―テクスチャへの描画
-        //postEffect->PreDrawScene(dxCommon->GetCommandList());
-
-        //postEffect->PostDrawScene(dxCommon->GetCommandList());
+       //レンダ―テクスチャへの描画
+        postEffect->PreDrawScene(dxCommon->GetCommandList());
 
         //描画前処理
         dxCommon->PreDraw();
@@ -356,6 +354,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
             gameScene->Draw();
         }
 
+        
+
         spriteCommon->PreDraw();
 
         if (scene == 0)title->Draw();
@@ -372,7 +372,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         
 
         //ポストエフェクトの描画
-        //postEffect->Draw(dxCommon->GetCommandList());
+        postEffect->Draw(dxCommon->GetCommandList());
 
 
         // ４．描画コマンドここまで
