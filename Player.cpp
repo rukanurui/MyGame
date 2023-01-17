@@ -24,8 +24,8 @@ void Player::PlayerInitialize(Input* Input)
 	newGun->Initialize();
 	newGun->SetScale({ 0.01f,0.01f,0.01f });
 	newGun->SetModel(modelgun);
-	newGun->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
-	newGun->GunInitialize();
+	//newGun->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+	//newGun->GunInitialize();
 	newGun->staycreate(position);
 	//e‚Ì“o˜^
 	Pgun.reset(newGun);
@@ -114,7 +114,7 @@ void Player::PlayerUpdate()
 	if (input->TriggerKey(DIK_Q) && have==true)
 	{
 		//’e‚Ì‘¬“x
-		const float bulspeed = 1.5f;
+		const float bulspeed = 1.0f;
 		XMVECTOR Velocity{ 0,0,bulspeed };
 
 		Velocity = { target.x - position.x, target.y - position.y, target.z - position.z };

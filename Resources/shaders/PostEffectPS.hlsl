@@ -11,11 +11,28 @@ float4 main(VSOutput input) : SV_TARGET
 
 	//歪み
 	samplePoint -= float2(0.5, 0.5);
-	float distPower = pow(length(samplePoint), 1);
+	float distPower = pow(length(samplePoint), 0.2);
 	samplePoint *= float2(distPower, distPower);
 	samplePoint += float2(0.5, 0.5);
 	float4 Tex = tex0.Sample(smp, samplePoint);
 
+	//走査線ノイズ
+	float sinv = sin(input.uv.y * 2 + time * -0.1);
+	float steped = step(0.99, sinv * sinv);
+	Tex.rgb -= (1 - steped) * abs(sin(input.uv.y * 50.0 + time * 1.0)) * 0.05;
+	Tex.rgb -= (1 - steped) * abs(sin(input.uv.y * 100.0 - time * 2.0)) * 0.08;
+	Tex.rgb += steped * 0.1;
+
+	//rgbずらし
+	samplePoint.x += 0.01;
+	Tex.g = tex0.Sample(smp, samplePoint).g;
+	Tex.b = tex0.Sample(smp, samplePoint).b;
+
+	//ビネット
+	float vignette = length(float2(0.5, 0.5) - input.uv);
+	vignette = clamp(vignette - 0.5, 0, 1);
+	Tex.rgb -= vignette;
+	
 	/*float4 colortex0 = tex0.Sample(smp, input.uv);
 	float4 colortex1 = tex1.Sample(smp, input.uv);
 	float4 color = colortex0;
@@ -23,4 +40,6 @@ float4 main(VSOutput input) : SV_TARGET
 
 	return Tex;
 }
+
+
 

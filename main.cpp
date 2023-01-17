@@ -124,9 +124,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     int PFnum = 100;
     //ポストエフェクトの初期化
     PostEffect* postEffect = PostEffect::Create(spriteCommon, PFnum, { 0,0 }, false, false);
-    postEffect->SetSize({ (float)500.0f,500.0f });
-    postEffect->TransferVertexBuffer();
-
+    
     //FBXローダーの初期化
     FbxLoader::GetInstance()->Initialize(dxCommon->GetDevice());
   
@@ -334,29 +332,25 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma region グラフィックスコマンド
 
        
-       //レンダ―テクスチャへの描画
+      
+
+       
+
+        //レンダ―テクスチャへの描画
         postEffect->PreDrawScene(dxCommon->GetCommandList());
-
-        //描画前処理
-        dxCommon->PreDraw();
-
-
-        // ４．描画コマンドここから
-        
-        // スプライト描画前処理
-        
-
-        //obj、スプライトの描画
-        //tuto->Draw();
 
         if (scene != 0)
         {
             gameScene->Draw();
         }
 
+        // ４．描画コマンドここから
         
-
+        // スプライト描画前処理
         spriteCommon->PreDraw();
+
+        //obj、スプライトの描画
+        //tuto->Draw();
 
         if (scene == 0)title->Draw();
         if (scene==2)
@@ -366,18 +360,29 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
             if (tutoscene == 2)tutorule->Draw();
         }
         
-        if (scene == 2)crosshair->Draw();
         if (scene == 3)gameover->Draw();
         if (scene == 4)clear->Draw();
         
 
+        postEffect->PostDrawScene(dxCommon->GetCommandList());
+
+        
+        
+        //描画前処理
+        dxCommon->PreDraw();
+
+        spriteCommon->PreDraw();
+        if (scene == 2)crosshair->Draw();
+        
         //ポストエフェクトの描画
         postEffect->Draw(dxCommon->GetCommandList());
+        //描画後処理
+        dxCommon->PostDraw();
 
+        
 
         // ４．描画コマンドここまで
-         //描画後処理
-        dxCommon->PostDraw();
+         
 
     }
         //解放処理

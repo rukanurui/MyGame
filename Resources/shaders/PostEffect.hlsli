@@ -1,12 +1,12 @@
 //#include "math.h"
 //#include <DirectXMath.h>
 
+
 cbuffer cbuff0 : register(b0)
 {
-	float4 color;
-	matrix mat;
-	float Time;
-	float Bar;
+	float4 color; // F (RGBA)
+	matrix mat;   // ‚R‚c•ÏŠ·s—ñ
+	float time;
 };
 
 struct VSOutput

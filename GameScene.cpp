@@ -456,6 +456,8 @@ if (firstfrag == 0)
 
 
     //ゲーム本編
+    
+    //ステージ１
    if (scene==2)
     {
         //描画のためにカメラの更新処理を一回呼び出す
@@ -589,6 +591,13 @@ if (firstfrag == 0)
 
     }
 
+    //ステージ２
+    if (scene==5)
+    {
+
+    }
+
+    //ゲームオーバー
    if (scene==3)
    {
        //FBX更新
@@ -625,6 +634,7 @@ if (firstfrag == 0)
        }
    }
 
+   //クリア
    if (scene == 4)
    {
        //描画のためにカメラの更新処理を一回呼び出す
@@ -756,10 +766,10 @@ void GameScene::Draw()
     
 
     //プレイヤー関連
-     player->BulDraw(cmdList);
-     player->meleeDraw(cmdList);
      player->throwgunDraw(cmdList);
      player->gunDraw(cmdList);
+     player->BulDraw(cmdList);
+     player->meleeDraw(cmdList);
     
 
     // デバッグテキスト描画

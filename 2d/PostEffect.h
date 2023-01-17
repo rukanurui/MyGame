@@ -44,6 +44,7 @@ public:
     //パイプライン生成
     void CreateGraphicsPipelineState();
 
+
 private:
     //テクスチャバッファ
     ComPtr<ID3D12Resource> texBuff[2];
