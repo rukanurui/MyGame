@@ -48,6 +48,7 @@ void Enemy::EnemyUpdate(XMFLOAT3 playerpos)
 			Toenemy = Playerpos - Vecpos;
 			Toenemy = XMVector3Normalize(Toenemy);
 
+			//“G‚Ì‘¬“x
 			Vel = Toenemy * 0.12f;
 
 

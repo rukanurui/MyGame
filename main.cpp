@@ -37,6 +37,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     Audio* audio = nullptr;
     Object3d* object3d = nullptr;
     SpriteCommon* spriteCommon = nullptr;
+    DebugText* debugText = nullptr;
 
 #pragma region WindowsAPI初期化
     winApp = new WindowsApp();
@@ -74,7 +75,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     spriteCommon->LoadTexture(7, L"Resources/tutoshot.png");
     spriteCommon->LoadTexture(8, L"Resources/tutorule.png");
     spriteCommon->LoadTexture(9, L"Resources/tutoend.png");
+    spriteCommon->LoadTexture(10, L"Resources/debugfont.png");
 
+    // デバッグテキスト初期化
+    debugText = new DebugText();
+    debugText->Initialize(spriteCommon, 10);
+
+    //スプライト生成
     Sprite* crosshair = Sprite::Create(spriteCommon, 1);
     crosshair->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
     crosshair->TransferVertexBuffer();
@@ -92,7 +99,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     clear->TransferVertexBuffer();
 
     Sprite* tutomove = Sprite::Create(spriteCommon, 5);
-    tutomove->SetPosition({ WindowsApp::window_width / 2,700,0});
+    tutomove->SetPosition({ WindowsApp::window_width / 2,600,0});
     XMFLOAT2 movesize = { 800,300 };
     tutomove->SetSize(movesize);
     tutomove->TransferVertexBuffer();
@@ -286,6 +293,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
             tutoshot->Update();
             tutorule->Update();
             gameScene->Update();
+            //debugText->Print()
         }
         
         //ゲームオーバー
@@ -371,11 +379,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         //描画前処理
         dxCommon->PreDraw();
 
-        spriteCommon->PreDraw();
-        if (scene == 2)crosshair->Draw();
-        
         //ポストエフェクトの描画
         postEffect->Draw(dxCommon->GetCommandList());
+
+        spriteCommon->PreDraw();
+        if (scene == 2)crosshair->Draw();
+
         //描画後処理
         dxCommon->PostDraw();
 

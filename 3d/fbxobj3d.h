@@ -74,6 +74,8 @@ public://メンバ関数
 	const XMFLOAT3& GetRotation() { return rotation; }
 
 	const float& GetScaleX() { return scale.x; }
+
+	const XMMATRIX& GetmatTrans() { return matTrans; }
 	
 	//setter
 	static void SetDevice(ID3D12Device* device) { FBXobj3d::device = device; }
@@ -84,6 +86,8 @@ public://メンバ関数
 	void SetScale(XMFLOAT3 scale) { this->scale = scale; }
 	//角度の変更
 	void SetRotation(XMFLOAT3 rotation) { this->rotation = rotation; }
+	//平行移動行列のセッター
+	void SetmatTrans(XMMATRIX Mattrans) { this->matTrans = Mattrans; }
 	//コライダーのセット
 	void SetCollider(BaseCollider* collider);
 

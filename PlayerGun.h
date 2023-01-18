@@ -10,7 +10,7 @@ public:
 	void GunInitialize();
 	void create(const XMFLOAT3& Playerpos, const XMVECTOR& velocity);
 	void staycreate(const XMFLOAT3& Playerpos);
-	void gunupdate(const XMFLOAT3& Playerpos, const XMFLOAT3& Rotation);
+	void gunupdate(const XMFLOAT3& Playerpos, const XMVECTOR& velocity);
 	void throwgunUpdate();
 
 	//void deleate(int flag);

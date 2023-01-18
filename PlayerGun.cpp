@@ -29,11 +29,17 @@ void PlayerGun::GunInitialize()
 	collider->SetColor(COLLISION_COLOR_PBULET);
 }
 
-void PlayerGun::gunupdate(const XMFLOAT3& Playerpos,const XMFLOAT3& Rotation)
+void PlayerGun::gunupdate(const XMFLOAT3& Playerpos,const XMVECTOR& velocity)
 {
 
-	position = Playerpos;
-	rotation = Rotation;
+	//position = Playerpos;
+	Vel = velocity;
+	
+	position.x = Playerpos.x + (velocity.m128_f32[0] * 2.5f);
+	position.y = Playerpos.y + (velocity.m128_f32[1] * 3.0f);
+	position.z = Playerpos.z + (velocity.m128_f32[2] * 3.0f);
+	//position.y = Vel.m128_f32[1]*2;
+	//position.z = Vel.m128_f32[2]*2;
 
 	HRESULT result;
 	UpdateWorld();
@@ -88,11 +94,6 @@ void PlayerGun::gunupdate(const XMFLOAT3& Playerpos,const XMFLOAT3& Rotation)
 		constBufferTransform->Unmap(0, nullptr);
 	}
 
-	//“–‚½‚è”»’èXV
-	if (collider)
-	{
-		collider->Update();
-	}
 
 }
 

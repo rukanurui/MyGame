@@ -18,11 +18,11 @@ public://メンバ関数
 	//初期化
 	void PlayerInitialize(Input*Input);
 	//更新
-	void PlayerUpdate();
+	void PlayerUpdate(const XMFLOAT3& cameratarget);
 	void BulUpdate();
 	void meleeUpdate();
 	void throwgunUpdate();
-	void gunUpdate();
+	void gunUpdate(const XMFLOAT3& cameratarget, const XMMATRIX& cameramatRot);
 	
 
 	/// 注視点座標の取得
@@ -89,7 +89,13 @@ private://メンバ変数
 	float distance = 5.0f;
 
 	//持っている銃の場所決め(右下)
-	float gundistance;
+
+	const float gundistance = 1.5f;
+	const float gunTdistance = 0.5;
+	XMFLOAT3 guntarget{};
+	XMFLOAT3 gunpos;
+	XMVECTOR Velocity2{ -gundistance,-gundistance,gundistance };
+	
 
 	//攻撃関連
 	//武器を持っているか

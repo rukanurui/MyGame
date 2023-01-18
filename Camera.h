@@ -55,6 +55,7 @@ public: // メンバ関数
 
 	const XMFLOAT3& GetRoatation() { return rotation; }
 
+	const XMMATRIX& GetmatRot() { return matRot; }
 
 	//プロジェクション行列関連
 
@@ -122,7 +123,7 @@ protected://メンバ変数
 	XMFLOAT3 Velocity{ 0,0,0 };//速度
 
 	// カメラ注視点までの距離
-	float distance = 1;
+	float distance = 3;
 
 };
 

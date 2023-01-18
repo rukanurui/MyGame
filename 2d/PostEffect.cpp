@@ -3,7 +3,7 @@
 #include <DirectXTex.h>
 #include <d3dcompiler.h>
 
-const float PostEffect::clearColor[4] = { 0.25f,0.5f,0.1f,0.0f };//óŒÇ¡Ç€Ç¢êF
+const float PostEffect::clearColor[4] = { 0.25f,0.25f,0.25f,1.0f };//óŒÇ¡Ç€Ç¢êF
 
 
 PostEffect* PostEffect::Create(SpriteCommon* spriteCommon, UINT texNumber, XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)

@@ -24,8 +24,6 @@ void Player::PlayerInitialize(Input* Input)
 	newGun->Initialize();
 	newGun->SetScale({ 0.01f,0.01f,0.01f });
 	newGun->SetModel(modelgun);
-	//newGun->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
-	//newGun->GunInitialize();
 	newGun->staycreate(position);
 	//e‚Ì“o˜^
 	Pgun.reset(newGun);
@@ -45,7 +43,7 @@ void Player::MoveVector(const XMVECTOR& move)
 }
 
 
-void Player::PlayerUpdate()
+void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 {
 
 	//’e‚Ìíœ
@@ -91,7 +89,7 @@ void Player::PlayerUpdate()
 		const float bulspeed = 1.5f;
 		XMVECTOR Velocity{ 0,0,bulspeed };
 
-		Velocity={ target.x - position.x, target.y - position.y, target.z - position.z };
+		Velocity={ cameratarget.x - position.x, cameratarget.y - position.y, cameratarget.z - position.z };
 
 		Velocity = XMVector3Normalize(Velocity) * bulspeed;
 
@@ -167,15 +165,6 @@ void Player::PlayerUpdate()
 		bullet->Update();
 	}
 
-	//e‚ÌXV
-	XMVECTOR Velocity{ 0,0,0};
-
-	Velocity = { target.x - position.x, target.y - position.y, target.z - position.z };
-
-	Velocity = XMVector3Normalize(Velocity);
-
-	Pgun->gunupdate(position, rotation);
-	Pgun->Update();
 
 	//“Š‚°‚½e‚ÌXV
 	for (std::unique_ptr<PlayerGun>& gun : Guns)
@@ -218,9 +207,26 @@ void Player::throwgunUpdate()
 	}
 }
 
-void Player::gunUpdate()
+void Player::gunUpdate(const XMFLOAT3& cameratarget,const XMMATRIX& cameramatRot)
 {
-	Pgun->gunupdate(position, rotation);
+
+	//e‚ÌXV
+	gunpos = position;
+
+	XMMATRIX cameramatrot = cameramatRot;
+
+	Velocity2 = { cameratarget.x - position.x, cameratarget.y - position.y, cameratarget.z - position.z };
+
+	Velocity2 = XMVector3Normalize(Velocity2);
+
+	XMVECTOR move = { -2.0f,-2.0f,0,0 };
+	move = XMVector3Transform(move, cameramatrot);
+
+	gunpos.x += move.m128_f32[0]; gunpos.y += move.m128_f32[1]; gunpos.z += move.m128_f32[2];
+
+	Pgun->gunupdate(gunpos, Velocity2);
+	Pgun->Update();
+
 }
 
 void Player::BulDraw(ID3D12GraphicsCommandList* cmdList)

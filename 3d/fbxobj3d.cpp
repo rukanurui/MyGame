@@ -317,6 +317,12 @@ void FBXobj3d::UpdateWorld()
 	matWorld *= matScale; // ワールド行列にスケーリングを反映
 	matWorld *= matRot; // ワールド行列に回転を反映
 	matWorld *= matTrans; // ワールド行列に平行移動を反映
+
+	//当たり判定更新
+	if (collider)
+	{
+		collider->Update();
+	}
 }
 
 void FBXobj3d::Draw(ID3D12GraphicsCommandList* cmdList)

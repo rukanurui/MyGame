@@ -7,11 +7,11 @@ SamplerState smp : register(s0);//0番目に設定されたサンプラー
 float4 main(VSOutput input) : SV_TARGET
 {
 	float2 samplePoint = input.uv;
-	samplePoint.x += 0.05;
+	//samplePoint.x += 0.05;
 
 	//歪み
 	samplePoint -= float2(0.5, 0.5);
-	float distPower = pow(length(samplePoint), 0.2);
+	float distPower = pow(length(samplePoint), 0.1);
 	samplePoint *= float2(distPower, distPower);
 	samplePoint += float2(0.5, 0.5);
 	float4 Tex = tex0.Sample(smp, samplePoint);
@@ -24,8 +24,7 @@ float4 main(VSOutput input) : SV_TARGET
 	Tex.rgb += steped * 0.1;
 
 	//rgbずらし
-	samplePoint.x += 0.01;
-	Tex.g = tex0.Sample(smp, samplePoint).g;
+	samplePoint.x += 0.005;
 	Tex.b = tex0.Sample(smp, samplePoint).b;
 
 	//ビネット
@@ -33,12 +32,14 @@ float4 main(VSOutput input) : SV_TARGET
 	vignette = clamp(vignette - 0.5, 0, 1);
 	Tex.rgb -= vignette;
 	
-	/*float4 colortex0 = tex0.Sample(smp, input.uv);
-	float4 colortex1 = tex1.Sample(smp, input.uv);
-	float4 color = colortex0;
-	return float4(color.rgb, 1);*/
+	//float4 colortex0 = tex0.Sample(smp, input.uv);
+	//float4 colortex1 = tex1.Sample(smp, input.uv);
+	//float4 color = colortex0;
+	//return float4(color.rgb, 1);
 
-	return Tex;
+	float4 color = Tex;
+
+	return float4(color.rgb,1);
 }
 
 

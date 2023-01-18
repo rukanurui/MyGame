@@ -36,7 +36,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
 
     //debugText = new DebugText();
     // デバッグテキスト用のテクスチャ番号を指定
-    const int debugTextTexNumber = 2;
+    //const int debugTextTexNumber = 2;
     // デバッグテキスト用のテクスチャ読み込み
     //spriteCommon->LoadTexture(debugTextTexNumber, L"Resources/debugfont.png");
     // デバッグテキスト初期化
@@ -488,7 +488,7 @@ if (firstfrag == 0)
         player->BulUpdate();
         player->meleeUpdate();
         player->throwgunUpdate();
-        player->gunUpdate();
+        player->gunUpdate(camera->GetTarget(), camera->GetmatRot());
 
         
         for (int i = 0; i < 20; i++)
@@ -545,21 +545,26 @@ if (firstfrag == 0)
             player->SetTarget(camera->GetTarget());
             player->SetPosition(camera->GetEye());
             player->SetRotation(camera->GetRoatation());
-            player->PlayerUpdate();
+            player->PlayerUpdate(camera->GetTarget());
+            player->gunUpdate(camera->GetTarget(),camera->GetmatRot());
            
         }
-
-
-
-        //マウスだけ動いてる時
-        if (mouseMove.lX != 0 || mouseMove.lY != 0)
+        
+        
+        if (mouseMove.lX != 0 || mouseMove.lY != 0)//マウスだけ動いてる時
         {
-            camera->CurrentUpdate();
-            player->SetTarget(camera->GetTarget());
-            player->SetRotation(camera->GetRoatation());
-            player->gunUpdate();
-            //camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+            if (!input->PushKey(DIK_W) && !input->PushKey(DIK_A) && !input->PushKey(DIK_S) && !input->PushKey(DIK_D))
+            {
+                camera->CurrentUpdate();
+                camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+                player->SetPosition(camera->GetEye());
+                player->SetTarget(camera->GetTarget());
+                player->UpdateWorld();
+                player->gunUpdate(camera->GetTarget(), camera->GetmatRot());
+                
+            }
         }
+        
 
         //すべての衝突をチェック
         collisionManager->CheckAllCollisions();
