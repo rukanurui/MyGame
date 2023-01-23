@@ -74,12 +74,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     spriteCommon->LoadTexture(6, L"Resources/tutomouse.png");
     spriteCommon->LoadTexture(7, L"Resources/tutoshot.png");
     spriteCommon->LoadTexture(8, L"Resources/tutorule.png");
-    spriteCommon->LoadTexture(9, L"Resources/tutoend.png");
+    spriteCommon->LoadTexture(9, L"Resources/noammo.png");
     spriteCommon->LoadTexture(10, L"Resources/debugfont.png");
 
     // デバッグテキスト初期化
-    debugText = new DebugText();
-    debugText->Initialize(spriteCommon, 10);
+   /* debugText = new DebugText();
+    debugText->Initialize(spriteCommon, 10);*/
 
     //スプライト生成
     Sprite* crosshair = Sprite::Create(spriteCommon, 1);
@@ -116,9 +116,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     tutorule->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
     tutorule->TransferVertexBuffer();
 
-    Sprite* tutoend = Sprite::Create(spriteCommon, 9);
-    tutoend->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
-    tutoend->TransferVertexBuffer();
+    Sprite* noammo = Sprite::Create(spriteCommon, 9);
+    noammo->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    noammo->TransferVertexBuffer();
+
+
+
+
 
 
     // DirectX初期化処理　ここまで
@@ -145,6 +149,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     int tutoscene = 0;
     int wait = 0;
     int count = 0;
+    float spritex = 1.1f;
+    float spritey = 1.1f;
     
 #pragma endregion 描画初期化処理
 
@@ -166,7 +172,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
             title->Update();
             if (input->TriggerKey(DIK_SPACE))
             {
-                scene = 2;
+                scene = 5;
                 gameScene->SetScene(scene);
             }
         }
@@ -244,7 +250,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
             }
             tutomouse->Update();
             tutomove->Update();
-            tutoend->Update();
             tutoshot->Update();
             tutorule->Update();
             gameScene->Update();
@@ -261,6 +266,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
                     tutoscene = 1;
                     wait = 0;
                 }
+                gameScene->Update();
             }
 
             if (tutoscene == 1)
@@ -286,20 +292,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
             crosshair->Update();
             gameScene->Update();
             scene = gameScene->GetScene();
-
             tutomouse->Update();
             tutomove->Update();
-            tutoend->Update();
             tutoshot->Update();
             tutorule->Update();
-            gameScene->Update();
             //debugText->Print()
         }
         
         //ゲームオーバー
         if (scene==3)
         {
-            
             gameScene->Update();
             gameover->Update();
             if (input->TriggerKey(DIK_R))
@@ -313,7 +315,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
             }
         }
 
-        //2面
+        //クリア
         if (scene==4)
         {
             
@@ -327,6 +329,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
                 wait = 0;
                 count = 0;
             }
+        }
+
+        //ステージ２
+        if (scene==5)
+        {
+            crosshair->Update();
+            gameScene->Update();
+            scene = gameScene->GetScene();
+            //debugText->Print()
         }
 
         if (input->PushKey(DIK_ESCAPE))
@@ -351,6 +362,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         {
             gameScene->Draw();
         }
+
 
         // ４．描画コマンドここから
         
@@ -379,11 +391,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         //描画前処理
         dxCommon->PreDraw();
 
+        
         //ポストエフェクトの描画
         postEffect->Draw(dxCommon->GetCommandList());
 
         spriteCommon->PreDraw();
-        if (scene == 2)crosshair->Draw();
+        if (scene !=0)crosshair->Draw();
 
         //描画後処理
         dxCommon->PostDraw();

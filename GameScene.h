@@ -61,10 +61,14 @@ public://メンバ関数
 	void transrationScene();
 	//描画
 	void Draw();
-
+	//
 	void restart();
 	//解放
 	void Finalize();
+	//ローディング
+	void roading();
+
+	//const int& GetScene() { return scene; }
 
 private://メンバ変数
 	WindowsApp * Windows = nullptr;
@@ -98,29 +102,20 @@ private://メンバ変数
 	FBXobj3d* floor2 = nullptr;
 	
 
-	Wall* wallLeft = nullptr;
-	Wall* wallForward = nullptr;
-	Wall* wallTute = nullptr;
-	Wall* wallRight = nullptr;
-	Wall* wallBack = nullptr;
-
-	/*Wall* wallLeft = nullptr;
-	Wall* wallForward = nullptr;
-	Wall* wallTute = nullptr;
-	Wall* wallRight = nullptr;
-	Wall* wallBack = nullptr;*/
-
 	Wall* glasswallLeft = nullptr;
 	Wall* glasswallForward = nullptr;
 	
+	//1面
 	Wall* stage1wall[8];
 
 	//2面
+	Wall* stage2wall[4];
 	Wall* centerWall = nullptr;
 	Wall * crossWall = nullptr;
-
 	FbxModel* modelBack = nullptr;
 	FBXobj3d* backsphere = nullptr;
+	Wall* gunstand = nullptr;
+
 
 	//3dモデル(敵)
 	//チュートリアル
