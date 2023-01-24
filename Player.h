@@ -37,7 +37,10 @@ public://メンバ関数
 	
 	void Setoldpos(XMFLOAT3 Oldpos);
 
-	void Sethave(bool have);
+	//銃のフラグのゲッターとセッター
+	const int& Gethave() { return have; }
+	void Sethave(bool Have);
+
 
 	void OnCollision(const CollisionInfo& info);
 
@@ -45,6 +48,7 @@ public://メンバ関数
 
 	void ColInitialize();
 
+	//hitのゲッター
 	const int& Gethit() { return hit; }
 
 	const int& Getwallhit() { return wallhit; }
@@ -56,6 +60,7 @@ public://メンバ関数
 
 	int wallhit = 0;
 
+	//描画
 	void BulDraw(ID3D12GraphicsCommandList* cmdList);
 
 	void meleeDraw(ID3D12GraphicsCommandList* cmdList);

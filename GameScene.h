@@ -65,8 +65,6 @@ public://メンバ関数
 	void restart();
 	//解放
 	void Finalize();
-	//ローディング
-	void roading();
 
 	//const int& GetScene() { return scene; }
 
@@ -115,6 +113,8 @@ private://メンバ変数
 	FbxModel* modelBack = nullptr;
 	FBXobj3d* backsphere = nullptr;
 	Wall* gunstand = nullptr;
+	FbxModel* modelobjgun = nullptr;
+	Wall* tutogun = nullptr;
 
 
 	//3dモデル(敵)

@@ -66,6 +66,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     modelfloor = FbxLoader::GetInstance()->LoadModelFromFile("floor");
     modelwall = FbxLoader::GetInstance()->LoadModelFromFile("colorwall");
     modelBack = FbxLoader::GetInstance()->LoadModelFromFile("back");
+    modelobjgun = FbxLoader::GetInstance()->LoadModelFromFile("gun");
     //modelglasswall = FbxLoader::GetInstance()->LoadModelFromFile("glasswall");
 
 
@@ -218,6 +219,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     stage2wall[3]->SetCollider(new BoxCollider(XMVECTOR{ 100.0f,100.0f,0.8f,0 }, 1.0f));
     stage2wall[3]->WallInitialize();
 
+    //銃台座
     gunstand= new Wall();
     gunstand->Initialize();
     gunstand->SetModel(model2);
@@ -226,6 +228,15 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     gunstand->SetRotation({ 0.0f,0.0f,0.0f });
     gunstand->SetCollider(new BoxCollider(XMVECTOR{ 6.0f,6.0f,6.0f,0 }, 1.0f));
     gunstand->WallInitialize();
+
+    //銃本体
+    tutogun = new Wall;
+    tutogun->Initialize();
+    tutogun->SetPosition({ 0.0f,6.0f,10.0f });
+    tutogun->SetScale({ 0.01f,0.01f,0.01f });
+    tutogun->SetModel(modelobjgun);
+    tutogun->SetCollider(new BoxCollider(XMVECTOR{ 6.0f,6.0f,6.0f,0 }, 1.0f));
+    tutogun->objgunInitialize();
 
 
     
@@ -624,14 +635,13 @@ if (firstfrag == 0)
         }
 
         //描画のためにカメラの更新処理を一回呼び出す
-        if (firstfrag == 1)
+        if (firstfrag == 0)
         {
             camera->CurrentUpdate();
             camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-            firstfrag = 0;
+            firstfrag = 1;
 
         }
-
 
         //FBX更新
         floor->Update();
@@ -641,12 +651,25 @@ if (firstfrag == 0)
 
         }
         gunstand->Update();
+        tutogun->Update();
         player->BulUpdate();
         backsphere->Update();
         player->BulUpdate();
         player->meleeUpdate();
         player->throwgunUpdate();
         player->gunUpdate(camera->GetTarget(), camera->GetmatRot());
+
+        //プレイヤーの銃のフラグ管理
+        if (player->Gethave()==false)
+        {
+            player->Sethave(tutogun->Gethave());
+        }
+        if (player->Gethave() == true)
+        {
+
+        }
+        
+        
 
 
         for (int i = 0; i < 20; i++)
@@ -716,6 +739,8 @@ if (firstfrag == 0)
         {
             camera->SetTarget(player->GetTarget());
             camera->SetEye(player->GetPos());
+            mouseMove.lX = 0;
+            mouseMove.lY = 0;
         }
 
 
@@ -869,24 +894,24 @@ void GameScene::Draw()
     Object3d::PostDraw();
 
     //FBX描画
-
-    //ステージオブジェクト
-    floor->Draw(cmdList);
-    if (scene==5)
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            stage2wall[i]->Draw(cmdList);
-        }
-        gunstand->Draw(cmdList);
-    }
-
     if (scene==2)
     {
         for (int i = 0; i < 8; i++)
         {
             stage1wall[i]->Draw(cmdList);
         }
+    }
+
+    //ステージオブジェクト
+    floor->Draw(cmdList);
+    if (scene == 5)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            stage2wall[i]->Draw(cmdList);
+        }
+        gunstand->Draw(cmdList);
+        tutogun->Draw(cmdList);
     }
     
    
@@ -1073,8 +1098,13 @@ void GameScene::transrationScene()
 {
     if (scene==2)
     {
-        camera->SetEye(EyeInitialize);
+        //camera->SetEye(EyeInitialize);
+        player->Sethave(true);
+    }
 
+    if (scene==5)
+    {
+        player->Sethave(false);
     }
     
 }

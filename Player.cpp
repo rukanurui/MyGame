@@ -314,6 +314,11 @@ void Player::Setoldpos(XMFLOAT3 Oldpos)
 	oldpos = Oldpos;
 }
 
+void Player::Sethave(bool Have)
+{
+	have = Have;
+}
+
 void Player::ColInitialize()
 {
 	//‘®«‚Ì’Ç‰Á

@@ -11,7 +11,25 @@ void Wall::WallInitialize()
 	collider->SetColor(COLLISION_COLOR_LANDSHAPE);
 }
 
+void Wall::objgunInitialize()
+{
+	//‘®«‚Ì’Ç‰Á
+	collider->SetColor(COLLISION_COLOR_OBJGUN);
+}
+
 void Wall::OnCollision(const CollisionInfo& info)
 {
+	
+	if (collider->color==32&&info.collider->color==4)
+	{
+		scale.x = 0, scale.y = 0, scale.z = 0;
+
+		if (infohave == false)
+		{
+			infohave = true;
+		}
+	}
+
+	
 
 }

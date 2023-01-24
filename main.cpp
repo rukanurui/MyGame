@@ -74,8 +74,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     spriteCommon->LoadTexture(6, L"Resources/tutomouse.png");
     spriteCommon->LoadTexture(7, L"Resources/tutoshot.png");
     spriteCommon->LoadTexture(8, L"Resources/tutorule.png");
-    spriteCommon->LoadTexture(9, L"Resources/noammo.png");
-    spriteCommon->LoadTexture(10, L"Resources/debugfont.png");
+    //spriteCommon->LoadTexture(9, L"Resources/noammo.png");
+//    spriteCommon->LoadTexture(10, L"Resources/debugfont.png");
 
     // デバッグテキスト初期化
    /* debugText = new DebugText();
@@ -172,8 +172,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
             title->Update();
             if (input->TriggerKey(DIK_SPACE))
             {
-                scene = 5;
+                scene = 2;
                 gameScene->SetScene(scene);
+                gameScene->transrationScene();
             }
         }
 
