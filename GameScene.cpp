@@ -666,7 +666,7 @@ if (firstfrag == 0)
         }
         if (player->Gethave() == true)
         {
-
+            tutogun->Sethave(false);
         }
         
         
@@ -1141,10 +1141,10 @@ void GameScene::Finalize()
     delete modelfloor;
     delete modelwall;
     delete modelBack;
-
-    
     delete floor;
     delete backsphere;
+
+    delete player;
 
     for (int i = 0; i < 20; i++)
     {
@@ -1159,6 +1159,16 @@ void GameScene::Finalize()
     for (int i = 0; i < 5; i++)
     {
         delete Stage1[i];
+        delete Stage2[i];
+    }
+
+    for (int i = 0; i < 8; i++)
+    {
+        delete stage1wall[i];
+    }
+    for (int i = 0; i < 4; i++)
+    {
+        delete stage2wall[i];
     }
 
 }

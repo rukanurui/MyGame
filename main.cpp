@@ -172,7 +172,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
             title->Update();
             if (input->TriggerKey(DIK_SPACE))
             {
-                scene = 2;
+                scene = 5;
                 gameScene->SetScene(scene);
                 gameScene->transrationScene();
             }

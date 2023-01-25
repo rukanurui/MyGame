@@ -29,7 +29,11 @@ void Wall::OnCollision(const CollisionInfo& info)
 			infohave = true;
 		}
 	}
+}
 
-	
+void Wall::Sethave(bool Have)
+{
+
+	infohave = Have;
 
 }

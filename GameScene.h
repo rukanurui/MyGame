@@ -122,7 +122,7 @@ private://メンバ変数
 	Enemy* cube = nullptr;
 	Enemy* Stage1[5];
 	//ステージ2
-	Enemy* stage2[5];
+	Enemy* Stage2[5];
 	//パーティクル
 	PartEnemy* PartCube1[20];
 	PartEnemy* PartCube2[20];
