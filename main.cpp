@@ -26,6 +26,8 @@
 using namespace DirectX;
 using namespace Microsoft::WRL;
 
+void spritetrans(XMFLOAT2 size,bool flag);
+
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -149,8 +151,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     int tutoscene = 0;
     int wait = 0;
     int count = 0;
-    float spritex = 1.1f;
-    float spritey = 1.1f;
+    XMFLOAT3 spritepos{ WindowsApp::window_width / 2 ,WindowsApp::window_height / 2,0 };
+    XMFLOAT2 spritesize{ 1280,720 };
+    bool transfrag = true;
+    float spriteangle = 0;
+    bool overfrag = true;
+
+
+
     
 #pragma endregion 描画初期化処理
 
@@ -169,12 +177,37 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
         if (scene==0)//タイトル
         {
+            if (spritesize.x >= 1280)
+            {
+                transfrag = true;
+            }
+            if (spritesize.x <= 1000)
+            {
+                transfrag = false;
+            }
+
+            if (transfrag == true)
+            {
+                spritesize.x -= 0.4f;
+                spritesize.y -= 0.3f;
+            }
+            else
+            {
+                spritesize.x += 0.4f;
+                spritesize.y += 0.3f;
+            }
+
+            title->SetRotation(spriteangle);
+            title->SetSize(spritesize);
+            title->TransferVertexBuffer();
             title->Update();
             if (input->TriggerKey(DIK_SPACE))
             {
-                scene = 5;
+                scene = 2;
                 gameScene->SetScene(scene);
                 gameScene->transrationScene();
+                spritesize = { 1280,720 };
+                transfrag = true;
             }
         }
 
@@ -261,27 +294,72 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
             if (tutoscene == 0)
             {
+
+                if (movesize.x >= 800)
+                {
+                    transfrag = true;
+                }
+                if (movesize.x <= 750)
+                {
+                    transfrag = false;
+                }
+
+                if (transfrag == true)
+                {
+                    movesize.x -= 0.2f;
+                    movesize.y -= 0.2f;
+                }
+                else
+                {
+                    movesize.x += 0.2f;
+                    movesize.y += 0.2f;
+                }
+
                 wait++;
                 if (wait >= 180&&input->PushKey(DIK_W) || input->PushKey(DIK_A) || input->PushKey(DIK_S) || input->PushKey(DIK_D))
                 {
                     tutoscene = 1;
                     wait = 0;
+                    transfrag = true;
                 }
                 gameScene->Update();
             }
 
             if (tutoscene == 1)
             {
+                if (spritesize.x >= 1280)
+                {
+                    transfrag = true;
+                }
+
+                if (transfrag == true)
+                {
+                    spritesize.x -= 1.0f;
+                    spritesize.y -= 1.0f;
+                }
                 wait++;
                 if (wait >= 120)
                 {
                     tutoscene = 2;
+                    spritesize = { 1280,720 };
+                    transfrag = true;
                     wait = 0;
                 }
             }
 
             if (tutoscene == 2)
             {
+                if (spritesize.x >= 1280)
+                {
+                    transfrag = true;
+                }
+
+                if (transfrag == true)
+                {
+                    spritesize.x -= 1.0f;
+                    spritesize.y -= 1.0f;
+                }
+
                 wait++;
                 if (wait >= 60)
                 {
@@ -293,6 +371,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
             crosshair->Update();
             gameScene->Update();
             scene = gameScene->GetScene();
+
+            tutomouse->SetSize(spritesize);
+            tutomove->SetSize(movesize);
+            tutoshot->SetSize(spritesize);
+            tutorule->SetSize(spritesize);
+
+            tutomouse->TransferVertexBuffer();
+            tutomove->TransferVertexBuffer();
+            tutoshot->TransferVertexBuffer();
+            tutorule->TransferVertexBuffer();
+
             tutomouse->Update();
             tutomove->Update();
             tutoshot->Update();
@@ -304,6 +393,39 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         if (scene==3)
         {
             gameScene->Update();
+
+            if (overfrag == true)
+            {
+                spriteangle += 0.3f;
+
+                if (spriteangle >= 45)
+                {
+                    spriteangle = 45;
+                    spritepos.y += 2.0f;
+                }
+
+                if (spritepos.y >= 1250) overfrag = false;
+            }
+
+            if (overfrag==false)
+            {
+                spriteangle = 0;
+                spritepos.y -= 2.0f;
+                if (spritepos.y<=350)
+                {
+                    spritepos.y = 350;
+                }
+            }
+
+            /*if (overfrag==false&&spritepos.y<= WindowsApp::window_height / 2)
+            {
+                spritepos.y = WindowsApp::window_height / 2;
+            }*/
+
+
+            gameover->SetRotation(spriteangle);
+            gameover->SetPosition(spritepos);
+            gameover->TransferVertexBuffer();
             gameover->Update();
             if (input->TriggerKey(DIK_R))
             {
@@ -313,14 +435,39 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
                 tutoscene = 0;
                 wait = 0;
                 count = 0;
+                spritepos={ WindowsApp::window_width / 2 ,WindowsApp::window_height / 2,0 };
+                spritesize={ 1280,720 };
+                transfrag = true;
+                spriteangle = 0;
+                overfrag = true;
             }
         }
 
         //クリア
         if (scene==4)
         {
-            
+            if (spritesize.x >= 1280)
+            {
+                transfrag = true;
+            }
+            if (spritesize.x <= 0.0f)
+            {
+                transfrag = false;
+            }
+
+            if (transfrag == true)
+            {
+                spritesize.x -= 4.0f;
+                spritesize.y -= 3.0f;
+            }
+            else
+            {
+                spritesize.x += 4.0f;
+                spritesize.y += 3.0f;
+            }
             gameScene->Update();
+            clear->SetSize(spritesize);
+            clear->TransferVertexBuffer();
             clear->Update();
             if (input->TriggerKey(DIK_R))
             {
@@ -434,4 +581,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma endregion WindowsAPI後始末
 
         return 0;
+ }
+
+ void spritetrans(XMFLOAT2 size,bool flag)
+ {
+     if (flag == true)
+     {
+         size.x -= 0.3f;
+         size.y -= 0.3f;
+     }
+     else
+     {
+         size.x += 0.3f;
+         size.y += 0.3f;
+     }
+
+
  }

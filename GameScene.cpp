@@ -768,10 +768,10 @@ if (firstfrag == 0)
    {
        //FBXXV
        floor->Update();
-      /* wallLeft->Update();
-       wallForward->Update();
-       wallRight->Update();
-       wallBack->Update();*/
+       for (int i = 0; i < 8; i++)
+       {
+           stage1wall[i]->Update();
+       }
        cube->Update();
        player->BulUpdate();
        backsphere->Update();
@@ -933,16 +933,34 @@ void GameScene::Draw()
             Stage1[i]->Draw(cmdList);
         }
     }
+
+    if (scene==3)
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            stage1wall[i]->Draw(cmdList);
+        }
+        floor->Draw(cmdList);
+    }
+
+    if (scene == 4)
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            stage1wall[i]->Draw(cmdList);
+        }
+        floor->Draw(cmdList);
+    }
      
 
      for (int i = 0; i < 20; i++)
      {
          PartCube1[i]->Draw(cmdList);
-         /*PartCube2[i]->Draw(cmdList);
-         PartCube3[i]->Draw(cmdList);
-         PartCube4[i]->Draw(cmdList);
-         PartCube5[i]->Draw(cmdList);
-         PartCube6[i]->Draw(cmdList);*/
+         PartCube2[i]->Draw(cmdList);
+         //PartCube3[i]->Draw(cmdList);
+         //PartCube4[i]->Draw(cmdList);
+         //PartCube5[i]->Draw(cmdList);
+         //PartCube6[i]->Draw(cmdList);
      }
     
 
@@ -1076,10 +1094,10 @@ void GameScene::restart()
     {
         PartCube1[i]->Update();
         PartCube2[i]->Update();
-        PartCube3[i]->Update();
+       /* PartCube3[i]->Update();
         PartCube4[i]->Update();
         PartCube5[i]->Update();
-        PartCube6[i]->Update();
+        PartCube6[i]->Update();*/
     }
     for (int i = 0; i < 5; i++)
     {
