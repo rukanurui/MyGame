@@ -18,16 +18,15 @@ public://メンバ関数
 
 	void setcol(int Col);
 
-
-private:
-
 private:
 
 	XMVECTOR Vel{0.0f,0.0f,0.0f};
 
 	int col = 0;
 
-	float G = -0.1;//重力加速度
+	float G = -0.1f;//重力加速度
+
+	bool dead = false;
 
 
 

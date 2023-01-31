@@ -89,17 +89,12 @@ private://メンバ変数
 	Sprite* crosshair = nullptr;
 
 	//3dモデル(地形など)
-	FbxModel* model1 = nullptr;
 	FbxModel* model2 = nullptr;
 	FbxModel* modelfloor = nullptr;
 	FbxModel* modelwall = nullptr;
 	FbxModel* modelglasswall = nullptr;
-	
-	
 	FBXobj3d* floor = nullptr;
 	FBXobj3d* floor2 = nullptr;
-	
-
 	Wall* glasswallLeft = nullptr;
 	Wall* glasswallForward = nullptr;
 	

@@ -8,6 +8,7 @@
 #include <list>
 
 #include"EnemyBullet.h"
+#include"PartEnemy.h"
 
 class Enemy : public FBXobj3d
 {
@@ -16,32 +17,45 @@ public://メンバ関数
 
 	void EnemyInitialize(bool Shot);
 
+	//
 	void EnemyUpdate(XMFLOAT3 playerpos);
 
+	//攻撃処理
 	void Attack(XMFLOAT3 playerpos);
 
 	//衝突時コールバック関数
 	void OnCollision(const CollisionInfo& info)override;
 
-
+	//当たり判定リセット
 	void colReset();
+	//当たり判定セット
+	void setcol(int Col);
 
 	void move();
 
+	//弾関連処理
 	void BulUpdate();
 
 	void BulDraw(ID3D12GraphicsCommandList* cmdList);
 
-	void setcol(int Col);
+	//particle関連処理
+	void PartUpdate(XMFLOAT3 pos);
+
+	void PartDraw(ID3D12GraphicsCommandList* cmdList);
 
 private:
 
 	//ポインタ
 	FbxModel* modelballet = nullptr;
+	FbxModel* model2 = nullptr;
 	//Enemybullet* bullet=nullptr;
 	std::list<std::unique_ptr<Enemybullet>> bullets;
+	std::list<std::unique_ptr<PartEnemy>> particle;
 	
+	//boolに変更する
 	int col = 0;
+
+	const int partcount = 20;
 
 	float G = -0.1;//重力加速度
 

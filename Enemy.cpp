@@ -16,7 +16,9 @@ void Enemy::EnemyInitialize(bool shot)
 	//ëÆê´ÇÃí«â¡
 	collider->SetColor(COLLISION_COLOR_ENEMY);
 	Shot = shot;
+	//ÉÇÉfÉãì«Ç›çûÇ›
 	modelballet = FbxLoader::GetInstance()->LoadModelFromFile("bullet");
+	model2 = FbxLoader::GetInstance()->LoadModelFromFile("testfbx");
 	count = 0;
 
 	for (std::unique_ptr<Enemybullet>& bullet : bullets)
@@ -113,7 +115,19 @@ void Enemy::EnemyUpdate(XMFLOAT3 playerpos)
 		{
 			Attack(playerpos);
 		}
+	}
 
+	if (col==1)
+	{
+		for (int i = 0; i < 20; i++)
+		{
+			std::unique_ptr<PartEnemy>newPart = std::make_unique<PartEnemy>();
+			newPart->Initialize();
+			newPart->SetScale({ 0.01f,0.01f,0.01f });
+			newPart->SetModel(model2);
+			newPart->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+			newPart->PartInitialize();
+		}
 	}
 	
 	Update();
@@ -227,7 +241,6 @@ void Enemy::Attack(XMFLOAT3 playerpos)
 		Velocity = XMVector3Normalize(Velocity) * bulspeed;
 
 		//íeÇÃê∂ê¨Ç∆èâä˙âª
-		//Enemybullet* newBullet = new Enemybullet();
 		std::unique_ptr<Enemybullet>newBullet = std::make_unique<Enemybullet>();
 		newBullet->Initialize();
 		newBullet->SetScale({ 0.01f,0.01f,0.01f });

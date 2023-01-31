@@ -668,8 +668,6 @@ if (firstfrag == 0)
         {
             tutogun->Sethave(false);
         }
-        
-        
 
 
         for (int i = 0; i < 20; i++)
@@ -695,8 +693,8 @@ if (firstfrag == 0)
             for (int i = 0; i < 20; i++)
             {
                 PartCube1[i]->PartUpdate(cube->GetPos());
-                /* PartCube2[i]->PartUpdate(Stage1[0]->GetPos());
-                 PartCube3[i]->PartUpdate(Stage1[1]->GetPos());
+                PartCube2[i]->PartUpdate(Stage1[0]->GetPos());
+                 /*PartCube3[i]->PartUpdate(Stage1[1]->GetPos());
                  PartCube4[i]->PartUpdate(Stage1[2]->GetPos());
                  PartCube5[i]->PartUpdate(Stage1[3]->GetPos());
                  PartCube6[i]->PartUpdate(Stage1[4]->GetPos());*/
@@ -1151,9 +1149,6 @@ void GameScene::Finalize()
     /*delete dxCommon;
     delete audio;*/
 
-    
-
-    delete model1;
     delete cube;
     delete model2;
     delete modelfloor;
