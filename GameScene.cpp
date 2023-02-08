@@ -966,7 +966,7 @@ void GameScene::Draw()
      player->throwgunDraw(cmdList);
      player->gunDraw(cmdList);
      player->BulDraw(cmdList);
-     player->meleeDraw(cmdList);
+    // player->meleeDraw(cmdList);
     
 
     // デバッグテキスト描画

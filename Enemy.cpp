@@ -119,7 +119,7 @@ void Enemy::EnemyUpdate(XMFLOAT3 playerpos)
 
 	if (col==1)
 	{
-		for (int i = 0; i < 20; i++)
+		/*for (int i = 0; i < 20; i++)
 		{
 			std::unique_ptr<PartEnemy>newPart = std::make_unique<PartEnemy>();
 			newPart->Initialize();
@@ -127,7 +127,7 @@ void Enemy::EnemyUpdate(XMFLOAT3 playerpos)
 			newPart->SetModel(model2);
 			newPart->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
 			newPart->PartInitialize();
-		}
+		}*/
 	}
 	
 	Update();
