@@ -28,7 +28,6 @@
 
 
 #include"Enemy.h"
-#include"PartEnemy.h"
 #include"Wall.h"
 
 
@@ -118,16 +117,9 @@ private://メンバ変数
 	Enemy* Stage1[5];
 	//ステージ2
 	Enemy* Stage2[5];
-	//パーティクル
-	PartEnemy* PartCube1[20];
-	PartEnemy* PartCube2[20];
-	PartEnemy* PartCube3[20];
-	PartEnemy* PartCube4[20];
-	PartEnemy* PartCube5[20];
-	PartEnemy* PartCube6[20];
-	
+
+
 	//自機関連
-	
 	Player* player = nullptr;
 	PlayerCol* playercol = nullptr;
 

@@ -117,9 +117,11 @@ void Enemy::EnemyUpdate(XMFLOAT3 playerpos)
 		}
 	}
 
+	//éÄñSÇµÇƒÇ¢ÇΩÇÁ
 	if (col==1)
 	{
-		/*for (int i = 0; i < 20; i++)
+		//20å¬Ç‹Ç≈particleê∂ê¨
+		if (partcount <= partnum)
 		{
 			std::unique_ptr<PartEnemy>newPart = std::make_unique<PartEnemy>();
 			newPart->Initialize();
@@ -127,7 +129,20 @@ void Enemy::EnemyUpdate(XMFLOAT3 playerpos)
 			newPart->SetModel(model2);
 			newPart->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
 			newPart->PartInitialize();
-		}*/
+
+			//íeÇÃìoò^
+			particle.push_back(std::move(newPart));
+
+			partcount++;
+		}
+
+		//particleÇÃçXêV
+		for (std::unique_ptr<PartEnemy>& part : particle)
+		{
+			part->PartUpdate();
+			part->Update();
+		}
+
 	}
 	
 	Update();
@@ -388,6 +403,22 @@ void Enemy::BulDraw(ID3D12GraphicsCommandList* cmdList)
 	for (std::unique_ptr<Enemybullet>& bullet : bullets)
 	{
 		bullet->Draw(cmdList);
+	}
+}
+
+void Enemy::PartUpdate(XMFLOAT3 pos)
+{
+	for (std::unique_ptr<PartEnemy>& part : particle)
+	{
+		part->Update();
+	}
+}
+
+void Enemy::PartDraw(ID3D12GraphicsCommandList* cmdList)
+{
+	for (std::unique_ptr<PartEnemy>& part : particle)
+	{
+		part->Draw(cmdList);
 	}
 }
 

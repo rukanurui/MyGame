@@ -14,7 +14,7 @@ public://ƒƒ“ƒoŠÖ”
 
 	void PartInitialize();
 
-	void PartUpdate(XMFLOAT3 pos);
+	void PartUpdate();
 
 	void setcol(int Col);
 

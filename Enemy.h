@@ -53,9 +53,16 @@ private:
 	std::list<std::unique_ptr<PartEnemy>> particle;
 	
 	//boolに変更する
+	//当たったかのフラグ
 	int col = 0;
 
-	const int partcount = 20;
+	//パーティクルの数
+	const int partnum = 20;
+
+	//パーティクルの数カウント
+	int partcount = 0;
+
+
 
 	float G = -0.1;//重力加速度
 
