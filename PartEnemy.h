@@ -12,7 +12,7 @@ public://メンバ関数
 	//衝突時コールバック関数
 	void OnCollision(const CollisionInfo& info)override;
 
-	void PartInitialize();
+	void PartInitialize(XMFLOAT3 pos);
 
 	void PartUpdate();
 

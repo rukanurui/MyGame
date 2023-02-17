@@ -4,8 +4,10 @@ PartEnemy::PartEnemy()
 {
 }
 
-void PartEnemy::PartInitialize()
+void PartEnemy::PartInitialize(XMFLOAT3 pos)
 {
+
+	position = pos;
 
 	srand(rand());
 	int pcount = rand() % 10 + 1;

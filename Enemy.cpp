@@ -128,7 +128,7 @@ void Enemy::EnemyUpdate(XMFLOAT3 playerpos)
 			newPart->SetScale({ 0.01f,0.01f,0.01f });
 			newPart->SetModel(model2);
 			newPart->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
-			newPart->PartInitialize();
+			newPart->PartInitialize(position);
 
 			//’e‚Ì“o˜^
 			particle.push_back(std::move(newPart));
@@ -406,7 +406,7 @@ void Enemy::BulDraw(ID3D12GraphicsCommandList* cmdList)
 	}
 }
 
-void Enemy::PartUpdate(XMFLOAT3 pos)
+void Enemy::PartUpdate()
 {
 	for (std::unique_ptr<PartEnemy>& part : particle)
 	{

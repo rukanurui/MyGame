@@ -39,7 +39,7 @@ public://ƒƒ“ƒoŠÖ”
 	void BulDraw(ID3D12GraphicsCommandList* cmdList);
 
 	//particleŠÖ˜Aˆ—
-	void PartUpdate(XMFLOAT3 pos);
+	void PartUpdate();
 
 	void PartDraw(ID3D12GraphicsCommandList* cmdList);
 

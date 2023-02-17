@@ -203,7 +203,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
             title->Update();
             if (input->TriggerKey(DIK_SPACE))
             {
-                scene = 2;
+                scene = 5;
                 gameScene->SetScene(scene);
                 gameScene->transrationScene();
                 spritesize = { 1280,720 };
@@ -394,7 +394,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         {
             gameScene->Update();
 
-            if (overfrag == true)
+            /*if (overfrag == true)
             {
                 spriteangle += 0.3f;
 
@@ -415,7 +415,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
                 {
                     spritepos.y = 350;
                 }
-            }
+            }*/
 
             /*if (overfrag==false&&spritepos.y<= WindowsApp::window_height / 2)
             {

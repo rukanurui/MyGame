@@ -101,22 +101,29 @@ private://メンバ変数
 	Wall* stage1wall[8];
 
 	//2面
-	Wall* stage2wall[4];
-	Wall* centerWall = nullptr;
-	Wall * crossWall = nullptr;
-	FbxModel* modelBack = nullptr;
-	FBXobj3d* backsphere = nullptr;
+	Wall* stage2wall[6];
 	Wall* gunstand = nullptr;
 	FbxModel* modelobjgun = nullptr;
 	Wall* tutogun = nullptr;
+	Wall* stage2Object[3];
 
+	FbxModel* modelBack = nullptr;
+	FBXobj3d* backsphere = nullptr;
+
+	//3面
+	Wall* stage3wall[3];
+
+
+	
 
 	//3dモデル(敵)
 	//チュートリアル
 	Enemy* cube = nullptr;
 	Enemy* Stage1[5];
 	//ステージ2
-	Enemy* Stage2[5];
+	Enemy* Stage2[3];
+	//ステージ3
+	Enemy* Stage3[5];
 
 
 	//自機関連

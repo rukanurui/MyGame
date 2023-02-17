@@ -180,10 +180,16 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     Stage1[3]->SetPosition({ 350.0f,5.0f,5.0f });
     Stage1[4]->SetPosition({ 250.0f,10.0f,30.0f });
 
+    for (int i = 0; i < 5; i++)
+    {
+        Stage1[i]->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+        Stage1[i]->EnemyInitialize(TRUE);
+    }
+
      
     ///２面
     //壁
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 6; i++)
     {
         stage2wall[i] = nullptr;
         stage2wall[i] = new Wall();
@@ -199,25 +205,40 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     stage2wall[0]->WallInitialize();
 
     //前
-    stage2wall[1]->SetPosition({ 0.0f,0.0f,100.0f });
+    stage2wall[1]->SetPosition({ 0.0f,0.0f,80.0f });
     stage2wall[1]->SetScale({ 0.1f,1.0f,1.0f });
     stage2wall[1]->SetRotation({ 0.0f,90.0f,0.0f });
     stage2wall[1]->SetCollider(new BoxCollider(XMVECTOR{ 100.0f,100.0f,0.8f,0 }, 1.0f));
     stage2wall[1]->WallInitialize();
 
     //右
-    stage2wall[2]->SetPosition({ 100.0f,0.0f,0.0f });
+    stage2wall[2]->SetPosition({ 70.0f,0.0f,0.0f });
     stage2wall[2]->SetScale({ 0.01f,1.0f,1.0f });
     stage2wall[2]->SetRotation({ 0.0f,0.0f,0.0f });
     stage2wall[2]->SetCollider(new BoxCollider(XMVECTOR{ 0.8f,100.0f,100.0f,0 }, 1.0f));
     stage2wall[2]->WallInitialize();
 
     //後ろ
-    stage2wall[3]->SetPosition({ 0.0f,0.0f,-25.0f });
+    stage2wall[3]->SetPosition({ 0.0f,0.0f,-20.0f });
     stage2wall[3]->SetScale({ 0.1f,1.0f,1.0f });
     stage2wall[3]->SetRotation({ 0.0f,90.0f,0.0f });
     stage2wall[3]->SetCollider(new BoxCollider(XMVECTOR{ 100.0f,100.0f,0.8f,0 }, 1.0f));
     stage2wall[3]->WallInitialize();
+
+    //手前横壁
+    stage2wall[4]->SetPosition({ -30.0f,0.0f,60.0f });
+    stage2wall[4]->SetScale({ 0.1f,1.0f,0.5f });
+    stage2wall[4]->SetRotation({ 0.0f,90.0f,0.0f });
+    stage2wall[4]->SetCollider(new BoxCollider(XMVECTOR{ 50.0f,100.0f,0.8f,0 }, 1.0f));
+    stage2wall[4]->WallInitialize();
+
+    //右縦壁
+    stage2wall[5]->SetPosition({ 10.0f,0.0f,0.0f });
+    stage2wall[5]->SetScale({ 0.1f,1.0f,0.2f });
+    stage2wall[5]->SetRotation({ 0.0f,0.0f,0.0f });
+    stage2wall[5]->SetCollider(new BoxCollider(XMVECTOR{ 0.8f,100.0f,20.0f,0 }, 1.0f));
+    stage2wall[5]->WallInitialize();
+
 
     //銃台座
     gunstand= new Wall();
@@ -238,89 +259,25 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     tutogun->SetCollider(new BoxCollider(XMVECTOR{ 6.0f,6.0f,6.0f,0 }, 1.0f));
     tutogun->objgunInitialize();
 
-
-    
-
-    for (int i = 0; i < 5; i++)
+    //敵2面
+    for (int i = 0; i < 3; i++)
     {
-        Stage1[i]->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
-        Stage1[i]->EnemyInitialize(TRUE);
+        Stage2[i] = nullptr;
+        Stage2[i] = new Enemy();
+        Stage2[i]->Initialize();
+        Stage2[i]->SetScale({ 0.01f,0.01f,0.01f });
+        Stage2[i]->SetModel(model2);
     }
 
-    ///particle
-    ////particle
-    //for (int i = 0; i < 20; i++)
-    //{
-    //    PartCube1[i] = nullptr;
-    //    PartCube1[i] = new PartEnemy;
-    //    PartCube1[i]->Initialize();
-    //    PartCube1[i]->SetPosition({ 20.0f,5.0f,70.0f });
-    //    PartCube1[i]->SetScale({ 0.005f,0.005f,0.005f });
-    //    PartCube1[i]->SetModel(model2);
-    //    PartCube1[i]->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
-    //    PartCube1[i]->PartInitialize();
-    //}
+    Stage2[0]->SetPosition({ 0.0f, 5.0f, 70.0f });
+    Stage2[1]->SetPosition({ 60.0f, 5.0f, 70.0f });
+    Stage2[2]->SetPosition({ 60.0f,5.0f,0.0f });
 
-    //for (int i = 0; i < 20; i++)
-    //{
-    //    PartCube2[i] = nullptr;
-    //    PartCube2[i] = new PartEnemy;
-    //    PartCube2[i]->Initialize();
-    //    PartCube2[i]->SetPosition({ 40.0f,5.0f,68.0f });
-    //    PartCube2[i]->SetScale({ 0.005f,0.005f,0.005f });
-    //    PartCube2[i]->SetModel(model2);
-    //    PartCube2[i]->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
-    //    PartCube2[i]->PartInitialize();
-    //}
-
-    //for (int i = 0; i < 20; i++)
-    //{
-    //    PartCube3[i] = nullptr;
-    //    PartCube3[i] = new PartEnemy;
-    //    PartCube3[i]->Initialize();
-    //    PartCube3[i]->SetPosition({ 15.0f,10.0f,10.0f });
-    //    PartCube3[i]->SetScale({ 0.005f,0.005f,0.005f });
-    //    PartCube3[i]->SetModel(model2);
-    //    PartCube3[i]->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
-    //    PartCube3[i]->PartInitialize();
-    //}
-
-    //for (int i = 0; i < 20; i++)
-    //{
-    //    PartCube4[i] = nullptr;
-    //    PartCube4[i] = new PartEnemy;
-    //    PartCube4[i]->Initialize();
-    //    PartCube4[i]->SetPosition({ 10.0f,5.0f,20.0f });
-    //    PartCube4[i]->SetScale({ 0.005f,0.005f,0.005f });
-    //    PartCube4[i]->SetModel(model2);
-    //    PartCube4[i]->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
-    //    PartCube4[i]->PartInitialize();
-    //}  
-
-    //for (int i = 0; i < 20; i++)
-    //{
-    //    PartCube5[i] = nullptr;
-    //    PartCube5[i] = new PartEnemy;
-    //    PartCube5[i]->Initialize();
-    //    PartCube5[i]->SetPosition({ 35.0f,5.0f,5.0f });
-    //    PartCube5[i]->SetScale({ 0.005f,0.005f,0.005f });
-    //    PartCube5[i]->SetModel(model2);
-    //    PartCube5[i]->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
-    //    PartCube5[i]->PartInitialize();
-    //}
-
-    //for (int i = 0; i < 20; i++)
-    //{
-    //    PartCube6[i] = nullptr;
-    //    PartCube6[i] = new PartEnemy;
-    //    PartCube6[i]->Initialize();
-    //    PartCube6[i]->SetPosition({ 25.0f,10.0f,30.0f });
-    //    PartCube6[i]->SetScale({ 0.005f,0.005f,0.005f });
-    //    PartCube6[i]->SetModel(model2);
-    //    PartCube6[i]->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
-    //    PartCube6[i]->PartInitialize();
-    //}
-
+    for (int i = 0; i < 3; i++)
+    {
+        Stage2[i]->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+        Stage2[i]->EnemyInitialize(TRUE);
+    }
 
     int counter = 0; // アニメーションの経過時間カウンター
 
@@ -503,15 +460,10 @@ if (firstfrag == 0)
         
         //FBX更新
         floor->Update();
-       /* wallLeft->Update();
-        wallForward->Update();
-        wallRight->Update();
-        wallBack->Update();*/
         cube->Update();
         cube->BulUpdate();
         player->BulUpdate();
         Stage1[0]->BulUpdate();
-        //ballet->Update();
         backsphere->Update();
         player->BulUpdate();
         player->meleeUpdate();
@@ -519,19 +471,9 @@ if (firstfrag == 0)
         player->gunUpdate(camera->GetTarget(), camera->GetmatRot());
 
         
-        /*for (int i = 0; i < 20; i++)
-        {
-            PartCube1[i]->Update();
-            PartCube2[i]->Update();
-            PartCube3[i]->Update();
-            PartCube4[i]->Update();
-            PartCube5[i]->Update();
-            PartCube6[i]->Update();
-        }*/
         for (int i = 0; i < 5; i++)
         {
             Stage1[i]->Update();
-
         }
 
 
@@ -552,16 +494,6 @@ if (firstfrag == 0)
                 Stage1[i]->EnemyUpdate(player->GetPos());
             }
 
-            //particle更新        
-            //for (int i = 0; i < 20; i++)
-            //{
-            //    PartCube1[i]->PartUpdate(cube->GetPos());
-            //   /* PartCube2[i]->PartUpdate(Stage1[0]->GetPos());
-            //    PartCube3[i]->PartUpdate(Stage1[1]->GetPos());
-            //    PartCube4[i]->PartUpdate(Stage1[2]->GetPos());
-            //    PartCube5[i]->PartUpdate(Stage1[3]->GetPos());
-            //    PartCube6[i]->PartUpdate(Stage1[4]->GetPos());*/
-            //}
 
             for (int i = 0; i < 8; i++)
             {
@@ -649,16 +581,20 @@ if (firstfrag == 0)
 
         //FBX更新
         floor->Update();
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 6; i++)
         {
             stage2wall[i]->Update();
-
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            Stage2[i]->Update();
+            Stage2[i]->BulUpdate();
+            Stage2[i]->PartUpdate();
         }
         gunstand->Update();
         tutogun->Update();
         player->BulUpdate();
         backsphere->Update();
-        player->BulUpdate();
         player->meleeUpdate();
         player->throwgunUpdate();
         player->gunUpdate(camera->GetTarget(), camera->GetmatRot());
@@ -672,17 +608,6 @@ if (firstfrag == 0)
         {
             tutogun->Sethave(false);
         }
-
-
-        //for (int i = 0; i < 20; i++)
-        //{
-        //    PartCube1[i]->Update();
-        //    PartCube2[i]->Update();
-        //    PartCube3[i]->Update();
-        //    PartCube4[i]->Update();
-        //    PartCube5[i]->Update();
-        //    PartCube6[i]->Update();
-        //}
         
 
 
@@ -691,19 +616,10 @@ if (firstfrag == 0)
         {
 
             //敵更新
-           
-
-            ////particle更新        
-            //for (int i = 0; i < 20; i++)
-            //{
-            //    PartCube1[i]->PartUpdate(cube->GetPos());
-            //    PartCube2[i]->PartUpdate(Stage1[0]->GetPos());
-            //     /*PartCube3[i]->PartUpdate(Stage1[1]->GetPos());
-            //     PartCube4[i]->PartUpdate(Stage1[2]->GetPos());
-            //     PartCube5[i]->PartUpdate(Stage1[3]->GetPos());
-            //     PartCube6[i]->PartUpdate(Stage1[4]->GetPos());*/
-            //}
-
+            for (int i = 0; i < 3; i++)
+            {
+                Stage2[i]->EnemyUpdate(player->GetPos());
+            }
 
             //プレイy－更新
             player->Setoldpos(camera->GetEye());
@@ -778,31 +694,12 @@ if (firstfrag == 0)
        player->BulUpdate();
        backsphere->Update();
 
-       //for (int i = 0; i < 20; i++)
-       //{
-       //    PartCube1[i]->Update();
-       //    PartCube2[i]->Update();
-       //   /* PartCube3[i]->Update();
-       //    PartCube4[i]->Update();
-       //    PartCube5[i]->Update();
-       //    PartCube6[i]->Update();*/
-       //}
-
        for (int i = 0; i < 5; i++)
        {
            Stage1[i]->Update();
        }
 
-       //particle更新        
-       //for (int i = 0; i < 20; i++)
-       //{
-       //    PartCube1[i]->PartUpdate(cube->GetPos());
-       //    PartCube2[i]->PartUpdate(Stage1[0]->GetPos());
-       //    /*PartCube3[i]->PartUpdate(Stage1[1]->GetPos());
-       //    PartCube4[i]->PartUpdate(Stage1[2]->GetPos());
-       //    PartCube5[i]->PartUpdate(Stage1[3]->GetPos());
-       //    PartCube6[i]->PartUpdate(Stage1[4]->GetPos());*/
-       //}
+      
    }
 
    //クリア
@@ -826,26 +723,6 @@ if (firstfrag == 0)
        cube->Update();
        player->BulUpdate();
        //backsphere->Update();
-       //for (int i = 0; i < 20; i++)
-       //{
-       //    PartCube1[i]->Update();
-       //   /* PartCube2[i]->Update();
-       //    PartCube3[i]->Update();
-       //    PartCube4[i]->Update();
-       //    PartCube5[i]->Update();
-       //    PartCube6[i]->Update();*/
-       //}
-
-       //particle更新        
-       //for (int i = 0; i < 20; i++)
-       //{
-       //    PartCube1[i]->PartUpdate(cube->GetPos());
-       //    PartCube2[i]->PartUpdate(Stage1[0]->GetPos());
-       //    /*PartCube3[i]->PartUpdate(Stage1[1]->GetPos());
-       //    PartCube4[i]->PartUpdate(Stage1[2]->GetPos());
-       //    PartCube5[i]->PartUpdate(Stage1[3]->GetPos());
-       //    PartCube6[i]->PartUpdate(Stage1[4]->GetPos());*/
-       //}
       
 
        ////自分が動いていたら更新処理
@@ -911,10 +788,11 @@ void GameScene::Draw()
     floor->Draw(cmdList);
     if (scene == 5)
     {
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 6; i++)
         {
             stage2wall[i]->Draw(cmdList);
         }
+
         gunstand->Draw(cmdList);
         tutogun->Draw(cmdList);
     }
@@ -942,6 +820,16 @@ void GameScene::Draw()
         }
     }
 
+    if (scene==5)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            Stage2[i]->Draw(cmdList); 
+            Stage2[i]->PartDraw(cmdList);
+            Stage2[i]->BulDraw(cmdList);
+        }
+    }
+
     if (scene==3)
     {
         for (int i = 0; i < 8; i++)
@@ -960,16 +848,6 @@ void GameScene::Draw()
         floor->Draw(cmdList);
     }
      
-
-     //for (int i = 0; i < 20; i++)
-     //{
-     //    PartCube1[i]->Draw(cmdList);
-     //    PartCube2[i]->Draw(cmdList);
-     //    //PartCube3[i]->Draw(cmdList);
-     //    //PartCube4[i]->Draw(cmdList);
-     //    //PartCube5[i]->Draw(cmdList);
-     //    //PartCube6[i]->Draw(cmdList);
-     //}
     
 
     //プレイヤー関連
@@ -1035,61 +913,7 @@ void GameScene::restart()
     Stage1[4]->SetPosition({ 250.0f,10.0f,30.0f });
 
 
-    //particle
-    /*for (int i = 0; i < 20; i++)
-    {
-        PartCube1[i]->SetPosition({ 20.0f,5.0f,70.0f });
-        PartCube1[i]->SetScale({ 0.005f,0.005f,0.005f });
-        PartCube1[i]->PartInitialize();
-        PartCube1[i]->setcol(0);
-    }
-
-    for (int i = 0; i < 20; i++)
-    {
-      
-        PartCube2[i]->SetPosition({ 40.0f,5.0f,68.0f });
-        PartCube2[i]->SetScale({ 0.005f,0.005f,0.005f });
-        PartCube2[i]->PartInitialize();
-        PartCube2[i]->setcol(0);
-    }*/
-
-  /*  for (int i = 0; i < 20; i++)
-    {
-       
-        PartCube3[i]->SetPosition({ 15.0f,10.0f,10.0f });
-        PartCube3[i]->SetScale({ 0.005f,0.005f,0.005f });
-        PartCube3[i]->PartInitialize();
-    }
-
-    for (int i = 0; i < 20; i++)
-    {
-       
-        PartCube4[i]->SetPosition({ 10.0f,5.0f,20.0f });
-        PartCube4[i]->SetScale({ 0.005f,0.005f,0.005f });
-        PartCube4[i]->PartInitialize();
-    }
-
-    for (int i = 0; i < 20; i++)
-    {
-       
-        PartCube5[i]->SetPosition({ 35.0f,5.0f,5.0f });
-        PartCube5[i]->SetScale({ 0.005f,0.005f,0.005f });
-        PartCube5[i]->PartInitialize();
-    }
-
-    for (int i = 0; i < 20; i++)
-    {
-       
-        PartCube6[i]->SetPosition({ 25.0f,10.0f,30.0f });
-        PartCube6[i]->SetScale({ 0.005f,0.005f,0.005f });
-        PartCube6[i]->PartInitialize();
-        PartCube1[i]->setcol(0);
-        PartCube2[i]->setcol(0);
-        PartCube3[i]->setcol(0);
-        PartCube4[i]->setcol(0);
-        PartCube4[5]->setcol(0);
-        PartCube6[i]->setcol(0);
-    }*/
+   
 
     //FBX更新
    
@@ -1098,16 +922,7 @@ void GameScene::restart()
     player->BulUpdate();
     backsphere->Update();
 
-    //for (int i = 0; i < 20; i++)
-    //{
-    //    PartCube1[i]->Update();
-    //    PartCube2[i]->Update();
-    //   /* PartCube3[i]->Update();
-    //    PartCube4[i]->Update();
-    //    PartCube5[i]->Update();
-    //    PartCube6[i]->Update();*/
-    //}
-
+   
     for (int i = 0; i < 5; i++)
     {
         Stage1[i]->Update();
@@ -1131,7 +946,10 @@ void GameScene::transrationScene()
 
     if (scene==5)
     {
+        const XMFLOAT3 respos={0,0,0};
         player->Sethave(false);
+        player->SetPosition(respos);
+        camera->SetEye(respos);
     }
     
 }
@@ -1170,19 +988,15 @@ void GameScene::Finalize()
 
     delete player;
 
-    /*for (int i = 0; i < 20; i++)
-    {
-        delete PartCube1[i];
-        delete PartCube2[i];
-        delete PartCube3[i];
-        delete PartCube4[i];
-        delete PartCube5[i];
-        delete PartCube6[i];
-    }*/
+   
 
     for (int i = 0; i < 5; i++)
     {
         delete Stage1[i];
+    }
+
+    for (int i = 0; i < 3; i++)
+    {
         delete Stage2[i];
     }
 
