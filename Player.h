@@ -19,6 +19,7 @@ public://ƒƒ“ƒoŠÖ”
 	void PlayerInitialize(Input*Input);
 	//XV
 	void PlayerUpdate(const XMFLOAT3& cameratarget);
+
 	void BulUpdate();
 	void meleeUpdate();
 	void throwgunUpdate();

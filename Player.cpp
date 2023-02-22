@@ -82,7 +82,7 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 		mctime = 0;
 	}
 
-
+	//’e‚Ì”­ŽË
 	if (input->TriggerKey(DIK_SPACE)&&ctime<=0 && magazin>=1&&have==true)
 	{
 		//’e‚Ì‘¬“x
@@ -108,7 +108,7 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 		//Žc’eŒ¸‚ç‚·
 		magazin--;
 	}
-
+	//e‚ð“Š‚°‚é
 	if (input->TriggerKey(DIK_Q) && have==true)
 	{
 		//’e‚Ì‘¬“x
@@ -134,7 +134,7 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 		//ƒtƒ‰ƒO•ÏX
 		have = false;
 	}
-
+	//‹ßÚ
 	if (input->TriggerKey(DIK_SPACE) && have==false&&mctime<=0)
 	{
 		//’e‚Ì‘¬“x
@@ -182,6 +182,8 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 
 
 }
+
+
 
 void Player::BulUpdate()
 {

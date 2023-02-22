@@ -76,6 +76,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     spriteCommon->LoadTexture(6, L"Resources/tutomouse.png");
     spriteCommon->LoadTexture(7, L"Resources/tutoshot.png");
     spriteCommon->LoadTexture(8, L"Resources/tutorule.png");
+    spriteCommon->LoadTexture(9, L"Resources/pickuptuto.png");
+    spriteCommon->LoadTexture(10, L"Resources/stage2tuto1.png");
+    spriteCommon->LoadTexture(11, L"Resources/stage2tuto2.png");
+
     //spriteCommon->LoadTexture(9, L"Resources/noammo.png");
 //    spriteCommon->LoadTexture(10, L"Resources/debugfont.png");
 
@@ -118,9 +122,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     tutorule->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
     tutorule->TransferVertexBuffer();
 
-    Sprite* noammo = Sprite::Create(spriteCommon, 9);
-    noammo->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
-    noammo->TransferVertexBuffer();
+    Sprite* tutopickup = Sprite::Create(spriteCommon, 9);
+    tutopickup->SetPosition({ WindowsApp::window_width / 2,600,0 });
+    tutopickup->TransferVertexBuffer();
+
+    Sprite* tutogunpick1 = Sprite::Create(spriteCommon, 10);
+    tutogunpick1->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    tutogunpick1->TransferVertexBuffer();
+
+    Sprite* tutogunpick2 = Sprite::Create(spriteCommon, 11);
+    tutogunpick2->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    tutogunpick2->TransferVertexBuffer();
 
 
 
@@ -204,6 +216,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
             if (input->TriggerKey(DIK_SPACE))
             {
                 scene = 5;
+                tutoscene = 3;
                 gameScene->SetScene(scene);
                 gameScene->transrationScene();
                 spritesize = { 1280,720 };
@@ -482,9 +495,99 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         //ステージ２
         if (scene==5)
         {
+            if (tutoscene == 3)
+            {
+
+                if (spritesize.x >= 1280)
+                {
+                    transfrag = true;
+                }
+
+                if (transfrag == true)
+                {
+                    spritesize.x -= 1.0f;
+                    spritesize.y -= 1.0f;
+                }
+
+                wait++;
+                if (wait >= 120)
+                {
+                    tutoscene = 4;
+                    spritesize = { 1280,720 };
+                    wait = 0;
+                    transfrag = true;
+                }
+                gameScene->Update();
+            }
+
+            if (tutoscene == 4)
+            {
+                if (spritesize.x >= 1280)
+                {
+                    transfrag = true;
+                }
+
+                if (transfrag == true)
+                {
+                    spritesize.x -= 1.0f;
+                    spritesize.y -= 1.0f;
+                }
+                wait++;
+                if (wait >= 120)
+                {
+                    tutoscene = 5;
+                    spritesize = { 1280,720 };
+                    transfrag = true;
+                    wait = 0;
+                }
+            }
+
+            if (tutoscene == 5)
+            {
+                if (movesize.x >= 800)
+                {
+                    transfrag = true;
+                }
+                if (movesize.x <= 750)
+                {
+                    transfrag = false;
+                }
+
+                if (transfrag == true)
+                {
+                    movesize.x -= 0.2f;
+                    movesize.y -= 0.2f;
+                }
+                else
+                {
+                    movesize.x += 0.2f;
+                    movesize.y += 0.2f;
+                }
+
+                wait++;
+                if (wait >= 60 && input->PushKey(DIK_SPACE))
+                {
+                    tutoscene = 6;
+                    wait = 0;
+                }
+            }
             crosshair->Update();
             gameScene->Update();
             scene = gameScene->GetScene();
+
+            
+            tutopickup->SetSize(movesize);
+            tutogunpick1->SetSize(spritesize);
+            tutogunpick2->SetSize(spritesize);
+
+            
+            tutopickup->TransferVertexBuffer();
+            tutogunpick1->TransferVertexBuffer();
+            tutogunpick2->TransferVertexBuffer();
+
+            tutopickup->Update();
+            tutogunpick1->Update();
+            tutogunpick2->Update();
             //debugText->Print()
         }
 
@@ -526,6 +629,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
             if (tutoscene == 0)tutomove->Draw();
             if (tutoscene == 1)tutomouse->Draw();
             if (tutoscene == 2)tutorule->Draw();
+        }
+        if (scene ==5)
+        {
+            if (tutoscene == 3)tutogunpick1->Draw();
+            if (tutoscene == 4)tutogunpick2->Draw();
+            if (tutoscene == 5)tutopickup->Draw();
         }
         
         if (scene == 3)gameover->Draw();

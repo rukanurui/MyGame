@@ -129,6 +129,8 @@ private://メンバ変数
 	//自機関連
 	Player* player = nullptr;
 	PlayerCol* playercol = nullptr;
+	float movect = 0;
+	bool attack = false;
 
 	//ひとつ前のマウスの座標
 	float CurretmouseX = 0;

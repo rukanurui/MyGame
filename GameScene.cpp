@@ -567,7 +567,6 @@ if (firstfrag == 0)
         {
             stage1wall[i]->SetPosition({ -1000.0f,10.0f,0.0f });
             stage1wall[i]->Update();
-           
         }
 
         //描画のためにカメラの更新処理を一回呼び出す
@@ -610,6 +609,40 @@ if (firstfrag == 0)
         }
         
 
+        //攻撃等の処理をしたら
+        if (input->PushKey(DIK_SPACE))
+        {
+            //フラグをtrueにする
+            attack = true;
+        }
+
+        if (attack ==true)
+        {
+            movect++;
+           
+            //敵更新
+            for (int i = 0; i < 3; i++)
+            {
+                Stage2[i]->EnemyUpdate(player->GetPos());
+            }
+
+            //プレイy－更新
+            player->Setoldpos(camera->GetEye());
+            player->SetoldTarget(camera->GetTarget());
+            camera->CurrentUpdate();
+            camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+            player->SetTarget(camera->GetTarget());
+            player->SetPosition(camera->GetEye());
+            player->SetRotation(camera->GetRoatation());
+            player->PlayerUpdate(camera->GetTarget());
+            player->gunUpdate(camera->GetTarget(), camera->GetmatRot());
+
+            if (movect >= 30)
+            {
+                attack = false;
+                movect = 0;
+            }
+        }
 
         //自分が動いていたら更新処理
         if (input->PushKey(DIK_W) || input->PushKey(DIK_A) || input->PushKey(DIK_S) || input->PushKey(DIK_D))
