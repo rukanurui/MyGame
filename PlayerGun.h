@@ -10,7 +10,7 @@ public:
 	void GunInitialize();
 	void create(const XMFLOAT3& Playerpos, const XMVECTOR& velocity);
 	void staycreate(const XMFLOAT3& Playerpos);
-	void gunupdate(const XMFLOAT3& Playerpos, const XMVECTOR& velocity);
+	void gunupdate(const XMFLOAT3& Playerpos, const XMVECTOR& velocity, const XMFLOAT3& anglevelocity);
 	void throwgunUpdate();
 
 	//void deleate(int flag);
@@ -23,6 +23,8 @@ private:
 
 	//速度
 	XMVECTOR Vel = { 0,0,0 };
+	//角度補正用ベクトル
+	XMVECTOR angleVec = { 0,0,0 };
 
 	//角度
 	XMFLOAT3 angle = { 0,0,0 };

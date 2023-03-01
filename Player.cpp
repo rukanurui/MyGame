@@ -226,7 +226,7 @@ void Player::gunUpdate(const XMFLOAT3& cameratarget,const XMMATRIX& cameramatRot
 
 	gunpos.x += move.m128_f32[0]; gunpos.y += move.m128_f32[1]; gunpos.z += move.m128_f32[2];
 
-	Pgun->gunupdate(gunpos, Velocity2);
+	Pgun->gunupdate(gunpos, Velocity2,cameratarget);
 	Pgun->Update();
 
 }

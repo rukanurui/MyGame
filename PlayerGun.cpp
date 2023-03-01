@@ -29,17 +29,18 @@ void PlayerGun::GunInitialize()
 	collider->SetColor(COLLISION_COLOR_PBULET);
 }
 
-void PlayerGun::gunupdate(const XMFLOAT3& Playerpos,const XMVECTOR& velocity)
+void PlayerGun::gunupdate(const XMFLOAT3& Playerpos,const XMVECTOR& velocity, const XMFLOAT3& anglevelocity)
 {
 
-	//position = Playerpos;
 	Vel = velocity;
 	
 	position.x = Playerpos.x + (velocity.m128_f32[0] * 2.5f);
 	position.y = Playerpos.y + (velocity.m128_f32[1] * 3.0f);
 	position.z = Playerpos.z + (velocity.m128_f32[2] * 3.0f);
-	//position.y = Vel.m128_f32[1]*2;
-	//position.z = Vel.m128_f32[2]*2;
+
+
+	rotation.x += angleVec.m128_f32[0];
+	rotation.y += angleVec.m128_f32[1];
 
 	HRESULT result;
 	UpdateWorld();
@@ -102,6 +103,9 @@ void PlayerGun::throwgunUpdate()
 	position.x += Vel.m128_f32[0];
 	position.y += Vel.m128_f32[1];
 	position.z += Vel.m128_f32[2];
+
+	rotation.y += 1.5f;
+
 	HRESULT result;
 	XMMATRIX matScale, matRot, matTrans;
 

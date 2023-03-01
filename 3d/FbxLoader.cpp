@@ -117,7 +117,7 @@ void FbxLoader::ParseSkin(FbxModel* fbxmodel, FbxMesh* fbxMesh)
     {
         //頂点のウェイトから最も大きい4つを選択
         auto& weightList = WeightLists[i];
-        //大証皮革用のラムダ式を指定して降順にソート
+        //大小比較用のラムダ式を指定して降順にソート
         weightList.sort([](auto const& lhs, auto const& rhs) {
             //左の要素のほうが大きければtrue そうでなければfalseを返す
             return lhs.weight > rhs.weight;

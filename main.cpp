@@ -79,8 +79,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     spriteCommon->LoadTexture(9, L"Resources/pickuptuto.png");
     spriteCommon->LoadTexture(10, L"Resources/stage2tuto1.png");
     spriteCommon->LoadTexture(11, L"Resources/stage2tuto2.png");
-
-    //spriteCommon->LoadTexture(9, L"Resources/noammo.png");
+    spriteCommon->LoadTexture(12, L"Resources/noammo.png");
+     
 //    spriteCommon->LoadTexture(10, L"Resources/debugfont.png");
 
     // デバッグテキスト初期化
@@ -134,6 +134,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     tutogunpick2->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
     tutogunpick2->TransferVertexBuffer();
 
+    Sprite* noammo = Sprite::Create(spriteCommon, 12);
+    noammo->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    noammo->TransferVertexBuffer();
+
 
 
 
@@ -163,11 +167,19 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     int tutoscene = 0;
     int wait = 0;
     int count = 0;
+
+    //sprite関連
     XMFLOAT3 spritepos{ WindowsApp::window_width / 2 ,WindowsApp::window_height / 2,0 };
     XMFLOAT2 spritesize{ 1280,720 };
     bool transfrag = true;
     float spriteangle = 0;
     bool overfrag = true;
+
+    //残弾数
+    int magazin = 0;
+    bool have = false;
+    bool noammoflag = false;
+    
 
 
 
@@ -497,7 +509,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         {
             if (tutoscene == 3)
             {
-
                 if (spritesize.x >= 1280)
                 {
                     transfrag = true;
@@ -571,24 +582,60 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
                     wait = 0;
                 }
             }
-            crosshair->Update();
-            gameScene->Update();
-            scene = gameScene->GetScene();
 
-            
+            if (tutoscene>=5)
+            {
+                crosshair->Update();
+                gameScene->Update();
+                scene = gameScene->GetScene();
+                magazin = gameScene->Getmagazin();
+                have = gameScene->Gethave();
+
+                if (magazin == 0 && have == true && input->PushKey(DIK_SPACE))
+                {
+                    noammoflag = true;
+                }
+
+                if (noammoflag == true)
+                {
+                    spritesize.x -= 2.0f;
+                    spritesize.y -= 2.0f;
+                    wait++;
+                }
+
+                if (noammoflag == true && wait >= 100)
+                {
+                    spritesize = { 1280,720 };
+                    noammoflag = false;
+                    wait = 0;
+                }
+            }
+
+            //spriteのサイズ変更処理
             tutopickup->SetSize(movesize);
             tutogunpick1->SetSize(spritesize);
             tutogunpick2->SetSize(spritesize);
-
+            noammo->SetSize(spritesize);
             
             tutopickup->TransferVertexBuffer();
             tutogunpick1->TransferVertexBuffer();
             tutogunpick2->TransferVertexBuffer();
+            noammo->TransferVertexBuffer();
 
             tutopickup->Update();
             tutogunpick1->Update();
             tutogunpick2->Update();
+            noammo->Update();
             //debugText->Print()
+        }
+
+        //ステージ3
+        if (scene==6)
+        {
+            crosshair->Update();
+            gameScene->Update();
+            scene = gameScene->GetScene();
+            magazin = gameScene->Getmagazin();
         }
 
         if (input->PushKey(DIK_ESCAPE))
@@ -635,6 +682,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
             if (tutoscene == 3)tutogunpick1->Draw();
             if (tutoscene == 4)tutogunpick2->Draw();
             if (tutoscene == 5)tutopickup->Draw();
+            if (noammoflag == true)noammo->Draw();
+            
         }
         
         if (scene == 3)gameover->Draw();

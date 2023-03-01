@@ -18,7 +18,7 @@ public:
 	//初期化
 	void Initialize(ID3D12Device* device);
 	void Finalize();
-	//好き人ぐ情報の読み取り
+	//スキニング情報の読み取り
 	void ParseSkin(FbxModel* model, FbxMesh* fbxMesh);
 
 

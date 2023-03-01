@@ -42,6 +42,8 @@ public://メンバ関数
 	const int& Gethave() { return have; }
 	void Sethave(bool Have);
 
+	//残弾数のゲッター
+	const int& Getmagazin() { return magazin; }
 
 	void OnCollision(const CollisionInfo& info);
 
@@ -53,7 +55,6 @@ public://メンバ関数
 	const int& Gethit() { return hit; }
 
 	const int& Getwallhit() { return wallhit; }
-
 
 	void sethit(int Hit);
 

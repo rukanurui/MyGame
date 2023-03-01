@@ -26,9 +26,12 @@
 #include"Player.h"
 #include"PlayerCol.h"
 
-
 #include"Enemy.h"
 #include"Wall.h"
+
+#include <memory>
+#include <list>
+#include<sstream>
 
 
 
@@ -50,6 +53,10 @@ public://メンバ関数
 
 	//初期化
 	void Initialize(DXCommon* dxcommon, Input* input, Audio* audio, SpriteCommon* spritecommon,WindowsApp*windows);
+	//敵データ読み込み
+	void LoadEnemyData();
+	//敵データ更新
+	void SwapEnemyData();
 	//更新
 	void Update();
 	//シーン分岐
@@ -58,6 +65,10 @@ public://メンバ関数
 	void SetScene(int scene) { this->scene = scene; }
 	//シーン遷移処理
 	void transrationScene();
+	//残弾数のgetter
+	const int& Getmagazin() { return magazin; };
+	//銃を持っているかのgetter
+	const bool& Gethave() { return have; };
 	//描画
 	void Draw();
 	//
@@ -96,6 +107,12 @@ private://メンバ変数
 	FBXobj3d* floor2 = nullptr;
 	Wall* glasswallLeft = nullptr;
 	Wall* glasswallForward = nullptr;
+
+	//オブジェクトのリスト
+	std::list<std::unique_ptr<FBXobj3d>> objects;
+
+	//壁のlist
+	std::list<std::unique_ptr<Wall>> Walls;
 	
 	//1面
 	Wall* stage1wall[8];
@@ -111,15 +128,21 @@ private://メンバ変数
 	FBXobj3d* backsphere = nullptr;
 
 	//3面
-	Wall* stage3wall[3];
+	Wall* stage3wall[8];
 
 
 	
 
 	//3dモデル(敵)
+
+	//敵のリスト
+	std::list<std::unique_ptr<Enemy>> Enemyies;
+	
+	//敵コマンド
+	std::stringstream enemyData;
 	//チュートリアル
 	Enemy* cube = nullptr;
-	Enemy* Stage1[5];
+	Enemy* Stage1[2];
 	//ステージ2
 	Enemy* Stage2[3];
 	//ステージ3
@@ -129,8 +152,16 @@ private://メンバ変数
 	//自機関連
 	Player* player = nullptr;
 	PlayerCol* playercol = nullptr;
+
 	float movect = 0;
+	//攻撃したか
 	bool attack = false;
+	//銃を投げたか
+	bool gunthrow = false;
+	//銃を持っているか
+	bool have = false;
+	//残弾数
+	int magazin = 0;
 
 	//ひとつ前のマウスの座標
 	float CurretmouseX = 0;
