@@ -353,7 +353,7 @@ void FbxLoader::ParceMeshFaces(FbxModel* model, FbxMesh* fbxMesh)
                 if (fbxMesh->GetPolygonVertexUV(i, j, uvNames[0], uvs, lUnmappedUV))
                 {
                     vertex.uv.x = (float)uvs[0];
-                    vertex.uv.x = (float)uvs[1];
+                    vertex.uv.y = (float)uvs[1];
                 }
             }
             if (j < 3)

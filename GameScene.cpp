@@ -170,34 +170,34 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
 
     //敵関連処理
     ///１面
-    cube = new Enemy();
+   /* cube = new Enemy();
     cube->Initialize();
     cube->SetPosition({ 20.0f,5.0f,70.0f });
     cube->SetScale({ 0.01f,0.01f,0.01f });
     cube->SetModel(model2);
     cube->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
-    cube->EnemyInitialize(TRUE);
-
-    LoadEnemyData();
-    SwapEnemyData();
+    cube->EnemyInitialize(TRUE);*/
 
 
-    for (int i = 0; i < 2; i++)
+    /*for (int i = 0; i < 2; i++)
     {
         Stage1[i] = nullptr;
         Stage1[i] = new Enemy();
         Stage1[i]->Initialize();
         Stage1[i]->SetScale({ 0.01f,0.01f,0.01f });
         Stage1[i]->SetModel(model2);
-    }
+    }*/
 
-    Stage1[0]->SetPosition({ 40.0f,5.0f,68.0f });
+    /*Stage1[0]->SetPosition({ 40.0f,5.0f,68.0f });
 
     for (int i = 0; i < 2; i++)
     {
         Stage1[i]->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
         Stage1[i]->EnemyInitialize(TRUE);
-    }
+    }*/
+
+    LoadEnemyData();
+    SwapEnemyData();
 
      
     ///２面
@@ -371,7 +371,7 @@ void GameScene::LoadEnemyData()
 {
     //ファイルを開く
     std::ifstream file;
-    file.open("EnemyData.csv");
+    file.open(L"Resources/EnemyData.csv");
     assert(file.is_open());
 
     //ファイルの内容を文字列ストリームにコピー
@@ -382,15 +382,26 @@ void GameScene::LoadEnemyData()
 }
 
 void GameScene::SwapEnemyData() {
+
+    //csvにステージ指定のコマンド入れる
+    //読み取ってステージごとにpushback変更する
+
+
     //1行分の文字列を入れる変数
     std::string line;
+
+    //敵の情報
+    XMFLOAT3 pos{};//座標
+    XMFLOAT3 scale{};//スケール
+    int modelname;//モデルの指定
+    float r;//コライダーの半径指定
+    bool mod;//敵の種類の指定
+    int stage;//ステージの指定
+
 
     //コマンド実行ループ
     while (getline(enemyData,line))
     {
-        //敵のlist追加
-        std::unique_ptr<Enemy>newenemy = std::make_unique<Enemy>();
-        newenemy->Initialize();
 
         //1行分の文字列をストリームに変換して解析しやすくなる
         std::istringstream line_stream(line);
@@ -410,71 +421,113 @@ void GameScene::SwapEnemyData() {
         {
             //x座標
             getline(line_stream, word, ',');
-            float posx = (float)std::atof(word.c_str());
+            pos.x = (float)std::atof(word.c_str());
 
             //y座標
             getline(line_stream, word, ',');
-            float posy = (float)std::atof(word.c_str());
+            pos.y = (float)std::atof(word.c_str());
 
             //z座標
             getline(line_stream, word, ',');
-            float posz = (float)std::atof(word.c_str());
+            pos.z = (float)std::atof(word.c_str());
 
-            newenemy->SetPosition({ posx,posy,posz});
+            //newenemy->SetPosition({ posx,posy,posz});
 
         }
         else if(word.find("SCALE")==0)
         {
             //xのスケール
             getline(line_stream, word, ',');
-            float scalex = (float)std::atof(word.c_str());
+            scale.x = (float)std::atof(word.c_str());
 
             //xのスケール
             getline(line_stream, word, ',');
-            float scaley = (float)std::atof(word.c_str());
+            scale.y = (float)std::atof(word.c_str());
 
             //xのスケール
             getline(line_stream, word, ',');
-            float scalez = (float)std::atof(word.c_str());
+            scale.z = (float)std::atof(word.c_str());
 
-            newenemy->SetScale({ scalex,scaley,scalez});
+            //newenemy->SetScale({ scalex,scaley,scalez});
         }
         else if (word.find("MODEL")==0)
         {
             //モデルの指定
             getline(line_stream, word, ',');
-            float modelname = (float)std::atof(word.c_str());
+            modelname = (float)std::atof(word.c_str());
 
-            if (modelname==1)
+            /*if (modelname==1)
             {
                 newenemy->SetModel(model2);
-            }
+            }*/
             
         }
         else if (word.find("COLLIDER") == 0)
         {
             //コライダー(球)の半径指定
             getline(line_stream, word, ',');
-            float r = (float)std::atof(word.c_str());
+            r = (float)std::atof(word.c_str());
 
-            newenemy->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, r));
+            //newenemy->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, r));
         }
         else if (word.find("SHOT") == 0)
         {
             //敵の種類指定
             getline(line_stream, word, ',');
-            float mod = (float)std::atof(word.c_str());
-            if (mod==0)
+            mod = (float)std::atof(word.c_str());
+            /*if (mod==0)
             {
                 newenemy->EnemyInitialize(TRUE);
             }
             else if (mod == 1)
             {
                 newenemy->EnemyInitialize(FALSE);
+            }*/
+        }
+        else if (word.find("STAGE") == 0)
+        {
+            //ステージの指定
+            getline(line_stream, word, ',');
+            stage = (float)std::atof(word.c_str());
+            /*if (stage == 1)
+            {
+                Stage1Enemy.push_back(std::move(newenemy));
+
             }
+            else if (stage == 2)
+            {
+                Stage2Enemy.push_back(std::move(newenemy));
+            }*/
         }
 
-        Enemyies.push_back(std::move(newenemy));
+        //敵のlist追加
+
+        std::unique_ptr<Enemy>newenemy = std::make_unique<Enemy>();
+        newenemy->Initialize();
+        newenemy->SetPosition({ pos.x,pos.y,pos.z });
+        newenemy->SetScale({ scale.x,scale.y,scale.z });
+        if (modelname==1)
+        {
+           newenemy->SetModel(model2);
+        }
+        newenemy->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, r));
+        if (mod==0)
+        {
+            newenemy->EnemyInitialize(TRUE);
+        }
+        else if (mod == 1)
+        {
+            newenemy->EnemyInitialize(FALSE);
+        }
+        if (stage == 1)
+        {
+            Stage1Enemy.push_back(std::move(newenemy));
+
+        }
+        else if (stage == 2)
+        {
+            Stage2Enemy.push_back(std::move(newenemy));
+        }
 
     }
 }
@@ -656,10 +709,10 @@ if (firstfrag == 0)
         
         //FBX更新
         floor->Update();
-        cube->Update();
-        cube->BulUpdate();
-        player->BulUpdate();
+       /* cube->Update();
+        cube->BulUpdate();*/
         Stage1[0]->BulUpdate();
+        player->BulUpdate();
         backsphere->Update();
         player->BulUpdate();
         player->meleeUpdate();
@@ -669,7 +722,14 @@ if (firstfrag == 0)
         
         for (int i = 0; i < 2; i++)
         {
-            Stage1[i]->Update();
+            /*Stage1[i]->Update();*/
+        }
+
+        for (std::unique_ptr<Enemy>& enemy : Stage1Enemy)
+        {
+            enemy->PartUpdate();
+            enemy->BulUpdate();
+            enemy->Update();
         }
 
 
@@ -684,10 +744,15 @@ if (firstfrag == 0)
         {
 
             //敵更新
-           cube->EnemyUpdate(player->GetPos());
-            for (int i = 0; i < 1; i++)
+           /*cube->EnemyUpdate(player->GetPos());
+            for (int i = 0; i < 2; i++)
             {
                 Stage1[i]->EnemyUpdate(player->GetPos());
+            }*/
+
+            for (std::unique_ptr<Enemy>& enemy : Stage1Enemy)
+            {
+                enemy->EnemyUpdate(player->GetPos());
             }
 
 
@@ -743,14 +808,22 @@ if (firstfrag == 0)
         }
 
         //敵を倒したら次のステージ
-        if (cube->GetScaleX()<check&&
-            Stage1[0]->GetScaleX() < check)
-           /* Stage1[1]->GetScaleX() < check&&
-            Stage1[2]->GetScaleX() < check&&
-            Stage1[3]->GetScaleX() < check&&
-            Stage1[4]->GetScaleX() < check)*/
+        //if (cube->GetScaleX()<check&&
+        //    Stage1[0]->GetScaleX() < check)
+        //   /* Stage1[1]->GetScaleX() < check&&
+        //    Stage1[2]->GetScaleX() < check&&
+        //    Stage1[3]->GetScaleX() < check&&
+        //    Stage1[4]->GetScaleX() < check)*/
+        //{
+        //    scene = 4;//クリア
+        //}
+
+        for (std::unique_ptr<Enemy>& enemy : Stage1Enemy)
         {
-            scene = 4;//クリア
+            if (enemy->GetScaleX()<check)
+            {
+                scene = 4;//クリア
+            }
         }
 
     }
@@ -1231,16 +1304,24 @@ void GameScene::Draw()
     
     if (scene==2)
     {
-        cube->Draw(cmdList);//cube
-        cube->BulDraw(cmdList);
-        cube->PartDraw(cmdList);
-        //Stage1[0]->BulDraw(cmdList);
-        for (int i = 0; i < 1; i++)
+        //cube->Draw(cmdList);//cube
+        //cube->BulDraw(cmdList);
+        //cube->PartDraw(cmdList);
+        ////Stage1[0]->BulDraw(cmdList);
+        //for (int i = 0; i < 1; i++)
+        //{
+        //    Stage1[i]->Draw(cmdList);
+        //    Stage1[i]->PartDraw(cmdList);
+        //    Stage1[i]->BulDraw(cmdList);
+        //}
+
+        for (std::unique_ptr<Enemy>& enemy : Stage1Enemy)
         {
-            Stage1[i]->Draw(cmdList);
-            Stage1[i]->PartDraw(cmdList);
-            Stage1[i]->BulDraw(cmdList);
+            enemy->BulDraw(cmdList);
+            enemy->PartDraw(cmdList);
+            enemy->Draw(cmdList);
         }
+        
     }
 
     if (scene==5)
@@ -1359,6 +1440,8 @@ void GameScene::transrationScene()
     {
         //camera->SetEye(EyeInitialize);
         player->Sethave(true);
+        /*LoadEnemyData();
+        SwapEnemyData();*/
     }
 
     if (scene==5)

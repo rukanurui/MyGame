@@ -136,7 +136,8 @@ private://メンバ変数
 	//3dモデル(敵)
 
 	//敵のリスト
-	std::list<std::unique_ptr<Enemy>> Enemyies;
+	std::list<std::unique_ptr<Enemy>> Stage1Enemy;
+	std::list<std::unique_ptr<Enemy>> Stage2Enemy;
 	
 	//敵コマンド
 	std::stringstream enemyData;
