@@ -109,93 +109,70 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     floor->SetModel(modelfloor);
     floor->SetCollider(new BoxCollider(XMVECTOR{ 100.0f,0.7f,100.0f,0 }, 1.0f));
 
+   
 
     ///1面
-    for (int i = 0; i < 8; i++)
-    {
-       /* std::unique_ptr<Wall>newwall = std::make_unique<Wall>();
-        newwall->Initialize();
-        newwall->SetModel(modelwall);*/
-        stage1wall[i] = nullptr;
-        stage1wall[i] = new Wall();
-        stage1wall[i]->Initialize();
-        stage1wall[i]->SetModel(modelwall);
-    }
+    LoadWallData();
+    SwapWallData();
+    //for (int i = 0; i < 8; i++)
+    //{
+    //   /* std::unique_ptr<Wall>newwall = std::make_unique<Wall>();
+    //    newwall->Initialize();
+    //    newwall->SetModel(modelwall);*/
+    //    stage1wall[i] = nullptr;
+    //    stage1wall[i] = new Wall();
+    //    stage1wall[i]->Initialize();
+    //    stage1wall[i]->SetModel(modelwall);
+    //}
 
-    stage1wall[0]->SetPosition({ -10.0f,0.0f,0.0f });//左縦
-    stage1wall[0]->SetScale({ 0.01f,0.5f,0.1f });
-    stage1wall[0]->SetCollider(new BoxCollider(XMVECTOR{ 0.5f,100.0f,100.0f,0 }, 1.0f));
-    stage1wall[0]->WallInitialize();
+    //stage1wall[0]->SetPosition({ -10.0f,0.0f,0.0f });//左縦
+    //stage1wall[0]->SetScale({ 0.01f,0.5f,0.1f });
+    //stage1wall[0]->SetCollider(new BoxCollider(XMVECTOR{ 0.5f,100.0f,100.0f,0 }, 1.0f));
+    //stage1wall[0]->WallInitialize();
 
-    stage1wall[1]->SetPosition({ 30.0f,0.0f,0.0f });//右縦
-    stage1wall[1]->SetScale({ 0.01f,0.5f,0.5f });
-    stage1wall[1]->SetCollider(new BoxCollider(XMVECTOR{ 0.5f,100.0f,50.0f,0 }, 1.0f));
-    stage1wall[1]->WallInitialize();
+    //stage1wall[1]->SetPosition({ 30.0f,0.0f,0.0f });//右縦
+    //stage1wall[1]->SetScale({ 0.01f,0.5f,0.5f });
+    //stage1wall[1]->SetCollider(new BoxCollider(XMVECTOR{ 0.5f,100.0f,50.0f,0 }, 1.0f));
+    //stage1wall[1]->WallInitialize();
 
-    stage1wall[2]->SetPosition({ 0.0f,0.0f,10.0f });//前くびれ横
-    stage1wall[2]->SetRotation({ 0.0f,90.0f,0.0f });
-    stage1wall[2]->SetScale({ 0.01f,0.5f,0.1f });
-    stage1wall[2]->SetCollider(new BoxCollider(XMVECTOR{ 10.0f,100.0f,0.8f,0 }, 1.0f));
-    stage1wall[2]->WallInitialize();
+    //stage1wall[2]->SetPosition({ 0.0f,0.0f,10.0f });//前くびれ横
+    //stage1wall[2]->SetRotation({ 0.0f,90.0f,0.0f });
+    //stage1wall[2]->SetScale({ 0.01f,0.5f,0.1f });
+    //stage1wall[2]->SetCollider(new BoxCollider(XMVECTOR{ 10.0f,100.0f,0.8f,0 }, 1.0f));
+    //stage1wall[2]->WallInitialize();
 
-    stage1wall[3]->SetPosition({ 0.0f,0.0f,-10.0f });//後ろ横
-    stage1wall[3]->SetScale({ 0.01f,0.5f,1.0f });
-    stage1wall[3]->SetRotation({ 0.0f,90.0f,0.0f });
-    stage1wall[3]->SetCollider(new BoxCollider(XMVECTOR{ 100.0f,100.0f,0.8f,0 }, 1.0f));
-    stage1wall[3]->WallInitialize();
+    //stage1wall[3]->SetPosition({ 0.0f,0.0f,-10.0f });//後ろ横
+    //stage1wall[3]->SetScale({ 0.01f,0.5f,1.0f });
+    //stage1wall[3]->SetRotation({ 0.0f,90.0f,0.0f });
+    //stage1wall[3]->SetCollider(new BoxCollider(XMVECTOR{ 100.0f,100.0f,0.8f,0 }, 1.0f));
+    //stage1wall[3]->WallInitialize();
 
-    stage1wall[4]->SetPosition({ 10.0f,0.0f,42.5f });//前壁縦長
-    stage1wall[4]->SetScale({ 0.01f,1.0f,0.325f });
-    stage1wall[4]->SetCollider(new BoxCollider(XMVECTOR{ 0.5f,100.0f,32.5f,0 }, 1.0f));
-    stage1wall[4]->WallInitialize();
+    //stage1wall[4]->SetPosition({ 10.0f,0.0f,42.5f });//前壁縦長
+    //stage1wall[4]->SetScale({ 0.01f,1.0f,0.325f });
+    //stage1wall[4]->SetCollider(new BoxCollider(XMVECTOR{ 0.5f,100.0f,32.5f,0 }, 1.0f));
+    //stage1wall[4]->WallInitialize();
 
-    stage1wall[5]->SetPosition({ 20.0f,0.0f,75.0f });//奥横
-    stage1wall[5]->SetScale({ 0.01f,1.0f,0.5f });
-    stage1wall[5]->SetRotation({ 0.0f,90.0f,0.0f });
-    stage1wall[5]->SetCollider(new BoxCollider(XMVECTOR{ 75.0f,100.0f,0.8f,0 }, 1.0f));
-    stage1wall[5]->WallInitialize();
+    //stage1wall[5]->SetPosition({ 20.0f,0.0f,75.0f });//奥横
+    //stage1wall[5]->SetScale({ 0.01f,1.0f,0.5f });
+    //stage1wall[5]->SetRotation({ 0.0f,90.0f,0.0f });
+    //stage1wall[5]->SetCollider(new BoxCollider(XMVECTOR{ 75.0f,100.0f,0.8f,0 }, 1.0f));
+    //stage1wall[5]->WallInitialize();
 
-    stage1wall[6]->SetPosition({ 40.0f,0.0f,50.0f });//奥くびれ横
-    stage1wall[6]->SetScale({ 0.01f,1.0f,0.1f });
-    stage1wall[6]->SetRotation({ 0.0f,90.0f,0.0f });
-    stage1wall[6]->SetCollider(new BoxCollider(XMVECTOR{ 10.0f,100.0f,0.8f,0 }, 1.0f));
-    stage1wall[6]->WallInitialize();
+    //stage1wall[6]->SetPosition({ 40.0f,0.0f,50.0f });//奥くびれ横
+    //stage1wall[6]->SetScale({ 0.01f,1.0f,0.1f });
+    //stage1wall[6]->SetRotation({ 0.0f,90.0f,0.0f });
+    //stage1wall[6]->SetCollider(new BoxCollider(XMVECTOR{ 10.0f,100.0f,0.8f,0 }, 1.0f));
+    //stage1wall[6]->WallInitialize();
 
-    stage1wall[7]->SetPosition({ 50.0f,0.0f,70.0f });//奥壁縦
-    stage1wall[7]->SetScale({ 0.01f,1.0f,0.5f });
-    stage1wall[7]->SetCollider(new BoxCollider(XMVECTOR{ 0.5f,100.0f,50.0f,0 }, 1.0f));
-    stage1wall[7]->WallInitialize();
+    //stage1wall[7]->SetPosition({ 50.0f,0.0f,70.0f });//奥壁縦
+    //stage1wall[7]->SetScale({ 0.01f,1.0f,0.5f });
+    //stage1wall[7]->SetCollider(new BoxCollider(XMVECTOR{ 0.5f,100.0f,50.0f,0 }, 1.0f));
+    //stage1wall[7]->WallInitialize();
 
     //壁のスケール0.1=ワールドで10
 
     //敵関連処理
-    ///１面
-   /* cube = new Enemy();
-    cube->Initialize();
-    cube->SetPosition({ 20.0f,5.0f,70.0f });
-    cube->SetScale({ 0.01f,0.01f,0.01f });
-    cube->SetModel(model2);
-    cube->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
-    cube->EnemyInitialize(TRUE);*/
-
-
-    /*for (int i = 0; i < 2; i++)
-    {
-        Stage1[i] = nullptr;
-        Stage1[i] = new Enemy();
-        Stage1[i]->Initialize();
-        Stage1[i]->SetScale({ 0.01f,0.01f,0.01f });
-        Stage1[i]->SetModel(model2);
-    }*/
-
-    /*Stage1[0]->SetPosition({ 40.0f,5.0f,68.0f });
-
-    for (int i = 0; i < 2; i++)
-    {
-        Stage1[i]->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
-        Stage1[i]->EnemyInitialize(TRUE);
-    }*/
-
+   
     LoadEnemyData();
     SwapEnemyData();
 
@@ -358,11 +335,6 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     stage3wall[7]->SetCollider(new BoxCollider(XMVECTOR{ 0.8f,100.0f,20.0f,0 }, 1.0f));
     stage3wall[7]->WallInitialize();
 
-
-
-
-
-
     int counter = 0; // アニメーションの経過時間カウンター
 
 }
@@ -397,6 +369,11 @@ void GameScene::SwapEnemyData() {
     float r;//コライダーの半径指定
     bool mod;//敵の種類の指定
     int stage;//ステージの指定
+    int nextflag=0;
+
+    //敵のlist追加
+    std::unique_ptr<Enemy>newenemy = std::make_unique<Enemy>();
+    newenemy->Initialize();
 
 
     //コマンド実行ループ
@@ -417,6 +394,7 @@ void GameScene::SwapEnemyData() {
             continue;
         }
 
+
         if (word.find("POSITION")==0)
         {
             //x座標
@@ -431,7 +409,7 @@ void GameScene::SwapEnemyData() {
             getline(line_stream, word, ',');
             pos.z = (float)std::atof(word.c_str());
 
-            //newenemy->SetPosition({ posx,posy,posz});
+            newenemy->SetPosition({ pos.x,pos.y,pos.z});
 
         }
         else if(word.find("SCALE")==0)
@@ -448,7 +426,7 @@ void GameScene::SwapEnemyData() {
             getline(line_stream, word, ',');
             scale.z = (float)std::atof(word.c_str());
 
-            //newenemy->SetScale({ scalex,scaley,scalez});
+            newenemy->SetScale({ scale.x,scale.y,scale.z});
         }
         else if (word.find("MODEL")==0)
         {
@@ -456,10 +434,10 @@ void GameScene::SwapEnemyData() {
             getline(line_stream, word, ',');
             modelname = (float)std::atof(word.c_str());
 
-            /*if (modelname==1)
+            if (modelname==1)
             {
                 newenemy->SetModel(model2);
-            }*/
+            }
             
         }
         else if (word.find("COLLIDER") == 0)
@@ -468,43 +446,52 @@ void GameScene::SwapEnemyData() {
             getline(line_stream, word, ',');
             r = (float)std::atof(word.c_str());
 
-            //newenemy->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, r));
+            newenemy->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, r));
         }
         else if (word.find("SHOT") == 0)
         {
             //敵の種類指定
             getline(line_stream, word, ',');
             mod = (float)std::atof(word.c_str());
-            /*if (mod==0)
+            if (mod==0)
             {
                 newenemy->EnemyInitialize(TRUE);
             }
             else if (mod == 1)
             {
                 newenemy->EnemyInitialize(FALSE);
-            }*/
+            }
         }
         else if (word.find("STAGE") == 0)
         {
             //ステージの指定
             getline(line_stream, word, ',');
             stage = (float)std::atof(word.c_str());
-            /*if (stage == 1)
+            if (stage == 1)
             {
                 Stage1Enemy.push_back(std::move(newenemy));
-
             }
             else if (stage == 2)
             {
                 Stage2Enemy.push_back(std::move(newenemy));
-            }*/
+            }
+        }
+        else if (word.find("NEXT") == 0)
+        {
+            //ステージの指定
+            getline(line_stream, word, ',');
+            nextflag = (float)std::atof(word.c_str());
+
+            if (nextflag == 1)
+            {
+                newenemy = std::make_unique<Enemy>();
+                newenemy->Initialize();
+            }
         }
 
-        //敵のlist追加
-
-        std::unique_ptr<Enemy>newenemy = std::make_unique<Enemy>();
-        newenemy->Initialize();
-        newenemy->SetPosition({ pos.x,pos.y,pos.z });
+        
+       
+        /*newenemy->SetPosition({ pos.x,pos.y,pos.z });
         newenemy->SetScale({ scale.x,scale.y,scale.z });
         if (modelname==1)
         {
@@ -527,6 +514,168 @@ void GameScene::SwapEnemyData() {
         else if (stage == 2)
         {
             Stage2Enemy.push_back(std::move(newenemy));
+        }*/
+
+    }
+}
+
+void GameScene::LoadWallData()
+{
+    //ファイルを開く
+    std::ifstream file;
+    file.open(L"Resources/WallData.csv");
+    assert(file.is_open());
+
+    //ファイルの内容を文字列ストリームにコピー
+    wallData << file.rdbuf();
+
+    //ファイルを閉じる
+    file.close();
+}
+
+void GameScene::SwapWallData()
+{
+    //csvにステージ指定のコマンド入れる
+    //読み取ってステージごとにpushback変更する
+
+
+    //1行分の文字列を入れる変数
+    std::string line;
+
+    //壁の情報
+    XMFLOAT3 pos{};//座標
+    XMFLOAT3 scale{};//スケール
+    XMFLOAT3 rotation{};//ローテーション
+    int modelname;//モデルの指定
+    XMFLOAT3 r;//コライダーの半径指定
+    int stage;//ステージの指定
+    int nextflag=0;
+
+    //壁のlist追加
+    std::unique_ptr<Wall>newwall = std::make_unique<Wall>();
+    newwall->Initialize();
+
+    //コマンド実行ループ
+    while (getline(wallData, line))
+    {
+
+        //1行分の文字列をストリームに変換して解析しやすくなる
+        std::istringstream line_stream(line);
+
+        std::string word;
+        //,区切りで行の先頭部分を取得
+        getline(line_stream, word, ',');
+
+        // "//"から始まる行はコメントアウト
+        if (word.find("//") == 0)
+        {
+            //コメント行を飛ばす
+            continue;
+        }
+
+
+        if (word.find("POSITION") == 0)
+        {
+            //x座標
+            getline(line_stream, word, ',');
+            pos.x = (float)std::atof(word.c_str());
+
+            //y座標
+            getline(line_stream, word, ',');
+            pos.y = (float)std::atof(word.c_str());
+
+            //z座標
+            getline(line_stream, word, ',');
+            pos.z = (float)std::atof(word.c_str());
+
+            newwall->SetPosition({ pos.x,pos.y,pos.z });
+
+        }
+        else if (word.find("SCALE") == 0)
+        {
+            //xのスケール
+            getline(line_stream, word, ',');
+            scale.x = (float)std::atof(word.c_str());
+
+            //xのスケール
+            getline(line_stream, word, ',');
+            scale.y = (float)std::atof(word.c_str());
+
+            //xのスケール
+            getline(line_stream, word, ',');
+            scale.z = (float)std::atof(word.c_str());
+
+            newwall->SetScale({ scale.x,scale.y,scale.z });
+        }
+        else if (word.find("ROTAT") == 0)
+        {
+            //xのスケール
+            getline(line_stream, word, ',');
+            rotation.x = (float)std::atof(word.c_str());
+
+            //xのスケール
+            getline(line_stream, word, ',');
+            rotation.y = (float)std::atof(word.c_str());
+
+            //xのスケール
+            getline(line_stream, word, ',');
+            rotation.z = (float)std::atof(word.c_str());
+
+            newwall->SetRotation({ rotation.x,rotation.y,rotation.z });
+        }
+        else if (word.find("MODEL") == 0)
+        {
+            //モデルの指定
+            getline(line_stream, word, ',');
+            modelname = (float)std::atof(word.c_str());
+
+            if (modelname == 1)
+            {
+                newwall->SetModel(modelwall);
+            }
+
+        }
+        else if (word.find("COLLIDER") == 0)
+        {
+            //コライダー(矩形)の半径指定
+            getline(line_stream, word, ',');
+            r.x = (float)std::atof(word.c_str());
+
+            getline(line_stream, word, ',');
+            r.y = (float)std::atof(word.c_str());
+
+            getline(line_stream, word, ',');
+            r.z = (float)std::atof(word.c_str());
+
+            newwall->SetCollider(new BoxCollider(XMVECTOR{ r.x,r.y,r.z,0 }, 1.0f));
+        }
+        else if (word.find("STAGE") == 0)
+        {
+            //ステージの指定
+            getline(line_stream, word, ',');
+            stage = (float)std::atof(word.c_str());
+            if (stage == 1)
+            {
+                newwall->WallInitialize();
+                Stage1Walls.push_back(std::move(newwall));
+            }
+            else if (stage == 2)
+            {
+                newwall->WallInitialize();
+                Stage2Walls.push_back(std::move(newwall));
+            }
+        }
+        else if (word.find("NEXT") == 0)
+        {
+            //ステージの指定
+            getline(line_stream, word, ',');
+            nextflag = (float)std::atof(word.c_str());
+
+            if (nextflag == 1)
+            {
+                newwall = std::make_unique<Wall>();
+                newwall->Initialize();
+            }
         }
 
     }
@@ -551,125 +700,124 @@ void GameScene::Update()
     camera->SetmouseY(CurretmouseY);
 
     //チュートリアル
-    if (scene==1)
+    if (scene == 1)
     {
-       /* if (tutoscene == 0)
-        {
-            if (input->TriggerKey(DIK_SPACE))goflag = 1;
+        /* if (tutoscene == 0)
+         {
+             if (input->TriggerKey(DIK_SPACE))goflag = 1;
 
-            if (goflag==1)
-            {
-                roat += 1.0f;
-                tutoroateation.x += roat;
-                camera->SetRoatation(tutoroateation);
-                camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-                if (tutoroateation.x >= 90)
-                {
-                    roat = 0;
-                    goflag = 0;
-                    tutoscene = 1;
-                }
-            }
+             if (goflag==1)
+             {
+                 roat += 1.0f;
+                 tutoroateation.x += roat;
+                 camera->SetRoatation(tutoroateation);
+                 camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+                 if (tutoroateation.x >= 90)
+                 {
+                     roat = 0;
+                     goflag = 0;
+                     tutoscene = 1;
+                 }
+             }
+         }
+
+         if (tutoscene == 1)
+         {
+             if (input->TriggerKey(DIK_SPACE))goflag = 1;
+
+             if (goflag == 1)
+             {
+                 roat += 1.0f;
+                 tutoroateation.x += roat;
+                 camera->SetRoatation(tutoroateation);
+                 camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+                 if (tutoroateation.x >= 180)
+                 {
+                     roat = 0;
+                     goflag = 0;
+                     tutoscene = 2;
+                 }
+             }
+         }
+
+         if (tutoscene == 2)
+         {
+             if (input->TriggerKey(DIK_SPACE))goflag = 1;
+
+             if (goflag == 1)
+             {
+                 roat += 1.0f;
+                 tutoroateation.x += roat;
+                 camera->SetRoatation(tutoroateation);
+                 camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+                 if (tutoroateation.x >= 240)
+                 {
+                     roat = 0;
+                     goflag = 0;
+                     tutoscene = 3;
+                 }
+             }
+         }
+         if (tutoscene == 3)
+         {
+             if (input->TriggerKey(DIK_SPACE))goflag = 1;
+
+             if (goflag == 1)
+             {
+                 roat += 1.0f;
+                 tutoroateation.x += roat;
+                 camera->SetRoatation(tutoroateation);
+                 camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+                 if (tutoroateation.x >= 240)
+                 {
+                     roat = 0;
+                     goflag = 0;
+                     tutoscene = 4;
+                 }
+             }
+         }
+         if (tutoscene == 4)
+         {
+             if (input->TriggerKey(DIK_SPACE))goflag = 1;
+
+             if (goflag == 1)
+             {
+                 roat += 1.0f;
+                 tutoroateation.x += roat;
+                 camera->SetRoatation(tutoroateation);
+                 camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+                 if (tutoroateation.x >= 360)
+                 {
+                     roat = 0;
+                     goflag = 0;
+                     tutoscene = 5;
+                 }
+             }
+         }
+         if (tutoscene == 5)
+         {
+             if (input->TriggerKey(DIK_SPACE))
+             {
+                 scene = 2;
+             }
+
+         }*/
+         //描画のためにカメラの更新処理を一回呼び出す
+
+
+        if (firstfrag == 0)
+        {
+            camera->CurrentUpdate();
+            camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+
+            firstfrag = 1;
         }
-
-        if (tutoscene == 1)
-        {
-            if (input->TriggerKey(DIK_SPACE))goflag = 1;
-
-            if (goflag == 1)
-            {
-                roat += 1.0f;
-                tutoroateation.x += roat;
-                camera->SetRoatation(tutoroateation);
-                camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-                if (tutoroateation.x >= 180)
-                {
-                    roat = 0;
-                    goflag = 0;
-                    tutoscene = 2;
-                }
-            }
-        }
-
-        if (tutoscene == 2)
-        {
-            if (input->TriggerKey(DIK_SPACE))goflag = 1;
-
-            if (goflag == 1)
-            {
-                roat += 1.0f;
-                tutoroateation.x += roat;
-                camera->SetRoatation(tutoroateation);
-                camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-                if (tutoroateation.x >= 240)
-                {
-                    roat = 0;
-                    goflag = 0;
-                    tutoscene = 3;
-                }
-            }
-        }
-        if (tutoscene == 3)
-        {
-            if (input->TriggerKey(DIK_SPACE))goflag = 1;
-
-            if (goflag == 1)
-            {
-                roat += 1.0f;
-                tutoroateation.x += roat;
-                camera->SetRoatation(tutoroateation);
-                camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-                if (tutoroateation.x >= 240)
-                {
-                    roat = 0;
-                    goflag = 0;
-                    tutoscene = 4;
-                }
-            }
-        }
-        if (tutoscene == 4)
-        {
-            if (input->TriggerKey(DIK_SPACE))goflag = 1;
-
-            if (goflag == 1)
-            {
-                roat += 1.0f;
-                tutoroateation.x += roat;
-                camera->SetRoatation(tutoroateation);
-                camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-                if (tutoroateation.x >= 360)
-                {
-                    roat = 0;
-                    goflag = 0;
-                    tutoscene = 5;
-                }
-            }
-        }
-        if (tutoscene == 5)
-        {
-            if (input->TriggerKey(DIK_SPACE))
-            {
-                scene = 2;
-            }
-
-        }*/
-        //描画のためにカメラの更新処理を一回呼び出す
-
-
-if (firstfrag == 0)
-{
-    camera->CurrentUpdate();
-    camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-
-    firstfrag = 1;
-}
 
         floor->Update();
         /*wallLeft->Update();
         wallForward->Update();
         wallRight->Update();
         wallBack->Update();*/
-        cube->Update();
         player->BulUpdate();
         backsphere->Update();
         /*for (int i = 0; i < 20; i++)
@@ -681,37 +829,28 @@ if (firstfrag == 0)
          PartCube5[i]->Update();
          PartCube6[i]->Update();
         }*/
-        for (int i = 0; i < 2; i++)
-        {
-         Stage1[i]->Update();
-        }
-    
+
+
     }
 
 
     //ゲーム本編
-    
+
     //ステージ１
-   if (scene==2)
+    if (scene == 2)
     {
         //描画のためにカメラの更新処理を一回呼び出す
         if (firstfrag == 1)
         {
             camera->CurrentUpdate();
             camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-            /*player->SetTarget(camera->GetTarget());
-            player->SetPosition(camera->GetEye());
-            player->PlayerUpdate();*/
             firstfrag = 0;
 
         }
 
-        
+
         //FBX更新
         floor->Update();
-       /* cube->Update();
-        cube->BulUpdate();*/
-        Stage1[0]->BulUpdate();
         player->BulUpdate();
         backsphere->Update();
         player->BulUpdate();
@@ -719,11 +858,6 @@ if (firstfrag == 0)
         player->throwgunUpdate();
         player->gunUpdate(camera->GetTarget(), camera->GetmatRot());
 
-        
-        for (int i = 0; i < 2; i++)
-        {
-            /*Stage1[i]->Update();*/
-        }
 
         for (std::unique_ptr<Enemy>& enemy : Stage1Enemy)
         {
@@ -733,32 +867,32 @@ if (firstfrag == 0)
         }
 
 
-        for (int i = 0; i < 8; i++)
+        /*for (int i = 0; i < 8; i++)
         {
             stage1wall[i]->Update();
+        }*/
+
+        for (std::unique_ptr<Wall>& wall : Stage1Walls)
+        {
+            wall->Update();
         }
-       
+
 
         //自分が動いていたら更新処理
         if (input->PushKey(DIK_W) || input->PushKey(DIK_A) || input->PushKey(DIK_S) || input->PushKey(DIK_D))
         {
 
             //敵更新
-           /*cube->EnemyUpdate(player->GetPos());
-            for (int i = 0; i < 2; i++)
-            {
-                Stage1[i]->EnemyUpdate(player->GetPos());
-            }*/
+
 
             for (std::unique_ptr<Enemy>& enemy : Stage1Enemy)
             {
                 enemy->EnemyUpdate(player->GetPos());
             }
 
-
-            for (int i = 0; i < 8; i++)
+            for (std::unique_ptr<Wall>& wall : Stage1Walls)
             {
-                stage1wall[i]->Update();
+                wall->Update();
             }
 
             //プレイy－更新
@@ -770,11 +904,11 @@ if (firstfrag == 0)
             player->SetPosition(camera->GetEye());
             player->SetRotation(camera->GetRoatation());
             player->PlayerUpdate(camera->GetTarget());
-            player->gunUpdate(camera->GetTarget(),camera->GetmatRot());
-           
+            player->gunUpdate(camera->GetTarget(), camera->GetmatRot());
+
         }
-        
-        
+
+
         if (mouseMove.lX != 0 || mouseMove.lY != 0)//マウスだけ動いてる時
         {
             if (!input->PushKey(DIK_W) && !input->PushKey(DIK_A) && !input->PushKey(DIK_S) && !input->PushKey(DIK_D))
@@ -785,42 +919,33 @@ if (firstfrag == 0)
                 player->SetTarget(camera->GetTarget());
                 player->UpdateWorld();
                 player->gunUpdate(camera->GetTarget(), camera->GetmatRot());
-                
+
             }
         }
-        
+
 
         //すべての衝突をチェック
         collisionManager->CheckAllCollisions();
-        
+
         if (player->Getwallhit() == 1)
         {
             camera->SetTarget(player->GetTarget());
             camera->SetEye(player->GetPos());
         }
-        
-         
+
+
 
         //プレイヤーに敵が当たったらシーン遷移
-        if (player->Gethit()==1)
+        if (player->Gethit() == 1)
         {
             scene = 3;//ゲームオーバー
         }
 
-        //敵を倒したら次のステージ
-        //if (cube->GetScaleX()<check&&
-        //    Stage1[0]->GetScaleX() < check)
-        //   /* Stage1[1]->GetScaleX() < check&&
-        //    Stage1[2]->GetScaleX() < check&&
-        //    Stage1[3]->GetScaleX() < check&&
-        //    Stage1[4]->GetScaleX() < check)*/
-        //{
-        //    scene = 4;//クリア
-        //}
+
 
         for (std::unique_ptr<Enemy>& enemy : Stage1Enemy)
         {
-            if (enemy->GetScaleX()<check)
+            if (enemy->GetScaleX() < check)
             {
                 scene = 4;//クリア
             }
@@ -829,7 +954,7 @@ if (firstfrag == 0)
     }
 
     //ステージ２
-    if (scene==5)
+    if (scene == 5)
     {
 
         //描画のためにカメラの更新処理を一回呼び出す
@@ -861,7 +986,7 @@ if (firstfrag == 0)
         player->gunUpdate(camera->GetTarget(), camera->GetmatRot());
 
         //プレイヤーの銃のフラグ管理
-        if (player->Gethave()==false)
+        if (player->Gethave() == false)
         {
             player->Sethave(tutogun->Gethave());
         }
@@ -869,19 +994,19 @@ if (firstfrag == 0)
         {
             tutogun->Sethave(false);
         }
-        
+
 
         //動いていない状態で攻撃したら
-        if (input->PushKey(DIK_SPACE)&& !input->PushKey(DIK_Q))
+        if (input->PushKey(DIK_SPACE) && !input->PushKey(DIK_Q))
         {
             //フラグをtrueにする
             attack = true;
         }
 
-        if (attack ==true)
+        if (attack == true)
         {
             movect++;
-           
+
             //敵更新
             for (int i = 0; i < 3; i++)
             {
@@ -917,7 +1042,7 @@ if (firstfrag == 0)
             gunthrow = true;
         }
 
-        if (gunthrow==true)
+        if (gunthrow == true)
         {
 
         }
@@ -997,9 +1122,9 @@ if (firstfrag == 0)
     }
 
     //ステージ3
-    if (scene==6)
+    if (scene == 6)
     {
-        
+
         //描画のためにカメラの更新処理を一回呼び出す
         if (firstfrag == 0)
         {
@@ -1021,8 +1146,8 @@ if (firstfrag == 0)
             Stage2[i]->BulUpdate();
             Stage2[i]->PartUpdate();
         }
-        
-        
+
+
         player->BulUpdate();
         backsphere->Update();
         player->meleeUpdate();
@@ -1167,83 +1292,46 @@ if (firstfrag == 0)
     }
 
     //ゲームオーバー
-   if (scene==3)
-   {
-       //FBX更新
-       floor->Update();
-       for (int i = 0; i < 8; i++)
-       {
-           stage1wall[i]->Update();
-       }
+    if (scene == 3)
+    {
+        //FBX更新
+        floor->Update();
+       /* for (int i = 0; i < 8; i++)
+        {
+            stage1wall[i]->Update();
+        }*/
+        player->BulUpdate();
+        backsphere->Update();
 
-       cube->Update();
-       player->BulUpdate();
-       backsphere->Update();
+    }
 
-       for (int i = 0; i < 2; i++)
-       {
-           Stage1[i]->Update();
-       }
+    //クリア
+    if (scene == 4)
+    {
+        //描画のためにカメラの更新処理を一回呼び出す
+        if (firstfrag == 0)
+        {
+            camera->CurrentUpdate();
+            camera->Update(WindowsApp::window_width, WindowsApp::window_height);
 
-      
-   }
+            firstfrag = 1;
+        }
 
-   //クリア
-   if (scene == 4)
-   {
-       //描画のためにカメラの更新処理を一回呼び出す
-       if (firstfrag == 0)
-       {
-           camera->CurrentUpdate();
-           camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+        //FBX更新
+        floor->Update();
 
-           firstfrag = 1;
-       }
-
-       //FBX更新
-       floor->Update();
-      /* wallLeft->Update();
-       wallForward->Update();
-       wallRight->Update();
-       wallBack->Update();*/
-       cube->Update();
-       player->BulUpdate();
-       //backsphere->Update();
-      
-
-       ////自分が動いていたら更新処理
-       //if (input->PushKey(DIK_W) || input->PushKey(DIK_A) || input->PushKey(DIK_S) || input->PushKey(DIK_D))
-       //{
-
-       //    //プレイy－更新
-       //    player->PlayerUpdate();
-
-       //    camera->CurrentUpdate();
-       //    camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-       //    playercol->SetPosition(player->GetPos());
-       //    playercol->colUpdate();
-       //}
+        player->BulUpdate();
+        //backsphere->Update();
 
 
-       ////マウスだけ動いてる時
-       //if (mouseMove.lX != 0 || mouseMove.lY != 0)
-       //{
-       //    camera->CurrentUpdate();
-       //    //camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-
-       //}
-
-       ////すべての衝突をチェック
-       //collisionManager->CheckAllCollisions();
-
-   }
-  
 
 
-    //sprintf_s(pla, "WASD : move");
 
-    //debugText->Print(pla, 0, 0, 1.0f);
+     //sprintf_s(pla, "WASD : move");
 
+     //debugText->Print(pla, 0, 0, 1.0f);
+
+    }
 }
 
 void GameScene::Draw()
@@ -1264,9 +1352,13 @@ void GameScene::Draw()
     //FBX描画
     if (scene==2)
     {
-        for (int i = 0; i < 8; i++)
+       /* for (int i = 0; i < 8; i++)
         {
             stage1wall[i]->Draw(cmdList);
+        }*/
+        for (std::unique_ptr<Wall>& wall : Stage1Walls)
+        {
+            wall->Draw(cmdList);
         }
     }
 
@@ -1295,26 +1387,11 @@ void GameScene::Draw()
     
    
   
-    //glasswallForward->Draw(cmdList);
-    //glasswallLeft->Draw(cmdList);
-    //gun->Draw(cmdList);
-    //backsphere->Draw(cmdList);
 
     //敵関連
     
     if (scene==2)
     {
-        //cube->Draw(cmdList);//cube
-        //cube->BulDraw(cmdList);
-        //cube->PartDraw(cmdList);
-        ////Stage1[0]->BulDraw(cmdList);
-        //for (int i = 0; i < 1; i++)
-        //{
-        //    Stage1[i]->Draw(cmdList);
-        //    Stage1[i]->PartDraw(cmdList);
-        //    Stage1[i]->BulDraw(cmdList);
-        //}
-
         for (std::unique_ptr<Enemy>& enemy : Stage1Enemy)
         {
             enemy->BulDraw(cmdList);
@@ -1396,40 +1473,22 @@ void GameScene::restart()
 
 
     //敵関連処理
-    
-    cube->SetPosition({ 20.0f,5.0f,70.0f });
-    cube->SetScale({ 0.01f,0.01f,0.01f });
-    cube->setcol(0);
-    
-    cube->EnemyInitialize(TRUE);
-
-    for (int i = 0; i < 2; i++)
-    {
-        Stage1[i]->SetScale({ 0.01f,0.01f,0.01f });
-        Stage1[i]->setcol(0);
-        Stage1[i]->EnemyInitialize(TRUE);
-    }
-
-    Stage1[0]->SetPosition({ 40.0f,5.0f,68.0f });
-    Stage1[1]->SetPosition({ 150.0f,10.0f,10.0f });
+   
 
     //FBX更新
-   
-    cube->Update();
-    cube->BulUpdate();
     player->BulUpdate();
     backsphere->Update();
 
    
-    for (int i = 0; i < 2; i++)
+  /*  for (int i = 0; i < 2; i++)
     {
         Stage1[i]->Update();
         Stage1[0]->BulUpdate();
-    }
-    for (int i = 0; i < 8; i++)
+    }*/
+    /*for (int i = 0; i < 8; i++)
     {
         stage1wall[i]->Update();
-    }
+    }*/
 
 
 }
@@ -1442,6 +1501,23 @@ void GameScene::transrationScene()
         player->Sethave(true);
         /*LoadEnemyData();
         SwapEnemyData();*/
+
+        for (int i = 0; i < 6; i++)
+        {
+            stage2wall[i]->SetPosition({ -1000.0f,10.0f,0.0f });
+            stage2wall[i]->SetScale({ 0.01f,0.01f,0.01f });
+            gunstand->SetPosition({ -1000.0f,10.0f,0.0f });
+            tutogun->SetPosition({ 0.0f,0.0f,20.0f });
+            stage2wall[i]->Update();
+            gunstand->Update();
+            tutogun->Update();
+        }
+        for (int i = 0; i < 8; i++)
+        {
+            stage3wall[i]->SetPosition({ -1000.0f,10.0f,0.0f });
+            stage3wall[i]->SetScale({ 0.01f,0.01f,0.01f });
+            stage3wall[i]->Update();
+        }
     }
 
     if (scene==5)
@@ -1512,8 +1588,6 @@ void GameScene::Finalize()
     //delete input;
     /*delete dxCommon;
     delete audio;*/
-
-    delete cube;
     delete model2;
     delete modelfloor;
     delete modelwall;
@@ -1523,12 +1597,6 @@ void GameScene::Finalize()
 
     delete player;
 
-   
-
-    for (int i = 0; i < 2; i++)
-    {
-        delete Stage1[i];
-    }
 
     for (int i = 0; i < 3; i++)
     {

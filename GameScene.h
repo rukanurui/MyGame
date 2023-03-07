@@ -55,8 +55,12 @@ public://メンバ関数
 	void Initialize(DXCommon* dxcommon, Input* input, Audio* audio, SpriteCommon* spritecommon,WindowsApp*windows);
 	//敵データ読み込み
 	void LoadEnemyData();
-	//敵データ更新
+	//敵データ受け取り
 	void SwapEnemyData();
+	//地形データ読み込み
+	void LoadWallData();
+	//地形データ更新
+	void SwapWallData();
 	//更新
 	void Update();
 	//シーン分岐
@@ -112,8 +116,11 @@ private://メンバ変数
 	std::list<std::unique_ptr<FBXobj3d>> objects;
 
 	//壁のlist
-	std::list<std::unique_ptr<Wall>> Walls;
-	
+	std::list<std::unique_ptr<Wall>> Stage1Walls;
+	std::list<std::unique_ptr<Wall>> Stage2Walls;
+	//壁コマンド
+	std::stringstream wallData;
+
 	//1面
 	Wall* stage1wall[8];
 
@@ -141,9 +148,7 @@ private://メンバ変数
 	
 	//敵コマンド
 	std::stringstream enemyData;
-	//チュートリアル
-	Enemy* cube = nullptr;
-	Enemy* Stage1[2];
+
 	//ステージ2
 	Enemy* Stage2[3];
 	//ステージ3
