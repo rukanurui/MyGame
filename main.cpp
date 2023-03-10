@@ -227,8 +227,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
             title->Update();
             if (input->TriggerKey(DIK_SPACE))
             {
-                scene = 2;
-                tutoscene = 0;
+                scene = 5;
+                tutoscene = 3;
                 gameScene->SetScene(scene);
                 gameScene->transrationScene();
                 spritesize = { 1280,720 };

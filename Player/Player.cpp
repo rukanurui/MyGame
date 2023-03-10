@@ -1,7 +1,7 @@
 #pragma once
 #include "Player.h"
-#include"QueryCallback.h"
-#include"CollisionManager.h";
+#include"../Collider/QueryCallback.h"
+#include"../Collider/CollisionManager.h";
 
 
 Player::Player():FBXobj3d()
@@ -209,20 +209,20 @@ void Player::throwgunUpdate()
 	}
 }
 
-void Player::gunUpdate(const XMFLOAT3& cameratarget,const XMMATRIX& cameramatRot)
+void Player::gunUpdate(const XMFLOAT3& cameratarget,const XMFLOAT3& cameraeye)
 {
 
 	//èeÇÃçXêV
 	gunpos = position;
 
-	XMMATRIX cameramatrot = cameramatRot;
+	float cameramatrot = atan2(cameratarget.y,cameratarget.x);
 
 	Velocity2 = { cameratarget.x - position.x, cameratarget.y - position.y, cameratarget.z - position.z };
 
 	Velocity2 = XMVector3Normalize(Velocity2);
 
 	XMVECTOR move = { -2.0f,-2.0f,0,0 };
-	move = XMVector3Transform(move, cameramatrot);
+	//move = XMVector3Transform(move, cameramatrot);
 
 	gunpos.x += move.m128_f32[0]; gunpos.y += move.m128_f32[1]; gunpos.z += move.m128_f32[2];
 

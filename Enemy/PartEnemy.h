@@ -1,7 +1,7 @@
 #pragma once
-#include"3d/fbxobj3d.h"
-#include"SphereCollider.h"
-#include"DebugText.h"
+#include"../3d/fbxobj3d.h"
+#include"../Collider/SphereCollider.h"
+#include"../DebugText.h"
 
 class PartEnemy : public FBXobj3d
 {

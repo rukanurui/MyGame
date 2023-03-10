@@ -23,10 +23,10 @@
 #include "3d/Modelfbx.h"
 
 #include "Camera.h"
-#include"Player.h"
-#include"PlayerCol.h"
+#include"Player/Player.h"
+#include"Collider/PlayerCol.h"
 
-#include"Enemy.h"
+#include"Enemy/Enemy.h"
 #include"Wall.h"
 
 #include <memory>
@@ -136,9 +136,6 @@ private://ƒƒ“ƒo•Ï”
 
 	//3–Ê
 	Wall* stage3wall[8];
-
-
-	
 
 	//3dƒ‚ƒfƒ‹(“G)
 

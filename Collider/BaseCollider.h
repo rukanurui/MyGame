@@ -1,6 +1,6 @@
 #pragma once
 #include"CollisionTypes.h"
-#include"3d/fbxobj3d.h"
+#include"../3d/fbxobj3d.h"
 #include"ColisionInfo.h"
 
 

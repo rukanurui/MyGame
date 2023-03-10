@@ -1,7 +1,7 @@
 #include "FBXobj3d.h"
 #include <d3dcompiler.h>
-#include"../BaseCollider.h"
-#include "../CollisionManager.h"
+#include"../Collider/BaseCollider.h"
+#include "../Collider/CollisionManager.h"
 #pragma comment(lib,"d3dcompiler")
 
 using namespace Microsoft::WRL;

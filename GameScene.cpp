@@ -4,9 +4,9 @@
 #include <cassert>
 #include <sstream>
 #include <iomanip>
-#include"CollisionManager.h"
-#include"Collision.h"
-#include"CollisionColor.h"
+#include"Collider/CollisionManager.h"
+#include"Collider/Collision.h"
+#include"Collider/CollisionColor.h"
 #include<fstream>
 
 
@@ -92,16 +92,6 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
 
     //地形3dオブジェクト
     //床
-
-   /* std::unique_ptr<FBXobj3d>newfloor = std::make_unique<Wall>();
-    newfloor->Initialize();
-    newfloor->SetPosition({ 0.0f,-1.0f,0.0f });
-    newfloor->SetScale({ 1.0f,0.1f,1.0f });
-    newfloor->SetModel(modelfloor);
-    newfloor->SetCollider(new BoxCollider(XMVECTOR{ 100.0f,0.7f,100.0f,0 }, 1.0f));
-    objects.push_back(std::move(newfloor));*/
-
-    
     floor = new FBXobj3d();
     floor->Initialize();
     floor->SetPosition({ 0.0f,-1.0f,0.0f });
@@ -114,60 +104,6 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     ///1面
     LoadWallData();
     SwapWallData();
-    //for (int i = 0; i < 8; i++)
-    //{
-    //   /* std::unique_ptr<Wall>newwall = std::make_unique<Wall>();
-    //    newwall->Initialize();
-    //    newwall->SetModel(modelwall);*/
-    //    stage1wall[i] = nullptr;
-    //    stage1wall[i] = new Wall();
-    //    stage1wall[i]->Initialize();
-    //    stage1wall[i]->SetModel(modelwall);
-    //}
-
-    //stage1wall[0]->SetPosition({ -10.0f,0.0f,0.0f });//左縦
-    //stage1wall[0]->SetScale({ 0.01f,0.5f,0.1f });
-    //stage1wall[0]->SetCollider(new BoxCollider(XMVECTOR{ 0.5f,100.0f,100.0f,0 }, 1.0f));
-    //stage1wall[0]->WallInitialize();
-
-    //stage1wall[1]->SetPosition({ 30.0f,0.0f,0.0f });//右縦
-    //stage1wall[1]->SetScale({ 0.01f,0.5f,0.5f });
-    //stage1wall[1]->SetCollider(new BoxCollider(XMVECTOR{ 0.5f,100.0f,50.0f,0 }, 1.0f));
-    //stage1wall[1]->WallInitialize();
-
-    //stage1wall[2]->SetPosition({ 0.0f,0.0f,10.0f });//前くびれ横
-    //stage1wall[2]->SetRotation({ 0.0f,90.0f,0.0f });
-    //stage1wall[2]->SetScale({ 0.01f,0.5f,0.1f });
-    //stage1wall[2]->SetCollider(new BoxCollider(XMVECTOR{ 10.0f,100.0f,0.8f,0 }, 1.0f));
-    //stage1wall[2]->WallInitialize();
-
-    //stage1wall[3]->SetPosition({ 0.0f,0.0f,-10.0f });//後ろ横
-    //stage1wall[3]->SetScale({ 0.01f,0.5f,1.0f });
-    //stage1wall[3]->SetRotation({ 0.0f,90.0f,0.0f });
-    //stage1wall[3]->SetCollider(new BoxCollider(XMVECTOR{ 100.0f,100.0f,0.8f,0 }, 1.0f));
-    //stage1wall[3]->WallInitialize();
-
-    //stage1wall[4]->SetPosition({ 10.0f,0.0f,42.5f });//前壁縦長
-    //stage1wall[4]->SetScale({ 0.01f,1.0f,0.325f });
-    //stage1wall[4]->SetCollider(new BoxCollider(XMVECTOR{ 0.5f,100.0f,32.5f,0 }, 1.0f));
-    //stage1wall[4]->WallInitialize();
-
-    //stage1wall[5]->SetPosition({ 20.0f,0.0f,75.0f });//奥横
-    //stage1wall[5]->SetScale({ 0.01f,1.0f,0.5f });
-    //stage1wall[5]->SetRotation({ 0.0f,90.0f,0.0f });
-    //stage1wall[5]->SetCollider(new BoxCollider(XMVECTOR{ 75.0f,100.0f,0.8f,0 }, 1.0f));
-    //stage1wall[5]->WallInitialize();
-
-    //stage1wall[6]->SetPosition({ 40.0f,0.0f,50.0f });//奥くびれ横
-    //stage1wall[6]->SetScale({ 0.01f,1.0f,0.1f });
-    //stage1wall[6]->SetRotation({ 0.0f,90.0f,0.0f });
-    //stage1wall[6]->SetCollider(new BoxCollider(XMVECTOR{ 10.0f,100.0f,0.8f,0 }, 1.0f));
-    //stage1wall[6]->WallInitialize();
-
-    //stage1wall[7]->SetPosition({ 50.0f,0.0f,70.0f });//奥壁縦
-    //stage1wall[7]->SetScale({ 0.01f,1.0f,0.5f });
-    //stage1wall[7]->SetCollider(new BoxCollider(XMVECTOR{ 0.5f,100.0f,50.0f,0 }, 1.0f));
-    //stage1wall[7]->WallInitialize();
 
     //壁のスケール0.1=ワールドで10
 
@@ -178,58 +114,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
 
      
     ///２面
-    //壁
-    for (int i = 0; i < 6; i++)
-    {
-        stage2wall[i] = nullptr;
-        stage2wall[i] = new Wall();
-        stage2wall[i]->Initialize();
-        stage2wall[i]->SetModel(modelwall);
-    }
-    
-    //左
-    stage2wall[0]->SetPosition({ -30.0f,10.0f,0.0f });
-    stage2wall[0]->SetScale({ 0.1f,0.5f,1.0f });
-    stage2wall[0]->SetRotation({ 0.0f,0.0f,0.0f });
-    stage2wall[0]->SetCollider(new BoxCollider(XMVECTOR{ 0.5f,100.0f,100.0f,0 }, 1.0f));
-    stage2wall[0]->WallInitialize();
-
-    //前
-    stage2wall[1]->SetPosition({ 0.0f,0.0f,80.0f });
-    stage2wall[1]->SetScale({ 0.1f,1.0f,1.0f });
-    stage2wall[1]->SetRotation({ 0.0f,90.0f,0.0f });
-    stage2wall[1]->SetCollider(new BoxCollider(XMVECTOR{ 100.0f,100.0f,0.8f,0 }, 1.0f));
-    stage2wall[1]->WallInitialize();
-
-    //右
-    stage2wall[2]->SetPosition({ 70.0f,0.0f,0.0f });
-    stage2wall[2]->SetScale({ 0.01f,1.0f,1.0f });
-    stage2wall[2]->SetRotation({ 0.0f,0.0f,0.0f });
-    stage2wall[2]->SetCollider(new BoxCollider(XMVECTOR{ 0.8f,100.0f,100.0f,0 }, 1.0f));
-    stage2wall[2]->WallInitialize();
-
-    //後ろ
-    stage2wall[3]->SetPosition({ 0.0f,0.0f,-20.0f });
-    stage2wall[3]->SetScale({ 0.1f,1.0f,1.0f });
-    stage2wall[3]->SetRotation({ 0.0f,90.0f,0.0f });
-    stage2wall[3]->SetCollider(new BoxCollider(XMVECTOR{ 100.0f,100.0f,0.8f,0 }, 1.0f));
-    stage2wall[3]->WallInitialize();
-
-    //手前横壁
-    stage2wall[4]->SetPosition({ -30.0f,0.0f,60.0f });
-    stage2wall[4]->SetScale({ 0.1f,1.0f,0.5f });
-    stage2wall[4]->SetRotation({ 0.0f,90.0f,0.0f });
-    stage2wall[4]->SetCollider(new BoxCollider(XMVECTOR{ 50.0f,100.0f,0.8f,0 }, 1.0f));
-    stage2wall[4]->WallInitialize();
-
-    //右縦壁
-    stage2wall[5]->SetPosition({ 10.0f,0.0f,0.0f });
-    stage2wall[5]->SetScale({ 0.1f,1.0f,0.2f });
-    stage2wall[5]->SetRotation({ 0.0f,0.0f,0.0f });
-    stage2wall[5]->SetCollider(new BoxCollider(XMVECTOR{ 0.8f,100.0f,20.0f,0 }, 1.0f));
-    stage2wall[5]->WallInitialize();
-
-
+   
     //銃台座
     gunstand= new Wall();
     gunstand->Initialize();
@@ -248,26 +133,6 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     tutogun->SetModel(modelobjgun);
     tutogun->SetCollider(new BoxCollider(XMVECTOR{ 6.0f,6.0f,6.0f,0 }, 1.0f));
     tutogun->objgunInitialize();
-
-    //敵2面
-    for (int i = 0; i < 3; i++)
-    {
-        Stage2[i] = nullptr;
-        Stage2[i] = new Enemy();
-        Stage2[i]->Initialize();
-        Stage2[i]->SetScale({ 0.01f,0.01f,0.01f });
-        Stage2[i]->SetModel(model2);
-    }
-
-    Stage2[0]->SetPosition({ 0.0f, 5.0f, 70.0f });
-    Stage2[1]->SetPosition({ 60.0f, 5.0f, 70.0f });
-    Stage2[2]->SetPosition({ 60.0f,5.0f,0.0f });
-
-    for (int i = 0; i < 3; i++)
-    {
-        Stage2[i]->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
-        Stage2[i]->EnemyInitialize(TRUE);
-    }
 
     ///3面
     //壁
@@ -820,16 +685,7 @@ void GameScene::Update()
         wallBack->Update();*/
         player->BulUpdate();
         backsphere->Update();
-        /*for (int i = 0; i < 20; i++)
-        {
-         PartCube1[i]->Update();
-         PartCube2[i]->Update();
-         PartCube3[i]->Update();
-         PartCube4[i]->Update();
-         PartCube5[i]->Update();
-         PartCube6[i]->Update();
-        }*/
-
+       
 
     }
 
@@ -856,7 +712,7 @@ void GameScene::Update()
         player->BulUpdate();
         player->meleeUpdate();
         player->throwgunUpdate();
-        player->gunUpdate(camera->GetTarget(), camera->GetmatRot());
+        player->gunUpdate(camera->GetTarget(), camera->GetEye());
 
 
         for (std::unique_ptr<Enemy>& enemy : Stage1Enemy)
@@ -866,11 +722,6 @@ void GameScene::Update()
             enemy->Update();
         }
 
-
-        /*for (int i = 0; i < 8; i++)
-        {
-            stage1wall[i]->Update();
-        }*/
 
         for (std::unique_ptr<Wall>& wall : Stage1Walls)
         {
@@ -904,7 +755,7 @@ void GameScene::Update()
             player->SetPosition(camera->GetEye());
             player->SetRotation(camera->GetRoatation());
             player->PlayerUpdate(camera->GetTarget());
-            player->gunUpdate(camera->GetTarget(), camera->GetmatRot());
+            player->gunUpdate(camera->GetTarget(), camera->GetEye());
 
         }
 
@@ -918,7 +769,7 @@ void GameScene::Update()
                 player->SetPosition(camera->GetEye());
                 player->SetTarget(camera->GetTarget());
                 player->UpdateWorld();
-                player->gunUpdate(camera->GetTarget(), camera->GetmatRot());
+                player->gunUpdate(camera->GetTarget(), camera->GetEye());
 
             }
         }
@@ -941,14 +792,13 @@ void GameScene::Update()
             scene = 3;//ゲームオーバー
         }
 
+        Stage1Enemy.remove_if([](std::unique_ptr<Enemy>& enemy) {
+            return enemy->getdeath();
+            });
 
-
-        for (std::unique_ptr<Enemy>& enemy : Stage1Enemy)
+        if (Stage1Enemy.size()==0)
         {
-            if (enemy->GetScaleX() < check)
-            {
-                scene = 4;//クリア
-            }
+            scene = 4;//クリア
         }
 
     }
@@ -967,15 +817,15 @@ void GameScene::Update()
 
         //FBX更新
         floor->Update();
-        for (int i = 0; i < 6; i++)
+        for (std::unique_ptr<Enemy>& enemy : Stage2Enemy)
         {
-            stage2wall[i]->Update();
+            enemy->PartUpdate();
+            enemy->BulUpdate();
+            enemy->Update();
         }
-        for (int i = 0; i < 3; i++)
+        for (std::unique_ptr<Wall>& wall : Stage2Walls)
         {
-            Stage2[i]->Update();
-            Stage2[i]->BulUpdate();
-            Stage2[i]->PartUpdate();
+            wall->Update();
         }
         gunstand->Update();
         tutogun->Update();
@@ -983,7 +833,7 @@ void GameScene::Update()
         backsphere->Update();
         player->meleeUpdate();
         player->throwgunUpdate();
-        player->gunUpdate(camera->GetTarget(), camera->GetmatRot());
+        player->gunUpdate(camera->GetTarget(), camera->GetEye());
 
         //プレイヤーの銃のフラグ管理
         if (player->Gethave() == false)
@@ -1008,9 +858,14 @@ void GameScene::Update()
             movect++;
 
             //敵更新
-            for (int i = 0; i < 3; i++)
+            for (std::unique_ptr<Enemy>& enemy : Stage2Enemy)
             {
-                Stage2[i]->EnemyUpdate(player->GetPos());
+                enemy->EnemyUpdate(player->GetPos());
+            }
+
+            for (std::unique_ptr<Wall>& wall : Stage1Walls)
+            {
+                wall->Update();
             }
 
             //プレイy－更新
@@ -1022,7 +877,7 @@ void GameScene::Update()
             player->SetPosition(camera->GetEye());
             player->SetRotation(camera->GetRoatation());
             player->PlayerUpdate(camera->GetTarget());
-            player->gunUpdate(camera->GetTarget(), camera->GetmatRot());
+            player->gunUpdate(camera->GetTarget(), camera->GetEye());
 
             //残弾数の取得
             magazin = player->Getmagazin();
@@ -1052,9 +907,9 @@ void GameScene::Update()
         {
 
             //敵更新
-            for (int i = 0; i < 3; i++)
+            for (std::unique_ptr<Enemy>& enemy : Stage2Enemy)
             {
-                Stage2[i]->EnemyUpdate(player->GetPos());
+                enemy->EnemyUpdate(player->GetPos());
             }
 
             //プレイy－更新
@@ -1066,7 +921,7 @@ void GameScene::Update()
             player->SetPosition(camera->GetEye());
             player->SetRotation(camera->GetRoatation());
             player->PlayerUpdate(camera->GetTarget());
-            player->gunUpdate(camera->GetTarget(), camera->GetmatRot());
+            player->gunUpdate(camera->GetTarget(), camera->GetEye());
             //残弾数の取得
             magazin = player->Getmagazin();
             //銃を持っているか
@@ -1084,7 +939,7 @@ void GameScene::Update()
                 player->SetPosition(camera->GetEye());
                 player->SetTarget(camera->GetTarget());
                 player->UpdateWorld();
-                player->gunUpdate(camera->GetTarget(), camera->GetmatRot());
+                player->gunUpdate(camera->GetTarget(), camera->GetEye());
 
             }
         }
@@ -1152,7 +1007,7 @@ void GameScene::Update()
         backsphere->Update();
         player->meleeUpdate();
         player->throwgunUpdate();
-        player->gunUpdate(camera->GetTarget(), camera->GetmatRot());
+        player->gunUpdate(camera->GetTarget(), camera->GetEye());
         tutogun->Update();
 
         //プレイヤーの銃のフラグ管理
@@ -1192,7 +1047,7 @@ void GameScene::Update()
             player->SetPosition(camera->GetEye());
             player->SetRotation(camera->GetRoatation());
             player->PlayerUpdate(camera->GetTarget());
-            player->gunUpdate(camera->GetTarget(), camera->GetmatRot());
+            player->gunUpdate(camera->GetTarget(), camera->GetEye());
 
             //残弾数の取得
             magazin = player->Getmagazin();
@@ -1236,7 +1091,7 @@ void GameScene::Update()
             player->SetPosition(camera->GetEye());
             player->SetRotation(camera->GetRoatation());
             player->PlayerUpdate(camera->GetTarget());
-            player->gunUpdate(camera->GetTarget(), camera->GetmatRot());
+            player->gunUpdate(camera->GetTarget(), camera->GetEye());
             //残弾数の取得
             magazin = player->Getmagazin();
             //銃を持っているか
@@ -1254,7 +1109,7 @@ void GameScene::Update()
                 player->SetPosition(camera->GetEye());
                 player->SetTarget(camera->GetTarget());
                 player->UpdateWorld();
-                player->gunUpdate(camera->GetTarget(), camera->GetmatRot());
+                player->gunUpdate(camera->GetTarget(), camera->GetEye());
 
             }
         }
@@ -1323,10 +1178,6 @@ void GameScene::Update()
         player->BulUpdate();
         //backsphere->Update();
 
-
-
-
-
      //sprintf_s(pla, "WASD : move");
 
      //debugText->Print(pla, 0, 0, 1.0f);
@@ -1352,10 +1203,6 @@ void GameScene::Draw()
     //FBX描画
     if (scene==2)
     {
-       /* for (int i = 0; i < 8; i++)
-        {
-            stage1wall[i]->Draw(cmdList);
-        }*/
         for (std::unique_ptr<Wall>& wall : Stage1Walls)
         {
             wall->Draw(cmdList);
@@ -1366,9 +1213,10 @@ void GameScene::Draw()
     floor->Draw(cmdList);
     if (scene == 5)
     {
-        for (int i = 0; i < 6; i++)
+        
+        for (std::unique_ptr<Wall>& wall : Stage2Walls)
         {
-            stage2wall[i]->Draw(cmdList);
+            wall->Draw(cmdList);
         }
 
         gunstand->Draw(cmdList);
@@ -1403,29 +1251,23 @@ void GameScene::Draw()
 
     if (scene==5)
     {
-        for (int i = 0; i < 3; i++)
+        for (std::unique_ptr<Enemy>& enemy : Stage2Enemy)
         {
-            Stage2[i]->Draw(cmdList); 
-            Stage2[i]->PartDraw(cmdList);
-            Stage2[i]->BulDraw(cmdList);
+            enemy->BulDraw(cmdList);
+            enemy->PartDraw(cmdList);
+            enemy->Draw(cmdList);
         }
     }
 
     if (scene==3)
     {
-        for (int i = 0; i < 8; i++)
-        {
-            stage1wall[i]->Draw(cmdList);
-        }
+        
         floor->Draw(cmdList);
     }
 
     if (scene == 4)
     {
-        for (int i = 0; i < 8; i++)
-        {
-            stage1wall[i]->Draw(cmdList);
-        }
+        
         floor->Draw(cmdList);
     }
      
@@ -1433,7 +1275,7 @@ void GameScene::Draw()
 
     //プレイヤー関連
      player->throwgunDraw(cmdList);
-     player->gunDraw(cmdList);
+    // player->gunDraw(cmdList);
      player->BulDraw(cmdList);
     // player->meleeDraw(cmdList);
     
@@ -1502,16 +1344,14 @@ void GameScene::transrationScene()
         /*LoadEnemyData();
         SwapEnemyData();*/
 
-        for (int i = 0; i < 6; i++)
-        {
-            stage2wall[i]->SetPosition({ -1000.0f,10.0f,0.0f });
-            stage2wall[i]->SetScale({ 0.01f,0.01f,0.01f });
-            gunstand->SetPosition({ -1000.0f,10.0f,0.0f });
-            tutogun->SetPosition({ 0.0f,0.0f,20.0f });
-            stage2wall[i]->Update();
-            gunstand->Update();
-            tutogun->Update();
-        }
+        //listの削除
+        Stage2Enemy.remove_if([](std::unique_ptr<Enemy>& enemy) {
+            return enemy->die;
+            });
+        Stage2Walls.remove_if([](std::unique_ptr<Wall>& wall) {
+            return wall->die;
+            });
+
         for (int i = 0; i < 8; i++)
         {
             stage3wall[i]->SetPosition({ -1000.0f,10.0f,0.0f });
@@ -1527,13 +1367,23 @@ void GameScene::transrationScene()
         player->SetPosition(respos);
         camera->SetEye(respos);
 
+        LoadEnemyData();
+        SwapEnemyData();
+        LoadWallData();
+        SwapWallData();
+
+        //listの削除
+        Stage1Enemy.remove_if([](std::unique_ptr<Enemy>& enemy) {
+            return enemy->die;
+            });
+        Stage1Walls.remove_if([](std::unique_ptr<Wall>& wall) {
+            return wall->die;
+            });
+
         for (int i = 0; i < 8; i++)
         {
-            stage1wall[i]->SetPosition({ -1000.0f,10.0f,0.0f });
             stage3wall[i]->SetPosition({ -1000.0f,10.0f,0.0f });
-            //Stage1[0]->
             stage3wall[i]->Update();
-            stage1wall[i]->Update();
         }
     }
 
@@ -1543,13 +1393,6 @@ void GameScene::transrationScene()
         player->Sethave(false);
         player->SetPosition(respos);
         camera->SetEye(respos);
-
-        for (int i = 0; i < 8; i++)
-        {
-            stage1wall[i]->SetPosition({ -1000.0f,10.0f,0.0f });
-            stage1wall[i]->SetScale({ 0.01f,0.01f,0.01f });
-            stage1wall[i]->Update();
-        }
 
         for (int i = 0; i < 6; i++)
         {

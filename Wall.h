@@ -1,7 +1,7 @@
 #pragma once
 #include"3d/fbxobj3d.h"
-#include"BoxCollider.h"
-#include"CollisionColor.h"
+#include"Collider/BoxCollider.h"
+#include"Collider/CollisionColor.h"
 
 class Wall : public FBXobj3d
 {
@@ -20,6 +20,8 @@ public:
 	//e‚Ìƒtƒ‰ƒO
 	const int& Gethave() { return infohave; }
 	void Sethave(bool Have);
+
+	const int die = 1;
 
 private:
 

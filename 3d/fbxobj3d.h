@@ -9,8 +9,8 @@
 #include "FbxLoader.h"
 #include "fbxsdk.h"
 #include <string>
-#include"../ColisionInfo.h"
-#include"../CollisionColor.h"
+#include"../Collider/ColisionInfo.h"
+#include"../Collider/CollisionColor.h"
 
 class BaseCollider;
 

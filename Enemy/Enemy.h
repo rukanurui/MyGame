@@ -1,8 +1,8 @@
 #pragma once
-#include"3d/fbxobj3d.h"
-#include "3d/FbxLoader.h"
-#include "3d/Modelfbx.h"
-#include"SphereCollider.h"
+#include"../3d/fbxobj3d.h"
+#include "../3d/FbxLoader.h"
+#include "../3d/Modelfbx.h"
+#include"../Collider/SphereCollider.h"
 
 #include <memory>
 #include <list>
@@ -29,7 +29,9 @@ public://メンバ関数
 	//当たり判定リセット
 	void colReset();
 	//当たり判定セット
-	void setcol(int Col);
+	void setcol(bool Col);
+	const bool& getcol() { return col; }
+	const bool& getdeath() { return death; }
 
 	void move();
 
@@ -43,6 +45,8 @@ public://メンバ関数
 
 	void PartDraw(ID3D12GraphicsCommandList* cmdList);
 
+	const int die = 1;
+
 private:
 
 	//ポインタ
@@ -54,13 +58,15 @@ private:
 	
 	//boolに変更する
 	//当たったかのフラグ
-	int col = 0;
+	bool col = false;
+	bool death = false;
 
 	//パーティクルの数
 	const int partnum = 20;
 
 	//パーティクルの数カウント
 	int partcount = 0;
+	int parttimer = 0;
 
 
 

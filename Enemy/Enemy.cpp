@@ -1,8 +1,8 @@
 #include "Enemy.h"
 #include <time.h>
 
-#include"QueryCallback.h"
-#include"CollisionManager.h";
+#include"../Collider/QueryCallback.h"
+#include"../Collider/CollisionManager.h";
 
 
 
@@ -31,7 +31,7 @@ void Enemy::EnemyUpdate(XMFLOAT3 playerpos)
 {
 
 	//ìGÇÃà⁄ìÆ(é©ã@í«è])
-	if (col==0)
+	if (col==false)
 	{
 		if (Shot==false)
 		{
@@ -118,7 +118,7 @@ void Enemy::EnemyUpdate(XMFLOAT3 playerpos)
 	}
 
 	//éÄñSÇµÇƒÇ¢ÇΩÇÁ
-	if (col==1)
+	if (col==true)
 	{
 		//20å¬Ç‹Ç≈particleê∂ê¨
 		if (partcount <= partnum)
@@ -137,11 +137,20 @@ void Enemy::EnemyUpdate(XMFLOAT3 playerpos)
 		}
 
 		//particleÇÃçXêV
-		for (std::unique_ptr<PartEnemy>& part : particle)
+		if (parttimer<=150)
 		{
-			part->PartUpdate();
-			part->Update();
+			for (std::unique_ptr<PartEnemy>& part : particle)
+			{
+				part->PartUpdate();
+				part->Update();
+			}
+			parttimer++;
 		}
+		else
+		{
+			death = true;
+		}
+		
 
 	}
 	
@@ -286,10 +295,10 @@ void Enemy::OnCollision(const CollisionInfo& info)
 
 	if (scale.x >= 0.01f)
 	{
-		scale.x = 0.005f; scale.y = 0.005f; scale.z = 0.005f;
+		scale.x = 0.0f; scale.y = 0.0f; scale.z = 0.0f;
 	}
 
-	col = 1;
+	col = true;
 
 	HRESULT result;
 	XMMATRIX matScale, matRot, matTrans;
@@ -378,7 +387,7 @@ void Enemy::OnCollision(const CollisionInfo& info)
 
 void Enemy::colReset()
 {
-	col = 0;
+	col = false;
 }
 
 
@@ -422,7 +431,7 @@ void Enemy::PartDraw(ID3D12GraphicsCommandList* cmdList)
 	}
 }
 
-void Enemy::setcol(int Col)
+void Enemy::setcol(bool Col)
 {
 	col = Col;
 }

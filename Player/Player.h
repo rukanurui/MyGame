@@ -2,10 +2,10 @@
 #include"Pbullet.h"
 #include"melee.h"
 #include"PlayerGun.h"
-#include"3d/fbxobj3d.h"
-#include"SphereCollider.h"
-#include "3d/FbxLoader.h"
-#include "3d/Modelfbx.h"
+#include"../3d/fbxobj3d.h"
+#include"../Collider/SphereCollider.h"
+#include "../3d/FbxLoader.h"
+#include "../3d/Modelfbx.h"
 #include <memory>
 #include <list>
 
@@ -23,7 +23,7 @@ public://ƒƒ“ƒoŠÖ”
 	void BulUpdate();
 	void meleeUpdate();
 	void throwgunUpdate();
-	void gunUpdate(const XMFLOAT3& cameratarget, const XMMATRIX& cameramatRot);
+	void gunUpdate(const XMFLOAT3& cameratarget, const XMFLOAT3& cameraeye);
 	
 
 	/// ’‹“_À•W‚Ìæ“¾

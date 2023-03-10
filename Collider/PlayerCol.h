@@ -1,5 +1,5 @@
 #pragma once
-#include"3d/fbxobj3d.h"
+#include"../3d/fbxobj3d.h"
 #include"SphereCollider.h"
 
 class PlayerCol : public FBXobj3d

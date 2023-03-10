@@ -1,6 +1,6 @@
 #pragma once
-#include"3d/fbxobj3d.h"
-#include"SphereCollider.h"
+#include"../3d/fbxobj3d.h"
+#include"../Collider/SphereCollider.h"
 
 class Enemybullet
 	: public FBXobj3d
