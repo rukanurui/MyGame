@@ -33,12 +33,14 @@
 #include <list>
 #include<sstream>
 
+#include"BaseScene.h"
+
 
 
 
 class CollisionManager;
 
-class GameScene
+class GameScene:BaseScene
 {
 protected: // エイリアス
 // Microsoft::WRL::を省略

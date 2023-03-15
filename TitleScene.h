@@ -1,5 +1,8 @@
 #pragma once
-class TitleScene
+
+#include"BaseScene.h"
+
+class TitleScene:BaseScene
 {
 
 };
