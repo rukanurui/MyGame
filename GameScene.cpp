@@ -101,16 +101,16 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
 
    
 
-    ///1面
-    LoadWallData();
-    SwapWallData();
+    /////1面
+    //LoadWallDataS1();
+    //SwapWallDataS1();
 
-    //壁のスケール0.1=ワールドで10
+    ////壁のスケール0.1=ワールドで10
 
-    //敵関連処理
+    ////敵関連処理
    
-    LoadEnemyData();
-    SwapEnemyData();
+    //LoadEnemyDataS1();
+    //SwapEnemyDataS1();
 
      
     ///２面
@@ -204,21 +204,64 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
 
 }
 
-void GameScene::LoadEnemyData()
+void GameScene::LoadEnemyDataS1()
 {
     //ファイルを開く
     std::ifstream file;
-    file.open(L"Resources/EnemyData.csv");
+    file.open(L"Resources/EnemyDataS1.csv");
     assert(file.is_open());
 
     //ファイルの内容を文字列ストリームにコピー
-    enemyData << file.rdbuf();
+    enemyDataS1 << file.rdbuf();
 
     //ファイルを閉じる
     file.close();
 }
 
-void GameScene::SwapEnemyData() {
+void GameScene::LoadWallDataS1()
+{
+    //ファイルを開く
+    std::ifstream file;
+    file.open(L"Resources/WallDataS1.csv");
+    assert(file.is_open());
+
+    //ファイルの内容を文字列ストリームにコピー
+    wallDataS1 << file.rdbuf();
+
+    //ファイルを閉じる
+    file.close();
+}
+
+void GameScene::LoadEnemyDataS2()
+{
+    //ファイルを開く
+    std::ifstream file;
+    file.open(L"Resources/EnemyDataS2.csv");
+    assert(file.is_open());
+
+    //ファイルの内容を文字列ストリームにコピー
+    enemyDataS2 << file.rdbuf();
+
+    //ファイルを閉じる
+    file.close();
+}
+
+void GameScene::LoadWallDataS2()
+{
+    //ファイルを開く
+    std::ifstream file;
+    file.open(L"Resources/WallDataS2.csv");
+    assert(file.is_open());
+
+    //ファイルの内容を文字列ストリームにコピー
+    wallDataS2 << file.rdbuf();
+
+    //ファイルを閉じる
+    file.close();
+}
+
+
+void GameScene::SwapEnemyDataS1() {
 
     //csvにステージ指定のコマンド入れる
     //読み取ってステージごとにpushback変更する
@@ -242,7 +285,7 @@ void GameScene::SwapEnemyData() {
 
 
     //コマンド実行ループ
-    while (getline(enemyData,line))
+    while (getline(enemyDataS1,line))
     {
 
         //1行分の文字列をストリームに変換して解析しやすくなる
@@ -384,21 +427,7 @@ void GameScene::SwapEnemyData() {
     }
 }
 
-void GameScene::LoadWallData()
-{
-    //ファイルを開く
-    std::ifstream file;
-    file.open(L"Resources/WallData.csv");
-    assert(file.is_open());
-
-    //ファイルの内容を文字列ストリームにコピー
-    wallData << file.rdbuf();
-
-    //ファイルを閉じる
-    file.close();
-}
-
-void GameScene::SwapWallData()
+void GameScene::SwapWallDataS1()
 {
     //csvにステージ指定のコマンド入れる
     //読み取ってステージごとにpushback変更する
@@ -421,7 +450,7 @@ void GameScene::SwapWallData()
     newwall->Initialize();
 
     //コマンド実行ループ
-    while (getline(wallData, line))
+    while (getline(wallDataS1, line))
     {
 
         //1行分の文字列をストリームに変換して解析しやすくなる
@@ -541,6 +570,322 @@ void GameScene::SwapWallData()
                 newwall = std::make_unique<Wall>();
                 newwall->Initialize();
             }
+           
+        }
+
+    }
+}
+
+void GameScene::SwapEnemyDataS2() {
+
+    //csvにステージ指定のコマンド入れる
+    //読み取ってステージごとにpushback変更する
+
+
+    //1行分の文字列を入れる変数
+    std::string line;
+
+    //敵の情報
+    XMFLOAT3 pos{};//座標
+    XMFLOAT3 scale{};//スケール
+    int modelname;//モデルの指定
+    float r;//コライダーの半径指定
+    bool mod;//敵の種類の指定
+    int stage;//ステージの指定
+    int nextflag = 0;
+
+    //敵のlist追加
+    std::unique_ptr<Enemy>newenemy = std::make_unique<Enemy>();
+    newenemy->Initialize();
+
+
+    //コマンド実行ループ
+    while (getline(enemyDataS2, line))
+    {
+
+        //1行分の文字列をストリームに変換して解析しやすくなる
+        std::istringstream line_stream(line);
+
+        std::string word;
+        //,区切りで行の先頭部分を取得
+        getline(line_stream, word, ',');
+
+        // "//"から始まる行はコメントアウト
+        if (word.find("//") == 0)
+        {
+            //コメント行を飛ばす
+            continue;
+        }
+
+
+        if (word.find("POSITION") == 0)
+        {
+            //x座標
+            getline(line_stream, word, ',');
+            pos.x = (float)std::atof(word.c_str());
+
+            //y座標
+            getline(line_stream, word, ',');
+            pos.y = (float)std::atof(word.c_str());
+
+            //z座標
+            getline(line_stream, word, ',');
+            pos.z = (float)std::atof(word.c_str());
+
+            newenemy->SetPosition({ pos.x,pos.y,pos.z });
+
+        }
+        else if (word.find("SCALE") == 0)
+        {
+            //xのスケール
+            getline(line_stream, word, ',');
+            scale.x = (float)std::atof(word.c_str());
+
+            //xのスケール
+            getline(line_stream, word, ',');
+            scale.y = (float)std::atof(word.c_str());
+
+            //xのスケール
+            getline(line_stream, word, ',');
+            scale.z = (float)std::atof(word.c_str());
+
+            newenemy->SetScale({ scale.x,scale.y,scale.z });
+        }
+        else if (word.find("MODEL") == 0)
+        {
+            //モデルの指定
+            getline(line_stream, word, ',');
+            modelname = (float)std::atof(word.c_str());
+
+            if (modelname == 1)
+            {
+                newenemy->SetModel(model2);
+            }
+
+        }
+        else if (word.find("COLLIDER") == 0)
+        {
+            //コライダー(球)の半径指定
+            getline(line_stream, word, ',');
+            r = (float)std::atof(word.c_str());
+
+            newenemy->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, r));
+        }
+        else if (word.find("SHOT") == 0)
+        {
+            //敵の種類指定
+            getline(line_stream, word, ',');
+            mod = (float)std::atof(word.c_str());
+            if (mod == 0)
+            {
+                newenemy->EnemyInitialize(TRUE);
+            }
+            else if (mod == 1)
+            {
+                newenemy->EnemyInitialize(FALSE);
+            }
+        }
+        else if (word.find("STAGE") == 0)
+        {
+            //ステージの指定
+            getline(line_stream, word, ',');
+            stage = (float)std::atof(word.c_str());
+            if (stage == 1)
+            {
+                Stage1Enemy.push_back(std::move(newenemy));
+            }
+            else if (stage == 2)
+            {
+                Stage2Enemy.push_back(std::move(newenemy));
+            }
+        }
+        else if (word.find("NEXT") == 0)
+        {
+            //ステージの指定
+            getline(line_stream, word, ',');
+            nextflag = (float)std::atof(word.c_str());
+
+            if (nextflag == 1)
+            {
+                newenemy = std::make_unique<Enemy>();
+                newenemy->Initialize();
+            }
+        }
+
+
+
+        /*newenemy->SetPosition({ pos.x,pos.y,pos.z });
+        newenemy->SetScale({ scale.x,scale.y,scale.z });
+        if (modelname==1)
+        {
+           newenemy->SetModel(model2);
+        }
+        newenemy->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, r));
+        if (mod==0)
+        {
+            newenemy->EnemyInitialize(TRUE);
+        }
+        else if (mod == 1)
+        {
+            newenemy->EnemyInitialize(FALSE);
+        }
+        if (stage == 1)
+        {
+            Stage1Enemy.push_back(std::move(newenemy));
+
+        }
+        else if (stage == 2)
+        {
+            Stage2Enemy.push_back(std::move(newenemy));
+        }*/
+
+    }
+}
+
+void GameScene::SwapWallDataS2()
+{
+    //csvにステージ指定のコマンド入れる
+    //読み取ってステージごとにpushback変更する
+
+
+    //1行分の文字列を入れる変数
+    std::string line;
+
+    //壁の情報
+    XMFLOAT3 pos{};//座標
+    XMFLOAT3 scale{};//スケール
+    XMFLOAT3 rotation{};//ローテーション
+    int modelname;//モデルの指定
+    XMFLOAT3 r;//コライダーの半径指定
+    int stage;//ステージの指定
+    int nextflag = 0;
+
+    //壁のlist追加
+    std::unique_ptr<Wall>newwall = std::make_unique<Wall>();
+    newwall->Initialize();
+
+    //コマンド実行ループ
+    while (getline(wallDataS2, line))
+    {
+
+        //1行分の文字列をストリームに変換して解析しやすくなる
+        std::istringstream line_stream(line);
+
+        std::string word;
+        //,区切りで行の先頭部分を取得
+        getline(line_stream, word, ',');
+
+        // "//"から始まる行はコメントアウト
+        if (word.find("//") == 0)
+        {
+            //コメント行を飛ばす
+            continue;
+        }
+
+
+        if (word.find("POSITION") == 0)
+        {
+            //x座標
+            getline(line_stream, word, ',');
+            pos.x = (float)std::atof(word.c_str());
+
+            //y座標
+            getline(line_stream, word, ',');
+            pos.y = (float)std::atof(word.c_str());
+
+            //z座標
+            getline(line_stream, word, ',');
+            pos.z = (float)std::atof(word.c_str());
+
+            newwall->SetPosition({ pos.x,pos.y,pos.z });
+
+        }
+        else if (word.find("SCALE") == 0)
+        {
+            //xのスケール
+            getline(line_stream, word, ',');
+            scale.x = (float)std::atof(word.c_str());
+
+            //xのスケール
+            getline(line_stream, word, ',');
+            scale.y = (float)std::atof(word.c_str());
+
+            //xのスケール
+            getline(line_stream, word, ',');
+            scale.z = (float)std::atof(word.c_str());
+
+            newwall->SetScale({ scale.x,scale.y,scale.z });
+        }
+        else if (word.find("ROTAT") == 0)
+        {
+            //xのスケール
+            getline(line_stream, word, ',');
+            rotation.x = (float)std::atof(word.c_str());
+
+            //xのスケール
+            getline(line_stream, word, ',');
+            rotation.y = (float)std::atof(word.c_str());
+
+            //xのスケール
+            getline(line_stream, word, ',');
+            rotation.z = (float)std::atof(word.c_str());
+
+            newwall->SetRotation({ rotation.x,rotation.y,rotation.z });
+        }
+        else if (word.find("MODEL") == 0)
+        {
+            //モデルの指定
+            getline(line_stream, word, ',');
+            modelname = (float)std::atof(word.c_str());
+
+            if (modelname == 1)
+            {
+                newwall->SetModel(modelwall);
+            }
+
+        }
+        else if (word.find("COLLIDER") == 0)
+        {
+            //コライダー(矩形)の半径指定
+            getline(line_stream, word, ',');
+            r.x = (float)std::atof(word.c_str());
+
+            getline(line_stream, word, ',');
+            r.y = (float)std::atof(word.c_str());
+
+            getline(line_stream, word, ',');
+            r.z = (float)std::atof(word.c_str());
+
+            newwall->SetCollider(new BoxCollider(XMVECTOR{ r.x,r.y,r.z,0 }, 1.0f));
+        }
+        else if (word.find("STAGE") == 0)
+        {
+            //ステージの指定
+            getline(line_stream, word, ',');
+            stage = (float)std::atof(word.c_str());
+            if (stage == 1)
+            {
+                newwall->WallInitialize();
+                Stage1Walls.push_back(std::move(newwall));
+            }
+            else if (stage == 2)
+            {
+                newwall->WallInitialize();
+                Stage2Walls.push_back(std::move(newwall));
+            }
+        }
+        else if (word.find("NEXT") == 0)
+        {
+            //ステージの指定
+            getline(line_stream, word, ',');
+            nextflag = (float)std::atof(word.c_str());
+
+            if (nextflag == 1)
+            {
+                newwall = std::make_unique<Wall>();
+                newwall->Initialize();
+            }
+           
         }
 
     }
@@ -729,6 +1074,52 @@ void GameScene::Update()
         }
 
 
+        //動いていない状態で攻撃したら
+        if (input->PushKey(DIK_SPACE) && !input->PushKey(DIK_Q))
+        {
+            //フラグをtrueにする
+            attack = true;
+        }
+
+        if (attack == true)
+        {
+            movect++;
+
+            //敵更新
+            for (std::unique_ptr<Enemy>& enemy : Stage1Enemy)
+            {
+                enemy->EnemyUpdate(player->GetPos());
+            }
+
+            for (std::unique_ptr<Wall>& wall : Stage1Walls)
+            {
+                wall->Update();
+            }
+
+            //プレイy－更新
+            player->Setoldpos(camera->GetEye());
+            player->SetoldTarget(camera->GetTarget());
+            camera->CurrentUpdate();
+            camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+            player->SetTarget(camera->GetTarget());
+            player->SetPosition(camera->GetEye());
+            player->SetRotation(camera->GetRoatation());
+            player->PlayerUpdate(camera->GetTarget());
+            player->gunUpdate(camera->GetTarget(), camera->GetEye());
+
+            //残弾数の取得
+            magazin = player->Getmagazin();
+            //銃を持っているか
+            have = player->Gethave();
+
+            if (movect >= 15)
+            {
+                attack = false;
+                movect = 0;
+            }
+        }
+
+
         //自分が動いていたら更新処理
         if (input->PushKey(DIK_W) || input->PushKey(DIK_A) || input->PushKey(DIK_S) || input->PushKey(DIK_D))
         {
@@ -863,7 +1254,7 @@ void GameScene::Update()
                 enemy->EnemyUpdate(player->GetPos());
             }
 
-            for (std::unique_ptr<Wall>& wall : Stage1Walls)
+            for (std::unique_ptr<Wall>& wall : Stage2Walls)
             {
                 wall->Update();
             }
@@ -891,16 +1282,16 @@ void GameScene::Update()
             }
         }
 
-        //動いていない状態で銃を投げたら
-        if (input->PushKey(DIK_Q) && !input->PushKey(DIK_SPACE))
-        {
-            gunthrow = true;
-        }
+        ////動いていない状態で銃を投げたら
+        //if (input->PushKey(DIK_Q) && !input->PushKey(DIK_SPACE))
+        //{
+        //    gunthrow = true;
+        //}
 
-        if (gunthrow == true)
-        {
+        //if (gunthrow == true)
+        //{
 
-        }
+        //}
 
         //自分が動いていたら更新処理
         if (input->PushKey(DIK_W) || input->PushKey(DIK_A) || input->PushKey(DIK_S) || input->PushKey(DIK_D))
@@ -964,16 +1355,14 @@ void GameScene::Update()
             scene = 3;//ゲームオーバー
         }
 
-        //敵を倒したら次のステージ
-        //if (cube->GetScaleX() < check &&
-        //    Stage1[0]->GetScaleX() < check)
-        //    /* Stage1[1]->GetScaleX() < check&&
-        //     Stage1[2]->GetScaleX() < check&&
-        //     Stage1[3]->GetScaleX() < check&&
-        //     Stage1[4]->GetScaleX() < check)*/
-        //{
-        //    scene = 4;//クリア
-        //}
+        Stage2Enemy.remove_if([](std::unique_ptr<Enemy>& enemy) {
+            return enemy->getdeath();
+            });
+
+        if (Stage2Enemy.size() == 0)
+        {
+            scene = 4;//クリア
+        }
     }
 
     //ステージ3
@@ -1214,6 +1603,7 @@ void GameScene::Draw()
     if (scene == 5)
     {
         
+
         for (std::unique_ptr<Wall>& wall : Stage2Walls)
         {
             wall->Draw(cmdList);
@@ -1261,13 +1651,41 @@ void GameScene::Draw()
 
     if (scene==3)
     {
-        
+        if (Stage1Walls.size() > 0)
+        {
+            for (std::unique_ptr<Wall>& wall : Stage1Walls)
+            {
+                wall->Draw(cmdList);
+            }
+        }
+
+        if (Stage2Walls.size() > 0)
+        {
+            for (std::unique_ptr<Wall>& wall : Stage2Walls)
+            {
+                wall->Draw(cmdList);
+            }
+        }
         floor->Draw(cmdList);
     }
 
     if (scene == 4)
     {
-        
+        if (Stage1Walls.size() > 0)
+        {
+            for (std::unique_ptr<Wall>& wall : Stage1Walls)
+            {
+                wall->Draw(cmdList);
+            }
+        }
+
+        if (Stage2Walls.size() > 0)
+        {
+            for (std::unique_ptr<Wall>& wall : Stage2Walls)
+            {
+                wall->Draw(cmdList);
+            }
+        }
         floor->Draw(cmdList);
     }
      
@@ -1275,7 +1693,7 @@ void GameScene::Draw()
 
     //プレイヤー関連
      player->throwgunDraw(cmdList);
-    // player->gunDraw(cmdList);
+     player->gunDraw(cmdList);
      player->BulDraw(cmdList);
     // player->meleeDraw(cmdList);
     
@@ -1321,16 +1739,6 @@ void GameScene::restart()
     player->BulUpdate();
     backsphere->Update();
 
-   
-  /*  for (int i = 0; i < 2; i++)
-    {
-        Stage1[i]->Update();
-        Stage1[0]->BulUpdate();
-    }*/
-    /*for (int i = 0; i < 8; i++)
-    {
-        stage1wall[i]->Update();
-    }*/
 
 
 }
@@ -1345,12 +1753,17 @@ void GameScene::transrationScene()
         SwapEnemyData();*/
 
         //listの削除
-        Stage2Enemy.remove_if([](std::unique_ptr<Enemy>& enemy) {
+       /* Stage2Enemy.remove_if([](std::unique_ptr<Enemy>& enemy) {
             return enemy->die;
             });
         Stage2Walls.remove_if([](std::unique_ptr<Wall>& wall) {
             return wall->die;
-            });
+            });*/
+
+        LoadEnemyDataS1();
+        SwapEnemyDataS1();
+        LoadWallDataS1();
+        SwapWallDataS1();
 
         for (int i = 0; i < 8; i++)
         {
@@ -1367,10 +1780,12 @@ void GameScene::transrationScene()
         player->SetPosition(respos);
         camera->SetEye(respos);
 
-        LoadEnemyData();
-        SwapEnemyData();
-        LoadWallData();
-        SwapWallData();
+       
+        LoadEnemyDataS2();
+        SwapEnemyDataS2();
+        LoadWallDataS2();
+        SwapWallDataS2();
+
 
         //listの削除
         Stage1Enemy.remove_if([](std::unique_ptr<Enemy>& enemy) {
@@ -1380,6 +1795,17 @@ void GameScene::transrationScene()
             return wall->die;
             });
 
+        for (std::unique_ptr<Enemy>& enemy : Stage2Enemy)
+        {
+            enemy->PartUpdate();
+            enemy->BulUpdate();
+            enemy->Update();
+        }
+        for (std::unique_ptr<Wall>& wall : Stage2Walls)
+        {
+            wall->Update();
+        }
+
         for (int i = 0; i < 8; i++)
         {
             stage3wall[i]->SetPosition({ -1000.0f,10.0f,0.0f });
@@ -1387,7 +1813,7 @@ void GameScene::transrationScene()
         }
     }
 
-    if (scene==6)
+    /*if (scene==6)
     {
         const XMFLOAT3 respos = { 0,0,0 };
         player->Sethave(false);
@@ -1404,7 +1830,7 @@ void GameScene::transrationScene()
             gunstand->Update();
             tutogun->Update();
         }
-    }
+    }*/
     
 }
  

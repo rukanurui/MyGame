@@ -452,12 +452,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
             gameover->SetPosition(spritepos);
             gameover->TransferVertexBuffer();
             gameover->Update();
-            if (input->TriggerKey(DIK_R))
+            if (input->TriggerKey(DIK_SPACE))
             {
                 //gameScene->Initialize(dxCommon, input, audio, spriteCommon, winApp);
-                gameScene->restart();
                 scene = 0;
                 tutoscene = 0;
+                gameScene->restart();
                 wait = 0;
                 count = 0;
                 spritepos={ WindowsApp::window_width / 2 ,WindowsApp::window_height / 2,0 };
@@ -494,13 +494,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
             clear->SetSize(spritesize);
             clear->TransferVertexBuffer();
             clear->Update();
-            if (input->TriggerKey(DIK_R))
+            if (input->TriggerKey(DIK_SPACE))
             {
-                gameScene->restart();
-                scene = 0;
-                tutoscene = 0;
+                
+                scene = 5; 
+                tutoscene = 3;
+                gameScene->SetScene(scene);
+                gameScene->transrationScene();
                 wait = 0;
                 count = 0;
+                spritepos = { WindowsApp::window_width / 2 ,WindowsApp::window_height / 2,0 };
+                spritesize = { 1280,720 };
+                transfrag = true;
+                spriteangle = 0;
+                overfrag = true;
             }
         }
 

@@ -40,7 +40,7 @@
 
 class CollisionManager;
 
-class GameScene:BaseScene
+class GameScene
 {
 protected: // エイリアス
 // Microsoft::WRL::を省略
@@ -56,13 +56,21 @@ public://メンバ関数
 	//初期化
 	void Initialize(DXCommon* dxcommon, Input* input, Audio* audio, SpriteCommon* spritecommon,WindowsApp*windows);
 	//敵データ読み込み
-	void LoadEnemyData();
+	void LoadEnemyDataS1();
 	//敵データ受け取り
-	void SwapEnemyData();
+	void SwapEnemyDataS1();
 	//地形データ読み込み
-	void LoadWallData();
+	void LoadWallDataS1();
 	//地形データ更新
-	void SwapWallData();
+	void SwapWallDataS1();
+	//敵データ読み込み
+	void LoadEnemyDataS2();
+	//敵データ受け取り
+	void SwapEnemyDataS2();
+	//地形データ読み込み
+	void LoadWallDataS2();
+	//地形データ更新
+	void SwapWallDataS2();
 	//更新
 	void Update();
 	//シーン分岐
@@ -121,7 +129,8 @@ private://メンバ変数
 	std::list<std::unique_ptr<Wall>> Stage1Walls;
 	std::list<std::unique_ptr<Wall>> Stage2Walls;
 	//壁コマンド
-	std::stringstream wallData;
+	std::stringstream wallDataS1;
+	std::stringstream wallDataS2;
 
 	//1面
 	Wall* stage1wall[8];
@@ -146,7 +155,8 @@ private://メンバ変数
 	std::list<std::unique_ptr<Enemy>> Stage2Enemy;
 	
 	//敵コマンド
-	std::stringstream enemyData;
+	std::stringstream enemyDataS1;
+	std::stringstream enemyDataS2;
 
 	//ステージ2
 	Enemy* Stage2[3];
