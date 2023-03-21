@@ -96,12 +96,13 @@ private://ƒƒ“ƒo•Ï”
 	float distance = 5.0f;
 
 	//‚Á‚Ä‚¢‚ée‚ÌêŠŒˆ‚ß(‰E‰º)
-
 	const float gundistance = 1.5f;
 	const float gunTdistance = 0.5;
 	XMFLOAT3 guntarget{};
 	XMFLOAT3 gunpos;
 	XMVECTOR Velocity2{ -gundistance,-gundistance,gundistance };
+
+	XMFLOAT3 currentangle;
 	
 
 	//UŒ‚ŠÖ˜A

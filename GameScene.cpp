@@ -32,8 +32,75 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
 #pragma region 描画初期化処理
 
 
-    //spriteCommon = new SpriteCommon();
-    //spriteCommon->Initialize(dxCommon->GetDevice(), dxCommon->GetCommandList(), Windows->window_width, Windows->window_height);
+    spriteCommon = new SpriteCommon();
+    spriteCommon->Initialize(dxCommon->GetDevice(), dxCommon->GetCommandList(), Windows->window_width, Windows->window_height);
+
+    // スプライト共通テクスチャ読み込み
+    spriteCommon->LoadTexture(1, L"Resources/1432.png");
+    spriteCommon->LoadTexture(2, L"Resources/title.png");
+    spriteCommon->LoadTexture(3, L"Resources/gameover.png");
+    spriteCommon->LoadTexture(4, L"Resources/clear.png");
+    spriteCommon->LoadTexture(5, L"Resources/tutomove.png");
+    spriteCommon->LoadTexture(6, L"Resources/tutomouse.png");
+    spriteCommon->LoadTexture(7, L"Resources/tutoshot.png");
+    spriteCommon->LoadTexture(8, L"Resources/tutorule.png");
+    spriteCommon->LoadTexture(9, L"Resources/pickuptuto.png");
+    spriteCommon->LoadTexture(10, L"Resources/stage2tuto1.png");
+    spriteCommon->LoadTexture(11, L"Resources/stage2tuto2.png");
+    spriteCommon->LoadTexture(12, L"Resources/noammo.png");
+
+    //スプライト生成
+    
+    crosshair = Sprite::Create(spriteCommon, 1);
+    crosshair->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    crosshair->TransferVertexBuffer();
+
+    title = Sprite::Create(spriteCommon, 2);
+    title->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    title->TransferVertexBuffer();
+
+    gameover = Sprite::Create(spriteCommon, 3);
+    gameover->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    gameover->TransferVertexBuffer();
+
+    clear = Sprite::Create(spriteCommon, 4);
+    clear->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    clear->TransferVertexBuffer();
+
+    tutomove = Sprite::Create(spriteCommon, 5);
+    tutomove->SetPosition({ WindowsApp::window_width / 2,600,0 });
+    tutomove->SetSize(movesize);
+    tutomove->TransferVertexBuffer();
+
+    tutomouse = Sprite::Create(spriteCommon, 6);
+    tutomouse->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    tutomouse->TransferVertexBuffer();
+
+    tutoshot = Sprite::Create(spriteCommon, 7);
+    tutoshot->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    tutoshot->TransferVertexBuffer();
+
+    tutorule = Sprite::Create(spriteCommon, 8);
+    tutorule->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    tutorule->TransferVertexBuffer();
+
+    tutopickup = Sprite::Create(spriteCommon, 9);
+    tutopickup->SetPosition({ WindowsApp::window_width / 2,600,0 });
+    tutopickup->TransferVertexBuffer();
+
+    tutogunpick1 = Sprite::Create(spriteCommon, 10);
+    tutogunpick1->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    tutogunpick1->TransferVertexBuffer();
+
+    tutogunpick2 = Sprite::Create(spriteCommon, 11);
+    tutogunpick2->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    tutogunpick2->TransferVertexBuffer();
+
+    noammo = Sprite::Create(spriteCommon, 12);
+    noammo->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    noammo->TransferVertexBuffer();
+
+
 
     //debugText = new DebugText();
     // デバッグテキスト用のテクスチャ番号を指定
@@ -42,14 +109,6 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     //spriteCommon->LoadTexture(debugTextTexNumber, L"Resources/debugfont.png");
     // デバッグテキスト初期化
     //debugText->Initialize(spriteCommon, debugTextTexNumber);
-
-    // スプライト共通テクスチャ読み込み
-   /* spriteCommon->LoadTexture(0, L"Resources/texture.png");
-    spriteCommon->LoadTexture(1, L"Resources/house.png");
-    spriteCommon->LoadTexture(3, L"Resources/tuto.png");
-    spriteCommon->LoadTexture(4, L"Resources/1432.png");*/
-
-
     collisionManager = CollisionManager::GetInstance();
 
 
@@ -909,6 +968,42 @@ void GameScene::Update()
     camera->SetmouseX(CurretmouseX);
     camera->SetmouseY(CurretmouseY);
 
+    if (scene==0)
+    {
+        if (spritesize.x >= 1280)
+        {
+            transfrag = true;
+        }
+        if (spritesize.x <= 1000)
+        {
+            transfrag = false;
+        }
+
+        if (transfrag == true)
+        {
+            spritesize.x -= 0.4f;
+            spritesize.y -= 0.3f;
+        }
+        else
+        {
+            spritesize.x += 0.4f;
+            spritesize.y += 0.3f;
+        }
+
+        title->SetRotation(spriteangle);
+        title->SetSize(spritesize);
+        title->TransferVertexBuffer();
+        title->Update();
+        if (input->TriggerKey(DIK_SPACE))
+        {
+            scene = 2;
+            tutoscene = 0;
+            transrationScene();
+            spritesize = { 1280,720 };
+            transfrag = true;
+        }
+    }
+
     //チュートリアル
     if (scene == 1)
     {
@@ -1049,6 +1144,82 @@ void GameScene::Update()
 
         }
 
+        //チュートリアル
+        if (tutoscene == 0)
+        {
+
+            if (movesize.x >= 800)
+            {
+                transfrag = true;
+            }
+            if (movesize.x <= 750)
+            {
+                transfrag = false;
+            }
+
+            if (transfrag == true)
+            {
+                movesize.x -= 0.2f;
+                movesize.y -= 0.2f;
+            }
+            else
+            {
+                movesize.x += 0.2f;
+                movesize.y += 0.2f;
+            }
+
+            wait++;
+            if (wait >= 180 && input->PushKey(DIK_W) || input->PushKey(DIK_A) || input->PushKey(DIK_S) || input->PushKey(DIK_D))
+            {
+                tutoscene = 1;
+                wait = 0;
+                transfrag = true;
+            }
+        }
+
+        if (tutoscene == 1)
+        {
+            if (spritesize.x >= 1280)
+            {
+                transfrag = true;
+            }
+
+            if (transfrag == true)
+            {
+                spritesize.x -= 1.0f;
+                spritesize.y -= 1.0f;
+            }
+            wait++;
+            if (wait >= 120)
+            {
+                tutoscene = 2;
+                spritesize = { 1280,720 };
+                transfrag = true;
+                wait = 0;
+            }
+        }
+
+        if (tutoscene == 2)
+        {
+            if (spritesize.x >= 1280)
+            {
+                transfrag = true;
+            }
+
+            if (transfrag == true)
+            {
+                spritesize.x -= 1.0f;
+                spritesize.y -= 1.0f;
+            }
+
+            wait++;
+            if (wait >= 60)
+            {
+                tutoscene = 3;
+                wait = 0;
+            }
+        }
+
 
         //FBX更新
         floor->Update();
@@ -1059,7 +1230,6 @@ void GameScene::Update()
         player->throwgunUpdate();
         player->gunUpdate(camera->GetTarget(), camera->GetEye());
 
-
         for (std::unique_ptr<Enemy>& enemy : Stage1Enemy)
         {
             enemy->PartUpdate();
@@ -1067,75 +1237,111 @@ void GameScene::Update()
             enemy->Update();
         }
 
-
         for (std::unique_ptr<Wall>& wall : Stage1Walls)
         {
             wall->Update();
         }
 
+        //スプライト更新
+        crosshair->Update();
+        tutomouse->SetSize(spritesize);
+        tutomove->SetSize(movesize);
+        tutoshot->SetSize(spritesize);
+        tutorule->SetSize(spritesize);
+
+        tutomouse->TransferVertexBuffer();
+        tutomove->TransferVertexBuffer();
+        tutoshot->TransferVertexBuffer();
+        tutorule->TransferVertexBuffer();
+
+        tutomouse->Update();
+        tutomove->Update();
+        tutoshot->Update();
+        tutorule->Update();
+
 
         //動いていない状態で攻撃したら
-        if (input->PushKey(DIK_SPACE) && !input->PushKey(DIK_Q))
+        if (tutoscene==3)
         {
-            //フラグをtrueにする
-            attack = true;
+            if (input->PushKey(DIK_SPACE) && !input->PushKey(DIK_Q))
+            {
+                //フラグをtrueにする
+                attack = true;
+            }
+
+            if (attack == true)
+            {
+                movect++;
+
+                //敵更新
+                for (std::unique_ptr<Enemy>& enemy : Stage1Enemy)
+                {
+                    enemy->EnemyUpdate(player->GetPos());
+                }
+
+                for (std::unique_ptr<Wall>& wall : Stage1Walls)
+                {
+                    wall->Update();
+                }
+
+                //プレイy－更新
+                player->Setoldpos(camera->GetEye());
+                player->SetoldTarget(camera->GetTarget());
+                camera->CurrentUpdate();
+                camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+                player->SetTarget(camera->GetTarget());
+                player->SetPosition(camera->GetEye());
+                player->SetRotation(camera->GetRoatation());
+                player->PlayerUpdate(camera->GetTarget());
+                player->gunUpdate(camera->GetTarget(), camera->GetEye());
+
+                //残弾数の取得
+                magazin = player->Getmagazin();
+                //銃を持っているか
+                have = player->Gethave();
+
+                if (movect >= 15)
+                {
+                    attack = false;
+                    movect = 0;
+                }
+            }
         }
 
-        if (attack == true)
+        //弾がないとき
+        if (magazin == 0 && have == true && input->PushKey(DIK_SPACE))
         {
-            movect++;
-
-            //敵更新
-            for (std::unique_ptr<Enemy>& enemy : Stage1Enemy)
-            {
-                enemy->EnemyUpdate(player->GetPos());
-            }
-
-            for (std::unique_ptr<Wall>& wall : Stage1Walls)
-            {
-                wall->Update();
-            }
-
-            //プレイy－更新
-            player->Setoldpos(camera->GetEye());
-            player->SetoldTarget(camera->GetTarget());
-            camera->CurrentUpdate();
-            camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-            player->SetTarget(camera->GetTarget());
-            player->SetPosition(camera->GetEye());
-            player->SetRotation(camera->GetRoatation());
-            player->PlayerUpdate(camera->GetTarget());
-            player->gunUpdate(camera->GetTarget(), camera->GetEye());
-
-            //残弾数の取得
-            magazin = player->Getmagazin();
-            //銃を持っているか
-            have = player->Gethave();
-
-            if (movect >= 15)
-            {
-                attack = false;
-                movect = 0;
-            }
+            noammoflag = true;
         }
 
+        if (noammoflag == true)
+        {
+            spritesize.x -= 2.0f;
+            spritesize.y -= 2.0f;
+            wait++;
+        }
+
+        if (noammoflag == true && wait >= 100)
+        {
+            spritesize = { 1280,720 };
+            noammoflag = false;
+            wait = 0;
+        }
+       
 
         //自分が動いていたら更新処理
         if (input->PushKey(DIK_W) || input->PushKey(DIK_A) || input->PushKey(DIK_S) || input->PushKey(DIK_D))
         {
 
-            //敵更新
-
-
-            for (std::unique_ptr<Enemy>& enemy : Stage1Enemy)
+            if (tutoscene==3)
             {
-                enemy->EnemyUpdate(player->GetPos());
+                //敵更新
+                for (std::unique_ptr<Enemy>& enemy : Stage1Enemy)
+                {
+                    enemy->EnemyUpdate(player->GetPos());
+                }
             }
-
-            for (std::unique_ptr<Wall>& wall : Stage1Walls)
-            {
-                wall->Update();
-            }
+            
 
             //プレイy－更新
             player->Setoldpos(camera->GetEye());
@@ -1150,8 +1356,8 @@ void GameScene::Update()
 
         }
 
-
-        if (mouseMove.lX != 0 || mouseMove.lY != 0)//マウスだけ動いてる時
+        //マウスだけ動いてる時
+        if (mouseMove.lX != 0 || mouseMove.lY != 0)
         {
             if (!input->PushKey(DIK_W) && !input->PushKey(DIK_A) && !input->PushKey(DIK_S) && !input->PushKey(DIK_D))
             {
@@ -1206,6 +1412,82 @@ void GameScene::Update()
             firstfrag = 1;
         }
 
+        //チュートリアル
+        if (tutoscene == 3)
+        {
+            if (spritesize.x >= 1280)
+            {
+                transfrag = true;
+            }
+
+            if (transfrag == true)
+            {
+                spritesize.x -= 1.0f;
+                spritesize.y -= 1.0f;
+            }
+
+            wait++;
+            if (wait >= 120)
+            {
+                tutoscene = 4;
+                spritesize = { 1280,720 };
+                wait = 0;
+                transfrag = true;
+            }
+        }
+
+        if (tutoscene == 4)
+        {
+            if (spritesize.x >= 1280)
+            {
+                transfrag = true;
+            }
+
+            if (transfrag == true)
+            {
+                spritesize.x -= 1.0f;
+                spritesize.y -= 1.0f;
+            }
+            wait++;
+            if (wait >= 120)
+            {
+                tutoscene = 5;
+                spritesize = { 1280,720 };
+                transfrag = true;
+                wait = 0;
+            }
+        }
+
+        if (tutoscene == 5)
+        {
+            if (movesize.x >= 800)
+            {
+                transfrag = true;
+            }
+            if (movesize.x <= 750)
+            {
+                transfrag = false;
+            }
+
+            if (transfrag == true)
+            {
+                movesize.x -= 0.2f;
+                movesize.y -= 0.2f;
+            }
+            else
+            {
+                movesize.x += 0.2f;
+                movesize.y += 0.2f;
+            }
+
+            wait++;
+            if (wait >= 60 && input->PushKey(DIK_SPACE))
+            {
+                tutoscene = 6;
+                wait = 0;
+            }
+        }
+
         //FBX更新
         floor->Update();
         for (std::unique_ptr<Enemy>& enemy : Stage2Enemy)
@@ -1226,6 +1508,24 @@ void GameScene::Update()
         player->throwgunUpdate();
         player->gunUpdate(camera->GetTarget(), camera->GetEye());
 
+        //スプライト更新
+        crosshair->Update();
+        //spriteのサイズ変更処理
+        tutopickup->SetSize(movesize);
+        tutogunpick1->SetSize(spritesize);
+        tutogunpick2->SetSize(spritesize);
+        noammo->SetSize(spritesize);
+
+        tutopickup->TransferVertexBuffer();
+        tutogunpick1->TransferVertexBuffer();
+        tutogunpick2->TransferVertexBuffer();
+        noammo->TransferVertexBuffer();
+
+        tutopickup->Update();
+        tutogunpick1->Update();
+        tutogunpick2->Update();
+        noammo->Update();
+
         //プレイヤーの銃のフラグ管理
         if (player->Gethave() == false)
         {
@@ -1236,6 +1536,25 @@ void GameScene::Update()
             tutogun->Sethave(false);
         }
 
+        //弾がないとき
+        if (magazin == 0 && have == true && input->PushKey(DIK_SPACE))
+        {
+            noammoflag = true;
+        }
+
+        if (noammoflag == true)
+        {
+            spritesize.x -= 2.0f;
+            spritesize.y -= 2.0f;
+            wait++;
+        }
+
+        if (noammoflag == true && wait >= 100)
+        {
+            spritesize = { 1280,720 };
+            noammoflag = false;
+            wait = 0;
+        }
 
         //動いていない状態で攻撃したら
         if (input->PushKey(DIK_SPACE) && !input->PushKey(DIK_Q))
@@ -1623,8 +1942,6 @@ void GameScene::Draw()
         tutogun->Draw(cmdList);
     }
     
-   
-  
 
     //敵関連
     
@@ -1696,6 +2013,28 @@ void GameScene::Draw()
      player->gunDraw(cmdList);
      player->BulDraw(cmdList);
     // player->meleeDraw(cmdList);
+
+     //スプライト描画前処理
+     spriteCommon->PreDraw();
+
+     if (scene == 0)title->Draw();
+     if (scene == 2)
+     {
+         if (tutoscene == 0)tutomove->Draw();
+         if (tutoscene == 1)tutomouse->Draw();
+         if (tutoscene == 2)tutorule->Draw();
+     }
+     if (scene == 5)
+     {
+         if (tutoscene == 3)tutogunpick1->Draw();
+         if (tutoscene == 4)tutogunpick2->Draw();
+         if (tutoscene == 5)tutopickup->Draw();
+         if (noammoflag == true)noammo->Draw();
+
+     }
+
+     if (scene == 3)gameover->Draw();
+     if (scene == 4)clear->Draw();
     
 
     // デバッグテキスト描画

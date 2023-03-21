@@ -102,15 +102,32 @@ private://メンバ変数
 	Camera* camera = nullptr;
 	//衝突マネージャー
 	CollisionManager* collisionManager = nullptr;
-	SpriteCommon* spriteCommon = nullptr;
 	
-
 	char pla[64];
 
 	//スプライト
-	Sprite* tuto = nullptr;
-	Sprite* tex = nullptr;
+	SpriteCommon* spriteCommon = nullptr;
 	Sprite* crosshair = nullptr;
+	Sprite* title = nullptr;
+	Sprite* gameover = nullptr;
+	Sprite* clear = nullptr;
+	Sprite* tutomove = nullptr;
+	Sprite* tutomouse = nullptr;
+	Sprite* tutoshot = nullptr;
+	Sprite* tutorule = nullptr;
+	Sprite* tutopickup = nullptr;
+	Sprite* tutogunpick1 = nullptr;
+	Sprite* tutogunpick2 = nullptr;
+	Sprite* noammo = nullptr;
+
+	XMFLOAT3 spritepos{ WindowsApp::window_width / 2 ,WindowsApp::window_height / 2,0 };
+	XMFLOAT2 spritesize{ 1280,720 };
+	XMFLOAT2 movesize = { 800,300 };
+	bool transfrag = true;
+	float spriteangle = 0;
+	bool overfrag = true;
+	int wait = 0;
+	bool noammoflag = false;
 
 	//3dモデル(地形など)
 	FbxModel* model2 = nullptr;
@@ -197,7 +214,7 @@ private://メンバ変数
 	float roat = 0.0f;
 
 	//シーン
-	int scene = 1;
+	int scene = 0;
 	int tutoscene = 0;
 	int goflag = 0;
 	

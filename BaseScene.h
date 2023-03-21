@@ -3,7 +3,7 @@
 class BaseScene
 {
 public:
-
+	//Œ»İC³’†‚Ì‚½‚ßg—p‚¹‚¸
 	virtual void Initialize();
 	
 	virtual void Update();

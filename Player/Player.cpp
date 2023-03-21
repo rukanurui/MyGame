@@ -212,6 +212,8 @@ void Player::throwgunUpdate()
 void Player::gunUpdate(const XMFLOAT3& cameratarget,const XMFLOAT3& cameraeye)
 {
 
+	XMFLOAT3 angle;
+
 	//e‚ÌXV
 	gunpos = position;
 
@@ -224,9 +226,12 @@ void Player::gunUpdate(const XMFLOAT3& cameratarget,const XMFLOAT3& cameraeye)
 	XMVECTOR move = { -2.0f,-2.0f,0,0 };
 	//move = XMVector3Transform(move, cameramatrot);
 
+	//À•WˆÚ“®ˆ—
 	gunpos.x += move.m128_f32[0]; gunpos.y += move.m128_f32[1]; gunpos.z += move.m128_f32[2];
 
-	Pgun->gunupdate(gunpos, Velocity2,cameratarget);
+	angle.y = atan2(Velocity2.m128_f32[0], Velocity2.m128_f32[2]);
+
+	Pgun->gunupdate(gunpos, Velocity2,angle);
 	Pgun->Update();
 
 }
