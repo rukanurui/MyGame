@@ -354,7 +354,9 @@ void Camera::CurrentUpdate()
 	{
 		// ’Ç‰Á‰ñ“]•ª‚Ì‰ñ“]s—ñ‚ð¶¬
 		XMMATRIX matRotNew = XMMatrixIdentity();
+
 		//‚±‚±‚Éangleˆ—
+		// 
 		//ã‚Éˆê’èˆÈãŒü‚¢‚½‚ç
 		if (angleculentX >= 1.0f&&target.y>=5)
 		{
