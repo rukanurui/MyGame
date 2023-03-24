@@ -20,6 +20,9 @@
 #include "3d/FbxLoader.h"
 
 #include "GameScene.h"
+#include "TitleScene.h"
+#include "BaseScene.h"
+#include "SceneManager.h"
 
 
 
@@ -27,6 +30,18 @@ using namespace DirectX;
 using namespace Microsoft::WRL;
 
 void spritetrans(XMFLOAT2 size,bool flag);
+
+GameScene* reset(GameScene* gameScene,DXCommon* dxcommon, Input* input, Audio* audio, SpriteCommon* spritecommon, WindowsApp* windows)
+{
+    if (gameScene!=nullptr)
+    {
+        delete gameScene;
+    }
+
+    gameScene = new GameScene;
+    gameScene->Initialize(dxcommon, input, audio, spritecommon, windows);
+    return gameScene;
+}
 
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
@@ -36,10 +51,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     WindowsApp* winApp = nullptr;
     DXCommon* dxCommon = nullptr;
     GameScene* gameScene = nullptr;
+    TitleScene * titleScene = nullptr;
     Audio* audio = nullptr;
     Object3d* object3d = nullptr;
     SpriteCommon* spriteCommon = nullptr;
     DebugText* debugText = nullptr;
+    SceneManager* sceneManager = nullptr;
+    TitleScene* titlescene = nullptr;
+    BaseScene* nowScene = nullptr;
+
 
 #pragma region WindowsAPI初期化
     winApp = new WindowsApp();
@@ -89,9 +109,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     //FBXローダーの初期化
     FbxLoader::GetInstance()->Initialize(dxCommon->GetDevice());
   
-    // ゲームシーンの初期化
+    //シーン関連の初期化
+    sceneManager = new SceneManager();
+
+    nowScene = new GameScene();
+    
+    titleScene = new TitleScene();
+    titleScene->Initialize(dxCommon, input, audio, spriteCommon, winApp);
     gameScene = new GameScene();
     gameScene->Initialize(dxCommon, input, audio,spriteCommon,winApp);
+    
 
     char pla[64];
 
@@ -126,6 +153,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         ID3D12GraphicsCommandList* cmdList = dxCommon->GetCommandList();
 
         gameScene->Update();
+        titleScene->Update();
+
+        scene = gameScene->GetScene();
+
+        if (scene==7)
+        {
+            gameScene=reset(gameScene, dxCommon, input, audio, spriteCommon, winApp);
+        }
 
 
         if (input->PushKey(DIK_ESCAPE))
@@ -144,6 +179,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         //レンダ―テクスチャへの描画
         postEffect->PreDrawScene(dxCommon->GetCommandList());
 
+        
+        titleScene->Draw();
         gameScene->Draw();
 
         // ４．描画コマンドここから

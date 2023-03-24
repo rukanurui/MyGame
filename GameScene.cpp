@@ -37,7 +37,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
 
     // スプライト共通テクスチャ読み込み
     spriteCommon->LoadTexture(1, L"Resources/1432.png");
-    spriteCommon->LoadTexture(2, L"Resources/title.png");
+    //spriteCommon->LoadTexture(2, L"Resources/title.png");
     spriteCommon->LoadTexture(3, L"Resources/gameover.png");
     spriteCommon->LoadTexture(4, L"Resources/clear.png");
     spriteCommon->LoadTexture(5, L"Resources/tutomove.png");
@@ -54,10 +54,6 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     crosshair = Sprite::Create(spriteCommon, 1);
     crosshair->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
     crosshair->TransferVertexBuffer();
-
-    title = Sprite::Create(spriteCommon, 2);
-    title->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
-    title->TransferVertexBuffer();
 
     gameover = Sprite::Create(spriteCommon, 3);
     gameover->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
@@ -274,7 +270,12 @@ void GameScene::LoadEnemyDataS1()
     enemyDataS1 << file.rdbuf();
 
     //ファイルを閉じる
+    //先頭に戻る
     file.close();
+    file.clear();
+    file.seekg(0, std::ios::beg);
+    
+    
 }
 
 void GameScene::LoadWallDataS1()
@@ -453,6 +454,12 @@ void GameScene::SwapEnemyDataS1() {
             {
                 newenemy = std::make_unique<Enemy>();
                 newenemy->Initialize();
+            }
+            else
+            {
+                enemyDataS1.str("");
+                enemyDataS1.clear(std::stringstream::goodbit);
+
             }
         }
 
@@ -970,30 +977,6 @@ void GameScene::Update()
 
     if (scene==0)
     {
-        if (spritesize.x >= 1280)
-        {
-            transfrag = true;
-        }
-        if (spritesize.x <= 1000)
-        {
-            transfrag = false;
-        }
-
-        if (transfrag == true)
-        {
-            spritesize.x -= 0.4f;
-            spritesize.y -= 0.3f;
-        }
-        else
-        {
-            spritesize.x += 0.4f;
-            spritesize.y += 0.3f;
-        }
-
-        title->SetRotation(spriteangle);
-        title->SetSize(spritesize);
-        title->TransferVertexBuffer();
-        title->Update();
         if (input->TriggerKey(DIK_SPACE))
         {
             scene = 2;
@@ -1680,7 +1663,7 @@ void GameScene::Update()
 
         if (Stage2Enemy.size() == 0)
         {
-            scene = 4;//クリア
+            scene = 8;//クリア
         }
     }
 
@@ -1866,6 +1849,13 @@ void GameScene::Update()
         player->BulUpdate();
         backsphere->Update();
 
+        if (input->PushKey(DIK_SPACE))
+        {
+            scene = 7;
+            tutoscene = 0;
+            transrationScene();
+        }
+
     }
 
     //クリア
@@ -1884,12 +1874,46 @@ void GameScene::Update()
         floor->Update();
 
         player->BulUpdate();
+        if (input->PushKey(DIK_SPACE))
+        {
+            scene = 5;
+            tutoscene = 3;
+            transrationScene();
+        }
         //backsphere->Update();
 
      //sprintf_s(pla, "WASD : move");
 
      //debugText->Print(pla, 0, 0, 1.0f);
 
+    }
+
+    if (scene==8)
+    {
+        //描画のためにカメラの更新処理を一回呼び出す
+        if (firstfrag == 0)
+        {
+            camera->CurrentUpdate();
+            camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+
+            firstfrag = 1;
+        }
+
+        //FBX更新
+        floor->Update();
+
+        player->BulUpdate();
+        if (input->PushKey(DIK_SPACE))
+        {
+            scene = 7;
+            tutoscene = 0;
+            transrationScene();
+        }
+        //backsphere->Update();
+
+     //sprintf_s(pla, "WASD : move");
+
+     //debugText->Print(pla, 0, 0, 1.0f);
     }
 }
 
@@ -2017,7 +2041,6 @@ void GameScene::Draw()
      //スプライト描画前処理
      spriteCommon->PreDraw();
 
-     if (scene == 0)title->Draw();
      if (scene == 2)
      {
          if (tutoscene == 0)tutomove->Draw();
@@ -2087,6 +2110,9 @@ void GameScene::transrationScene()
     if (scene==2)
     {
         //camera->SetEye(EyeInitialize);
+        camera->SetTarget({ 0, 0, 0 });
+        camera->CurrentUpdate();
+        //player->Update();
         player->Sethave(true);
         /*LoadEnemyData();
         SwapEnemyData();*/
@@ -2116,8 +2142,13 @@ void GameScene::transrationScene()
     {
         const XMFLOAT3 respos={0,0,0};
         player->Sethave(false);
-        player->SetPosition(respos);
-        camera->SetEye(respos);
+       /* player->SetPosition(respos);
+        camera->SetEye(respos);*/
+
+        
+
+        camera->SetTarget({ 0, 0, 0 });
+        camera->CurrentUpdate();
 
        
         LoadEnemyDataS2();

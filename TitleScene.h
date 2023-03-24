@@ -1,10 +1,14 @@
 #pragma once
 
 #include"BaseScene.h"
+#include "Input.h"
+#include "DXCommon.h"
 #include "2d/SpriteCommon.h"
 #include "2d/Sprite.h"
-#include <vector>
 #include "WindowsApp.h"
+#include "Audio.h"
+#include <vector>
+
 
 
 class TitleScene:BaseScene
@@ -20,22 +24,35 @@ protected:
 
 public:
 
-	void Initialize(SpriteCommon* spritecommon);
+	void Initialize(DXCommon* dxcommon, Input* input, Audio* audio, SpriteCommon* spritecommon, WindowsApp* windows)override;
 
-	void Update();
+	void Update()override;
 
-	void Draw();
+	void Draw()override;
 
-	void Finalize();
+	void Finalize()override;
 
 private:
+	//ポインタ
+	WindowsApp* Windows = nullptr;
+	Input* input = nullptr;
+	DXCommon* dxCommon = nullptr;
+	SpriteCommon* spriteCommon = nullptr;
+
+
+	//スプライト
+	Sprite* title = nullptr;
 	XMFLOAT3 spritepos{ WindowsApp::window_width / 2 ,WindowsApp::window_height / 2,0 };
 	XMFLOAT2 spritesize{ WindowsApp::window_width,WindowsApp::window_height };
 	XMFLOAT2 movesize = { 800,300 };
+
 	bool transfrag = true;
 	float spriteangle = 0;
 	bool overfrag = true;
 	int wait = 0;
+
+	//今のシーンがタイトルかどうか
+	bool titleflag = true;
 
 };
 

@@ -40,7 +40,7 @@
 
 class CollisionManager;
 
-class GameScene
+class GameScene :BaseScene
 {
 protected: // エイリアス
 // Microsoft::WRL::を省略
@@ -54,7 +54,7 @@ protected: // エイリアス
 public://メンバ関数
 
 	//初期化
-	void Initialize(DXCommon* dxcommon, Input* input, Audio* audio, SpriteCommon* spritecommon,WindowsApp*windows);
+	void Initialize(DXCommon* dxcommon, Input* input, Audio* audio, SpriteCommon* spritecommon, WindowsApp* windows)override;
 	//敵データ読み込み
 	void LoadEnemyDataS1();
 	//敵データ受け取り
@@ -72,7 +72,7 @@ public://メンバ関数
 	//地形データ更新
 	void SwapWallDataS2();
 	//更新
-	void Update();
+	void Update()override;
 	//シーン分岐
 	const int& GetScene() { return scene; }
 	const int& GettutoScene() { return tutoscene; }
@@ -84,11 +84,11 @@ public://メンバ関数
 	//銃を持っているかのgetter
 	const bool& Gethave() { return have; };
 	//描画
-	void Draw();
+	void Draw()override;
 	//
 	void restart();
 	//解放
-	void Finalize();
+	void Finalize()override;
 
 	//const int& GetScene() { return scene; }
 
