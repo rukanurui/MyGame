@@ -112,7 +112,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     //シーン関連の初期化
     sceneManager = new SceneManager();
 
-    nowScene = new GameScene();
+    //nowScene = new GameScene();
     
     titleScene = new TitleScene();
     titleScene->Initialize(dxCommon, input, audio, spriteCommon, winApp);
@@ -126,6 +126,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     int tutoscene = 0;
     int wait = 0;
     int count = 0;
+
+    bool titleflag = true;
 
    
 
@@ -160,6 +162,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         if (scene==7)
         {
             gameScene=reset(gameScene, dxCommon, input, audio, spriteCommon, winApp);
+            titleScene->Settitleflag(titleflag);
         }
 
 
@@ -195,13 +198,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         postEffect->PostDrawScene(dxCommon->GetCommandList());
 
         
-        
         //描画前処理
         dxCommon->PreDraw();
 
         
         //ポストエフェクトの描画
         postEffect->Draw(dxCommon->GetCommandList());
+
+        gameScene->SpriteDraw();
+
 
 
         //描画後処理

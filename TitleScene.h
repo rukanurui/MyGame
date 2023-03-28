@@ -32,6 +32,8 @@ public:
 
 	void Finalize()override;
 
+	void Settitleflag(bool now) { this->titleflag = now; }
+
 private:
 	//ƒ|ƒCƒ“ƒ^
 	WindowsApp* Windows = nullptr;

@@ -1849,7 +1849,33 @@ void GameScene::Update()
         player->BulUpdate();
         backsphere->Update();
 
-        if (input->PushKey(DIK_SPACE))
+        if (spritesize.x >= 1280)
+        {
+            transfrag = true;
+        }
+        if (spritesize.x <= 800)
+        {
+            transfrag = false;
+        }
+
+        if (transfrag == true)
+        {
+            spritesize.x -= 4.0f;
+            spritesize.y -= 3.0f;
+        }
+        else
+        {
+            spritesize.x += 4.0f;
+            spritesize.y += 3.0f;
+        }
+
+        gameover->SetSize(spritesize);
+
+        gameover->TransferVertexBuffer();
+
+        gameover->Update();
+
+        if (input->PushKey(DIK_R))
         {
             scene = 7;
             tutoscene = 0;
@@ -1869,6 +1895,32 @@ void GameScene::Update()
 
             firstfrag = 1;
         }
+
+        if (spritesize.x >= 1280)
+        {
+            transfrag = true;
+        }
+        if (spritesize.x <= 800)
+        {
+            transfrag = false;
+        }
+
+        if (transfrag == true)
+        {
+            spritesize.x -= 4.0f;
+            spritesize.y -= 3.0f;
+        }
+        else
+        {
+            spritesize.x += 4.0f;
+            spritesize.y += 3.0f;
+        }
+
+        clear->SetSize(spritesize);
+
+        clear->TransferVertexBuffer();
+
+        clear->Update();
 
         //FBX更新
         floor->Update();
@@ -1901,6 +1953,32 @@ void GameScene::Update()
 
         //FBX更新
         floor->Update();
+
+        if (spritesize.x >= 1280)
+        {
+            transfrag = true;
+        }
+        if (spritesize.x <= 800)
+        {
+            transfrag = false;
+        }
+
+        if (transfrag == true)
+        {
+            spritesize.x -= 4.0f;
+            spritesize.y -= 3.0f;
+        }
+        else
+        {
+            spritesize.x += 4.0f;
+            spritesize.y += 3.0f;
+        }
+
+        clear->SetSize(spritesize);
+
+        clear->TransferVertexBuffer();
+
+        clear->Update();
 
         player->BulUpdate();
         if (input->PushKey(DIK_SPACE))
@@ -2020,6 +2098,12 @@ void GameScene::Draw()
             }
         }
 
+        
+        floor->Draw(cmdList);
+    }
+
+    if (scene == 8)
+    {
         if (Stage2Walls.size() > 0)
         {
             for (std::unique_ptr<Wall>& wall : Stage2Walls)
@@ -2058,10 +2142,21 @@ void GameScene::Draw()
 
      if (scene == 3)gameover->Draw();
      if (scene == 4)clear->Draw();
+     if (scene == 8)clear->Draw();
     
 
     // デバッグテキスト描画
     //debugText->DrawAll();
+}
+
+void GameScene::SpriteDraw()
+{
+    //スプライト描画前処理
+    spriteCommon->PreDraw();
+    if (scene!=0)
+    {
+        crosshair->Draw();
+    }
 }
 
 void GameScene::restart()

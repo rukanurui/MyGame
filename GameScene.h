@@ -85,7 +85,8 @@ public://メンバ関数
 	const bool& Gethave() { return have; };
 	//描画
 	void Draw()override;
-	//
+	//スプライトの描画
+	void SpriteDraw();
 	void restart();
 	//解放
 	void Finalize()override;
