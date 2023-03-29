@@ -13,7 +13,7 @@ public:
 	//初期化
 	void Initialize(DXCommon* dxcommon, Input* input, Audio* audio, SpriteCommon* spritecommon, WindowsApp* windows);
 	//シーン切り替え
-	void NextScene(BaseScene* nextScene) { nextScene = nextscene;}
+	void NextScene(BaseScene* nextScene) { nextscene = nextScene;}
 	//更新
 	void Update();
 	//描画

@@ -26,6 +26,10 @@ void SceneManager::Update()
 		//シーン切り替え
 		scene = nextscene;
 		nextscene = nullptr;
+
+		//シーンマネージャーをセット
+		scene->SetSceneManager(this);
+
 		//次のシーンを初期化する
 		scene->Initialize(dxCommon,input,audio,spriteCommon,Windows);
 	}

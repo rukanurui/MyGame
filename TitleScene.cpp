@@ -1,4 +1,6 @@
 #include "TitleScene.h"
+#include"SceneManager.h"
+
 
 void TitleScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, SpriteCommon* spritecommon, WindowsApp* windows)
 {
@@ -44,7 +46,7 @@ void TitleScene::Update()
             spritesize.y += 0.3f;
         }
 
-        title->SetRotation(spriteangle);
+        //title->SetRotation(spriteangle);
         title->SetSize(spritesize);
         title->TransferVertexBuffer();
         title->Update();
@@ -53,6 +55,10 @@ void TitleScene::Update()
             spritesize = { 1280,720 };
             transfrag = true;
             titleflag = false;
+            //次のシーンを生成
+            BaseScene* scene = new GameScene();
+            //シーン切り替え
+            sceneManager->NextScene(scene);
         }
     }
    

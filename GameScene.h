@@ -40,7 +40,7 @@
 
 class CollisionManager;
 
-class GameScene :BaseScene
+class GameScene : public BaseScene
 {
 protected: // エイリアス
 // Microsoft::WRL::を省略

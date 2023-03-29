@@ -7,11 +7,12 @@
 #include "2d/Sprite.h"
 #include "WindowsApp.h"
 #include "Audio.h"
+#include "GameScene.h"
 #include <vector>
 
 
 
-class TitleScene:BaseScene
+class TitleScene: public BaseScene
 {
 protected:
 	// Microsoft::WRL::を省略
@@ -40,9 +41,9 @@ private:
 	Input* input = nullptr;
 	DXCommon* dxCommon = nullptr;
 	SpriteCommon* spriteCommon = nullptr;
+	GameScene* gameScene = nullptr;
 
 
-	//スプライト
 	Sprite* title = nullptr;
 	XMFLOAT3 spritepos{ WindowsApp::window_width / 2 ,WindowsApp::window_height / 2,0 };
 	XMFLOAT2 spritesize{ WindowsApp::window_width,WindowsApp::window_height };

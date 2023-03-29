@@ -6,6 +6,8 @@
 #include "WindowsApp.h"
 #include "Audio.h"
 
+class SceneManager;
+
 class BaseScene
 {
 public:
@@ -20,10 +22,16 @@ public:
 
 	virtual ~BaseScene() = default;
 
+	virtual void SetSceneManager(SceneManager* SceneManager) { sceneManager = SceneManager; }
+
 private:
 	WindowsApp* Windows = nullptr;
 	Input* input = nullptr;
 	DXCommon* dxCommon = nullptr;
 	SpriteCommon* spriteCommon = nullptr;
+
+protected:
+	//シーンマネージャー(借りてくる)
+	SceneManager* sceneManager = nullptr;
 };
 

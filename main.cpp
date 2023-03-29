@@ -111,18 +111,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
   
     //シーン関連の初期化
     sceneManager = new SceneManager();
+    sceneManager->Initialize(dxCommon, input, audio, spriteCommon, winApp);
 
-    //nowScene = new GameScene();
-    
-    titleScene = new TitleScene();
-    titleScene->Initialize(dxCommon, input, audio, spriteCommon, winApp);
-    gameScene = new GameScene();
-    gameScene->Initialize(dxCommon, input, audio,spriteCommon,winApp);
+    //最初のシーンの生成
+    BaseScene* scene = new TitleScene();
+    sceneManager->NextScene(scene);
     
 
     char pla[64];
 
-    int scene = 0;
     int tutoscene = 0;
     int wait = 0;
     int count = 0;
@@ -154,16 +151,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         // コマンドリストの取得
         ID3D12GraphicsCommandList* cmdList = dxCommon->GetCommandList();
 
-        gameScene->Update();
-        titleScene->Update();
+        
+        sceneManager->Update();
+        //scene->Update();
 
-        scene = gameScene->GetScene();
+        //scene = gameScene->GetScene();
 
-        if (scene==7)
+        /*if (scene==7)
         {
             gameScene=reset(gameScene, dxCommon, input, audio, spriteCommon, winApp);
             titleScene->Settitleflag(titleflag);
-        }
+        }*/
 
 
         if (input->PushKey(DIK_ESCAPE))
@@ -182,9 +180,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         //レンダ―テクスチャへの描画
         postEffect->PreDrawScene(dxCommon->GetCommandList());
 
+        sceneManager->Draw();
         
-        titleScene->Draw();
-        gameScene->Draw();
+        //titleScene->Draw();
+        //gameScene->Draw();
 
         // ４．描画コマンドここから
         
