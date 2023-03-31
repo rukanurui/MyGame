@@ -8,6 +8,7 @@
 #include"Collider/Collision.h"
 #include"Collider/CollisionColor.h"
 #include<fstream>
+#include"SceneManager.h"
 
 
 using namespace DirectX;
@@ -462,34 +463,6 @@ void GameScene::SwapEnemyDataS1() {
 
             }
         }
-
-        
-       
-        /*newenemy->SetPosition({ pos.x,pos.y,pos.z });
-        newenemy->SetScale({ scale.x,scale.y,scale.z });
-        if (modelname==1)
-        {
-           newenemy->SetModel(model2);
-        }
-        newenemy->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, r));
-        if (mod==0)
-        {
-            newenemy->EnemyInitialize(TRUE);
-        }
-        else if (mod == 1)
-        {
-            newenemy->EnemyInitialize(FALSE);
-        }
-        if (stage == 1)
-        {
-            Stage1Enemy.push_back(std::move(newenemy));
-
-        }
-        else if (stage == 2)
-        {
-            Stage2Enemy.push_back(std::move(newenemy));
-        }*/
-
     }
 }
 
@@ -1468,6 +1441,7 @@ void GameScene::Update()
             {
                 tutoscene = 6;
                 wait = 0;
+                
             }
         }
 

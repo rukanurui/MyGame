@@ -204,7 +204,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         //ポストエフェクトの描画
         postEffect->Draw(dxCommon->GetCommandList());
 
-        gameScene->SpriteDraw();
+        //gameScene->SpriteDraw();
 
 
 
@@ -237,7 +237,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         delete winApp;
         winApp = nullptr;
 
-        gameScene->Finalize();
+        //gameScene->Finalize();
         delete gameScene;
 
 #pragma endregion WindowsAPI後始末

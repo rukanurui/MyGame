@@ -44,6 +44,7 @@ void SceneManager::Draw()
 	scene->Draw();
 }
 
+
 SceneManager::~SceneManager()
 {
 	//ƒV[ƒ“‚ÌI—¹‚Æ‰ğ•ú

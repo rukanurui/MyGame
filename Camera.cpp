@@ -1,5 +1,6 @@
 #include "Camera.h"
 
+
 using namespace DirectX;
 XMMATRIX Camera::matView = {};
 XMMATRIX Camera::matProjection = {};
