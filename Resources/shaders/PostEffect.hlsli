@@ -7,6 +7,7 @@ cbuffer cbuff0 : register(b0)
 	float4 color; // F (RGBA)
 	matrix mat;   // ‚R‚c•ÏŠ·s—ñ
 	float time;
+	float alpha;
 };
 
 struct VSOutput

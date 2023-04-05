@@ -3,7 +3,7 @@
 #include <DirectXTex.h>
 #include <d3dcompiler.h>
 
-const float TransEffect::clearColor[4] = { 0.25f,0.25f,0.25f,1.0f };//緑っぽい色
+const float TransEffect::clearColor[4] = { 0.5f,0.5f,0.5f,1.0f };//白っぽい色
 
 
 TransEffect* TransEffect::Create(SpriteCommon* spriteCommon, UINT texNumber, XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)
@@ -109,7 +109,7 @@ void TransEffect::Initialize(SpriteCommon* spriteCommon, UINT texNumber, XMFLOAT
         const UINT depthPitch = rowPitch * WindowsApp::window_height;
         //画像イメージ
         UINT* img = new UINT[pixelCount];
-        for (int j = 0; j < pixelCount; j++) { img[j] = 0xff0000ff; }
+        for (int j = 0; j < pixelCount; j++) { img[j] = 0x000000ff; }
 
         //テクスチャバッファにデータ転送
         result = texBuff[i]->WriteToSubresource(0, nullptr,
@@ -216,6 +216,7 @@ void TransEffect::Draw(ID3D12GraphicsCommandList* cmdList)
     constMap->color = this->colora;
     constMap->mat = XMMatrixIdentity();
     constMap->time;
+    constMap->alpha;
     this->constBuffa->Unmap(0, nullptr);
 
     //パイプラインステートの設定

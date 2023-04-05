@@ -107,10 +107,6 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     int PFnum = 101;
     //ポストエフェクトの初期化
     transEffect = TransEffect::Create(spriteCommon, PFnum, { 0,0 }, false, false);
-    //transEffect->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
-    //transEffect->SetSize({ Effectsize });
-    //transEffect->TransferVertexBuffer();
-    
 
 
 
@@ -965,8 +961,8 @@ void GameScene::Update()
 
     if (scene==0)
     {
-        Effectsize.x += 20;
-        Effectsize.y += 15;
+        Effectsize.x += 10.0f;
+        Effectsize.y += 5.6f;
 
         if (Effectsize.x >=1280)
         {
@@ -977,10 +973,15 @@ void GameScene::Update()
             transfrag = true;
         }
 
+        //trans->SetSize({ Effectsize });
+        //trans->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+        //trans->TransferVertexBuffer();
+        //trans->Update();
+
         transEffect->SetSize({ Effectsize });
-        transEffect->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
-        //transEffect->TransferVertexBuffer();
-        //transEffect->Update();
+        transEffect->SetPosition({ 0,0,0 });
+        transEffect->TransferVertexBuffer();
+        transEffect->Update();
     }
 
     //チュートリアル
@@ -2023,9 +2024,9 @@ void GameScene::Draw()
 
      if (scene == 0)
      {
-         /*transEffect->PreDrawScene(cmdList);
-         trans->Draw();
-         transEffect->PostDrawScene(cmdList);*/
+         //transEffect->PreDrawScene(cmdList);
+         //trans->Draw();
+         //transEffect->PostDrawScene(cmdList);
          transEffect->Draw(cmdList);
 
      }
@@ -2048,6 +2049,11 @@ void GameScene::Draw()
      if (scene == 3)gameover->Draw();
      if (scene == 4)clear->Draw();
      if (scene == 8)clear->Draw();
+
+     if (scene != 0)
+     {
+         crosshair->Draw();
+     }
     
 
     // デバッグテキスト描画

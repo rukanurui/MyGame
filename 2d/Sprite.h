@@ -32,6 +32,7 @@ public:
         XMFLOAT4 color; // êF (RGBA)
         XMMATRIX mat;   // ÇRÇcïœä∑çsóÒ
         float time;
+        float alpha;
     };
 
     static Sprite* Create(SpriteCommon* spriteCommon, UINT texNumber, XMFLOAT2 anchorpoint = { 0.5f,0.5f }, bool isFlipX = false, bool isFlipY = false);

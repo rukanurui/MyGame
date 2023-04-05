@@ -184,6 +184,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         postEffect->PreDrawScene(dxCommon->GetCommandList());
         //transEffect->PreDrawScene(dxCommon->GetCommandList());
 
+        // スプライト描画前処理
+        spriteCommon->PreDraw();
+
         sceneManager->Draw();
         
         //titleScene->Draw();
@@ -191,8 +194,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
         // ４．描画コマンドここから
         
-        // スプライト描画前処理
-        spriteCommon->PreDraw();
+        
 
         //obj、スプライトの描画
         //tuto->Draw();
@@ -209,6 +211,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         //ポストエフェクトの描画
         postEffect->Draw(dxCommon->GetCommandList());
         //transEffect->Draw(dxCommon->GetCommandList());
+        
 
         //gameScene->SpriteDraw();
 

@@ -34,7 +34,6 @@ public:
     //描画
     void Draw(ID3D12GraphicsCommandList* cmdList);
 
-
     //シーン描画前処理
     void PreDrawScene(ID3D12GraphicsCommandList* cmdList);
     //シーン描画後処理
