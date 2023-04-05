@@ -49,6 +49,8 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     spriteCommon->LoadTexture(10, L"Resources/stage2tuto1.png");
     spriteCommon->LoadTexture(11, L"Resources/stage2tuto2.png");
     spriteCommon->LoadTexture(12, L"Resources/noammo.png");
+    //ポストエフェクト用テクスチャの読み込み
+    spriteCommon->LoadTexture(101, L"Resources/White1x1.png");
 
     //スプライト生成
     
@@ -96,6 +98,19 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     noammo = Sprite::Create(spriteCommon, 12);
     noammo->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
     noammo->TransferVertexBuffer();
+
+    trans = Sprite::Create(spriteCommon, 101);
+    trans->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    trans->SetSize({ Effectsize });
+    trans->TransferVertexBuffer();
+    
+    int PFnum = 101;
+    //ポストエフェクトの初期化
+    transEffect = TransEffect::Create(spriteCommon, PFnum, { 0,0 }, false, false);
+    //transEffect->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    //transEffect->SetSize({ Effectsize });
+    //transEffect->TransferVertexBuffer();
+    
 
 
 
@@ -950,122 +965,29 @@ void GameScene::Update()
 
     if (scene==0)
     {
-        if (input->TriggerKey(DIK_SPACE))
+        Effectsize.x += 20;
+        Effectsize.y += 15;
+
+        if (Effectsize.x >=1280)
         {
             scene = 2;
             tutoscene = 0;
             transrationScene();
-            spritesize = { 1280,720 };
+            Effectsize = { 0,0 };
             transfrag = true;
         }
+
+        transEffect->SetSize({ Effectsize });
+        transEffect->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+        //transEffect->TransferVertexBuffer();
+        //transEffect->Update();
     }
 
     //チュートリアル
     if (scene == 1)
     {
-        /* if (tutoscene == 0)
-         {
-             if (input->TriggerKey(DIK_SPACE))goflag = 1;
 
-             if (goflag==1)
-             {
-                 roat += 1.0f;
-                 tutoroateation.x += roat;
-                 camera->SetRoatation(tutoroateation);
-                 camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-                 if (tutoroateation.x >= 90)
-                 {
-                     roat = 0;
-                     goflag = 0;
-                     tutoscene = 1;
-                 }
-             }
-         }
-
-         if (tutoscene == 1)
-         {
-             if (input->TriggerKey(DIK_SPACE))goflag = 1;
-
-             if (goflag == 1)
-             {
-                 roat += 1.0f;
-                 tutoroateation.x += roat;
-                 camera->SetRoatation(tutoroateation);
-                 camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-                 if (tutoroateation.x >= 180)
-                 {
-                     roat = 0;
-                     goflag = 0;
-                     tutoscene = 2;
-                 }
-             }
-         }
-
-         if (tutoscene == 2)
-         {
-             if (input->TriggerKey(DIK_SPACE))goflag = 1;
-
-             if (goflag == 1)
-             {
-                 roat += 1.0f;
-                 tutoroateation.x += roat;
-                 camera->SetRoatation(tutoroateation);
-                 camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-                 if (tutoroateation.x >= 240)
-                 {
-                     roat = 0;
-                     goflag = 0;
-                     tutoscene = 3;
-                 }
-             }
-         }
-         if (tutoscene == 3)
-         {
-             if (input->TriggerKey(DIK_SPACE))goflag = 1;
-
-             if (goflag == 1)
-             {
-                 roat += 1.0f;
-                 tutoroateation.x += roat;
-                 camera->SetRoatation(tutoroateation);
-                 camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-                 if (tutoroateation.x >= 240)
-                 {
-                     roat = 0;
-                     goflag = 0;
-                     tutoscene = 4;
-                 }
-             }
-         }
-         if (tutoscene == 4)
-         {
-             if (input->TriggerKey(DIK_SPACE))goflag = 1;
-
-             if (goflag == 1)
-             {
-                 roat += 1.0f;
-                 tutoroateation.x += roat;
-                 camera->SetRoatation(tutoroateation);
-                 camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-                 if (tutoroateation.x >= 360)
-                 {
-                     roat = 0;
-                     goflag = 0;
-                     tutoscene = 5;
-                 }
-             }
-         }
-         if (tutoscene == 5)
-         {
-             if (input->TriggerKey(DIK_SPACE))
-             {
-                 scene = 2;
-             }
-
-         }*/
          //描画のためにカメラの更新処理を一回呼び出す
-
-
         if (firstfrag == 0)
         {
             camera->CurrentUpdate();
@@ -2099,6 +2021,15 @@ void GameScene::Draw()
      //スプライト描画前処理
      spriteCommon->PreDraw();
 
+     if (scene == 0)
+     {
+         /*transEffect->PreDrawScene(cmdList);
+         trans->Draw();
+         transEffect->PostDrawScene(cmdList);*/
+         transEffect->Draw(cmdList);
+
+     }
+
      if (scene == 2)
      {
          if (tutoscene == 0)tutomove->Draw();
@@ -2125,8 +2056,10 @@ void GameScene::Draw()
 
 void GameScene::SpriteDraw()
 {
+    
     //スプライト描画前処理
     spriteCommon->PreDraw();
+   
     if (scene!=0)
     {
         crosshair->Draw();

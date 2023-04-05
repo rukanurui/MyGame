@@ -52,6 +52,7 @@ public:
 
     //コンストラクタ
     //Sprite(SpriteCommon* spriteCommon);
+
     void SetPosition(const DirectX::XMFLOAT3& position) { positiona = position; }
     void SetRotation(float rotation) { rotationa = rotation; }
     void SetSize(const DirectX::XMFLOAT2& size) { sizea = size; }

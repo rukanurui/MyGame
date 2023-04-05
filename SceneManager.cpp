@@ -8,6 +8,7 @@ void SceneManager::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sp
 	this->audio = audio;
 	this->spriteCommon = spritecommon;
 	this->Windows = windows;
+
 }
 
 void SceneManager::Update()
@@ -32,6 +33,9 @@ void SceneManager::Update()
 
 		//次のシーンを初期化する
 		scene->Initialize(dxCommon,input,audio,spriteCommon,Windows);
+
+		
+		
 	}
 
 	//シーン更新

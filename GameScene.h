@@ -34,6 +34,7 @@
 #include<sstream>
 
 #include"BaseScene.h"
+#include"TransEffect.h"
 //#include"TitleScene.h"
 
 
@@ -121,10 +122,16 @@ private://ÉÅÉìÉoïœêî
 	Sprite* tutogunpick1 = nullptr;
 	Sprite* tutogunpick2 = nullptr;
 	Sprite* noammo = nullptr;
+	Sprite* trans = nullptr;
+	TransEffect* transEffect = nullptr;
 
 	XMFLOAT3 spritepos{ WindowsApp::window_width / 2 ,WindowsApp::window_height / 2,0 };
 	XMFLOAT2 spritesize{ 1280,720 };
 	XMFLOAT2 movesize = { 800,300 };
+
+	XMFLOAT2 Effectsize{ 0,0 };
+	
+
 	bool transfrag = true;
 	float spriteangle = 0;
 	bool overfrag = true;

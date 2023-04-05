@@ -22,11 +22,11 @@ float4 main(VSOutput input) : SV_TARGET
 
 	
 	//湾曲
-	/*samplePoint -= float2(0.5, 0.5);
+	samplePoint -= float2(0.5, 0.5);
 	float distPower = pow(length(samplePoint), 0.15);
 	samplePoint *= float2(distPower, distPower);
 	samplePoint += float2(0.5, 0.5);
-	float4 Tex = tex0.Sample(smp, samplePoint);*/
+	float4 Tex = tex0.Sample(smp, samplePoint);
 
 	////走査線ノイズ
 	//float sinv = sin(input.uv.y * 2 + time * -0.1);
@@ -35,19 +35,9 @@ float4 main(VSOutput input) : SV_TARGET
 	//Tex.rgb -= (1 - steped) * abs(sin(input.uv.y * 100.0 - time * 2.0)) * 0.08;
 	//Tex.rgb += steped * 0.1;
 
-	//モザイク
-	/*float dest = 150;
-	float4 Tex = tex0.Sample(smp, floor(samplePoint*dest)/dest);*/
-
-	//ノイズ
-	float t = time.x;
-	float4 Tex = tex0.Sample(smp, samplePoint);
-	float noise1 = Block(samplePoint+float2(t,t))-0.5f;
-	Tex.rgb += float3(noise1, noise1, noise1);
-
 	//rgbずらし
-	/*samplePoint.x += 0.005;
-	Tex.b = tex0.Sample(smp, samplePoint).b;*/
+	samplePoint.x += 0.005;
+	Tex.b = tex0.Sample(smp, samplePoint).b;
 
 	//ビネット
 	/*float vignette = length(float2(0.5, 0.5) - input.uv);

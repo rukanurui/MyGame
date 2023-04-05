@@ -28,8 +28,11 @@ private:
 	DXCommon* dxCommon = nullptr;
 	SpriteCommon* spriteCommon = nullptr;
 	Audio* audio = nullptr;
-
 	BaseScene* scene = nullptr;
 	BaseScene* nextscene = nullptr;
+
+	bool transfrag = true;
+
+	
 };
 

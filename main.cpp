@@ -14,6 +14,7 @@
 #include "2d/SpriteCommon.h"
 #include "2d/Sprite.h"
 #include"2d/PostEffect.h"
+#include"TransEffect.h"
 #include "DebugText.h"
 #include "Audio.h"
 
@@ -105,6 +106,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     int PFnum = 100;
     //ポストエフェクトの初期化
     PostEffect* postEffect = PostEffect::Create(spriteCommon, PFnum, { 0,0 }, false, false);
+    //TransEffect* transEffect = TransEffect::Create(spriteCommon, PFnum, { 0,0 }, false, false);
     
     //FBXローダーの初期化
     FbxLoader::GetInstance()->Initialize(dxCommon->GetDevice());
@@ -116,6 +118,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     //最初のシーンの生成
     BaseScene* scene = new TitleScene();
     sceneManager->NextScene(scene);
+
     
 
     char pla[64];
@@ -179,6 +182,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
         //レンダ―テクスチャへの描画
         postEffect->PreDrawScene(dxCommon->GetCommandList());
+        //transEffect->PreDrawScene(dxCommon->GetCommandList());
 
         sceneManager->Draw();
         
@@ -195,6 +199,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         
 
         postEffect->PostDrawScene(dxCommon->GetCommandList());
+        //transEffect->PostDrawScene(dxCommon->GetCommandList());
 
         
         //描画前処理
@@ -203,6 +208,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         
         //ポストエフェクトの描画
         postEffect->Draw(dxCommon->GetCommandList());
+        //transEffect->Draw(dxCommon->GetCommandList());
 
         //gameScene->SpriteDraw();
 
