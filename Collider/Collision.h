@@ -21,7 +21,7 @@ public:
 	static bool CheckSphere2Sphere(const Sphere& sphere, const Sphere& sphere2, DirectX::XMVECTOR* inter = nullptr, DirectX::XMVECTOR* reject = nullptr);
 
 	//球とAABB
-	static bool CheckSphere2Box(const Sphere& sphere, const Box& box, DirectX::XMVECTOR* inter = nullptr);
+	static bool CheckSphere2Box(const Sphere& sphere, const Box& box, DirectX::XMVECTOR* inter = nullptr,DirectX::XMVECTOR * reject = nullptr);
 
 	/// <summary>
 	/// 球と法線付き三角形の当たり判定

@@ -51,7 +51,7 @@ void Enemy::EnemyUpdate(XMFLOAT3 playerpos)
 			Toenemy = XMVector3Normalize(Toenemy);
 
 			//敵の速度
-			Vel = Toenemy * 0.12f;
+			Vel = Toenemy * 0.08f;
 
 
 			XMMATRIX matScale, matRot, matTrans;
@@ -94,6 +94,7 @@ void Enemy::EnemyUpdate(XMFLOAT3 playerpos)
 
 					return true;
 				}
+
 				//クエリ―に使用する球
 				Sphere* sphere = nullptr;
 				//排斥による移動量(累積)
@@ -109,6 +110,14 @@ void Enemy::EnemyUpdate(XMFLOAT3 playerpos)
 			position.x += callback.move.m128_f32[0];
 			position.y += callback.move.m128_f32[1];
 			position.z += callback.move.m128_f32[2];
+
+			//敵と壁の交差を検索
+			CollisionManager::GetInstance()->CheckQueryBox(*sphereCollider, &callback, COLLISION_COLOR_LANDSHAPE);
+			//交差による排斥分動かす
+			position.x += callback.move.m128_f32[0]*0.05f;
+			position.y += callback.move.m128_f32[1]*0.05f;
+			position.z += callback.move.m128_f32[2]*0.05f;
+
 		}
 		
 		if (Shot)

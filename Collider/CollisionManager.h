@@ -30,6 +30,9 @@ public://メンバ関数
 	//コールバック用の衝突チェック(球)
 	void CheckQuerySphere(const Sphere& sphere,QueryCallback* callback,unsigned short color = (unsigned short)0xffffffff);
 
+	//コールバック用の衝突チェック(AABB)
+	void CheckQueryBox(const Sphere& sphere, QueryCallback* callback, unsigned short color = (unsigned short)0xffffffff);
+
 	//レイとすべてのコライダーとの衝突判定
 	bool RayCast(const Ray& ray, RayCastHit* hitinfo = nullptr, float MaxDistance = D3D12_FLOAT32_MAX);
 

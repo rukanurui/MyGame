@@ -73,6 +73,14 @@ public://メンバ関数
 	void LoadWallDataS2();
 	//地形データ更新
 	void SwapWallDataS2();
+	//敵データ読み込み
+	void LoadEnemyDataS3();
+	//敵データ受け取り
+	void SwapEnemyDataS3();
+	//地形データ読み込み
+	void LoadWallDataS3();
+	//地形データ更新
+	void SwapWallDataS3();
 	//更新
 	void Update()override;
 	//シーン分岐
@@ -154,15 +162,14 @@ private://メンバ変数
 	//壁のlist
 	std::list<std::unique_ptr<Wall>> Stage1Walls;
 	std::list<std::unique_ptr<Wall>> Stage2Walls;
+	std::list<std::unique_ptr<Wall>> Stage3Walls;
 	//壁コマンド
 	std::stringstream wallDataS1;
 	std::stringstream wallDataS2;
+	std::stringstream wallDataS3;
 
-	//1面
-	Wall* stage1wall[8];
-
+	
 	//2面
-	Wall* stage2wall[6];
 	Wall* gunstand = nullptr;
 	FbxModel* modelobjgun = nullptr;
 	Wall* tutogun = nullptr;
@@ -179,10 +186,12 @@ private://メンバ変数
 	//敵のリスト
 	std::list<std::unique_ptr<Enemy>> Stage1Enemy;
 	std::list<std::unique_ptr<Enemy>> Stage2Enemy;
+	std::list<std::unique_ptr<Enemy>> Stage3Enemy;
 	
 	//敵コマンド
 	std::stringstream enemyDataS1;
 	std::stringstream enemyDataS2;
+	std::stringstream enemyDataS3;
 
 	//ステージ2
 	Enemy* Stage2[3];

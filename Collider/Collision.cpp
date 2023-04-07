@@ -47,7 +47,7 @@ bool Collision::CheckSphere2Sphere(const Sphere& sphere, const Sphere& sphere2, 
 	return false;
 }
 
-bool Collision::CheckSphere2Box(const Sphere& sphere, const Box& box, DirectX::XMVECTOR* inter)
+bool Collision::CheckSphere2Box(const Sphere& sphere, const Box& box, DirectX::XMVECTOR* inter, DirectX::XMVECTOR* reject)
 {
 	float sqDistance = 0.0f;
 	float pos;
@@ -85,7 +85,26 @@ bool Collision::CheckSphere2Box(const Sphere& sphere, const Box& box, DirectX::X
 		sqDistance += (pos - box.maxpos.m128_f32[2]) * (pos - box.maxpos.m128_f32[2]);
 	}
 
-	return sqDistance < sphere.radius* sphere.radius;
+	if (sqDistance < sphere.radius * sphere.radius)
+	{
+		if (inter) {
+			
+			float t = box.radius / (sphere.radius + sqDistance);
+			*inter = XMVectorLerp(sphere.center, box.center, t);
+		}
+		//押し出すベクトルを計算
+		if (reject)
+		{
+			float rejectLen = sphere.radius + sqDistance - sqrtf(sqDistance);
+			*reject = XMVector3Normalize(sphere.center - box.center);
+			*reject *= rejectLen;
+		}
+		return true;
+	}
+	return false;
+	
+
+	//return sqDistance < sphere.radius* sphere.radius;
 
 }
 

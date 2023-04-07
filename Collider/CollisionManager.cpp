@@ -119,6 +119,54 @@ void CollisionManager::CheckQuerySphere(const Sphere& sphere, QueryCallback* cal
 
 }
 
+void CollisionManager::CheckQueryBox(const Sphere& sphere, QueryCallback* callback, unsigned short color)
+{
+	assert(callback);
+
+	std::forward_list<BaseCollider*>::iterator it;
+
+	//すべてのコライダーと総当たりチェック
+	it = colliders.begin();
+	for (; it != colliders.end(); ++it)
+	{
+		BaseCollider* col = *it;
+
+		//属性が合わなければスキップ
+		if (!(col->color & color))
+		{
+			continue;
+		}
+
+		//球の場合
+		if (col->GetShapeType() == COLLISIONSHAPE_BOX)
+		{
+
+			Box* box = dynamic_cast<Box*>(col);
+			XMVECTOR tempInter;
+			XMVECTOR tempReject;
+
+			//当たらなければ除外
+			if (!Collision::CheckSphere2Box(sphere, *box, &tempInter, &tempReject))continue;
+
+			//交差情報をセット
+			QueryHit info;
+			info.collider = col;
+			info.object = col->GetObject3d();
+			info.inter = tempInter;
+			info.reject = tempReject;
+
+			//クエリ―コールバック呼び出し
+			if (!callback->OnQueryHit(info))
+			{
+				//戻り値がfalseの場合終了
+				return;
+			}
+		}
+		//次の当たり判定
+	}
+
+}
+
 void CollisionManager::CheckBoxShere() 
 {
 	std::forward_list<BaseCollider*>::iterator itA;

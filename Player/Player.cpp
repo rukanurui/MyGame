@@ -229,6 +229,7 @@ void Player::gunUpdate(const XMFLOAT3& cameratarget,const XMFLOAT3& cameraeye)
 	//À•WˆÚ“®ˆ—
 	gunpos.x += move.m128_f32[0]; gunpos.y += move.m128_f32[1]; gunpos.z += move.m128_f32[2];
 
+	angle.x = atan2(Velocity2.m128_f32[2], Velocity2.m128_f32[1]);
 	angle.y = atan2(Velocity2.m128_f32[0], Velocity2.m128_f32[2]);
 
 	Pgun->gunupdate(gunpos, Velocity2,angle);
