@@ -440,6 +440,46 @@ void Enemy::PartDraw(ID3D12GraphicsCommandList* cmdList)
 	}
 }
 
+void Enemy::LastUpdate()
+{
+	//€–S‚µ‚Ä‚¢‚½‚ç
+	if (col == true)
+	{
+		//20ŒÂ‚Ü‚Åparticle¶¬
+		if (partcount <= partnum)
+		{
+			std::unique_ptr<PartEnemy>newPart = std::make_unique<PartEnemy>();
+			newPart->Initialize();
+			newPart->SetScale({ 0.01f,0.01f,0.01f });
+			newPart->SetModel(model2);
+			newPart->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+			newPart->PartInitialize(position);
+
+			//’e‚Ì“o˜^
+			particle.push_back(std::move(newPart));
+
+			partcount++;
+		}
+
+		//particle‚ÌXV
+		if (parttimer <= 150)
+		{
+			for (std::unique_ptr<PartEnemy>& part : particle)
+			{
+				part->PartUpdate();
+				part->Update();
+			}
+			parttimer++;
+		}
+		else
+		{
+			death = true;
+		}
+
+
+	}
+}
+
 void Enemy::setcol(bool Col)
 {
 	col = Col;

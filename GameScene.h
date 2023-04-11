@@ -232,6 +232,7 @@ private://ƒƒ“ƒo•Ï”
 	float roat = 0.0f;
 
 	//ƒV[ƒ“
+	float timecount = 0;//ŠÔŠÇ—Œ‚¤•Ï”
 	int scene = 0;
 	int tutoscene = 0;
 	int goflag = 0;

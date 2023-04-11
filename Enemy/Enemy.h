@@ -45,6 +45,8 @@ public://ƒƒ“ƒoŠÖ”
 
 	void PartDraw(ID3D12GraphicsCommandList* cmdList);
 
+	void LastUpdate();
+
 	const int die = 1;
 
 private:

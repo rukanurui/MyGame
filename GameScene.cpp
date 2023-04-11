@@ -1166,7 +1166,7 @@ void GameScene::Update()
 
         if (Effectsize.x >=1280)
         {
-            scene = 6;
+            scene = 2;
             tutoscene = 0;
             transrationScene();
             Effectsize = { 0,0 };
@@ -1342,7 +1342,7 @@ void GameScene::Update()
         //動いていない状態で攻撃したら
         if (tutoscene==3)
         {
-            if (input->PushKey(DIK_SPACE) && !input->PushKey(DIK_Q))
+            if (input->PushclickLeft() && !input->PushKey(DIK_Q))
             {
                 //フラグをtrueにする
                 attack = true;
@@ -1388,7 +1388,7 @@ void GameScene::Update()
         }
 
         //弾がないとき
-        if (magazin == 0 && have == true && input->PushKey(DIK_SPACE))
+        if (magazin == 0 && have == true && input->PushclickLeft())
         {
             noammoflag = true;
         }
@@ -1407,6 +1407,7 @@ void GameScene::Update()
             wait = 0;
         }
        
+        timecount++;
 
         //自分が動いていたら更新処理
         if (input->PushKey(DIK_W) || input->PushKey(DIK_A) || input->PushKey(DIK_S) || input->PushKey(DIK_D))
@@ -1432,6 +1433,31 @@ void GameScene::Update()
             player->SetRotation(camera->GetRoatation());
             player->PlayerUpdate(camera->GetTarget());
             player->gunUpdate(camera->GetTarget(), camera->GetEye());
+
+        }
+        else if(timecount>=30)
+        {
+            if (tutoscene == 3)
+            {
+                //敵更新
+                for (std::unique_ptr<Enemy>& enemy : Stage1Enemy)
+                {
+                    enemy->EnemyUpdate(player->GetPos());
+                }
+            }
+
+            //プレイy－更新
+            player->Setoldpos(camera->GetEye());
+            player->SetoldTarget(camera->GetTarget());
+            camera->CurrentUpdate();
+            camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+            player->SetTarget(camera->GetTarget());
+            player->SetPosition(camera->GetEye());
+            player->SetRotation(camera->GetRoatation());
+            player->PlayerUpdate(camera->GetTarget());
+            player->gunUpdate(camera->GetTarget(), camera->GetEye());
+
+            timecount = 0;
 
         }
 
@@ -1468,10 +1494,20 @@ void GameScene::Update()
             scene = 3;//ゲームオーバー
         }
 
+        //パーティクル出し終わったらリスト削除
         Stage1Enemy.remove_if([](std::unique_ptr<Enemy>& enemy) {
             return enemy->getdeath();
             });
 
+        if (Stage1Enemy.size() == 1)
+        {
+            for (std::unique_ptr<Enemy>& enemy : Stage1Enemy)
+            {
+                enemy->LastUpdate();
+            }
+        }
+
+        //敵全員倒したらクリア
         if (Stage1Enemy.size()==0)
         {
             scene = 4;//クリア
@@ -1617,7 +1653,7 @@ void GameScene::Update()
         }
 
         //弾がないとき
-        if (magazin == 0 && have == true && input->PushKey(DIK_SPACE))
+        if (magazin == 0 && have == true && input->PushclickLeft())
         {
             noammoflag = true;
         }
@@ -1637,7 +1673,7 @@ void GameScene::Update()
         }
 
         //動いていない状態で攻撃したら
-        if (input->PushKey(DIK_SPACE) && !input->PushKey(DIK_Q))
+        if (input->PushclickLeft() && !input->PushKey(DIK_Q))
         {
             //フラグをtrueにする
             attack = true;
@@ -1692,6 +1728,8 @@ void GameScene::Update()
 
         //}
 
+        timecount++;
+
         //自分が動いていたら更新処理
         if (input->PushKey(DIK_W) || input->PushKey(DIK_A) || input->PushKey(DIK_S) || input->PushKey(DIK_D))
         {
@@ -1716,6 +1754,32 @@ void GameScene::Update()
             magazin = player->Getmagazin();
             //銃を持っているか
             have = player->Gethave();
+
+        }
+        else if (timecount>=90)
+        {
+            //敵更新
+            for (std::unique_ptr<Enemy>& enemy : Stage2Enemy)
+            {
+                enemy->EnemyUpdate(player->GetPos());
+            }
+
+            //プレイy－更新
+            player->Setoldpos(camera->GetEye());
+            player->SetoldTarget(camera->GetTarget());
+            camera->CurrentUpdate();
+            camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+            player->SetTarget(camera->GetTarget());
+            player->SetPosition(camera->GetEye());
+            player->SetRotation(camera->GetRoatation());
+            player->PlayerUpdate(camera->GetTarget());
+            player->gunUpdate(camera->GetTarget(), camera->GetEye());
+            //残弾数の取得
+            magazin = player->Getmagazin();
+            //銃を持っているか
+            have = player->Gethave();
+
+            timecount = 0;
 
         }
 
@@ -1757,6 +1821,14 @@ void GameScene::Update()
         Stage2Enemy.remove_if([](std::unique_ptr<Enemy>& enemy) {
             return enemy->getdeath();
             });
+
+        if (Stage2Enemy.size() == 1)
+        {
+            for (std::unique_ptr<Enemy>& enemy : Stage2Enemy)
+            {
+                enemy->LastUpdate();
+            }
+        }
 
         if (Stage2Enemy.size() == 0)
         {
@@ -1807,7 +1879,7 @@ void GameScene::Update()
 
 
         //動いていない状態で攻撃したら
-        if (input->PushKey(DIK_SPACE) && !input->PushKey(DIK_Q))
+        if (input->PushclickLeft() && !input->PushKey(DIK_Q))
         {
             //フラグをtrueにする
             attack = true;
@@ -1841,7 +1913,7 @@ void GameScene::Update()
         }
 
         //動いていない状態で銃を投げたら
-        if (input->PushKey(DIK_Q) && !input->PushKey(DIK_SPACE))
+        if (input->PushKey(DIK_Q) && !input->PushclickLeft())
         {
             gunthrow = true;
         }
@@ -1850,6 +1922,8 @@ void GameScene::Update()
         {
 
         }
+
+        timecount++;
 
         //自分が動いていたら更新処理
         if (input->PushKey(DIK_W) || input->PushKey(DIK_A) || input->PushKey(DIK_S) || input->PushKey(DIK_D))
@@ -1875,6 +1949,30 @@ void GameScene::Update()
             //銃を持っているか
             have = player->Gethave();
 
+        }
+        else if (timecount >= 30)
+        {
+            for (std::unique_ptr<Enemy>& enemy : Stage3Enemy)
+            {
+                enemy->EnemyUpdate(player->GetPos());
+            }
+
+            //プレイy－更新
+            player->Setoldpos(camera->GetEye());
+            player->SetoldTarget(camera->GetTarget());
+            camera->CurrentUpdate();
+            camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+            player->SetTarget(camera->GetTarget());
+            player->SetPosition(camera->GetEye());
+            player->SetRotation(camera->GetRoatation());
+            player->PlayerUpdate(camera->GetTarget());
+            player->gunUpdate(camera->GetTarget(), camera->GetEye());
+            //残弾数の取得
+            magazin = player->Getmagazin();
+            //銃を持っているか
+            have = player->Gethave();
+
+            timecount = 0;
         }
 
         if (player->Gethave()==true)
@@ -1916,6 +2014,8 @@ void GameScene::Update()
         {
             scene = 3;//ゲームオーバー
         }
+
+
 
         //敵を倒したら次のステージ
         //if (cube->GetScaleX() < check &&
@@ -1974,9 +2074,26 @@ void GameScene::Update()
             transrationScene();
         }
 
+        Stage3Enemy.remove_if([](std::unique_ptr<Enemy>& enemy) {
+            return enemy->getdeath();
+            });
+
+        if (Stage3Enemy.size() == 1)
+        {
+            for (std::unique_ptr<Enemy>& enemy : Stage3Enemy)
+            {
+                enemy->LastUpdate();
+            }
+        }
+
+        if (Stage3Enemy.size() == 0)
+        {
+            scene = 8;//クリア
+        }
+
     }
 
-    //クリア
+    //チュートリアル面クリア
     if (scene == 4)
     {
         //描画のためにカメラの更新処理を一回呼び出す
@@ -2032,6 +2149,7 @@ void GameScene::Update()
 
     }
 
+    //1面クリア
     if (scene==8)
     {
         //描画のためにカメラの更新処理を一回呼び出す
@@ -2075,7 +2193,7 @@ void GameScene::Update()
         player->BulUpdate();
         if (input->PushKey(DIK_SPACE))
         {
-            scene = 7;
+            scene = 6;
             tutoscene = 0;
             transrationScene();
         }
@@ -2342,12 +2460,6 @@ void GameScene::transrationScene()
         LoadWallDataS1();
         SwapWallDataS1();
 
-        for (int i = 0; i < 8; i++)
-        {
-            stage3wall[i]->SetPosition({ -1000.0f,10.0f,0.0f });
-            stage3wall[i]->SetScale({ 0.01f,0.01f,0.01f });
-            stage3wall[i]->Update();
-        }
     }
 
     if (scene==5)
@@ -2367,6 +2479,8 @@ void GameScene::transrationScene()
         SwapEnemyDataS2();
         LoadWallDataS2();
         SwapWallDataS2();
+
+        magazin = 5;
 
 
         //listの削除
@@ -2399,11 +2513,12 @@ void GameScene::transrationScene()
         camera->SetTarget({ 0, 0, 0 });
         camera->CurrentUpdate();
 
+        magazin = 5;
 
-        LoadEnemyDataS3();
-        SwapEnemyDataS3();
-        LoadWallDataS3();
-        SwapWallDataS3();
+        //LoadEnemyDataS3();
+        //SwapEnemyDataS3();
+       //LoadWallDataS3();
+        //SwapWallDataS3();
 
 
         //listの削除

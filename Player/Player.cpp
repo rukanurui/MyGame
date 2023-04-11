@@ -83,7 +83,7 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 	}
 
 	//’e‚Ì”­ŽË
-	if (input->TriggerKey(DIK_SPACE)&&ctime<=0 && magazin>=1&&have==true)
+	if (input->PushclickLeft() && ctime <= 0 && magazin >= 1 && have == true)
 	{
 		//’e‚Ì‘¬“x
 		const float bulspeed = 1.5f;
