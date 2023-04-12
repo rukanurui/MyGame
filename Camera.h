@@ -114,8 +114,13 @@ protected://メンバ変数
 	float scaleX = 0.5f;
 	float scaleY = 0.5f;
 
+	//1フレーム前のアングル
 	float angleculentX = 0.0f;
 	float angleculentY = 0.0f;
+
+	//加算されていくアングル
+	float anglelimitX = 0.0f;
+	float anglelimitY = 0.0f;
 
 	float CurretmouseX = 0;
 	float CurretmouseY = 0;
@@ -124,6 +129,10 @@ protected://メンバ変数
 
 	// カメラ注視点までの距離
 	float distance = 3;
+
+
+	float angleX = 0.0f;
+	float angleY = 0.0f;
 
 };
 

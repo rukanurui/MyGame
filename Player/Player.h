@@ -44,6 +44,8 @@ public://メンバ関数
 
 	//残弾数のゲッター
 	const int& Getmagazin() { return magazin; }
+	//残弾数のセッター
+	void SetMagazin(int Magazin) { this->magazin = Magazin; }
 
 	void OnCollision(const CollisionInfo& info);
 

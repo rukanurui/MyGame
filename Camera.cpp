@@ -190,9 +190,7 @@ void Camera::MoveTarget(const XMVECTOR& move)
 void Camera::CurrentUpdate()
 {
 	viewDirtyFlag = false;
-	float angleX = 0;
-	float angleY = 0;
-
+	
 	float oldeye = eye.y;
 
 	XMFLOAT3 oldpos{ eye };
@@ -202,18 +200,32 @@ void Camera::CurrentUpdate()
 
 	if (mouseMove.lX==CurretmouseX || mouseMove.lY == CurretmouseY)
 	{
-		float dy = (mouseMove.lX * scaleX)*0.168;
-		float dx = (mouseMove.lY * scaleY)*0.168;
+
+		float dy = (mouseMove.lX * scaleX)*0.2;
+		float dx = (mouseMove.lY * scaleY)*0.2;
 
 		angleX = -dx * XM_PI;
 		angleY = -dy * XM_PI;
-		angleculentX += angleX;
-		angleculentY += angleY;
 
+		
 
 		viewDirtyFlag = true;
 	}
 
+	anglelimitX += angleX;
+	anglelimitY += angleY;
+
+	if (anglelimitX <= 1.4f&&anglelimitX>=-1.4f)
+	{
+		angleculentX = anglelimitX;
+	}
+	else
+	{
+		anglelimitX = angleculentX;
+	}
+
+
+	
 
 	//padの入力
 	/*Pad->Update();
@@ -353,45 +365,21 @@ void Camera::CurrentUpdate()
 	
 	if (viewDirtyFlag)
 	{
-		// 追加回転分の回転行列を生成
 		XMMATRIX matRotNew = XMMatrixIdentity();
+		
+		matRotNew*= XMMatrixRotationX(-anglelimitX);
+		matRotNew*=XMMatrixRotationY(-anglelimitY);
 
-		//ここにangle処理
-		// 
-		//上に一定以上向いたら
-		if (angleculentX >= 1.0f&&target.y>=5)
-		{
-			angleculentX -= 0.05f;
-			angleX -= 0.05f;
-
-		}
-
-		//下に一定以上向いたら
-		if (angleculentX <= -1.0f)
-		{
-			angleculentX += 0.05f;
-			angleX += 0.05f;
-		}
+		matRot = matRotNew;
 
 
-		matRotNew *= XMMatrixRotationX(-angleX);
-		matRotNew *= XMMatrixRotationY(-angleY);
-
-
-		// 累積の回転行列を合成
-		// ※回転行列を累積していくと、誤差でスケーリングがかかる危険がある為
-		// クォータニオンを使用する方が望ましい
-		matRot = matRotNew * matRot;
-
-		// 注視点から視点へのベクトルと、上方向ベクトル
-
-		if (target.y >= 10 && eye.y <= 9) distance = 5;
+		/*if (target.y >= 10 && eye.y <= 9) distance = 3;
 		else
 		{
-			distance = 5;
-		}
+			distance = 3;
+		}*/
 
-
+		// 注視点から視点へのベクトルと、上方向ベクトル
 		XMVECTOR vTargetEye = { 0.0f, 0.0f, -distance, 1.0f };
 		XMVECTOR vUp = { 0.0f, 1.0f, 0.0f, 0.0f };
 		// ベクトルを回転

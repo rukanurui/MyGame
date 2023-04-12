@@ -1166,7 +1166,7 @@ void GameScene::Update()
 
         if (Effectsize.x >=1280)
         {
-            scene = 2;
+            scene = 6;
             tutoscene = 0;
             transrationScene();
             Effectsize = { 0,0 };
@@ -1756,7 +1756,7 @@ void GameScene::Update()
             have = player->Gethave();
 
         }
-        else if (timecount>=90)
+        else if (timecount>=60)
         {
             //敵更新
             for (std::unique_ptr<Enemy>& enemy : Stage2Enemy)
@@ -1878,6 +1878,7 @@ void GameScene::Update()
         }
 
 
+
         //動いていない状態で攻撃したら
         if (input->PushclickLeft() && !input->PushKey(DIK_Q))
         {
@@ -1920,7 +1921,41 @@ void GameScene::Update()
 
         if (gunthrow == true)
         {
+            movect++;
 
+            //敵更新
+            for (std::unique_ptr<Enemy>& enemy : Stage1Enemy)
+            {
+                enemy->EnemyUpdate(player->GetPos());
+            }
+
+            for (std::unique_ptr<Wall>& wall : Stage1Walls)
+            {
+                wall->Update();
+            }
+
+            //プレイy－更新
+            player->Setoldpos(camera->GetEye());
+            player->SetoldTarget(camera->GetTarget());
+            camera->CurrentUpdate();
+            camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+            player->SetTarget(camera->GetTarget());
+            player->SetPosition(camera->GetEye());
+            player->SetRotation(camera->GetRoatation());
+            player->PlayerUpdate(camera->GetTarget());
+            player->gunUpdate(camera->GetTarget(), camera->GetEye());
+            tutogun->Update();
+
+            //残弾数の取得
+            magazin = player->Getmagazin();
+            //銃を持っているか
+            have = player->Gethave();
+
+            if (movect >= 15)
+            {
+                gunthrow = false;
+                movect = 0;
+            }
         }
 
         timecount++;
@@ -1975,9 +2010,13 @@ void GameScene::Update()
             timecount = 0;
         }
 
-        if (player->Gethave()==true)
+        if (player->Gethave() == true)
         {
-            tutogun->SetPosition({ 0,100,0 });
+            tutogun->SetPosition({ 0,100.0f,0 });
+        }
+        else
+        {
+            tutogun->SetPosition({ 0.0f,2.0f,20.0f });
         }
 
 
@@ -2440,7 +2479,7 @@ void GameScene::transrationScene()
     if (scene==2)
     {
         //camera->SetEye(EyeInitialize);
-        camera->SetTarget({ 0, 0, 0 });
+        camera->SetTarget({ 0, 5, 0 });
         camera->CurrentUpdate();
         //player->Update();
         player->Sethave(true);
@@ -2471,7 +2510,7 @@ void GameScene::transrationScene()
 
         
 
-        camera->SetTarget({ 0, 0, 0 });
+        camera->SetTarget({ 0, 5, 0 });
         camera->CurrentUpdate();
 
        
@@ -2481,6 +2520,7 @@ void GameScene::transrationScene()
         SwapWallDataS2();
 
         magazin = 5;
+        player->SetMagazin(magazin);
 
 
         //listの削除
@@ -2506,19 +2546,21 @@ void GameScene::transrationScene()
 
     if (scene==6)
     {
-        const XMFLOAT3 respos = { 0,0,0 };
+        const XMFLOAT3 respos = { 0,5,0 };
         player->Sethave(false);
         /* player->SetPosition(respos);
          camera->SetEye(respos);*/
-        camera->SetTarget({ 0, 0, 0 });
+        camera->SetTarget({ 0, 5, 0 });
         camera->CurrentUpdate();
 
-        magazin = 5;
+        magazin = 0;
+        player->SetMagazin(magazin);
+        player->Sethave(true);
 
-        //LoadEnemyDataS3();
-        //SwapEnemyDataS3();
-       //LoadWallDataS3();
-        //SwapWallDataS3();
+        LoadEnemyDataS3();
+        SwapEnemyDataS3();
+       LoadWallDataS3();
+        SwapWallDataS3();
 
 
         //listの削除

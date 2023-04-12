@@ -129,8 +129,8 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 		newGun->create(position, Velocity);
 		//’e‚Ì“o˜^
 		Guns.push_back(std::move(newGun));
-		//c’eŒ¸‚ç‚·
-		magazin=0;
+		//c’e–ß‚·
+		magazin=5;
 		//ƒtƒ‰ƒO•ÏX
 		have = false;
 	}
@@ -215,11 +215,11 @@ void Player::gunUpdate(const XMFLOAT3& cameratarget,const XMFLOAT3& cameraeye)
 	XMFLOAT3 angle;
 
 	//e‚ÌXV
-	gunpos = position;
+	gunpos = cameraeye;
 
 	float cameramatrot = atan2(cameratarget.y,cameratarget.x);
 
-	Velocity2 = { cameratarget.x - position.x, cameratarget.y - position.y, cameratarget.z - position.z };
+	Velocity2 = { cameratarget.x - cameraeye.x, cameratarget.y - cameraeye.y, cameratarget.z - cameraeye.z };
 
 	Velocity2 = XMVector3Normalize(Velocity2);
 
