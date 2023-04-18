@@ -281,6 +281,34 @@ void GameScene::LoadWallDataS3()
     file.close();
 }
 
+void GameScene::LoadEnemyDataS4()
+{
+    //ファイルを開く
+    std::ifstream file;
+    file.open(L"Resources/EnemyDataS4.csv");
+    assert(file.is_open());
+
+    //ファイルの内容を文字列ストリームにコピー
+    enemyDataS4 << file.rdbuf();
+
+    //ファイルを閉じる
+    file.close();
+}
+
+void GameScene::LoadWallDataS4()
+{
+    //ファイルを開く
+    std::ifstream file;
+    file.open(L"Resources/WallDataS4.csv");
+    assert(file.is_open());
+
+    //ファイルの内容を文字列ストリームにコピー
+    wallDataS4 << file.rdbuf();
+
+    //ファイルを閉じる
+    file.close();
+}
+
 
 void GameScene::SwapEnemyDataS1() {
 
@@ -1141,6 +1169,285 @@ void GameScene::SwapWallDataS3()
     }
 }
 
+void GameScene::SwapEnemyDataS4() {
+
+    //csvにステージ指定のコマンド入れる
+    //読み取ってステージごとにpushback変更する
+
+
+    //1行分の文字列を入れる変数
+    std::string line;
+
+    //敵の情報
+    XMFLOAT3 pos{};//座標
+    XMFLOAT3 scale{};//スケール
+    int modelname;//モデルの指定
+    float r;//コライダーの半径指定
+    bool mod;//敵の種類の指定
+    int stage;//ステージの指定
+    int nextflag = 0;
+
+    //敵のlist追加
+    std::unique_ptr<Enemy>newenemy = std::make_unique<Enemy>();
+    newenemy->Initialize();
+
+
+    //コマンド実行ループ
+    while (getline(enemyDataS4, line))
+    {
+
+        //1行分の文字列をストリームに変換して解析しやすくなる
+        std::istringstream line_stream(line);
+
+        std::string word;
+        //,区切りで行の先頭部分を取得
+        getline(line_stream, word, ',');
+
+        // "//"から始まる行はコメントアウト
+        if (word.find("//") == 0)
+        {
+            //コメント行を飛ばす
+            continue;
+        }
+
+
+        if (word.find("POSITION") == 0)
+        {
+            //x座標
+            getline(line_stream, word, ',');
+            pos.x = (float)std::atof(word.c_str());
+
+            //y座標
+            getline(line_stream, word, ',');
+            pos.y = (float)std::atof(word.c_str());
+
+            //z座標
+            getline(line_stream, word, ',');
+            pos.z = (float)std::atof(word.c_str());
+
+            newenemy->SetPosition({ pos.x,pos.y,pos.z });
+
+        }
+        else if (word.find("SCALE") == 0)
+        {
+            //xのスケール
+            getline(line_stream, word, ',');
+            scale.x = (float)std::atof(word.c_str());
+
+            //xのスケール
+            getline(line_stream, word, ',');
+            scale.y = (float)std::atof(word.c_str());
+
+            //xのスケール
+            getline(line_stream, word, ',');
+            scale.z = (float)std::atof(word.c_str());
+
+            newenemy->SetScale({ scale.x,scale.y,scale.z });
+        }
+        else if (word.find("MODEL") == 0)
+        {
+            //モデルの指定
+            getline(line_stream, word, ',');
+            modelname = (float)std::atof(word.c_str());
+
+            if (modelname == 1)
+            {
+                newenemy->SetModel(model2);
+            }
+
+        }
+        else if (word.find("COLLIDER") == 0)
+        {
+            //コライダー(球)の半径指定
+            getline(line_stream, word, ',');
+            r = (float)std::atof(word.c_str());
+
+            newenemy->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, r));
+        }
+        else if (word.find("SHOT") == 0)
+        {
+            //敵の種類指定
+            getline(line_stream, word, ',');
+            mod = (float)std::atof(word.c_str());
+            if (mod == 0)
+            {
+                newenemy->EnemyInitialize(TRUE);
+            }
+            else if (mod == 1)
+            {
+                newenemy->EnemyInitialize(FALSE);
+            }
+        }
+        else if (word.find("STAGE") == 0)
+        {
+            //ステージの指定
+            getline(line_stream, word, ',');
+            stage = (float)std::atof(word.c_str());
+            if (stage == 4)
+            {
+                Stage4Enemy.push_back(std::move(newenemy));
+            }
+        }
+        else if (word.find("NEXT") == 0)
+        {
+            //ステージの指定
+            getline(line_stream, word, ',');
+            nextflag = (float)std::atof(word.c_str());
+
+            if (nextflag == 1)
+            {
+                newenemy = std::make_unique<Enemy>();
+                newenemy->Initialize();
+            }
+        }
+    }
+}
+
+void GameScene::SwapWallDataS4()
+{
+    //csvにステージ指定のコマンド入れる
+    //読み取ってステージごとにpushback変更する
+
+
+    //1行分の文字列を入れる変数
+    std::string line;
+
+    //壁の情報
+    XMFLOAT3 pos{};//座標
+    XMFLOAT3 scale{};//スケール
+    XMFLOAT3 rotation{};//ローテーション
+    int modelname;//モデルの指定
+    XMFLOAT3 r;//コライダーの半径指定
+    int stage;//ステージの指定
+    int nextflag = 0;
+
+    //壁のlist追加
+    std::unique_ptr<Wall>newwall = std::make_unique<Wall>();
+    newwall->Initialize();
+
+    //コマンド実行ループ
+    while (getline(wallDataS4, line))
+    {
+
+        //1行分の文字列をストリームに変換して解析しやすくなる
+        std::istringstream line_stream(line);
+
+        std::string word;
+        //,区切りで行の先頭部分を取得
+        getline(line_stream, word, ',');
+
+        // "//"から始まる行はコメントアウト
+        if (word.find("//") == 0)
+        {
+            //コメント行を飛ばす
+            continue;
+        }
+
+
+        if (word.find("POSITION") == 0)
+        {
+            //x座標
+            getline(line_stream, word, ',');
+            pos.x = (float)std::atof(word.c_str());
+
+            //y座標
+            getline(line_stream, word, ',');
+            pos.y = (float)std::atof(word.c_str());
+
+            //z座標
+            getline(line_stream, word, ',');
+            pos.z = (float)std::atof(word.c_str());
+
+            newwall->SetPosition({ pos.x,pos.y,pos.z });
+
+        }
+        else if (word.find("SCALE") == 0)
+        {
+            //xのスケール
+            getline(line_stream, word, ',');
+            scale.x = (float)std::atof(word.c_str());
+
+            //xのスケール
+            getline(line_stream, word, ',');
+            scale.y = (float)std::atof(word.c_str());
+
+            //xのスケール
+            getline(line_stream, word, ',');
+            scale.z = (float)std::atof(word.c_str());
+
+            newwall->SetScale({ scale.x,scale.y,scale.z });
+        }
+        else if (word.find("ROTAT") == 0)
+        {
+            //xのスケール
+            getline(line_stream, word, ',');
+            rotation.x = (float)std::atof(word.c_str());
+
+            //xのスケール
+            getline(line_stream, word, ',');
+            rotation.y = (float)std::atof(word.c_str());
+
+            //xのスケール
+            getline(line_stream, word, ',');
+            rotation.z = (float)std::atof(word.c_str());
+
+            newwall->SetRotation({ rotation.x,rotation.y,rotation.z });
+        }
+        else if (word.find("MODEL") == 0)
+        {
+            //モデルの指定
+            getline(line_stream, word, ',');
+            modelname = (float)std::atof(word.c_str());
+
+            if (modelname == 1)
+            {
+                newwall->SetModel(modelwall);
+            }
+
+        }
+        else if (word.find("COLLIDER") == 0)
+        {
+            //コライダー(矩形)の半径指定
+            getline(line_stream, word, ',');
+            r.x = (float)std::atof(word.c_str());
+
+            getline(line_stream, word, ',');
+            r.y = (float)std::atof(word.c_str());
+
+            getline(line_stream, word, ',');
+            r.z = (float)std::atof(word.c_str());
+
+            newwall->SetCollider(new BoxCollider(XMVECTOR{ r.x,r.y,r.z,0 }, 1.0f));
+        }
+        else if (word.find("STAGE") == 0)
+        {
+            //ステージの指定
+            getline(line_stream, word, ',');
+            stage = (float)std::atof(word.c_str());
+            if (stage == 4)
+            {
+                newwall->WallInitialize();
+                Stage4Walls.push_back(std::move(newwall));
+            }
+        }
+        else if (word.find("NEXT") == 0)
+        {
+            //ステージの指定
+            getline(line_stream, word, ',');
+            nextflag = (float)std::atof(word.c_str());
+
+            if (nextflag == 1)
+            {
+                newwall = std::make_unique<Wall>();
+                newwall->Initialize();
+            }
+
+        }
+
+    }
+}
+
+
 void GameScene::Update()
 {
 
@@ -1166,7 +1473,7 @@ void GameScene::Update()
 
         if (Effectsize.x >=1280)
         {
-            scene = 6;
+            scene = 7;
             tutoscene = 0;
             transrationScene();
             Effectsize = { 0,0 };
@@ -1924,12 +2231,12 @@ void GameScene::Update()
             movect++;
 
             //敵更新
-            for (std::unique_ptr<Enemy>& enemy : Stage1Enemy)
+            for (std::unique_ptr<Enemy>& enemy : Stage3Enemy)
             {
                 enemy->EnemyUpdate(player->GetPos());
             }
 
-            for (std::unique_ptr<Wall>& wall : Stage1Walls)
+            for (std::unique_ptr<Wall>& wall : Stage3Walls)
             {
                 wall->Update();
             }
@@ -2066,6 +2373,235 @@ void GameScene::Update()
         //{
         //    scene = 4;//クリア
         //}
+    }
+
+    if (scene==7)
+    {
+        //描画のためにカメラの更新処理を一回呼び出す
+        if (firstfrag == 0)
+        {
+            camera->CurrentUpdate();
+            camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+            firstfrag = 1;
+        }
+
+        //FBX更新
+        floor->Update();
+        for (std::unique_ptr<Enemy>& enemy : Stage4Enemy)
+        {
+            enemy->PartUpdate();
+            enemy->BulUpdate();
+            enemy->Update();
+        }
+        for (std::unique_ptr<Wall>& wall : Stage4Walls)
+        {
+            wall->Update();
+        }
+        player->BulUpdate();
+        backsphere->Update();
+        player->meleeUpdate();
+        player->throwgunUpdate();
+        player->gunUpdate(camera->GetTarget(), camera->GetEye());
+        tutogun->Update();
+
+        //プレイヤーの銃のフラグ管理
+        if (player->Gethave() == false)
+        {
+            player->Sethave(tutogun->Gethave());
+        }
+        if (player->Gethave() == true)
+        {
+            tutogun->Sethave(false);
+        }
+
+
+
+        //動いていない状態で攻撃したら
+        if (input->PushclickLeft() && !input->PushKey(DIK_Q))
+        {
+            //フラグをtrueにする
+            attack = true;
+        }
+
+        if (attack == true)
+        {
+            movect++;
+
+            //プレイy－更新
+            player->Setoldpos(camera->GetEye());
+            player->SetoldTarget(camera->GetTarget());
+            camera->CurrentUpdate();
+            camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+            player->SetTarget(camera->GetTarget());
+            player->SetPosition(camera->GetEye());
+            player->SetRotation(camera->GetRoatation());
+            player->PlayerUpdate(camera->GetTarget());
+            player->gunUpdate(camera->GetTarget(), camera->GetEye());
+
+            //残弾数の取得
+            magazin = player->Getmagazin();
+            //銃を持っているか
+            have = player->Gethave();
+
+            if (movect >= 15)
+            {
+                attack = false;
+                movect = 0;
+            }
+        }
+
+        //動いていない状態で銃を投げたら
+        if (input->PushKey(DIK_Q) && !input->PushclickLeft())
+        {
+            gunthrow = true;
+        }
+
+        if (gunthrow == true)
+        {
+            movect++;
+
+            //敵更新
+            for (std::unique_ptr<Enemy>& enemy : Stage4Enemy)
+            {
+                enemy->EnemyUpdate(player->GetPos());
+            }
+
+            for (std::unique_ptr<Wall>& wall : Stage4Walls)
+            {
+                wall->Update();
+            }
+
+            //プレイy－更新
+            player->Setoldpos(camera->GetEye());
+            player->SetoldTarget(camera->GetTarget());
+            camera->CurrentUpdate();
+            camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+            player->SetTarget(camera->GetTarget());
+            player->SetPosition(camera->GetEye());
+            player->SetRotation(camera->GetRoatation());
+            player->PlayerUpdate(camera->GetTarget());
+            player->gunUpdate(camera->GetTarget(), camera->GetEye());
+            tutogun->Update();
+
+            //残弾数の取得
+            magazin = player->Getmagazin();
+            //銃を持っているか
+            have = player->Gethave();
+
+            if (movect >= 15)
+            {
+                gunthrow = false;
+                movect = 0;
+            }
+        }
+
+        timecount++;
+
+        //自分が動いていたら更新処理
+        if (input->PushKey(DIK_W) || input->PushKey(DIK_A) || input->PushKey(DIK_S) || input->PushKey(DIK_D))
+        {
+
+            for (std::unique_ptr<Enemy>& enemy : Stage4Enemy)
+            {
+                enemy->EnemyUpdate(player->GetPos());
+            }
+
+            //プレイy－更新
+            player->Setoldpos(camera->GetEye());
+            player->SetoldTarget(camera->GetTarget());
+            camera->CurrentUpdate();
+            camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+            player->SetTarget(camera->GetTarget());
+            player->SetPosition(camera->GetEye());
+            player->SetRotation(camera->GetRoatation());
+            player->PlayerUpdate(camera->GetTarget());
+            player->gunUpdate(camera->GetTarget(), camera->GetEye());
+            //残弾数の取得
+            magazin = player->Getmagazin();
+            //銃を持っているか
+            have = player->Gethave();
+
+        }
+        else if (timecount >= 30)
+        {
+            for (std::unique_ptr<Enemy>& enemy : Stage4Enemy)
+            {
+                enemy->EnemyUpdate(player->GetPos());
+            }
+
+            //プレイy－更新
+            player->Setoldpos(camera->GetEye());
+            player->SetoldTarget(camera->GetTarget());
+            camera->CurrentUpdate();
+            camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+            player->SetTarget(camera->GetTarget());
+            player->SetPosition(camera->GetEye());
+            player->SetRotation(camera->GetRoatation());
+            player->PlayerUpdate(camera->GetTarget());
+            player->gunUpdate(camera->GetTarget(), camera->GetEye());
+            //残弾数の取得
+            magazin = player->Getmagazin();
+            //銃を持っているか
+            have = player->Gethave();
+
+            timecount = 0;
+        }
+
+        if (player->Gethave() == true)
+        {
+            tutogun->SetPosition({ 0,100.0f,0 });
+        }
+        else
+        {
+            tutogun->SetPosition({ 0.0f,2.0f,20.0f });
+        }
+
+
+        if (mouseMove.lX != 0 || mouseMove.lY != 0)//マウスだけ動いてる時
+        {
+            if (!input->PushKey(DIK_W) && !input->PushKey(DIK_A) && !input->PushKey(DIK_S) && !input->PushKey(DIK_D))
+            {
+                camera->CurrentUpdate();
+                camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+                player->SetPosition(camera->GetEye());
+                player->SetTarget(camera->GetTarget());
+                player->UpdateWorld();
+                player->gunUpdate(camera->GetTarget(), camera->GetEye());
+
+            }
+        }
+
+
+        //すべての衝突をチェック
+        collisionManager->CheckAllCollisions();
+
+        if (player->Getwallhit() == 1)
+        {
+            camera->SetTarget(player->GetTarget());
+            camera->SetEye(player->GetPos());
+            mouseMove.lX = 0;
+            mouseMove.lY = 0;
+        }
+
+
+
+        //プレイヤーに敵が当たったらシーン遷移
+        if (player->Gethit() == 1)
+        {
+            scene = 3;//ゲームオーバー
+        }
+
+
+
+        //敵を倒したら次のステージ
+        //if (cube->GetScaleX() < check &&
+        //    Stage1[0]->GetScaleX() < check)
+        //    /* Stage1[1]->GetScaleX() < check&&
+        //     Stage1[2]->GetScaleX() < check&&
+        //     Stage1[3]->GetScaleX() < check&&
+        //     Stage1[4]->GetScaleX() < check)*/
+        //{
+        //    scene = 4;//クリア
     }
 
     //ゲームオーバー
@@ -2292,6 +2828,16 @@ void GameScene::Draw()
 
         tutogun->Draw(cmdList);
     }
+
+    if (scene == 7)
+    {
+        for (std::unique_ptr<Wall>& wall : Stage4Walls)
+        {
+            wall->Draw(cmdList);
+        }
+
+        tutogun->Draw(cmdList);
+    }
     
 
     //敵関連
@@ -2319,6 +2865,16 @@ void GameScene::Draw()
     if (scene == 6)
     {
         for (std::unique_ptr<Enemy>& enemy : Stage3Enemy)
+        {
+            enemy->BulDraw(cmdList);
+            enemy->PartDraw(cmdList);
+            enemy->Draw(cmdList);
+        }
+    }
+
+    if (scene == 7)
+    {
+        for (std::unique_ptr<Enemy>& enemy : Stage4Enemy)
         {
             enemy->BulDraw(cmdList);
             enemy->PartDraw(cmdList);
@@ -2486,13 +3042,7 @@ void GameScene::transrationScene()
         /*LoadEnemyData();
         SwapEnemyData();*/
 
-        //listの削除
-       /* Stage2Enemy.remove_if([](std::unique_ptr<Enemy>& enemy) {
-            return enemy->die;
-            });
-        Stage2Walls.remove_if([](std::unique_ptr<Wall>& wall) {
-            return wall->die;
-            });*/
+       
 
         LoadEnemyDataS1();
         SwapEnemyDataS1();
@@ -2573,6 +3123,40 @@ void GameScene::transrationScene()
 
         gunstand->SetPosition({ -1000.0f,10.0f,0.0f });
         tutogun->SetPosition({ 0.0f,0.0f,20.0f });
+        gunstand->Update();
+        tutogun->Update();
+
+    }
+
+    if (scene == 7)
+    {
+        const XMFLOAT3 respos = { 0,5,0 };
+        player->Sethave(false);
+        /* player->SetPosition(respos);
+         camera->SetEye(respos);*/
+        camera->SetTarget({ 0, 5, 0 });
+        camera->CurrentUpdate();
+
+        magazin = 5;
+        player->SetMagazin(magazin);
+        player->Sethave(true);
+
+        LoadEnemyDataS4();
+        SwapEnemyDataS4();
+        LoadWallDataS4();
+        SwapWallDataS4();
+
+
+        //listの削除
+        Stage3Enemy.remove_if([](std::unique_ptr<Enemy>& enemy) {
+            return enemy->die;
+            });
+        Stage3Walls.remove_if([](std::unique_ptr<Wall>& wall) {
+            return wall->die;
+            });
+
+        gunstand->SetPosition({ -1000.0f,10.0f,0.0f });
+        tutogun->SetPosition({ 0.0f,0.0f,30.0f });
         gunstand->Update();
         tutogun->Update();
 

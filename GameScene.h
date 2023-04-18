@@ -81,6 +81,14 @@ public://メンバ関数
 	void LoadWallDataS3();
 	//地形データ更新
 	void SwapWallDataS3();
+	//敵データ読み込み
+	void LoadEnemyDataS4();
+	//敵データ受け取り
+	void SwapEnemyDataS4();
+	//地形データ読み込み
+	void LoadWallDataS4();
+	//地形データ更新
+	void SwapWallDataS4();
 	//更新
 	void Update()override;
 	//シーン分岐
@@ -163,10 +171,12 @@ private://メンバ変数
 	std::list<std::unique_ptr<Wall>> Stage1Walls;
 	std::list<std::unique_ptr<Wall>> Stage2Walls;
 	std::list<std::unique_ptr<Wall>> Stage3Walls;
+	std::list<std::unique_ptr<Wall>> Stage4Walls;
 	//壁コマンド
 	std::stringstream wallDataS1;
 	std::stringstream wallDataS2;
 	std::stringstream wallDataS3;
+	std::stringstream wallDataS4;
 
 	
 	//2面
@@ -187,11 +197,13 @@ private://メンバ変数
 	std::list<std::unique_ptr<Enemy>> Stage1Enemy;
 	std::list<std::unique_ptr<Enemy>> Stage2Enemy;
 	std::list<std::unique_ptr<Enemy>> Stage3Enemy;
+	std::list<std::unique_ptr<Enemy>> Stage4Enemy;
 	
 	//敵コマンド
 	std::stringstream enemyDataS1;
 	std::stringstream enemyDataS2;
 	std::stringstream enemyDataS3;
+	std::stringstream enemyDataS4;
 
 	//ステージ2
 	Enemy* Stage2[3];
