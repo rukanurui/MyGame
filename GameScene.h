@@ -225,23 +225,20 @@ private://メンバ変数
 	//残弾数
 	int magazin = 0;
 
+
+	///カメラ関連
 	//ひとつ前のマウスの座標
 	float CurretmouseX = 0;
 	float CurretmouseY = 0;
 	//カメラ初期位置
 	XMFLOAT3 EyeInitialize = { 0,4,0 };
-
 	//デバッグ用リセットフラグ
 	int resetflag = 0;
-
 	//カメラの更新処理用
 	int firstfrag = 0;
+	//プレイヤーが壁にぶつかっているか
+	bool wallcol = false;
 
-	float check = 0.01f;
-
-	XMFLOAT3 tutoroateation{ 0.0f,0.0f,0.0f };
-
-	float roat = 0.0f;
 
 	//シーン
 	float timecount = 0;//時間管理酔う変数

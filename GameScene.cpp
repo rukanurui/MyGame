@@ -1466,6 +1466,7 @@ void GameScene::Update()
     camera->SetmouseX(CurretmouseX);
     camera->SetmouseY(CurretmouseY);
 
+    //タイトルからのシーン遷移
     if (scene==0)
     {
         Effectsize.x += 10.0f;
@@ -1498,7 +1499,7 @@ void GameScene::Update()
          //描画のためにカメラの更新処理を一回呼び出す
         if (firstfrag == 0)
         {
-            camera->CurrentUpdate();
+            camera->CurrentUpdate(player->GetVelocity());
             camera->Update(WindowsApp::window_width, WindowsApp::window_height);
 
             firstfrag = 1;
@@ -1524,7 +1525,7 @@ void GameScene::Update()
         //描画のためにカメラの更新処理を一回呼び出す
         if (firstfrag == 1)
         {
-            camera->CurrentUpdate();
+            camera->CurrentUpdate(player->GetVelocity());
             camera->Update(WindowsApp::window_width, WindowsApp::window_height);
             firstfrag = 0;
 
@@ -1673,7 +1674,7 @@ void GameScene::Update()
                 //プレイy－更新
                 player->Setoldpos(camera->GetEye());
                 player->SetoldTarget(camera->GetTarget());
-                camera->CurrentUpdate();
+                camera->CurrentUpdate(player->GetVelocity());
                 camera->Update(WindowsApp::window_width, WindowsApp::window_height);
                 player->SetTarget(camera->GetTarget());
                 player->SetPosition(camera->GetEye());
@@ -1733,7 +1734,7 @@ void GameScene::Update()
             //プレイy－更新
             player->Setoldpos(camera->GetEye());
             player->SetoldTarget(camera->GetTarget());
-            camera->CurrentUpdate();
+            camera->CurrentUpdate(player->GetVelocity());
             camera->Update(WindowsApp::window_width, WindowsApp::window_height);
             player->SetTarget(camera->GetTarget());
             player->SetPosition(camera->GetEye());
@@ -1756,7 +1757,7 @@ void GameScene::Update()
             //プレイy－更新
             player->Setoldpos(camera->GetEye());
             player->SetoldTarget(camera->GetTarget());
-            camera->CurrentUpdate();
+            camera->CurrentUpdate(player->GetVelocity());
             camera->Update(WindowsApp::window_width, WindowsApp::window_height);
             player->SetTarget(camera->GetTarget());
             player->SetPosition(camera->GetEye());
@@ -1773,7 +1774,7 @@ void GameScene::Update()
         {
             if (!input->PushKey(DIK_W) && !input->PushKey(DIK_A) && !input->PushKey(DIK_S) && !input->PushKey(DIK_D))
             {
-                camera->CurrentUpdate();
+                camera->CurrentUpdate(player->GetVelocity());
                 camera->Update(WindowsApp::window_width, WindowsApp::window_height);
                 player->SetPosition(camera->GetEye());
                 player->SetTarget(camera->GetTarget());
@@ -1829,7 +1830,7 @@ void GameScene::Update()
         //描画のためにカメラの更新処理を一回呼び出す
         if (firstfrag == 0)
         {
-            camera->CurrentUpdate();
+            camera->CurrentUpdate(player->GetVelocity());
             camera->Update(WindowsApp::window_width, WindowsApp::window_height);
             firstfrag = 1;
         }
@@ -2004,7 +2005,7 @@ void GameScene::Update()
             //プレイy－更新
             player->Setoldpos(camera->GetEye());
             player->SetoldTarget(camera->GetTarget());
-            camera->CurrentUpdate();
+            camera->CurrentUpdate(player->GetVelocity());
             camera->Update(WindowsApp::window_width, WindowsApp::window_height);
             player->SetTarget(camera->GetTarget());
             player->SetPosition(camera->GetEye());
@@ -2050,7 +2051,7 @@ void GameScene::Update()
             //プレイy－更新
             player->Setoldpos(camera->GetEye());
             player->SetoldTarget(camera->GetTarget());
-            camera->CurrentUpdate();
+            camera->CurrentUpdate(player->GetVelocity());
             camera->Update(WindowsApp::window_width, WindowsApp::window_height);
             player->SetTarget(camera->GetTarget());
             player->SetPosition(camera->GetEye());
@@ -2074,7 +2075,7 @@ void GameScene::Update()
             //プレイy－更新
             player->Setoldpos(camera->GetEye());
             player->SetoldTarget(camera->GetTarget());
-            camera->CurrentUpdate();
+            camera->CurrentUpdate(player->GetVelocity());
             camera->Update(WindowsApp::window_width, WindowsApp::window_height);
             player->SetTarget(camera->GetTarget());
             player->SetPosition(camera->GetEye());
@@ -2095,7 +2096,7 @@ void GameScene::Update()
         {
             if (!input->PushKey(DIK_W) && !input->PushKey(DIK_A) && !input->PushKey(DIK_S) && !input->PushKey(DIK_D))
             {
-                camera->CurrentUpdate();
+                camera->CurrentUpdate(player->GetVelocity());
                 camera->Update(WindowsApp::window_width, WindowsApp::window_height);
                 player->SetPosition(camera->GetEye());
                 player->SetTarget(camera->GetTarget());
@@ -2150,7 +2151,7 @@ void GameScene::Update()
         //描画のためにカメラの更新処理を一回呼び出す
         if (firstfrag == 0)
         {
-            camera->CurrentUpdate();
+            camera->CurrentUpdate(player->GetVelocity());
             camera->Update(WindowsApp::window_width, WindowsApp::window_height);
             firstfrag = 1;
         }
@@ -2200,7 +2201,7 @@ void GameScene::Update()
             //プレイy－更新
             player->Setoldpos(camera->GetEye());
             player->SetoldTarget(camera->GetTarget());
-            camera->CurrentUpdate();
+            camera->CurrentUpdate(player->GetVelocity());
             camera->Update(WindowsApp::window_width, WindowsApp::window_height);
             player->SetTarget(camera->GetTarget());
             player->SetPosition(camera->GetEye());
@@ -2244,7 +2245,7 @@ void GameScene::Update()
             //プレイy－更新
             player->Setoldpos(camera->GetEye());
             player->SetoldTarget(camera->GetTarget());
-            camera->CurrentUpdate();
+            camera->CurrentUpdate(player->GetVelocity());
             camera->Update(WindowsApp::window_width, WindowsApp::window_height);
             player->SetTarget(camera->GetTarget());
             player->SetPosition(camera->GetEye());
@@ -2279,7 +2280,7 @@ void GameScene::Update()
             //プレイy－更新
             player->Setoldpos(camera->GetEye());
             player->SetoldTarget(camera->GetTarget());
-            camera->CurrentUpdate();
+            camera->CurrentUpdate(player->GetVelocity());
             camera->Update(WindowsApp::window_width, WindowsApp::window_height);
             player->SetTarget(camera->GetTarget());
             player->SetPosition(camera->GetEye());
@@ -2302,7 +2303,7 @@ void GameScene::Update()
             //プレイy－更新
             player->Setoldpos(camera->GetEye());
             player->SetoldTarget(camera->GetTarget());
-            camera->CurrentUpdate();
+            camera->CurrentUpdate(player->GetVelocity());
             camera->Update(WindowsApp::window_width, WindowsApp::window_height);
             player->SetTarget(camera->GetTarget());
             player->SetPosition(camera->GetEye());
@@ -2331,7 +2332,7 @@ void GameScene::Update()
         {
             if (!input->PushKey(DIK_W) && !input->PushKey(DIK_A) && !input->PushKey(DIK_S) && !input->PushKey(DIK_D))
             {
-                camera->CurrentUpdate();
+                camera->CurrentUpdate(player->GetVelocity());
                 camera->Update(WindowsApp::window_width, WindowsApp::window_height);
                 player->SetPosition(camera->GetEye());
                 player->SetTarget(camera->GetTarget());
@@ -2375,12 +2376,13 @@ void GameScene::Update()
         //}
     }
 
+    //ステージ4
     if (scene==7)
     {
         //描画のためにカメラの更新処理を一回呼び出す
         if (firstfrag == 0)
         {
-            camera->CurrentUpdate();
+            camera->CurrentUpdate(player->GetVelocity());
             camera->Update(WindowsApp::window_width, WindowsApp::window_height);
             firstfrag = 1;
         }
@@ -2414,8 +2416,6 @@ void GameScene::Update()
             tutogun->Sethave(false);
         }
 
-
-
         //動いていない状態で攻撃したら
         if (input->PushclickLeft() && !input->PushKey(DIK_Q))
         {
@@ -2430,7 +2430,7 @@ void GameScene::Update()
             //プレイy－更新
             player->Setoldpos(camera->GetEye());
             player->SetoldTarget(camera->GetTarget());
-            camera->CurrentUpdate();
+            camera->CurrentUpdate(player->GetVelocity());
             camera->Update(WindowsApp::window_width, WindowsApp::window_height);
             player->SetTarget(camera->GetTarget());
             player->SetPosition(camera->GetEye());
@@ -2474,7 +2474,7 @@ void GameScene::Update()
             //プレイy－更新
             player->Setoldpos(camera->GetEye());
             player->SetoldTarget(camera->GetTarget());
-            camera->CurrentUpdate();
+            camera->CurrentUpdate(player->GetVelocity());
             camera->Update(WindowsApp::window_width, WindowsApp::window_height);
             player->SetTarget(camera->GetTarget());
             player->SetPosition(camera->GetEye());
@@ -2509,12 +2509,19 @@ void GameScene::Update()
             //プレイy－更新
             player->Setoldpos(camera->GetEye());
             player->SetoldTarget(camera->GetTarget());
-            camera->CurrentUpdate();
-            camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+            player->PlayerUpdate(camera->GetTarget());
+            if (wallcol == false)
+            {
+                camera->CurrentUpdate(player->GetVelocity());
+                camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+            }
             player->SetTarget(camera->GetTarget());
             player->SetPosition(camera->GetEye());
             player->SetRotation(camera->GetRoatation());
-            player->PlayerUpdate(camera->GetTarget());
+
+            /*camera->SetEye(player->GetPos());
+            camera->SetTarget(player->GetTarget());*/
+            
             player->gunUpdate(camera->GetTarget(), camera->GetEye());
             //残弾数の取得
             magazin = player->Getmagazin();
@@ -2532,7 +2539,7 @@ void GameScene::Update()
             //プレイy－更新
             player->Setoldpos(camera->GetEye());
             player->SetoldTarget(camera->GetTarget());
-            camera->CurrentUpdate();
+            camera->CurrentUpdate(player->GetVelocity());
             camera->Update(WindowsApp::window_width, WindowsApp::window_height);
             player->SetTarget(camera->GetTarget());
             player->SetPosition(camera->GetEye());
@@ -2561,15 +2568,29 @@ void GameScene::Update()
         {
             if (!input->PushKey(DIK_W) && !input->PushKey(DIK_A) && !input->PushKey(DIK_S) && !input->PushKey(DIK_D))
             {
-                camera->CurrentUpdate();
-                camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-                player->SetPosition(camera->GetEye());
-                player->SetTarget(camera->GetTarget());
-                player->UpdateWorld();
-                player->gunUpdate(camera->GetTarget(), camera->GetEye());
-
+                if (wallcol==false)
+                {
+                    camera->CurrentUpdate(player->GetVelocity());
+                    player->SetPosition(camera->GetEye());
+                    player->SetTarget(camera->GetTarget());
+                    player->UpdateWorld();
+                    player->gunUpdate(camera->GetTarget(), camera->GetEye());
+                }
             }
         }
+
+        //if (mouseMove.lX != 0 || mouseMove.lY != 0)//マウスだけ動いてる時
+        //{
+        //   if (wallcol == false)
+        //   {
+        //       camera->CurrentUpdate(player->GetVelocity());
+        //       camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+        //       player->SetPosition(camera->GetEye());
+        //       player->SetTarget(camera->GetTarget());
+        //       player->UpdateWorld();
+        //       player->gunUpdate(camera->GetTarget(), camera->GetEye());
+        //   }
+        //}
 
 
         //すべての衝突をチェック
@@ -2577,10 +2598,17 @@ void GameScene::Update()
 
         if (player->Getwallhit() == 1)
         {
+            //player->PlayerUpdate(camera->GetTarget());
             camera->SetTarget(player->GetTarget());
             camera->SetEye(player->GetPos());
+            camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+            //wallcol = true;
             mouseMove.lX = 0;
             mouseMove.lY = 0;
+        }
+        else
+        {
+            wallcol = false;
         }
 
 
@@ -2647,12 +2675,15 @@ void GameScene::Update()
             scene = 7;
             tutoscene = 0;
             transrationScene();
+
         }
 
+        //パーティクル出し終わったら敵のist削除
         Stage3Enemy.remove_if([](std::unique_ptr<Enemy>& enemy) {
             return enemy->getdeath();
             });
 
+        //敵が全員死んだら
         if (Stage3Enemy.size() == 1)
         {
             for (std::unique_ptr<Enemy>& enemy : Stage3Enemy)
@@ -2674,7 +2705,7 @@ void GameScene::Update()
         //描画のためにカメラの更新処理を一回呼び出す
         if (firstfrag == 0)
         {
-            camera->CurrentUpdate();
+            camera->CurrentUpdate(player->GetVelocity());
             camera->Update(WindowsApp::window_width, WindowsApp::window_height);
 
             firstfrag = 1;
@@ -2730,7 +2761,7 @@ void GameScene::Update()
         //描画のためにカメラの更新処理を一回呼び出す
         if (firstfrag == 0)
         {
-            camera->CurrentUpdate();
+            camera->CurrentUpdate(player->GetVelocity());
             camera->Update(WindowsApp::window_width, WindowsApp::window_height);
 
             firstfrag = 1;
@@ -3032,17 +3063,14 @@ void GameScene::restart()
 
 void GameScene::transrationScene()
 {
+    //ステージ1
     if (scene==2)
     {
         //camera->SetEye(EyeInitialize);
         camera->SetTarget({ 0, 5, 0 });
-        camera->CurrentUpdate();
+        camera->CurrentUpdate(player->GetVelocity());
         //player->Update();
         player->Sethave(true);
-        /*LoadEnemyData();
-        SwapEnemyData();*/
-
-       
 
         LoadEnemyDataS1();
         SwapEnemyDataS1();
@@ -3051,6 +3079,7 @@ void GameScene::transrationScene()
 
     }
 
+    //ステージ2
     if (scene==5)
     {
         const XMFLOAT3 respos={0,0,0};
@@ -3058,11 +3087,8 @@ void GameScene::transrationScene()
        /* player->SetPosition(respos);
         camera->SetEye(respos);*/
 
-        
-
         camera->SetTarget({ 0, 5, 0 });
-        camera->CurrentUpdate();
-
+        camera->CurrentUpdate(player->GetVelocity());
        
         LoadEnemyDataS2();
         SwapEnemyDataS2();
@@ -3071,7 +3097,6 @@ void GameScene::transrationScene()
 
         magazin = 5;
         player->SetMagazin(magazin);
-
 
         //listの削除
         Stage1Enemy.remove_if([](std::unique_ptr<Enemy>& enemy) {
@@ -3094,6 +3119,7 @@ void GameScene::transrationScene()
 
     }
 
+    //ステージ3
     if (scene==6)
     {
         const XMFLOAT3 respos = { 0,5,0 };
@@ -3101,7 +3127,7 @@ void GameScene::transrationScene()
         /* player->SetPosition(respos);
          camera->SetEye(respos);*/
         camera->SetTarget({ 0, 5, 0 });
-        camera->CurrentUpdate();
+        camera->CurrentUpdate(player->GetVelocity());
 
         magazin = 0;
         player->SetMagazin(magazin);
@@ -3128,6 +3154,7 @@ void GameScene::transrationScene()
 
     }
 
+    //ステージ4
     if (scene == 7)
     {
         const XMFLOAT3 respos = { 0,5,0 };
@@ -3135,7 +3162,7 @@ void GameScene::transrationScene()
         /* player->SetPosition(respos);
          camera->SetEye(respos);*/
         camera->SetTarget({ 0, 5, 0 });
-        camera->CurrentUpdate();
+        camera->CurrentUpdate(player->GetVelocity());
 
         magazin = 5;
         player->SetMagazin(magazin);

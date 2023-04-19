@@ -29,6 +29,9 @@ public://メンバ関数
 	/// 注視点座標の取得
 	const XMFLOAT3& GetTarget() { return target; }
 
+	//移動速度の取得
+	const XMFLOAT3& GetVelocity() { return Velocity; }
+
 	void MoveVector(const XMVECTOR& move);
 
 	/// 注視点座標の設定
@@ -102,6 +105,7 @@ private://メンバ変数
 	const float gunTdistance = 0.5;
 	XMFLOAT3 guntarget{};
 	XMFLOAT3 gunpos;
+	XMFLOAT3 Velocity{};
 	XMVECTOR Velocity2{ -gundistance,-gundistance,gundistance };
 
 	XMFLOAT3 currentangle;

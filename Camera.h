@@ -38,8 +38,8 @@ public: // メンバ関数
 	//注視点のみ移動
 	void MoveTarget(const XMVECTOR& move);
 
-
-	void CurrentUpdate();
+	//update前処理
+	void CurrentUpdate(XMFLOAT3 vel);
 
 	//Getter
 	//ビュー行列関連
