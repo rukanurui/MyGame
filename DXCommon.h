@@ -6,6 +6,8 @@
 #include <wrl.h>
 #include <cstdlib>
 #include "WindowsApp.h"
+#include<chrono>
+#include<thread>
 
 
 #pragma once
@@ -38,6 +40,14 @@ public: //メンバ関数
 	ID3D12Device* GetDevice() { return dev.Get(); }
 
 	ID3D12GraphicsCommandList* GetCommandList() { return cmdList.Get(); }
+
+private://メンバ関数
+	//FPS固定初期化
+	void InitializeFixFPS();
+	//FPS固定更新
+	void UpdateFixFPS();
+	//記録時間(FPS固定用)
+	std::chrono::steady_clock::time_point refrence;
 
 private://メンバ変数
 	WindowsApp* winApp;
