@@ -11,15 +11,15 @@ float4 main(VSOutput input) : SV_TARGET
 
 	
 	//湾曲
-	/*samplePoint -= float2(0.5, 0.5);
-	float distPower = pow(length(samplePoint), 0.15);
+	samplePoint -= float2(0.5, 0.5);
+	float distPower = pow(length(samplePoint), 0.10);
 	samplePoint *= float2(distPower, distPower);
-	samplePoint += float2(0.5, 0.5);*/
-	//float4 Tex = tex0.Sample(smp, samplePoint);
+	samplePoint += float2(0.5, 0.5);
+	float4 Tex = tex0.Sample(smp, samplePoint);
 
 	//モザイク
 	float dest = 500;
-	float4 Tex = tex0.Sample(smp, floor(samplePoint * dest) / dest);
+	Tex = tex0.Sample(smp, floor(samplePoint * dest) / dest);
 
 	////走査線ノイズ
 	//float sinv = sin(input.uv.y * 2 + time * -0.1);

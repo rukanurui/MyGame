@@ -229,10 +229,10 @@ void Camera::CurrentUpdate(XMFLOAT3 vel)
 	if (input->PushKey(DIK_A) || input->PushKey(DIK_D))
 	{
 
-		if (input->PushKey(DIK_A)) Velocity.x = -0.1f;
+		if (input->PushKey(DIK_A)) Velocity.x = -0.5f;
 		else
 		{
-			if (input->PushKey(DIK_D)) Velocity.x = 0.1f;
+			if (input->PushKey(DIK_D)) Velocity.x = 0.5f;
 		}
 
 		XMVECTOR move = { Velocity.x,Velocity.y,0,0 };
@@ -245,10 +245,10 @@ void Camera::CurrentUpdate(XMFLOAT3 vel)
 	if (!input->PushKey(DIK_W) && !input->PushKey(DIK_S)) Velocity.z = 0;
 	if (input->PushKey(DIK_W) || input->PushKey(DIK_S))
 	{
-		if (input->PushKey(DIK_S)) Velocity.z = -0.1f;
+		if (input->PushKey(DIK_S)) Velocity.z = -0.5f;
 		else
 		{
-			if (input->PushKey(DIK_W)) Velocity.z = 0.1f;
+			if (input->PushKey(DIK_W)) Velocity.z = 0.5f;
 		}
 		
 

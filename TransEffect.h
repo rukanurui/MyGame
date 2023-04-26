@@ -41,6 +41,14 @@ public:
     //パイプライン生成
     void CreateGraphicsPipelineState();
 
+    struct ConstBufferDatat {
+        XMFLOAT4 color; // 色 (RGBA)
+        XMMATRIX mat;   // ３Ｄ変換行列
+        float time;
+        float alpha;//アルファ
+        float Move;//ブロックノイズの大きさ
+    };
+
 
 private:
     //テクスチャバッファ
@@ -57,7 +65,6 @@ private:
     ComPtr<ID3D12PipelineState> pipelineState;
     //ルートシグネチャ
     ComPtr<ID3D12RootSignature> rootSignature;
-
 
 
 private:

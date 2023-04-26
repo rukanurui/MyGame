@@ -93,6 +93,15 @@ bool Input::PushclickLeft()
     return false;
 }
 
+bool Input::PushclickRight()
+{
+    if (mouse.rgbButtons[1])
+    {
+        return true;
+    }
+    return false;
+}
+
 bool Input::TriggerclickLeft(BYTE mouseNumber)
 {
     if (!oldmouse.rgbButtons[0] && mouse.rgbButtons[0])

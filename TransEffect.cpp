@@ -3,7 +3,7 @@
 #include <DirectXTex.h>
 #include <d3dcompiler.h>
 
-const float TransEffect::clearColor[4] = { 0.5f,0.5f,0.5f,1.0f };//白っぽい色
+const float TransEffect::clearColor[4] = { 0.5f,0.5f,0.5f,0.5f };//白っぽい色
 
 
 TransEffect* TransEffect::Create(SpriteCommon* spriteCommon, UINT texNumber, XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)
@@ -67,16 +67,18 @@ void TransEffect::Initialize(SpriteCommon* spriteCommon, UINT texNumber, XMFLOAT
     result = spriteCommona->GetDevice()->CreateCommittedResource(
         &CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
         D3D12_HEAP_FLAG_NONE,
-        &CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferData) + 0xff) & ~0xff),
+        &CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferDatat) + 0xff) & ~0xff),
         D3D12_RESOURCE_STATE_GENERIC_READ,
         nullptr,
         IID_PPV_ARGS(&constBuffa));
     assert(SUCCEEDED(result));
 
     //定数バッファにデータ転送
-    ConstBufferData* constMap = nullptr;
+    ConstBufferDatat* constMap = nullptr;
     result = constBuffa->Map(0, nullptr, (void**)&constMap);
     constMap->color = this->colora;
+    constMap->Move = 50.0f;
+    constMap->alpha = 0.4f;
     constMap->mat = XMMatrixIdentity();
     this->constBuffa->Unmap(0, nullptr);
 
@@ -210,13 +212,13 @@ void TransEffect::Draw(ID3D12GraphicsCommandList* cmdList)
     HRESULT result;
 
     //定数バッファにデータ転送
-    ConstBufferData* constMap = nullptr;
-    result = constBuffa->Map(0, nullptr, (void**)&constMap);
-    constMap->time += 0.1f;
+    ConstBufferDatat* constMap = nullptr;
+    result = constBuffa->Map(0, nullptr, (void**)&constMap);    
     constMap->color = this->colora;
     constMap->mat = XMMatrixIdentity();
-    constMap->time;
-    constMap->alpha;
+    constMap->time += 0.1f;
+    constMap->alpha -= 0.003f;
+    constMap->Move -= 0.41f;
     this->constBuffa->Unmap(0, nullptr);
 
     //パイプラインステートの設定

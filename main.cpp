@@ -156,15 +156,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
         
         sceneManager->Update();
-        //scene->Update();
-
-        //scene = gameScene->GetScene();
-
-        /*if (scene==7)
-        {
-            gameScene=reset(gameScene, dxCommon, input, audio, spriteCommon, winApp);
-            titleScene->Settitleflag(titleflag);
-        }*/
+       
 
 
         if (input->PushKey(DIK_ESCAPE))
@@ -189,9 +181,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
         sceneManager->Draw();
         
-        //titleScene->Draw();
-        //gameScene->Draw();
-
+       
         // ４．描画コマンドここから
         
         

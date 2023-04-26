@@ -1469,27 +1469,19 @@ void GameScene::Update()
     //タイトルからのシーン遷移
     if (scene==0)
     {
-        Effectsize.x += 10.0f;
-        Effectsize.y += 5.6f;
+       
+        transcount +=1.0f;
 
-        if (Effectsize.x >=1280)
+        if (transcount >= 120.0f)
         {
-            scene = 7;
+            scene = 6;
             tutoscene = 0;
             transrationScene();
-            Effectsize = { 0,0 };
+            transcount = 0.0f;
             transfrag = true;
         }
 
-        //trans->SetSize({ Effectsize });
-        //trans->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
-        //trans->TransferVertexBuffer();
-        //trans->Update();
-
-        transEffect->SetSize({ Effectsize });
-        transEffect->SetPosition({ 0,0,0 });
-        transEffect->TransferVertexBuffer();
-        transEffect->Update();
+        
     }
 
     //チュートリアル
@@ -1694,6 +1686,53 @@ void GameScene::Update()
                 }
             }
         }
+
+        //動いていない状態で銃を投げたら
+        if (input->PushclickRight() && !input->PushclickLeft())
+        {
+            gunthrow = true;
+        }
+
+        if (gunthrow == true)
+        {
+            movect++;
+
+            //敵更新
+            for (std::unique_ptr<Enemy>& enemy : Stage1Enemy)
+            {
+                enemy->EnemyUpdate(player->GetPos());
+            }
+
+            for (std::unique_ptr<Wall>& wall : Stage1Walls)
+            {
+                wall->Update();
+            }
+
+            //プレイy－更新
+            player->Setoldpos(camera->GetEye());
+            player->SetoldTarget(camera->GetTarget());
+            camera->CurrentUpdate(player->GetVelocity());
+            camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+            player->SetTarget(camera->GetTarget());
+            player->SetPosition(camera->GetEye());
+            player->SetRotation(camera->GetRoatation());
+            player->PlayerUpdate(camera->GetTarget());
+            player->gunUpdate(camera->GetTarget(), camera->GetEye());
+            tutogun->Update();
+
+            //残弾数の取得
+            magazin = player->Getmagazin();
+            //銃を持っているか
+            have = player->Gethave();
+
+            if (movect >= 15)
+            {
+                gunthrow = false;
+                movect = 0;
+            }
+        }
+
+        timecount++;
 
         //弾がないとき
         if (magazin == 0 && have == true && input->PushclickLeft())
@@ -2025,16 +2064,52 @@ void GameScene::Update()
             }
         }
 
-        ////動いていない状態で銃を投げたら
-        //if (input->PushKey(DIK_Q) && !input->PushKey(DIK_SPACE))
-        //{
-        //    gunthrow = true;
-        //}
+        //動いていない状態で銃を投げたら
+        if (input->PushclickRight() && !input->PushclickLeft())
+        {
+            gunthrow = true;
+        }
 
-        //if (gunthrow == true)
-        //{
+        if (gunthrow == true)
+        {
+            movect++;
 
-        //}
+            //敵更新
+            for (std::unique_ptr<Enemy>& enemy : Stage2Enemy)
+            {
+                enemy->EnemyUpdate(player->GetPos());
+            }
+
+            for (std::unique_ptr<Wall>& wall : Stage3Walls)
+            {
+                wall->Update();
+            }
+
+            //プレイy－更新
+            player->Setoldpos(camera->GetEye());
+            player->SetoldTarget(camera->GetTarget());
+            camera->CurrentUpdate(player->GetVelocity());
+            camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+            player->SetTarget(camera->GetTarget());
+            player->SetPosition(camera->GetEye());
+            player->SetRotation(camera->GetRoatation());
+            player->PlayerUpdate(camera->GetTarget());
+            player->gunUpdate(camera->GetTarget(), camera->GetEye());
+            tutogun->Update();
+
+            //残弾数の取得
+            magazin = player->Getmagazin();
+            //銃を持っているか
+            have = player->Gethave();
+
+            if (movect >= 15)
+            {
+                gunthrow = false;
+                movect = 0;
+            }
+        }
+
+        timecount++;
 
         timecount++;
 
@@ -2175,6 +2250,9 @@ void GameScene::Update()
         player->gunUpdate(camera->GetTarget(), camera->GetEye());
         tutogun->Update();
 
+        //スプライト更新
+        crosshair->Update();
+
         //プレイヤーの銃のフラグ管理
         if (player->Gethave() == false)
         {
@@ -2222,7 +2300,7 @@ void GameScene::Update()
         }
 
         //動いていない状態で銃を投げたら
-        if (input->PushKey(DIK_Q) && !input->PushclickLeft())
+        if (input-> PushclickRight() && !input->PushclickLeft())
         {
             gunthrow = true;
         }
@@ -2406,6 +2484,9 @@ void GameScene::Update()
         player->gunUpdate(camera->GetTarget(), camera->GetEye());
         tutogun->Update();
 
+        //スプライト更新
+        crosshair->Update();
+
         //プレイヤーの銃のフラグ管理
         if (player->Gethave() == false)
         {
@@ -2416,13 +2497,13 @@ void GameScene::Update()
             tutogun->Sethave(false);
         }
 
-        //動いていない状態で攻撃したら
+        //動いていない状態で攻撃したら、攻撃フラグを立てる
         if (input->PushclickLeft() && !input->PushKey(DIK_Q))
         {
             //フラグをtrueにする
             attack = true;
         }
-
+        //フラグが立っていたら更新
         if (attack == true)
         {
             movect++;
@@ -2450,12 +2531,12 @@ void GameScene::Update()
             }
         }
 
-        //動いていない状態で銃を投げたら
-        if (input->PushKey(DIK_Q) && !input->PushclickLeft())
+        //動いていない状態で銃を投げたら、フラグを立てる
+        if (input->PushclickRight() && !input->PushclickLeft())
         {
             gunthrow = true;
         }
-
+        //フラグがたっていたら更新
         if (gunthrow == true)
         {
             movect++;
@@ -2815,16 +2896,6 @@ void GameScene::Draw()
 {
     // コマンドリストの取得
     ID3D12GraphicsCommandList* cmdList = dxCommon->GetCommandList();
-    //obj描画前処理
-    Object3d::PreDraw(dxCommon->GetCommandList());
-    //// スプライト描画前処理
-    //spriteCommon->PreDraw();
-
-    ////obj、スプライトの描画
-    ////tuto->Draw();
-    //crosshair->Draw();
-    //objの描画後処理
-    Object3d::PostDraw();
 
     //FBX描画
     if (scene==2)
@@ -2972,11 +3043,7 @@ void GameScene::Draw()
 
      if (scene == 0)
      {
-         //transEffect->PreDrawScene(cmdList);
-         //trans->Draw();
-         //transEffect->PostDrawScene(cmdList);
          transEffect->Draw(cmdList);
-
      }
 
      if (scene == 2)

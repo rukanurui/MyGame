@@ -51,7 +51,7 @@ void Enemy::EnemyUpdate(XMFLOAT3 playerpos)
 			Toenemy = XMVector3Normalize(Toenemy);
 
 			//“G‚Ì‘¬“x
-			Vel = Toenemy * 0.08f;
+			Vel = Toenemy * 0.48f;
 
 
 			XMMATRIX matScale, matRot, matTrans;
@@ -260,7 +260,7 @@ void Enemy::Attack(XMFLOAT3 playerpos)
 	//	position.z += callback.move.m128_f32[2];
 	//}
 
-	if (count >= 300)
+	if (count >= 180)
 	{
 		count = 0;
 
@@ -299,7 +299,7 @@ void Enemy::OnCollision(const CollisionInfo& info)
 {
 
 	//’e‚Æ“–‚½‚Á‚½Žž
-	if (info.collider->color==4)
+	if (info.collider->color == 4)
 	{
 
 	if (scale.x >= 0.01f)

@@ -51,6 +51,9 @@ public: //メンバ関数
 /// <returns>押されているか</returns>
 	bool PushclickLeft();
 
+	//右クリック
+	bool PushclickRight();
+
 	/// <summary>
 	/// マウスのトリガーをチェック
 	/// </summary>

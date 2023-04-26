@@ -146,6 +146,7 @@ private://ƒƒ“ƒo•Ï”
 	XMFLOAT2 movesize = { 800,300 };
 
 	XMFLOAT2 Effectsize{ 0,0 };
+	float transcount = 0;
 	
 
 	bool transfrag = true;

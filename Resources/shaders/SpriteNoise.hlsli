@@ -5,6 +5,7 @@ cbuffer cbuff0 : register(b0)
 	matrix mat;   // ‚R‚c•ÏŠ·s—ñ
 	float time;
 	float alpha;
+	float Move;
 };
 
 struct VSOutput

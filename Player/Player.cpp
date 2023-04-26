@@ -129,8 +129,6 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 
 	UpdateWorld();
 
-	
-
 
 	//’e‚Ì”­ŽË
 	if (input->PushclickLeft() && ctime <= 0 && magazin >= 1 && have == true)
@@ -159,7 +157,7 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 		magazin--;
 	}
 	//e‚ð“Š‚°‚é
-	if (input->TriggerKey(DIK_Q) && have==true)
+	if (input->PushclickRight() && have==true)
 	{
 		//’e‚Ì‘¬“x
 		const float bulspeed = 1.0f;
@@ -185,7 +183,7 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 		have = false;
 	}
 	//‹ßÚ
-	if (input->TriggerKey(DIK_SPACE) && have==false&&mctime<=0)
+	if (input->PushclickLeft() && have==false&&mctime<=0)
 	{
 		//’e‚Ì‘¬“x
 		const float bulspeed = 0.7f;

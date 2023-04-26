@@ -32,7 +32,8 @@ public:
         XMFLOAT4 color; // 色 (RGBA)
         XMMATRIX mat;   // ３Ｄ変換行列
         float time;
-        float alpha;
+        float alpha;//アルファ
+        float Move = 50.0f;//ブロックノイズの大きさ
     };
 
     static Sprite* Create(SpriteCommon* spriteCommon, UINT texNumber, XMFLOAT2 anchorpoint = { 0.5f,0.5f }, bool isFlipX = false, bool isFlipY = false);
