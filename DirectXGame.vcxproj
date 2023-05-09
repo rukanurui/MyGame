@@ -148,6 +148,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="2d\DebugText.cpp" />
     <ClCompile Include="2d\PostEffect.cpp" />
     <ClCompile Include="2d\Sprite.cpp" />
     <ClCompile Include="2d\SpriteCommon.cpp" />
@@ -156,30 +157,39 @@
     <ClCompile Include="3d\model.cpp" />
     <ClCompile Include="3d\Modelfbx.cpp" />
     <ClCompile Include="3d\Object3d.cpp" />
-    <ClCompile Include="Audio.cpp" />
-    <ClCompile Include="BaseCollider.cpp" />
-    <ClCompile Include="BoxCollider.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="ColisionInfo.cpp" />
-    <ClCompile Include="Collision.cpp" />
-    <ClCompile Include="CollisionManager.cpp" />
-    <ClCompile Include="CollisionPrimitive.cpp" />
-    <ClCompile Include="CollisionTypes.cpp" />
-    <ClCompile Include="DebugText.cpp" />
-    <ClCompile Include="DXCommon.cpp" />
-    <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="GameScene.cpp" />
-    <ClCompile Include="Input.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="pad.cpp" />
-    <ClCompile Include="PartEnemy.cpp" />
-    <ClCompile Include="Pbullet.cpp" />
-    <ClCompile Include="PlaneCollider.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="RayCastHit.cpp" />
-    <ClCompile Include="SphereCollider.cpp" />
-    <ClCompile Include="Wall.cpp" />
-    <ClCompile Include="WindowsApp.cpp" />
+    <ClCompile Include="3d\Wall.cpp" />
+    <ClCompile Include="Collider\BaseCollider.cpp" />
+    <ClCompile Include="Collider\BoxCollider.cpp" />
+    <ClCompile Include="Collider\ColisionInfo.cpp" />
+    <ClCompile Include="Collider\Collision.cpp" />
+    <ClCompile Include="Collider\CollisionManager.cpp" />
+    <ClCompile Include="Collider\CollisionPrimitive.cpp" />
+    <ClCompile Include="Collider\CollisionTypes.cpp" />
+    <ClCompile Include="Collider\PlaneCollider.cpp" />
+    <ClCompile Include="Collider\PlayerCol.cpp" />
+    <ClCompile Include="Collider\QueryCallback.cpp" />
+    <ClCompile Include="Collider\RayCastHit.cpp" />
+    <ClCompile Include="Collider\SphereCollider.cpp" />
+    <ClCompile Include="Enemy\Enemy.cpp" />
+    <ClCompile Include="Enemy\EnemyBullet.cpp" />
+    <ClCompile Include="Enemy\PartEnemy.cpp" />
+    <ClCompile Include="Engine\Audio.cpp" />
+    <ClCompile Include="Engine\Camera.cpp" />
+    <ClCompile Include="Engine\DXCommon.cpp" />
+    <ClCompile Include="Engine\Input.cpp" />
+    <ClCompile Include="Engine\main.cpp" />
+    <ClCompile Include="Engine\pad.cpp" />
+    <ClCompile Include="Engine\WindowsApp.cpp" />
+    <ClCompile Include="Player\melee.cpp" />
+    <ClCompile Include="Player\Pbullet.cpp" />
+    <ClCompile Include="Player\Player.cpp" />
+    <ClCompile Include="Player\PlayerGun.cpp" />
+    <ClCompile Include="Scene\BaseScene.cpp" />
+    <ClCompile Include="Scene\ClearScene.cpp" />
+    <ClCompile Include="Scene\GameScene.cpp" />
+    <ClCompile Include="Scene\SceneManager.cpp" />
+    <ClCompile Include="Scene\TitleScene.cpp" />
+    <ClCompile Include="Scene\TransEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="DirectXTex\DirectXTex_Desktop_2019_Win10.vcxproj">
@@ -237,6 +247,18 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
+    <FxCompile Include="Resources\shaders\SpriteNoisePS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\SpriteNoiseVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="Resources\shaders\SpritePS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
@@ -256,8 +278,10 @@
     <None Include="Resources\shaders\OBJShaderHeader.hlsli" />
     <None Include="Resources\shaders\PostEffect.hlsli" />
     <None Include="Resources\shaders\Sprite.hlsli" />
+    <None Include="Resources\shaders\SpriteNoise.hlsli" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="2d\DebugText.h" />
     <ClInclude Include="2d\PipelineSet.h" />
     <ClInclude Include="2d\PostEffect.h" />
     <ClInclude Include="2d\Sprite.h" />
@@ -267,30 +291,40 @@
     <ClInclude Include="3d\model.h" />
     <ClInclude Include="3d\Modelfbx.h" />
     <ClInclude Include="3d\Object3d.h" />
-    <ClInclude Include="Audio.h" />
-    <ClInclude Include="BaseCollider.h" />
-    <ClInclude Include="BoxCollider.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="ColisionInfo.h" />
-    <ClInclude Include="Collision.h" />
-    <ClInclude Include="CollisionColor.h" />
-    <ClInclude Include="CollisionManager.h" />
-    <ClInclude Include="CollisionPrimitive.h" />
-    <ClInclude Include="CollisionTypes.h" />
-    <ClInclude Include="DebugText.h" />
-    <ClInclude Include="DXCommon.h" />
-    <ClInclude Include="Enemy.h" />
-    <ClInclude Include="GameScene.h" />
-    <ClInclude Include="Input.h" />
-    <ClInclude Include="pad.h" />
-    <ClInclude Include="PartEnemy.h" />
-    <ClInclude Include="Pbullet.h" />
-    <ClInclude Include="PlaneCollider.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="RayCastHit.h" />
-    <ClInclude Include="SphereCollider.h" />
-    <ClInclude Include="Wall.h" />
-    <ClInclude Include="WindowsApp.h" />
+    <ClInclude Include="3d\Wall.h" />
+    <ClInclude Include="Collider\BaseCollider.h" />
+    <ClInclude Include="Collider\BoxCollider.h" />
+    <ClInclude Include="Collider\ColisionInfo.h" />
+    <ClInclude Include="Collider\Collision.h" />
+    <ClInclude Include="Collider\CollisionColor.h" />
+    <ClInclude Include="Collider\CollisionManager.h" />
+    <ClInclude Include="Collider\CollisionPrimitive.h" />
+    <ClInclude Include="Collider\CollisionTypes.h" />
+    <ClInclude Include="Collider\PlaneCollider.h" />
+    <ClInclude Include="Collider\PlayerCol.h" />
+    <ClInclude Include="Collider\QueryCallback.h" />
+    <ClInclude Include="Collider\RayCastHit.h" />
+    <ClInclude Include="Collider\SphereCollider.h" />
+    <ClInclude Include="Enemy\Enemy.h" />
+    <ClInclude Include="Enemy\EnemyBullet.h" />
+    <ClInclude Include="Enemy\PartEnemy.h" />
+    <ClInclude Include="Engine\Audio.h" />
+    <ClInclude Include="Engine\Camera.h" />
+    <ClInclude Include="Engine\DXCommon.h" />
+    <ClInclude Include="Engine\Input.h" />
+    <ClInclude Include="Engine\pad.h" />
+    <ClInclude Include="Engine\WindowsApp.h" />
+    <ClInclude Include="Player\melee.h" />
+    <ClInclude Include="Player\Pbullet.h" />
+    <ClInclude Include="Player\Player.h" />
+    <ClInclude Include="Player\PlayerGun.h" />
+    <ClInclude Include="Scene\BaseScene.h" />
+    <ClInclude Include="Scene\ClearScene.h" />
+    <ClInclude Include="Scene\GameoverScene.h" />
+    <ClInclude Include="Scene\GameScene.h" />
+    <ClInclude Include="Scene\SceneManager.h" />
+    <ClInclude Include="Scene\TitleScene.h" />
+    <ClInclude Include="Scene\TransEffect.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

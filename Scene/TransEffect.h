@@ -3,9 +3,9 @@
 #include <d3d12.h>
 #include <DirectXMath.h>
 #include "../2d/Sprite.h"
-#include "WindowsApp.h"
+#include "../Engine/WindowsApp.h"
 #include <d3dcompiler.h>
-#include "Input.h"
+#include "../Engine/Input.h"
 
 using namespace DirectX;
 using namespace Microsoft::WRL;

@@ -229,10 +229,10 @@ void Camera::CurrentUpdate(XMFLOAT3 vel)
 	if (input->PushKey(DIK_A) || input->PushKey(DIK_D))
 	{
 
-		if (input->PushKey(DIK_A)) Velocity.x = -0.5f;
+		if (input->PushKey(DIK_A)) Velocity.x = -0.3f;
 		else
 		{
-			if (input->PushKey(DIK_D)) Velocity.x = 0.5f;
+			if (input->PushKey(DIK_D)) Velocity.x = 0.3f;
 		}
 
 		XMVECTOR move = { Velocity.x,Velocity.y,0,0 };

@@ -9,21 +9,21 @@
 
 #include "WindowsApp.h"
 #include "DXCommon.h"
-#include "3d/Object3d.h"
-#include "3d/model.h"
-#include "2d/SpriteCommon.h"
-#include "2d/Sprite.h"
-#include"2d/PostEffect.h"
-#include"TransEffect.h"
-#include "DebugText.h"
+#include "../3d/Object3d.h"
+#include "../3d/model.h"
+#include "../2d/SpriteCommon.h"
+#include "../2d/Sprite.h"
+#include"../2d/PostEffect.h"
+#include"../scene/TransEffect.h"
+#include "../2d/DebugText.h"
 #include "Audio.h"
 
-#include "3d/FbxLoader.h"
+#include "../3d/FbxLoader.h"
 
-#include "GameScene.h"
-#include "TitleScene.h"
-#include "BaseScene.h"
-#include "SceneManager.h"
+#include "../scene/GameScene.h"
+#include "../scene/TitleScene.h"
+#include "../scene/BaseScene.h"
+#include "../scene/SceneManager.h"
 
 
 

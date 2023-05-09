@@ -4,30 +4,30 @@
 
 #define DIRECTINPUT_VERSION     0x0800   // DirectInputのバージョン指定
 
-#include "Input.h"
+#include "../Engine/Input.h"
 
-#include "WindowsApp.h"
-#include "DXCommon.h"
+#include "../Engine/WindowsApp.h"
+#include "../Engine/DXCommon.h"
 
-#include "3d/Object3d.h"
-#include "3d/model.h"
-#include "2d/SpriteCommon.h"
-#include "2d/Sprite.h"
-#include"2d/PostEffect.h"
-#include "DebugText.h"
-#include "Audio.h"
+#include "../3d/Object3d.h"
+#include "../3d/model.h"
+#include "../2d/SpriteCommon.h"
+#include "../2d/Sprite.h"
+#include"../2d/PostEffect.h"
+#include "../2d/DebugText.h"
+#include "../Engine/Audio.h"
 
 #include "fbxsdk.h"
-#include "3d/FbxLoader.h"
-#include "3d/FBXobj3d.h"
-#include "3d/Modelfbx.h"
+#include "../3d/FbxLoader.h"
+#include "../3d/FBXobj3d.h"
+#include "../3d/Modelfbx.h"
 
-#include "Camera.h"
-#include"Player/Player.h"
-#include"Collider/PlayerCol.h"
+#include "../Engine/Camera.h"
+#include"../Player/Player.h"
+#include"../Collider/PlayerCol.h"
 
-#include"Enemy/Enemy.h"
-#include"Wall.h"
+#include"../Enemy/Enemy.h"
+#include"../3d/Wall.h"
 
 #include <memory>
 #include <list>
@@ -95,6 +95,7 @@ public://メンバ関数
 	const int& GetScene() { return scene; }
 	const int& GettutoScene() { return tutoscene; }
 	void SetScene(int scene) { this->scene = scene; }
+
 	//シーン遷移処理
 	void transrationScene();
 	//残弾数のgetter
@@ -139,6 +140,8 @@ private://メンバ変数
 	Sprite* tutogunpick2 = nullptr;
 	Sprite* noammo = nullptr;
 	Sprite* trans = nullptr;
+	Sprite* tutostage3 = nullptr;
+	Sprite* tutothrow = nullptr;
 	TransEffect* transEffect = nullptr;
 
 	XMFLOAT3 spritepos{ WindowsApp::window_width / 2 ,WindowsApp::window_height / 2,0 };
@@ -243,7 +246,12 @@ private://メンバ変数
 
 	//シーン
 	float timecount = 0;//時間管理酔う変数
+	//現在のシーン
 	int scene = 0;
+	//死んだときのシーン
+	int diescene = 0;
+	//クリアしたシーン
+	int clearscene = 0;
 	int tutoscene = 0;
 	int goflag = 0;
 	

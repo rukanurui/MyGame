@@ -1,6 +1,6 @@
 #pragma once
 #include "DebugText.h"
-#include "2d/Sprite.h"
+#include "Sprite.h"
 #include <string>
 #include <Windows.h>
 

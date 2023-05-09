@@ -4,9 +4,9 @@
 #include <DirectXMath.h>
 #include "SpriteCommon.h"
 #include "Sprite.h"
-#include "../WindowsApp.h"
+#include "../Engine/WindowsApp.h"
 #include <d3dcompiler.h>
-#include "../Input.h"
+#include "../Engine/Input.h"
 
 using namespace DirectX;
 using namespace Microsoft::WRL;

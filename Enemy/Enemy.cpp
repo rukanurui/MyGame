@@ -51,7 +51,7 @@ void Enemy::EnemyUpdate(XMFLOAT3 playerpos)
 			Toenemy = XMVector3Normalize(Toenemy);
 
 			//“G‚Ì‘¬“x
-			Vel = Toenemy * 0.48f;
+			Vel = Toenemy * 0.3f;
 
 
 			XMMATRIX matScale, matRot, matTrans;
@@ -129,6 +129,17 @@ void Enemy::EnemyUpdate(XMFLOAT3 playerpos)
 	//€–S‚µ‚Ä‚¢‚½‚ç
 	if (col==true)
 	{
+
+		for (std::unique_ptr<Enemybullet>& bullet : bullets)
+		{
+			bullet->Sethit(true);
+		}
+
+		//’e‚Ìíœ
+		bullets.remove_if([](std::unique_ptr<Enemybullet>& bullet) {
+			return bullet->Gethit();
+			});
+
 		//20ŒÂ‚Ü‚Åparticle¶¬
 		if (partcount <= partnum)
 		{
@@ -146,7 +157,7 @@ void Enemy::EnemyUpdate(XMFLOAT3 playerpos)
 		}
 
 		//particle‚ÌXV
-		if (parttimer<=150)
+		if (parttimer <= 60)
 		{
 			for (std::unique_ptr<PartEnemy>& part : particle)
 			{
@@ -260,12 +271,12 @@ void Enemy::Attack(XMFLOAT3 playerpos)
 	//	position.z += callback.move.m128_f32[2];
 	//}
 
-	if (count >= 180)
+	if (count >= 120)
 	{
 		count = 0;
 
 		//’e‚Ì‘¬“x
-		const float bulspeed = 0.5f;
+		const float bulspeed = 0.4f;
 		XMVECTOR Velocity{ 0,0,bulspeed };
 
 		//Velocity={ target.x - position.x, target.y - position.y, target.z - position.z };
@@ -306,6 +317,8 @@ void Enemy::OnCollision(const CollisionInfo& info)
 	{
 		scale.x = 0.0f; scale.y = 0.0f; scale.z = 0.0f;
 	}
+
+	collider->RemoveColor(8);
 
 	col = true;
 

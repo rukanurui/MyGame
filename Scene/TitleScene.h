@@ -1,12 +1,12 @@
 #pragma once
 
 #include"BaseScene.h"
-#include "Input.h"
-#include "DXCommon.h"
-#include "2d/SpriteCommon.h"
-#include "2d/Sprite.h"
-#include "WindowsApp.h"
-#include "Audio.h"
+#include "../Engine/Input.h"
+#include "../Engine/DXCommon.h"
+#include "../2d/SpriteCommon.h"
+#include "../2d/Sprite.h"
+#include "../Engine/WindowsApp.h"
+#include "../Engine/Audio.h"
 #include "GameScene.h"
 #include <vector>
 

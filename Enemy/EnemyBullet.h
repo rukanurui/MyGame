@@ -18,6 +18,8 @@ public:
 
 	const bool& Gethit() { return dead; }
 
+	void Sethit(bool hit) { this->dead = hit; }
+
 private:
 
 	//‘¬“x

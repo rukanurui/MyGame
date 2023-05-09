@@ -16,103 +16,175 @@
     <Filter Include="シェーダーファイル">
       <UniqueIdentifier>{7e5584a5-2895-4181-9eaf-f65622106b57}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Player">
+      <UniqueIdentifier>{9b989056-6db9-47aa-981f-3f38b5d6aab8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\2d">
+      <UniqueIdentifier>{4bc250c6-6e8d-49a1-ba0a-b122fc998f03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\3d">
+      <UniqueIdentifier>{42c37775-7be8-46e8-b6df-1611c4278b1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Collider">
+      <UniqueIdentifier>{9327473a-2ffe-4b55-a46b-46a9ca6daafe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Scene">
+      <UniqueIdentifier>{6c4f9aff-43e6-479c-b0a5-fa1481cbbcd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Enemy">
+      <UniqueIdentifier>{23840f20-7665-4c30-b3e8-425d0d86d7cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Enemy">
+      <UniqueIdentifier>{de6813c0-0ed4-43ef-aae2-0d7441c75f08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\2d">
+      <UniqueIdentifier>{314a5d9f-1ef1-4560-9de7-512bc906d26b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\3d">
+      <UniqueIdentifier>{6372dc6d-4f45-4a8d-b9e1-c3e1b0f7cc21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Scene">
+      <UniqueIdentifier>{f46c9638-f437-4050-8a9d-1ad2db86e6da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Player">
+      <UniqueIdentifier>{902c8330-2930-4438-b2c6-2fb5c3436e2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\DirectX">
+      <UniqueIdentifier>{250a9604-63c3-4536-9fed-81aac0c96449}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\DirectX">
+      <UniqueIdentifier>{c2df51e9-a596-4fec-b427-8372dccaecff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Collider">
+      <UniqueIdentifier>{7beb09f0-5b98-4068-9cff-9faea086fc9c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="Collider\BaseCollider.cpp">
+      <Filter>ソース ファイル\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="Collider\BoxCollider.cpp">
+      <Filter>ソース ファイル\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="WindowsApp.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="Collider\ColisionInfo.cpp">
+      <Filter>ソース ファイル\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="DXCommon.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="Collider\Collision.cpp">
+      <Filter>ソース ファイル\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="DebugText.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="Collider\CollisionManager.cpp">
+      <Filter>ソース ファイル\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="Audio.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="Collider\CollisionPrimitive.cpp">
+      <Filter>ソース ファイル\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="Collider\CollisionTypes.cpp">
+      <Filter>ソース ファイル\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="2d\PostEffect.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="Enemy\Enemy.cpp">
+      <Filter>ソース ファイル\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="2d\Sprite.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="2d\SpriteCommon.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="GameScene.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="pad.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Pbullet.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="BaseCollider.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="ColisionInfo.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CollisionPrimitive.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="Enemy\EnemyBullet.cpp">
+      <Filter>ソース ファイル\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="3d\FbxLoader.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\3d</Filter>
     </ClCompile>
     <ClCompile Include="3d\fbxobj3d.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\melee.cpp">
+      <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
     <ClCompile Include="3d\model.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\3d</Filter>
     </ClCompile>
     <ClCompile Include="3d\Modelfbx.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\3d</Filter>
     </ClCompile>
     <ClCompile Include="3d\Object3d.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\3d</Filter>
     </ClCompile>
-    <ClCompile Include="SphereCollider.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="Enemy\PartEnemy.cpp">
+      <Filter>ソース ファイル\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionTypes.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="Player\Pbullet.cpp">
+      <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionManager.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="Collider\PlaneCollider.cpp">
+      <Filter>ソース ファイル\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="RayCastHit.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="Player\Player.cpp">
+      <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Collision.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="Collider\PlayerCol.cpp">
+      <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
-    <ClCompile Include="PlaneCollider.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="Player\PlayerGun.cpp">
+      <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
-    <ClCompile Include="BoxCollider.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="2d\PostEffect.cpp">
+      <Filter>ソース ファイル\2d</Filter>
     </ClCompile>
-    <ClCompile Include="Wall.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="Collider\QueryCallback.cpp">
+      <Filter>ソース ファイル\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="PartEnemy.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="Collider\RayCastHit.cpp">
+      <Filter>ソース ファイル\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider\SphereCollider.cpp">
+      <Filter>ソース ファイル\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="2d\Sprite.cpp">
+      <Filter>ソース ファイル\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="2d\SpriteCommon.cpp">
+      <Filter>ソース ファイル\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="3d\Wall.cpp">
+      <Filter>ソース ファイル\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="2d\DebugText.cpp">
+      <Filter>ソース ファイル\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\BaseScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\ClearScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\GameScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\SceneManager.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\TitleScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\TransEffect.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Audio.cpp">
+      <Filter>ソース ファイル\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Camera.cpp">
+      <Filter>ソース ファイル\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\DXCommon.cpp">
+      <Filter>ソース ファイル\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Input.cpp">
+      <Filter>ソース ファイル\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\main.cpp">
+      <Filter>ソース ファイル\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\pad.cpp">
+      <Filter>ソース ファイル\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\WindowsApp.cpp">
+      <Filter>ソース ファイル\DirectX</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -146,6 +218,12 @@
     <FxCompile Include="Resources\shaders\PostEffectVS.hlsl">
       <Filter>シェーダーファイル</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\shaders\SpriteNoisePS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\SpriteNoiseVS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Sprite.hlsli">
@@ -163,106 +241,142 @@
     <None Include="Resources\shaders\PostEffect.hlsli">
       <Filter>シェーダーファイル</Filter>
     </None>
+    <None Include="Resources\shaders\SpriteNoise.hlsli">
+      <Filter>シェーダーファイル</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Input.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="Collider\BaseCollider.h">
+      <Filter>ヘッダー ファイル\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="WindowsApp.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="Collider\BoxCollider.h">
+      <Filter>ヘッダー ファイル\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="DXCommon.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="Collider\ColisionInfo.h">
+      <Filter>ヘッダー ファイル\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="DebugText.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="Collider\Collision.h">
+      <Filter>ヘッダー ファイル\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="Audio.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="Collider\CollisionColor.h">
+      <Filter>ヘッダー ファイル\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="Collider\CollisionManager.h">
+      <Filter>ヘッダー ファイル\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="2d\PostEffect.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="Collider\CollisionPrimitive.h">
+      <Filter>ヘッダー ファイル\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="2d\Sprite.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="Collider\CollisionTypes.h">
+      <Filter>ヘッダー ファイル\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="2d\SpriteCommon.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="Enemy\Enemy.h">
+      <Filter>ヘッダー ファイル\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="2d\PipelineSet.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameScene.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="pad.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Pbullet.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseCollider.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="ColisionInfo.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CollisionPrimitive.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="Enemy\EnemyBullet.h">
+      <Filter>ヘッダー ファイル\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="3d\FbxLoader.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\3d</Filter>
     </ClInclude>
     <ClInclude Include="3d\fbxobj3d.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\melee.h">
+      <Filter>ヘッダー ファイル\Player</Filter>
     </ClInclude>
     <ClInclude Include="3d\model.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\3d</Filter>
     </ClInclude>
     <ClInclude Include="3d\Modelfbx.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\3d</Filter>
     </ClInclude>
     <ClInclude Include="3d\Object3d.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\3d</Filter>
     </ClInclude>
-    <ClInclude Include="SphereCollider.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="Enemy\PartEnemy.h">
+      <Filter>ヘッダー ファイル\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionTypes.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="Player\Pbullet.h">
+      <Filter>ヘッダー ファイル\Player</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionManager.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="2d\PipelineSet.h">
+      <Filter>ヘッダー ファイル\2d</Filter>
     </ClInclude>
-    <ClInclude Include="Collision.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="Collider\PlaneCollider.h">
+      <Filter>ヘッダー ファイル\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="RayCastHit.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="Player\Player.h">
+      <Filter>ヘッダー ファイル\Player</Filter>
     </ClInclude>
-    <ClInclude Include="PlaneCollider.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="Collider\PlayerCol.h">
+      <Filter>ヘッダー ファイル\Player</Filter>
     </ClInclude>
-    <ClInclude Include="BoxCollider.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="Player\PlayerGun.h">
+      <Filter>ヘッダー ファイル\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Wall.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="2d\PostEffect.h">
+      <Filter>ヘッダー ファイル\2d</Filter>
     </ClInclude>
-    <ClInclude Include="PartEnemy.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="Collider\QueryCallback.h">
+      <Filter>ヘッダー ファイル\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionColor.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="Collider\RayCastHit.h">
+      <Filter>ヘッダー ファイル\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider\SphereCollider.h">
+      <Filter>ヘッダー ファイル\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="2d\Sprite.h">
+      <Filter>ヘッダー ファイル\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="2d\SpriteCommon.h">
+      <Filter>ヘッダー ファイル\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="2d\DebugText.h">
+      <Filter>ヘッダー ファイル\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\TransEffect.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\TitleScene.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneManager.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\GameScene.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\ClearScene.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\GameoverScene.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\BaseScene.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="3d\Wall.h">
+      <Filter>ヘッダー ファイル\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Audio.h">
+      <Filter>ヘッダー ファイル\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Camera.h">
+      <Filter>ヘッダー ファイル\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\DXCommon.h">
+      <Filter>ヘッダー ファイル\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Input.h">
+      <Filter>ヘッダー ファイル\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\pad.h">
+      <Filter>ヘッダー ファイル\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\WindowsApp.h">
+      <Filter>ヘッダー ファイル\DirectX</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

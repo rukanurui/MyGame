@@ -5,7 +5,7 @@
 #include <DirectXMath.h>
 #include <d3dx12.h>
 #include "Modelfbx.h"
-#include "../Camera.h"
+#include "../Engine/Camera.h"
 #include "FbxLoader.h"
 #include "fbxsdk.h"
 #include <string>

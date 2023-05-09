@@ -1,10 +1,10 @@
 #pragma once
-#include "Input.h"
-#include "DXCommon.h"
-#include "2d/SpriteCommon.h"
-#include "2d/Sprite.h"
-#include "WindowsApp.h"
-#include "Audio.h"
+#include "../Engine/input.h"
+#include "../Engine/DXCommon.h"
+#include "../2d/SpriteCommon.h"
+#include "../2d/Sprite.h"
+#include "../Engine/WindowsApp.h"
+#include "../Engine/Audio.h"
 
 class SceneManager;
 

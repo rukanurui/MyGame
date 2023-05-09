@@ -1,0 +1,28 @@
+diff a/GameScene.cpp b/GameScene.cpp	(rejected hunks)
+@@ -36,25 +36,25 @@
+     debugText = new DebugText();
+     // �f�o�b�O�e�L�X�g�p�̃e�N�X�`���ԍ���w��
+     const int debugTextTexNumber = 2;
+     // �f�o�b�O�e�L�X�g�p�̃e�N�X�`���ǂݍ���
+     spriteCommon->LoadTexture(debugTextTexNumber, L"Resources/debugfont.png");
+     // �f�o�b�O�e�L�X�g������
+     debugText->Initialize(spriteCommon, debugTextTexNumber);
+ 
+     // �X�v���C�g���ʃe�N�X�`���ǂݍ���
+     spriteCommon->LoadTexture(0, L"Resources/texture.png");
+     spriteCommon->LoadTexture(1, L"Resources/house.png");
+     spriteCommon->LoadTexture(3, L"Resources/tuto.png");
+-    spriteCommon->LoadTexture(4, L"Resources/1432.png");
++    //spriteCommon->LoadTexture(4, L"Resources/1432.png");
+ 
+     
+     //�X�v���C�g�̐���
+     //Sprite* tuto = Sprite::Create(spriteCommon, 3);
+     //tuto->SetPosition({ 0,0,0 });
+     //tuto->SetRotation({ (float)(rand() % 360) });
+     //tuto->SetSize({ (float)(rand() % 400), (float)(rand() % 100) });
+     //tuto->TransferVertexBuffer();
+ 
+     //Sprite* tex = Sprite::Create(spriteCommon, 1);
+     //tex->SetPosition({ 100,100,0 });
+     //tex->SetRotation({ (float)(rand() % 360) });

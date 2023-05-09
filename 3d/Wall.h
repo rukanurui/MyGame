@@ -1,7 +1,7 @@
 #pragma once
-#include"3d/fbxobj3d.h"
-#include"Collider/BoxCollider.h"
-#include"Collider/CollisionColor.h"
+#include"fbxobj3d.h"
+#include"../Collider/BoxCollider.h"
+#include"../Collider/CollisionColor.h"
 
 class Wall : public FBXobj3d
 {
