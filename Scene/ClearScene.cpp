@@ -4,7 +4,7 @@
 void ClearScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, SpriteCommon* spritecommon, WindowsApp* windows)
 {
     //ポインタ置き場
-    /*this->dxCommon = dxcommon;
+    this->dxCommon = dxcommon;
     this->input = input;
     this->spriteCommon = spritecommon;
     this->Windows = windows;
@@ -14,9 +14,10 @@ void ClearScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Spri
 
     spriteCommon->LoadTexture(4, L"Resources/clear.png");
 
+
     clear = Sprite::Create(spriteCommon, 4);
     clear->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
-    clear->TransferVertexBuffer();*/
+    clear->TransferVertexBuffer();
 }
 
 void ClearScene::Update()
@@ -46,6 +47,7 @@ void ClearScene::Update()
         clear->SetSize(spritesize);
         clear->TransferVertexBuffer();
         clear->Update();
+
         if (input->TriggerKey(DIK_SPACE))
         {
             spritesize = { 1280,720 };

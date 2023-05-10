@@ -24,7 +24,7 @@ void TitleScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Spri
 
 void TitleScene::Update()
 {
-    if (titleflag==true)
+    if (titleflag == true)
     {
         if (spritesize.x >= 1280)
         {
@@ -59,6 +59,9 @@ void TitleScene::Update()
             BaseScene* scene = new GameScene();
             //シーン切り替え
             sceneManager->NextScene(scene);
+            //現在のプレイ中シーンを渡す
+            sceneManager->SetplayScene(nowscene);
+
         }
     }
    

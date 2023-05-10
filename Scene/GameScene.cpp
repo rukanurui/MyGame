@@ -1172,10 +1172,6 @@ void GameScene::SwapWallDataS3()
 
 void GameScene::SwapEnemyDataS4() {
 
-    //csvにステージ指定のコマンド入れる
-    //読み取ってステージごとにpushback変更する
-
-
     //1行分の文字列を入れる変数
     std::string line;
 
@@ -1191,6 +1187,7 @@ void GameScene::SwapEnemyDataS4() {
     //敵のlist追加
     std::unique_ptr<Enemy>newenemy = std::make_unique<Enemy>();
     newenemy->Initialize();
+
 
 
     //コマンド実行ループ
@@ -1462,20 +1459,22 @@ void GameScene::Update()
     camera->SetmouseY(CurretmouseY);
 
     //タイトルからのシーン遷移
-    if (scene==0)
+    if (scene == 0)
     {
        
         transcount +=1.0f;
 
         if (transcount >= 120.0f)
         {
-            scene = 6;
+            scene = 2;
             transrationScene();
             transcount = 0.0f;
             transfrag = true;
         }
         
     }
+
+   
 
     //チュートリアル
     if (scene == 1)
@@ -1502,6 +1501,7 @@ void GameScene::Update()
     //ステージ１
     if (scene == 2)
     {
+
         //描画のためにカメラの更新処理を一回呼び出す
         if (firstfrag == 1)
         {
@@ -1536,7 +1536,7 @@ void GameScene::Update()
             }
 
             wait++;
-            if (wait >= 180 && input->PushKey(DIK_W) || input->PushKey(DIK_A) || input->PushKey(DIK_S) || input->PushKey(DIK_D))
+            if (wait >= 60 && input->PushKey(DIK_W) || input->PushKey(DIK_A) || input->PushKey(DIK_S) || input->PushKey(DIK_D))
             {
                 tutoscene = 1;
                 wait = 0;
@@ -1557,7 +1557,7 @@ void GameScene::Update()
                 spritesize.y -= 1.0f;
             }
             wait++;
-            if (wait >= 120)
+            if (wait >= 60)
             {
                 tutoscene = 2;
                 spritesize = { 1280,720 };
@@ -1890,7 +1890,7 @@ void GameScene::Update()
     //ステージ２
     if (scene == 5)
     {
-
+        
         //描画のためにカメラの更新処理を一回呼び出す
         if (firstfrag == 0)
         {
@@ -1914,7 +1914,7 @@ void GameScene::Update()
             }
 
             wait++;
-            if (wait >= 120)
+            if (wait >= 60)
             {
                 tutoscene = 4;
                 spritesize = { 1280,720 };
@@ -1936,7 +1936,7 @@ void GameScene::Update()
                 spritesize.y -= 1.0f;
             }
             wait++;
-            if (wait >= 120)
+            if (wait >= 60)
             {
                 tutoscene = 5;
                 spritesize = { 1280,720 };
@@ -2248,7 +2248,7 @@ void GameScene::Update()
     //ステージ3
     if (scene == 6)
     {
-
+       
         //描画のためにカメラの更新処理を一回呼び出す
         if (firstfrag == 0)
         {
@@ -2301,11 +2301,11 @@ void GameScene::Update()
 
             if (transfrag == true)
             {
-                spritesize.x -= 1.0f;
-                spritesize.y -= 1.0f;
+                spritesize.x -= 2.0f;
+                spritesize.y -= 2.0f;
             }
             wait++;
-            if (wait >= 120)
+            if (wait >= 60)
             {
                 tutoscene = 7;
                 spritesize = { 1280,720 };
@@ -3067,6 +3067,15 @@ void GameScene::Update()
 
             if (input->PushKey(DIK_SPACE))
             {
+                transcount += 1.0f;
+
+                if (transcount >= 120.0f)
+                {
+                    scene = 5;
+                    transrationScene();
+                    transcount = 0.0f;
+                    transfrag = true;
+                }
                 scene = 5;
                 tutoscene = 3;
                 transrationScene();
@@ -3318,10 +3327,13 @@ void GameScene::Draw()
      //スプライト描画前処理
      spriteCommon->PreDraw();
 
+     //シーン切り替え処理
      if (scene == 0)
      {
          transEffect->Draw(cmdList);
      }
+
+
 
      if (scene == 2)
      {
@@ -3375,47 +3387,6 @@ void GameScene::SpriteDraw()
     {
         crosshair->Draw();
     }
-}
-
-void GameScene::restart()
-{
-  
-
-    firstfrag = 1;
-
-    //プレイヤー関連処理
-   /* ballet->SetPosition({ 500.0f,5.0f,0.0f });
-    ballet->SetScale({ 0.01f,0.01f,0.01f });
-    ballet->SetModel(modelballet);
-   
-    ballet->BulInitialize();*/
-
-    player->Initialize();
-    
-    player->PlayerInitialize(this->input);
-    player->SetPosition({ 0,4,0 });
-    player->SetTarget({ 0,4,0 });
-    player->sethit(0);
-
-
-    XMFLOAT3 eyepos{ 0.0f, 4.0f, 0.0f };
-    camera->SetEye(eyepos);
-    camera->SetTarget(eyepos);
-
-    //camera->CurrentUpdate();
-    camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-   
-
-
-    //敵関連処理
-   
-
-    //FBX更新
-    player->BulUpdate();
-    backsphere->Update();
-
-
-
 }
 
 void GameScene::transrationScene()

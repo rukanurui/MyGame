@@ -57,5 +57,7 @@ private:
 	//今のシーンがタイトルかどうか
 	bool titleflag = true;
 
+	int nowscene = 0;
+
 };
 

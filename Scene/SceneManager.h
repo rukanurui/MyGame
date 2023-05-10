@@ -14,6 +14,8 @@ public:
 	void Initialize(DXCommon* dxcommon, Input* input, Audio* audio, SpriteCommon* spritecommon, WindowsApp* windows);
 	//シーン切り替え
 	void NextScene(BaseScene* nextScene) { nextscene = nextScene;}
+	//シーン設定
+	void SetplayScene(int scene) { playscene = scene; }
 	//更新
 	void Update();
 	//描画
@@ -32,6 +34,9 @@ private:
 	BaseScene* nextscene = nullptr;
 
 	bool transfrag = true;
+
+	//どのステージをプレイしているか
+	int playscene = 0;
 
 	
 };

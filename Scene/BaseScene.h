@@ -24,6 +24,10 @@ public:
 
 	virtual void SetSceneManager(SceneManager* SceneManager) { sceneManager = SceneManager; }
 
+	virtual void SetSlayScene(int scene) { playscene = scene; };
+
+	const int& GetPlayScene() { return playscene; }
+
 private:
 	WindowsApp* Windows = nullptr;
 	Input* input = nullptr;
@@ -33,5 +37,8 @@ private:
 protected:
 	//シーンマネージャー(借りてくる)
 	SceneManager* sceneManager = nullptr;
+
+	//どのステージをプレイしているか
+	int playscene = 0;
 };
 

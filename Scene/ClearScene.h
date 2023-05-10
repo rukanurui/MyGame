@@ -52,7 +52,7 @@ private:
 	float spriteangle = 0;
 	bool overfrag = true;
 	int wait = 0;
-
+	int nowscene = 4;
 
 };
 

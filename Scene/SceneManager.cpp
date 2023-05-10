@@ -35,6 +35,7 @@ void SceneManager::Update()
 		scene->Initialize(dxCommon,input,audio,spriteCommon,Windows);
 
 		
+
 		
 	}
 

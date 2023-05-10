@@ -58,7 +58,6 @@ private:
 	std::list<std::unique_ptr<Enemybullet>> bullets;
 	std::list<std::unique_ptr<PartEnemy>> particle;
 	
-	//boolに変更する
 	//当たったかのフラグ
 	bool col = false;
 	bool death = false;
@@ -82,11 +81,6 @@ private:
 
 	//弾を打つ敵かどうか
 	bool Shot;
-
-	//敵が少し待って出てくるか
-	bool wait = false;
-	//敵の発生までの待機時間
-	int spawnwait = 0;
 
 	//弾のクールタイム
 	float count=0;
