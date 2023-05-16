@@ -1,6 +1,12 @@
 #include "TitleScene.h"
 #include"SceneManager.h"
 
+class GameScene;
+
+template<>
+BaseScene* BaseScene::makeScene<TitleScene>() {
+    return new TitleScene();
+}
 
 void TitleScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, SpriteCommon* spritecommon, WindowsApp* windows)
 {
@@ -18,7 +24,6 @@ void TitleScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Spri
     title = Sprite::Create(spriteCommon, 2);
     title->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
     title->TransferVertexBuffer();
-
 
 }
 
@@ -52,15 +57,17 @@ void TitleScene::Update()
         title->Update();
         if (input->TriggerKey(DIK_SPACE))
         {
+            playscene = 2;
             spritesize = { 1280,720 };
             transfrag = true;
             titleflag = false;
             //次のシーンを生成
-            BaseScene* scene = new GameScene();
+            
+            BaseScene* scene = makeScene<GameScene>();
             //シーン切り替え
             sceneManager->NextScene(scene);
-            //現在のプレイ中シーンを渡す
-            sceneManager->SetplayScene(nowscene);
+            //現在のプレイ中シーンをシーンマネージャーに渡す
+            sceneManager->SetplayScene(playscene);
 
         }
     }

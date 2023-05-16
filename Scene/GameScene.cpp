@@ -12,6 +12,16 @@
 
 using namespace DirectX;
 
+class ClearScene;
+class GameoverScene;
+
+
+template<>
+BaseScene* BaseScene::makeScene<GameScene>() {
+    return new GameScene();
+}
+
+
 void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, SpriteCommon* spritecommon,WindowsApp*windows)
 {
     //ポインタ置き場
@@ -37,9 +47,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
 
     // スプライト共通テクスチャ読み込み
     spriteCommon->LoadTexture(1, L"Resources/1432.png");
-    //spriteCommon->LoadTexture(2, L"Resources/title.png");
-    spriteCommon->LoadTexture(3, L"Resources/gameover.png");
-    spriteCommon->LoadTexture(4, L"Resources/clear.png");
+    //spriteCommon->LoadTexture(3, L"Resources/gameover.png");
     spriteCommon->LoadTexture(5, L"Resources/tutomove.png");
     spriteCommon->LoadTexture(6, L"Resources/tutomouse.png");
     spriteCommon->LoadTexture(7, L"Resources/tutoshot.png");
@@ -60,13 +68,9 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     crosshair->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
     crosshair->TransferVertexBuffer();
 
-    gameover = Sprite::Create(spriteCommon, 3);
+    /*gameover = Sprite::Create(spriteCommon, 3);
     gameover->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
-    gameover->TransferVertexBuffer();
-
-    clear = Sprite::Create(spriteCommon, 4);
-    clear->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
-    clear->TransferVertexBuffer();
+    gameover->TransferVertexBuffer();*/
 
     tutomove = Sprite::Create(spriteCommon, 5);
     tutomove->SetPosition({ WindowsApp::window_width / 2,600,0 });
@@ -132,7 +136,6 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     FBXobj3d::CreateGraphicsPipeline();
     //file読み込み
     
-    //model1 = FbxLoader::GetInstance()->LoadModelFromFile("boneTest");
     model2 = FbxLoader::GetInstance()->LoadModelFromFile("testfbx");
     modelfloor = FbxLoader::GetInstance()->LoadModelFromFile("floor");
     modelwall = FbxLoader::GetInstance()->LoadModelFromFile("colorwall");
@@ -1458,48 +1461,23 @@ void GameScene::Update()
     camera->SetmouseX(CurretmouseX);
     camera->SetmouseY(CurretmouseY);
 
-    //タイトルからのシーン遷移
-    if (scene == 0)
+
+    if (transscene==false)
     {
-       
-        transcount +=1.0f;
+        transcount += 1.0f;
 
         if (transcount >= 120.0f)
         {
-            scene = 2;
             transrationScene();
             transcount = 0.0f;
-            transfrag = true;
+            transscene = true;
         }
-        
-    }
-
-   
-
-    //チュートリアル
-    if (scene == 1)
-    {
-
-         //描画のためにカメラの更新処理を一回呼び出す
-        if (firstfrag == 0)
-        {
-            camera->CurrentUpdate(player->GetVelocity());
-            camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-
-            firstfrag = 1;
-        }
-
-        floor->Update();
-        player->BulUpdate();
-        backsphere->Update();
-       
-
     }
 
 
     //ゲーム本編
     //ステージ１
-    if (scene == 2)
+    if (playscene == 2 && transscene==true)
     {
 
         //描画のためにカメラの更新処理を一回呼び出す
@@ -1861,8 +1839,12 @@ void GameScene::Update()
         //プレイヤーに敵が当たったらシーン遷移
         if (player->Gethit() == 1)
         {
-            scene = 3;//ゲームオーバー
-            diescene = 2;
+            //次のシーンを生成
+            BaseScene* scene = makeScene<GameoverScene>();
+            //シーン切り替え
+            sceneManager->NextScene(scene);
+            //現在のプレイ中シーンをシーンマネージャーに渡す
+            sceneManager->SetplayScene(playscene);
         }
 
         //パーティクル出し終わったらリスト削除
@@ -1881,14 +1863,19 @@ void GameScene::Update()
         //敵全員倒したらクリア
         if (Stage1Enemy.size()==0)
         {
-            scene = 4;//クリア
-            clearscene = 2;
+            //次のシーンを生成
+            BaseScene* scene = makeScene<ClearScene>();
+            //シーン切り替え
+            sceneManager->NextScene(scene);
+            //現在のプレイ中シーンをシーンマネージャーに渡す
+            sceneManager->SetplayScene(playscene);
+
         }
 
     }
 
     //ステージ２
-    if (scene == 5)
+    if (playscene == 5 && transscene == true)
     {
         
         //描画のためにカメラの更新処理を一回呼び出す
@@ -2222,8 +2209,12 @@ void GameScene::Update()
         //プレイヤーに敵が当たったらシーン遷移
         if (player->Gethit() == 1)
         {
-            scene = 3;//ゲームオーバー
-            diescene = 5;
+            //次のシーンを生成
+            BaseScene* scene = makeScene<GameoverScene>();
+            //シーン切り替え
+            sceneManager->NextScene(scene);
+            //現在のプレイ中シーンをシーンマネージャーに渡す
+            sceneManager->SetplayScene(playscene);
         }
 
         Stage2Enemy.remove_if([](std::unique_ptr<Enemy>& enemy) {
@@ -2238,15 +2229,20 @@ void GameScene::Update()
             }
         }
 
+        //敵が全員いなくなったら
         if (Stage2Enemy.size() == 0)
         {
-            scene = 4;//クリア
-            clearscene = 5;
+            //次のシーンを生成
+            BaseScene* scene = makeScene<ClearScene>();
+            //シーン切り替え
+            sceneManager->NextScene(scene);
+            //現在のプレイ中シーンをシーンマネージャーに渡す
+            sceneManager->SetplayScene(playscene);
         }
     }
 
     //ステージ3
-    if (scene == 6)
+    if (playscene == 6 && transscene == true)
     {
        
         //描画のためにカメラの更新処理を一回呼び出す
@@ -2553,8 +2549,12 @@ void GameScene::Update()
         //プレイヤーに敵が当たったらシーン遷移
         if (player->Gethit() == 1)
         {
-            scene = 3;//ゲームオーバー
-            diescene = 6;
+            //次のシーンを生成
+            BaseScene* scene = makeScene<GameoverScene>();
+            //シーン切り替え
+            sceneManager->NextScene(scene);
+            //現在のプレイ中シーンをシーンマネージャーに渡す
+            sceneManager->SetplayScene(playscene);
         }
 
         //パーティクル出し終わったらリスト削除
@@ -2573,14 +2573,18 @@ void GameScene::Update()
         //敵全員倒したらクリア
         if (Stage3Enemy.size() == 0)
         {
-            scene = 4;//クリア
-            clearscene = 6;
+            //次のシーンを生成
+            BaseScene* scene = makeScene<ClearScene>();
+            //シーン切り替え
+            sceneManager->NextScene(scene);
+            //現在のプレイ中シーンをシーンマネージャーに渡す
+            sceneManager->SetplayScene(playscene);
         }
 
     }
 
     //ステージ4
-    if (scene==7)
+    if (playscene==7 && transscene == true)
     {
         //描画のためにカメラの更新処理を一回呼び出す
         if (firstfrag == 0)
@@ -2831,8 +2835,12 @@ void GameScene::Update()
         //プレイヤーに敵が当たったらシーン遷移
         if (player->Gethit() == 1)
         {
-            scene = 3;//ゲームオーバー
-            diescene = 7;
+            //次のシーンを生成
+            BaseScene* scene = makeScene<GameoverScene>();
+            //シーン切り替え
+            sceneManager->NextScene(scene);
+            //現在のプレイ中シーンをシーンマネージャーに渡す
+            sceneManager->SetplayScene(playscene);
         }
 
 
@@ -2852,13 +2860,17 @@ void GameScene::Update()
         //敵全員倒したらクリア
         if (Stage4Enemy.size() == 0)
         {
-            scene = 4;//クリア
-            clearscene = 7;
+            //次のシーンを生成
+            BaseScene* scene = makeScene<ClearScene>();
+            //シーン切り替え
+            sceneManager->NextScene(scene);
+            //現在のプレイ中シーンをシーンマネージャーに渡す
+            sceneManager->SetplayScene(playscene);
         }
     }
 
     //ゲームオーバー
-    if (scene == 3)
+   /*if (playscene == 3)
     {
         //FBX更新
         floor->Update();
@@ -3012,10 +3024,10 @@ void GameScene::Update()
         gameover->Update();
 
 
-    }
+    }*/
 
     //クリア
-    if (scene == 4)
+    /*if (playscene == 4)
     {
         //描画のためにカメラの更新処理を一回呼び出す
         if (firstfrag == 0)
@@ -3131,7 +3143,7 @@ void GameScene::Update()
             }
         }
 
-    }
+    }*/
 
 }
 
@@ -3141,7 +3153,7 @@ void GameScene::Draw()
     ID3D12GraphicsCommandList* cmdList = dxCommon->GetCommandList();
 
     //FBX描画
-    if (scene==2)
+    if (playscene==2)
     {
         for (std::unique_ptr<Wall>& wall : Stage1Walls)
         {
@@ -3152,7 +3164,7 @@ void GameScene::Draw()
     //ステージオブジェクト
     floor->Draw(cmdList);
 
-    if (scene == 5)
+    if (playscene == 5)
     {
         
         for (std::unique_ptr<Wall>& wall : Stage2Walls)
@@ -3164,7 +3176,7 @@ void GameScene::Draw()
         tutogun->Draw(cmdList);
     }
 
-    if (scene==6)
+    if (playscene==6)
     {
         for (std::unique_ptr<Wall>& wall : Stage3Walls)
         {
@@ -3174,7 +3186,7 @@ void GameScene::Draw()
         tutogun->Draw(cmdList);
     }
 
-    if (scene == 7)
+    if (playscene == 7)
     {
         for (std::unique_ptr<Wall>& wall : Stage4Walls)
         {
@@ -3186,7 +3198,7 @@ void GameScene::Draw()
     
 
     //敵関連
-    if (scene==2)
+    if (playscene==2)
     {
         for (std::unique_ptr<Enemy>& enemy : Stage1Enemy)
         {
@@ -3197,7 +3209,7 @@ void GameScene::Draw()
         
     }
 
-    if (scene==5)
+    if (playscene==5)
     {
         for (std::unique_ptr<Enemy>& enemy : Stage2Enemy)
         {
@@ -3207,7 +3219,7 @@ void GameScene::Draw()
         }
     }
 
-    if (scene == 6)
+    if (playscene == 6)
     {
         for (std::unique_ptr<Enemy>& enemy : Stage3Enemy)
         {
@@ -3217,7 +3229,7 @@ void GameScene::Draw()
         }
     }
 
-    if (scene == 7)
+    if (playscene == 7)
     {
         for (std::unique_ptr<Enemy>& enemy : Stage4Enemy)
         {
@@ -3227,95 +3239,6 @@ void GameScene::Draw()
         }
     }
 
-    if (scene==3)
-    {
-        if (diescene == 2)
-        {
-            if (Stage1Walls.size() > 0)
-            {
-                for (std::unique_ptr<Wall>& wall : Stage1Walls)
-                {
-                    wall->Draw(cmdList);
-                }
-            }
-        }
-        
-        if (diescene == 5)
-        {
-            if (Stage2Walls.size() > 0)
-            {
-                for (std::unique_ptr<Wall>& wall : Stage2Walls)
-                {
-                    wall->Draw(cmdList);
-                }
-            }
-        }
-
-        if (diescene == 6)
-        {
-            if (Stage3Walls.size() > 0)
-            {
-                for (std::unique_ptr<Wall>& wall : Stage3Walls)
-                {
-                    wall->Draw(cmdList);
-                }
-            }
-        }
-
-        if (diescene ==7)
-        {
-            if (Stage4Walls.size() > 0)
-            {
-                for (std::unique_ptr<Wall>& wall : Stage4Walls)
-                {
-                    wall->Draw(cmdList);
-                }
-            }
-        }
-
-        
-        floor->Draw(cmdList);
-    }
-
-    if (scene == 4)
-    {
-
-        if (clearscene==2)
-        {
-           
-           for (std::unique_ptr<Wall>& wall : Stage1Walls)
-           {
-               wall->Draw(cmdList);
-           }
-        }
-        
-        if (clearscene == 5)
-        {
-           
-          for (std::unique_ptr<Wall>& wall : Stage2Walls)
-          {
-              wall->Draw(cmdList);
-          }
-        }
-
-        if (clearscene == 6)
-        {          
-           for (std::unique_ptr<Wall>& wall : Stage3Walls)
-           {
-               wall->Draw(cmdList);
-           }
-        }
-
-        if (clearscene == 7)
-        {         
-          for (std::unique_ptr<Wall>& wall : Stage4Walls)
-          {
-              wall->Draw(cmdList);
-          }
-        }
-        
-        floor->Draw(cmdList);
-    }
     
 
     //プレイヤー関連
@@ -3328,21 +3251,21 @@ void GameScene::Draw()
      spriteCommon->PreDraw();
 
      //シーン切り替え処理
-     if (scene == 0)
+     if (transscene == false)
      {
          transEffect->Draw(cmdList);
      }
 
 
 
-     if (scene == 2)
+     if (playscene == 2)
      {
          if (tutoscene == 0)tutomove->Draw();
          if (tutoscene == 1)tutomouse->Draw();
          if (tutoscene == 2)tutorule->Draw();
          if (noammoflag == true)noammo->Draw();
      }
-     if (scene == 5)
+     if (playscene == 5)
      {
          if (tutoscene == 3)tutogunpick1->Draw();
          if (tutoscene == 4)tutogunpick2->Draw();
@@ -3350,7 +3273,7 @@ void GameScene::Draw()
          if (noammoflag == true)noammo->Draw();
      }
 
-     if (scene == 6)
+     if (playscene == 6)
      {
          if (tutoscene == 6)tutostage3->Draw();
          if (tutoscene == 7)tutothrow->Draw();
@@ -3358,16 +3281,13 @@ void GameScene::Draw()
          if (noammoflag == true)noammo->Draw();
      }
 
-     if (scene == 7)
+     if (playscene == 7)
      {
          if (noammoflag == true)noammo->Draw();
      }
 
-     if (scene == 3)gameover->Draw();
-     if (scene == 4)clear->Draw();
-     if (scene == 8)clear->Draw();
 
-     if (scene != 0)
+     if (playscene != 0)
      {
          crosshair->Draw();
      }
@@ -3392,7 +3312,7 @@ void GameScene::SpriteDraw()
 void GameScene::transrationScene()
 {
     //ステージ1
-    if (scene==2)
+    if (playscene==2)
     {
 
         const XMFLOAT3 respos = { 0,5,0 };
@@ -3416,7 +3336,7 @@ void GameScene::transrationScene()
     }
 
     //ステージ2
-    if (scene==5)
+    if (playscene==5)
     {
         const XMFLOAT3 respos={0,5,0};
        
@@ -3461,7 +3381,7 @@ void GameScene::transrationScene()
     }
 
     //ステージ3
-    if (scene==6)
+    if (playscene==6)
     {
         const XMFLOAT3 respos = { 0,5,0 };
         camera->SetTarget({ 0, 5, 0 });
@@ -3499,7 +3419,7 @@ void GameScene::transrationScene()
     }
 
     //ステージ4
-    if (scene == 7)
+    if (playscene == 7)
     {
         const XMFLOAT3 respos = { 0,5,0 };
         player->Sethave(false);
@@ -3570,9 +3490,6 @@ void GameScene::Finalize()
     delete player;
 
 
-    for (int i = 0; i < 3; i++)
-    {
-        delete Stage2[i];
-    }
+    
 
 }

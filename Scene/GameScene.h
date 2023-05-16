@@ -35,8 +35,6 @@
 
 #include"BaseScene.h"
 #include"TransEffect.h"
-//#include"TitleScene.h"
-
 
 
 
@@ -121,15 +119,15 @@ private://メンバ変数
 	Camera* camera = nullptr;
 	//衝突マネージャー
 	CollisionManager* collisionManager = nullptr;
+	/*ClearScene* clearScene = nullptr;
+	GameoverScene* overScene = nullptr;*/
 	
 	char pla[64];
 
 	//スプライト
 	SpriteCommon* spriteCommon = nullptr;
 	Sprite* crosshair = nullptr;
-	Sprite* title = nullptr;
 	Sprite* gameover = nullptr;
-	Sprite* clear = nullptr;
 	Sprite* tutomove = nullptr;
 	Sprite* tutomouse = nullptr;
 	Sprite* tutoshot = nullptr;
@@ -149,6 +147,7 @@ private://メンバ変数
 
 	XMFLOAT2 Effectsize{ 0,0 };
 	float transcount = 0;
+	bool transscene = false;
 	
 
 	bool transfrag = true;
@@ -191,9 +190,7 @@ private://メンバ変数
 	FbxModel* modelBack = nullptr;
 	FBXobj3d* backsphere = nullptr;
 
-	//3面
-	Wall* stage3wall[8];
-
+	
 	//3dモデル(敵)
 
 	//敵のリスト
@@ -207,11 +204,6 @@ private://メンバ変数
 	std::stringstream enemyDataS2;
 	std::stringstream enemyDataS3;
 	std::stringstream enemyDataS4;
-
-	//ステージ2
-	Enemy* Stage2[3];
-	//ステージ3
-	Enemy* Stage3[5];
 
 
 	//自機関連
@@ -244,9 +236,10 @@ private://メンバ変数
 
 
 	//シーン
-	float timecount = 0;//時間管理酔う変数
-	//現在のシーン
+
+
 	int scene = 0;
+	float timecount = 0;//時間管理酔う変数
 	//死んだときのシーン
 	int diescene = 0;
 	//クリアしたシーン

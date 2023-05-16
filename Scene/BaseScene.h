@@ -35,6 +35,10 @@ private:
 	SpriteCommon* spriteCommon = nullptr;
 
 protected:
+
+	template<typename T>
+	BaseScene* makeScene();
+
 	//シーンマネージャー(借りてくる)
 	SceneManager* sceneManager = nullptr;
 

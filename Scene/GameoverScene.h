@@ -5,11 +5,14 @@
 #include "../2d/Sprite.h"
 #include "../Engine/WindowsApp.h"
 #include "../Engine/Audio.h"
-//#include "GameScene.h"
-//#include "TitleScene.h"
+#include"../3d/Wall.h"
 #include <vector>
+#include <memory>
+#include <list>
+#include<sstream>
+#include <string>
 
-class gameoverScene : public BaseScene
+class GameoverScene : public BaseScene
 {
 protected:
 	// Microsoft::WRL::を省略
@@ -30,7 +33,6 @@ public:
 
 	void Finalize()override;
 
-	//void Settitleflag(bool now) { this->titleflag = now; }
 
 private:
 	//ポインタ
@@ -38,8 +40,11 @@ private:
 	Input* input = nullptr;
 	DXCommon* dxCommon = nullptr;
 	SpriteCommon* spriteCommon = nullptr;
-	//GameScene* gameScene = nullptr;
 
+	//3dモデル
+	FbxModel* modelfloor = nullptr;
+	FbxModel* modelwall = nullptr;
+	FBXobj3d* floor = nullptr;
 
 	Sprite* gameover = nullptr;
 	XMFLOAT3 spritepos{ WindowsApp::window_width / 2 ,WindowsApp::window_height / 2,0 };
@@ -50,6 +55,5 @@ private:
 	float spriteangle = 0;
 	bool overfrag = true;
 	int wait = 0;
-	int nowscene = 3;
 
 };

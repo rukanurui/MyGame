@@ -33,8 +33,8 @@ void SceneManager::Update()
 
 		//次のシーンを初期化する
 		scene->Initialize(dxCommon,input,audio,spriteCommon,Windows);
-
-		
+		//現在どのステージなのかを次のシーンに渡す
+		scene->SetSlayScene(playscene);
 
 		
 	}

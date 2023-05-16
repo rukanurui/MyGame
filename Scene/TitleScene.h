@@ -7,9 +7,7 @@
 #include "../2d/Sprite.h"
 #include "../Engine/WindowsApp.h"
 #include "../Engine/Audio.h"
-#include "GameScene.h"
 #include <vector>
-
 
 
 class TitleScene: public BaseScene
@@ -41,7 +39,7 @@ private:
 	Input* input = nullptr;
 	DXCommon* dxCommon = nullptr;
 	SpriteCommon* spriteCommon = nullptr;
-	GameScene* gameScene = nullptr;
+	//GameScene* gameScene = nullptr;
 
 
 	Sprite* title = nullptr;
@@ -56,8 +54,6 @@ private:
 
 	//今のシーンがタイトルかどうか
 	bool titleflag = true;
-
-	int nowscene = 0;
 
 };
 
