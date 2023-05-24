@@ -90,9 +90,7 @@ public://メンバ関数
 	//更新
 	void Update()override;
 	//シーン分岐
-	const int& GetScene() { return scene; }
 	const int& GettutoScene() { return tutoscene; }
-	void SetScene(int scene) { this->scene = scene; }
 
 	//シーン遷移処理
 	void transrationScene();
@@ -102,8 +100,6 @@ public://メンバ関数
 	const bool& Gethave() { return have; };
 	//描画
 	void Draw()override;
-	//スプライトの描画
-	void SpriteDraw();
 	//解放
 	void Finalize()override;
 
@@ -119,8 +115,6 @@ private://メンバ変数
 	Camera* camera = nullptr;
 	//衝突マネージャー
 	CollisionManager* collisionManager = nullptr;
-	/*ClearScene* clearScene = nullptr;
-	GameoverScene* overScene = nullptr;*/
 	
 	char pla[64];
 
@@ -235,10 +229,7 @@ private://メンバ変数
 	bool wallcol = false;
 
 
-	//シーン
-
-
-	int scene = 0;
+	//シーン関連
 	float timecount = 0;//時間管理酔う変数
 	//死んだときのシーン
 	int diescene = 0;

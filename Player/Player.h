@@ -50,11 +50,13 @@ public://メンバ関数
 	//残弾数のセッター
 	void SetMagazin(int Magazin) { this->magazin = Magazin; }
 
+	//collider関連
 	void OnCollision(const CollisionInfo& info);
-
 	void colUpdate();
-
 	void ColInitialize();
+	//壁との排斥処理
+	void QueryWall();
+
 
 	//hitのゲッター
 	const int& Gethit() { return hit; }
@@ -84,6 +86,7 @@ private://メンバ変数
 	Input* input = nullptr;
 	FbxModel* modelballet = nullptr;
 	FbxModel* modelgun = nullptr;
+	FbxModel* model2 = nullptr;
 
 	//銃本体
 	std::unique_ptr<PlayerGun> Pgun;

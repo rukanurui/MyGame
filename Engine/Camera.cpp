@@ -6,8 +6,8 @@ XMMATRIX Camera::matView = {};
 XMMATRIX Camera::matProjection = {};
 XMMATRIX Camera::matViewProjection = {};
 XMMATRIX Camera::matWorld = {};
-XMFLOAT3 Camera::eye = { 0, 4, 0.0f };
-XMFLOAT3 Camera::target = { 0, 4, 0 };
+XMFLOAT3 Camera::eye = { 0, 4.0f, 0.0f };
+XMFLOAT3 Camera::target = { 0, 9.0f, 0 };
 XMFLOAT3 Camera::up = { 0, 1, 0 };
 XMFLOAT3 Camera::rotation = { 45, 0, 0 };
 

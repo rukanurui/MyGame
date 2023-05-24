@@ -137,7 +137,7 @@ void CollisionManager::CheckQueryBox(const Sphere& sphere, QueryCallback* callba
 			continue;
 		}
 
-		//‹…‚Ìê‡
+		//‹éŒ`‚Ìê‡
 		if (col->GetShapeType() == COLLISIONSHAPE_BOX)
 		{
 

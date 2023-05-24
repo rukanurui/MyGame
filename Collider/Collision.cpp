@@ -87,9 +87,10 @@ bool Collision::CheckSphere2Box(const Sphere& sphere, const Box& box, DirectX::X
 
 	if (sqDistance < sphere.radius * sphere.radius)
 	{
+		//どれぐらいめり込んでいるか
 		if (inter) {
 			
-			float t = box.radius / (sphere.radius + sqDistance);
+			float t = sqDistance / (sphere.radius + sqDistance);
 			*inter = XMVectorLerp(sphere.center, box.center, t);
 		}
 		//押し出すベクトルを計算

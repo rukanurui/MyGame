@@ -47,7 +47,6 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
 
     // スプライト共通テクスチャ読み込み
     spriteCommon->LoadTexture(1, L"Resources/1432.png");
-    //spriteCommon->LoadTexture(3, L"Resources/gameover.png");
     spriteCommon->LoadTexture(5, L"Resources/tutomove.png");
     spriteCommon->LoadTexture(6, L"Resources/tutomouse.png");
     spriteCommon->LoadTexture(7, L"Resources/tutoshot.png");
@@ -67,10 +66,6 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     crosshair = Sprite::Create(spriteCommon, 1);
     crosshair->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
     crosshair->TransferVertexBuffer();
-
-    /*gameover = Sprite::Create(spriteCommon, 3);
-    gameover->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
-    gameover->TransferVertexBuffer();*/
 
     tutomove = Sprite::Create(spriteCommon, 5);
     tutomove->SetPosition({ WindowsApp::window_width / 2,600,0 });
@@ -1830,8 +1825,12 @@ void GameScene::Update()
 
         if (player->Getwallhit() == 1)
         {
-            camera->SetTarget(player->GetTarget());
+            player->QueryWall();
             camera->SetEye(player->GetPos());
+            camera->SetTarget(player->GetTarget());
+            camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+
+
         }
 
 
@@ -2532,7 +2531,6 @@ void GameScene::Update()
             }
         }
 
-
         //すべての衝突をチェック
         collisionManager->CheckAllCollisions();
 
@@ -2543,7 +2541,6 @@ void GameScene::Update()
             mouseMove.lX = 0;
             mouseMove.lY = 0;
         }
-
 
 
         //プレイヤーに敵が当たったらシーン遷移
@@ -2869,282 +2866,6 @@ void GameScene::Update()
         }
     }
 
-    //ゲームオーバー
-   /*if (playscene == 3)
-    {
-        //FBX更新
-        floor->Update();
-        player->BulUpdate();
-        backsphere->Update();
-
-        if (diescene==2)
-        {
-            for (std::unique_ptr<Wall>& wall : Stage1Walls)
-            {
-                wall->Update();
-            }
-
-            for (std::unique_ptr<Enemy>& enemy : Stage1Enemy)
-            {
-                enemy->PartUpdate();
-                enemy->BulUpdate();
-                enemy->Update();
-                enemy->EnemyUpdate(player->GetPos());
-            }
-
-            if (input->TriggerKey(DIK_R))
-            {
-                Stage1Enemy.remove_if([](std::unique_ptr<Enemy>& enemy) {
-                    return enemy->die;
-                    });
-                Stage1Walls.remove_if([](std::unique_ptr<Wall>& wall) {
-                    return wall->die;
-                    });
-
-                scene = 2;
-                tutoscene = 0;
-                transrationScene();
-
-            }
-        }
-
-        if (diescene == 5)
-        {
-            for (std::unique_ptr<Wall>& wall : Stage2Walls)
-            {
-                wall->Update();
-            }
-
-            for (std::unique_ptr<Enemy>& enemy : Stage2Enemy)
-            {
-                enemy->PartUpdate();
-                enemy->BulUpdate();
-                enemy->Update();
-                enemy->EnemyUpdate(player->GetPos());
-            }
-
-            if (input->TriggerKey(DIK_R))
-            {
-
-                Stage2Enemy.remove_if([](std::unique_ptr<Enemy>& enemy) {
-                    return enemy->die;
-                    });
-                Stage2Walls.remove_if([](std::unique_ptr<Wall>& wall) {
-                    return wall->die;
-                    });
-
-                scene = 5;
-                tutoscene = 3;
-                transrationScene();
-
-            }
-        }
-
-        if (diescene == 6)
-        {
-            for (std::unique_ptr<Wall>& wall : Stage3Walls)
-            {
-                wall->Update();
-            }
-
-            for (std::unique_ptr<Enemy>& enemy : Stage3Enemy)
-            {
-                enemy->PartUpdate();
-                enemy->BulUpdate();
-                enemy->Update();
-                enemy->EnemyUpdate(player->GetPos());
-            }
-            if (input->TriggerKey(DIK_R))
-            {
-                Stage3Enemy.remove_if([](std::unique_ptr<Enemy>& enemy) {
-                    return enemy->die;
-                    });
-                Stage3Walls.remove_if([](std::unique_ptr<Wall>& wall) {
-                    return wall->die;
-                    });
-                scene = 6;
-                tutoscene = 6;
-                transrationScene();
-            }
-        }
-
-        if (diescene == 7)
-        {
-            for (std::unique_ptr<Wall>& wall : Stage4Walls)
-            {
-                wall->Update();
-            }
-
-            for (std::unique_ptr<Enemy>& enemy : Stage4Enemy)
-            {
-                enemy->PartUpdate();
-                enemy->BulUpdate();
-                enemy->Update();
-                enemy->EnemyUpdate(player->GetPos());
-            }
-
-            if (input->TriggerKey(DIK_R))
-            {
-                Stage4Enemy.remove_if([](std::unique_ptr<Enemy>& enemy) {
-                    return enemy->die;
-                    });
-                Stage4Walls.remove_if([](std::unique_ptr<Wall>& wall) {
-                    return wall->die;
-                    });
-                scene = 7;
-                tutoscene = 0;
-                transrationScene();
-            }
-        }
-
-        if (spritesize.x >= 1280)
-        {
-            transfrag = true;
-        }
-        if (spritesize.x <= 800)
-        {
-            transfrag = false;
-        }
-
-        if (transfrag == true)
-        {
-            spritesize.x -= 4.0f;
-            spritesize.y -= 3.0f;
-        }
-        else
-        {
-            spritesize.x += 4.0f;
-            spritesize.y += 3.0f;
-        }
-
-        gameover->SetSize(spritesize);
-
-        gameover->TransferVertexBuffer();
-
-        gameover->Update();
-
-
-    }*/
-
-    //クリア
-    /*if (playscene == 4)
-    {
-        //描画のためにカメラの更新処理を一回呼び出す
-        if (firstfrag == 0)
-        {
-            camera->CurrentUpdate(player->GetVelocity());
-            camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-
-            firstfrag = 1;
-        }
-
-        if (spritesize.x >= 1280)
-        {
-            transfrag = true;
-        }
-        if (spritesize.x <= 800)
-        {
-            transfrag = false;
-        }
-
-        if (transfrag == true)
-        {
-            spritesize.x -= 4.0f;
-            spritesize.y -= 3.0f;
-        }
-        else
-        {
-            spritesize.x += 4.0f;
-            spritesize.y += 3.0f;
-        }
-
-        clear->SetSize(spritesize);
-
-        clear->TransferVertexBuffer();
-
-        clear->Update();
-
-        //FBX更新
-        floor->Update();
-
-        player->BulUpdate();
-        
-        if (clearscene == 2)
-        {
-
-            for (std::unique_ptr<Wall>& wall : Stage1Walls)
-            {
-                wall->Update();
-            }
-
-            if (input->PushKey(DIK_SPACE))
-            {
-                transcount += 1.0f;
-
-                if (transcount >= 120.0f)
-                {
-                    scene = 5;
-                    transrationScene();
-                    transcount = 0.0f;
-                    transfrag = true;
-                }
-                scene = 5;
-                tutoscene = 3;
-                transrationScene();
-            }
-        }
-        
-        if (clearscene == 5)
-        {
-
-            for (std::unique_ptr<Wall>& wall : Stage2Walls)
-            {
-                wall->Update();
-            }
-
-            if (input->PushKey(DIK_SPACE))
-            {
-                scene = 6;
-                tutoscene = 3;
-                transrationScene();
-            }
-        }
-
-        if (clearscene == 6)
-        {
-
-            for (std::unique_ptr<Wall>& wall : Stage3Walls)
-            {
-                wall->Update();
-            }
-
-            if (input->PushKey(DIK_SPACE))
-            {
-                scene = 7;
-                tutoscene = 3;
-                transrationScene();
-            }
-        }
-
-        if (clearscene == 7)
-        {
-
-            for (std::unique_ptr<Wall>& wall : Stage1Walls)
-            {
-                wall->Update();
-            }
-
-            if (input->PushKey(DIK_SPACE))
-            {
-                //次のシーンを生成
-                //BaseScene* scene = new TitleScene();
-                //シーン切り替え
-                //sceneManager->NextScene(scene);
-            }
-        }
-
-    }*/
-
 }
 
 void GameScene::Draw()
@@ -3245,7 +2966,7 @@ void GameScene::Draw()
      player->throwgunDraw(cmdList);
      player->gunDraw(cmdList);
      player->BulDraw(cmdList);
-    // player->meleeDraw(cmdList);
+     player->meleeDraw(cmdList);
 
      //スプライト描画前処理
      spriteCommon->PreDraw();
@@ -3297,17 +3018,6 @@ void GameScene::Draw()
     //debugText->DrawAll();
 }
 
-void GameScene::SpriteDraw()
-{
-    
-    //スプライト描画前処理
-    spriteCommon->PreDraw();
-   
-    if (scene!=0)
-    {
-        crosshair->Draw();
-    }
-}
 
 void GameScene::transrationScene()
 {

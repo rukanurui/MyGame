@@ -2,6 +2,7 @@
 #include "Player.h"
 #include"../Collider/QueryCallback.h"
 #include"../Collider/CollisionManager.h";
+#include"../Collider/BoxCollider.h"
 
 
 Player::Player():FBXobj3d()
@@ -17,6 +18,7 @@ void Player::PlayerInitialize(Input* Input)
 
 	modelballet = FbxLoader::GetInstance()->LoadModelFromFile("bullet");
 	modelgun = FbxLoader::GetInstance()->LoadModelFromFile("gun");
+	model2 = FbxLoader::GetInstance()->LoadModelFromFile("testfbx");
 
 
 	//銃の生成と初期化
@@ -70,6 +72,8 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 
 	UpdateWorld();
 
+	QueryWall();
+
 	//当たり判定更新
 	if (collider)
 	{
@@ -89,45 +93,8 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 		mctime = 0;
 	}
 
-	//座標の操作
-
-	/*if (!input->PushKey(DIK_W) && !input->PushKey(DIK_S)) Velocity.z = 0;
-
-	if (!input->PushKey(DIK_A) && !input->PushKey(DIK_D)) Velocity.x = 0;
-
-	if (input->PushKey(DIK_A) || input->PushKey(DIK_D))
-	{
-
-		if (input->PushKey(DIK_A)) Velocity.x = -0.1f;
-		else
-		{
-			if (input->PushKey(DIK_D)) Velocity.x = 0.1f;
-		}
-
-
-		XMVECTOR move = { Velocity.x,Velocity.y,0,0 };
-
-		move = XMVector3Transform(move, matRot);
-		MoveVector(move);
-
-	}
-
-	if (input->PushKey(DIK_W) || input->PushKey(DIK_S))
-	{
-		if (input->PushKey(DIK_S)) Velocity.z = -0.1f;
-		else
-		{
-			if (input->PushKey(DIK_W)) Velocity.z = 0.1f;
-		}
-
-		XMVECTOR move = { 0,0,Velocity.z,0 };
-
-		move = XMVector3Transform(move, matRot);
-		MoveVector(move);
-
-	}*/
-
 	UpdateWorld();
+
 
 
 	//弾の発射
@@ -186,8 +153,11 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 	if (input->PushclickLeft() && have==false&&mctime<=0)
 	{
 		//弾の速度
-		const float bulspeed = 0.7f;
+		const float bulspeed = 1.0f;
 		XMVECTOR Velocity{ 0,0,bulspeed };
+		
+		XMFLOAT3 meleepos = position;
+
 
 		Velocity = { target.x - position.x, target.y - position.y, target.z - position.z };
 
@@ -196,8 +166,8 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 		//格闘の生成と初期化
 		std::unique_ptr<melee>newMelee = std::make_unique<melee>();
 		newMelee->Initialize();
-		newMelee->SetScale({ 0.05f,0.05f,0.01f });
-		newMelee->SetModel(modelballet);
+		newMelee->SetScale({ 0.01f,0.01f,0.03f });
+		newMelee->SetModel(model2);
 		newMelee->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
 		newMelee->meleeInitialize();
 		newMelee->create(position, Velocity);
@@ -230,7 +200,6 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 
 	UpdateWorld();
 }
-
 
 
 void Player::BulUpdate()
@@ -420,6 +389,54 @@ void Player::ColInitialize()
 {
 	//属性の追加
 	collider->SetColor(COLLISION_COLOR_PLAYER);
+}
+
+void Player::QueryWall()
+{
+	//球コライダー取得
+	SphereCollider* sphereCollider = dynamic_cast<SphereCollider*>(collider);
+	assert(sphereCollider);
+
+
+	class PlayerQueryCallback :public QueryCallback
+	{
+	public:
+		PlayerQueryCallback(Sphere* sphere) :sphere(sphere) {};
+
+		//衝突時コールバック関数
+		bool OnQueryHit(const QueryHit& info)
+		{
+			//ワールドの上方向
+			const XMVECTOR up = { 0,1,0,0 };
+			//排斥方向
+			XMVECTOR rejectDir = XMVector3Normalize(info.reject);
+			//上方向と左右方向の角度差のコサイン値
+			float cos = XMVector3Dot(rejectDir, up).m128_f32[0];
+
+			//押し出し処理
+			sphere->center += info.reject;
+			move += info.reject;
+
+			return true;
+		}
+
+		//クエリ―に使用する球
+		Sphere* sphere = nullptr;
+		//排斥による移動量(累積)
+		XMVECTOR move = {};
+	};
+
+	//クエリ―コールバックの関数オブジェクト
+	PlayerQueryCallback callback(sphereCollider);
+
+	//プレイヤーと壁の交差を検索
+	CollisionManager::GetInstance()->CheckQueryBox(*sphereCollider, &callback, COLLISION_COLOR_LANDSHAPE);
+	//交差による排斥分動かす
+	position.x += callback.move.m128_f32[0];
+	//position.y += callback.move.m128_f32[1] * 0.15f;
+	position.z += callback.move.m128_f32[2];
+
+	UpdateWorld();
 }
 
 void Player::sethit(int Hit)
