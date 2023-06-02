@@ -201,15 +201,18 @@ void Camera::CurrentUpdate(XMFLOAT3 vel)
 	if (mouseMove.lX==CurretmouseX || mouseMove.lY == CurretmouseY)
 	{
 
-		float dy = (mouseMove.lX * scaleX)*0.2;
-		float dx = (mouseMove.lY * scaleY)*0.2;
+		if (wallflag == false)
+		{
+			float dy = (mouseMove.lX * scaleX) * 0.25;
+			float dx = (mouseMove.lY * scaleY) * 0.25;
 
-		angleX = -dx * XM_PI;
-		angleY = -dy * XM_PI;
+			angleX = -dx * XM_PI;
+			angleY = -dy * XM_PI;
 
-		
 
-		viewDirtyFlag = true;
+
+			viewDirtyFlag = true;
+		}
 	}
 
 	anglelimitX += angleX;
@@ -224,9 +227,9 @@ void Camera::CurrentUpdate(XMFLOAT3 vel)
 		anglelimitX = angleculentX;
 	}
 
-	//‹ŒÀ•W‘€ì
+	//À•W‘€ì
 	if (!input->PushKey(DIK_A) && !input->PushKey(DIK_D)) Velocity.x = 0;
-	if (input->PushKey(DIK_A) || input->PushKey(DIK_D))
+	if ((input->PushKey(DIK_A) || input->PushKey(DIK_D)) && wallflag == false)
 	{
 
 		if (input->PushKey(DIK_A)) Velocity.x = -0.3f;
@@ -243,7 +246,7 @@ void Camera::CurrentUpdate(XMFLOAT3 vel)
 
 
 	if (!input->PushKey(DIK_W) && !input->PushKey(DIK_S)) Velocity.z = 0;
-	if (input->PushKey(DIK_W) || input->PushKey(DIK_S))
+	if ((input->PushKey(DIK_W) || input->PushKey(DIK_S)) && wallflag == false)
 	{
 		if (input->PushKey(DIK_S)) Velocity.z = -0.5f;
 		else
@@ -259,14 +262,12 @@ void Camera::CurrentUpdate(XMFLOAT3 vel)
 
 	}
 
+	if (wallflag == true)
+	{
 
+		viewDirtyFlag = true;
 
-	/*XMVECTOR move = { vel.x,vel.y,vel.z,0 };
-
-	move = XMVector3Transform(move, matRot);
-	MoveTarget(move);
-
-	viewDirtyFlag = true;*/
+	}
 
 	
 

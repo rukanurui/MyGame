@@ -6,6 +6,7 @@
 #include"../Collider/SphereCollider.h"
 #include "../3d/FbxLoader.h"
 #include "../3d/Modelfbx.h"
+#include"../3d/PartManager.h"
 #include <memory>
 #include <list>
 
@@ -56,6 +57,7 @@ public://メンバ関数
 	void ColInitialize();
 	//壁との排斥処理
 	void QueryWall();
+	void Setwallflag(bool flag) { this->wallhit = flag; }
 
 
 	//hitのゲッター
@@ -93,10 +95,19 @@ private://メンバ変数
 
 	//投げるときに生成される銃
 	std::list<std::unique_ptr<PlayerGun>> Guns;
-
-
+	//弾
 	std::list<std::unique_ptr<Pbullet>> bullets;
+	//格闘
 	std::list<std::unique_ptr<melee>> melees;
+	//パーティクル
+	std::list<std::unique_ptr<PartManager>> particle;
+
+	//パーティクルの数
+	const int partnum = 20;
+
+	//パーティクルの数カウント
+	int partcount = 0;
+	int parttimer = 0;
 
 	//注視点
 	XMFLOAT3 target{ 0.0f,4.0f,0.0f };

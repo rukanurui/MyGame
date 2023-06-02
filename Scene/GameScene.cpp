@@ -1752,6 +1752,11 @@ void GameScene::Update()
        
         timecount++;
 
+        //壁に当たる前の座標
+        camera->SetWallEye(camera->GetEye());
+        camera->SetWallTarget(camera->GetTarget());
+
+
         //自分が動いていたら更新処理
         if (input->PushKey(DIK_W) || input->PushKey(DIK_A) || input->PushKey(DIK_S) || input->PushKey(DIK_D))
         {
@@ -1819,16 +1824,31 @@ void GameScene::Update()
             }
         }
 
+        player->Setwallflag(false);
 
         //すべての衝突をチェック
         collisionManager->CheckAllCollisions();
 
-        if (player->Getwallhit() == 1)
+        camera->Setwallflag(player->Getwallhit());
+
+        if (player->Getwallhit() == true)
         {
-            player->QueryWall();
-            camera->SetEye(player->GetPos());
-            camera->SetTarget(player->GetTarget());
-            camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+            camera->Setwallflag(player->Getwallhit());
+
+            /* for (int i = 0; i < 60; i++)
+             {
+                 collisionManager->CheckAllCollisions();
+                 if (player->Getwallhit() == false)
+                 {
+                     break;
+                 }
+                 player->QueryWall();
+                 camera->SetEye(player->GetPos());
+                 camera->SetTarget(player->GetTarget());
+                 camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+             }*/
+            camera->SetEye(camera->GetWallEye());
+            camera->SetTarget(camera->GetWallTarget());
 
 
         }
@@ -2080,7 +2100,6 @@ void GameScene::Update()
         {
             gunthrow = true;
         }
-
         if (gunthrow == true)
         {
             movect++;
@@ -2121,6 +2140,10 @@ void GameScene::Update()
         }
 
         timecount++;
+
+        //壁に当たる前の座標
+        camera->SetWallEye(camera->GetEye());
+        camera->SetWallTarget(camera->GetTarget());
 
       
         //自分が動いていたら更新処理
@@ -2192,17 +2215,34 @@ void GameScene::Update()
         }
 
 
+        player->Setwallflag(false);
+
         //すべての衝突をチェック
         collisionManager->CheckAllCollisions();
 
-        if (player->Getwallhit() == 1)
-        {
-            camera->SetTarget(player->GetTarget());
-            camera->SetEye(player->GetPos());
-            mouseMove.lX = 0;
-            mouseMove.lY = 0;
-        }
+        camera->Setwallflag(player->Getwallhit());
 
+        if (player->Getwallhit() == true)
+        {
+            camera->Setwallflag(player->Getwallhit());
+
+            /* for (int i = 0; i < 60; i++)
+             {
+                 collisionManager->CheckAllCollisions();
+                 if (player->Getwallhit() == false)
+                 {
+                     break;
+                 }
+                 player->QueryWall();
+                 camera->SetEye(player->GetPos());
+                 camera->SetTarget(player->GetTarget());
+                 camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+             }*/
+            camera->SetEye(camera->GetWallEye());
+            camera->SetTarget(camera->GetWallTarget());
+
+
+        }
 
 
         //プレイヤーに敵が当たったらシーン遷移
@@ -2457,6 +2497,10 @@ void GameScene::Update()
 
         timecount++;
 
+        //壁に当たる前の座標
+        camera->SetWallEye(camera->GetEye());
+        camera->SetWallTarget(camera->GetTarget());
+
         //自分が動いていたら更新処理
         if (input->PushKey(DIK_W) || input->PushKey(DIK_A) || input->PushKey(DIK_S) || input->PushKey(DIK_D))
         {
@@ -2531,15 +2575,33 @@ void GameScene::Update()
             }
         }
 
+        player->Setwallflag(false);
+
         //すべての衝突をチェック
         collisionManager->CheckAllCollisions();
 
-        if (player->Getwallhit() == 1)
+        camera->Setwallflag(player->Getwallhit());
+
+        if (player->Getwallhit() == true)
         {
-            camera->SetTarget(player->GetTarget());
-            camera->SetEye(player->GetPos());
-            mouseMove.lX = 0;
-            mouseMove.lY = 0;
+            camera->Setwallflag(player->Getwallhit());
+
+            /* for (int i = 0; i < 60; i++)
+             {
+                 collisionManager->CheckAllCollisions();
+                 if (player->Getwallhit() == false)
+                 {
+                     break;
+                 }
+                 player->QueryWall();
+                 camera->SetEye(player->GetPos());
+                 camera->SetTarget(player->GetTarget());
+                 camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+             }*/
+            camera->SetEye(camera->GetWallEye());
+            camera->SetTarget(camera->GetWallTarget());
+
+
         }
 
 
@@ -2725,6 +2787,9 @@ void GameScene::Update()
         }
 
         timecount++;
+        //壁に当たる前の座標
+        camera->SetWallEye(camera->GetEye());
+        camera->SetWallTarget(camera->GetTarget());
 
         //自分が動いていたら更新処理
         if (input->PushKey(DIK_W) || input->PushKey(DIK_A) || input->PushKey(DIK_S) || input->PushKey(DIK_D))
@@ -2809,22 +2874,33 @@ void GameScene::Update()
         }
 
 
+        player->Setwallflag(false);
+
         //すべての衝突をチェック
         collisionManager->CheckAllCollisions();
 
-        if (player->Getwallhit() == 1)
+        camera->Setwallflag(player->Getwallhit());
+
+        if (player->Getwallhit() == true)
         {
-            //player->PlayerUpdate(camera->GetTarget());
-            camera->SetTarget(player->GetTarget());
-            camera->SetEye(player->GetPos());
-            camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-            //wallcol = true;
-            mouseMove.lX = 0;
-            mouseMove.lY = 0;
-        }
-        else
-        {
-            wallcol = false;
+            camera->Setwallflag(player->Getwallhit());
+
+            /* for (int i = 0; i < 60; i++)
+             {
+                 collisionManager->CheckAllCollisions();
+                 if (player->Getwallhit() == false)
+                 {
+                     break;
+                 }
+                 player->QueryWall();
+                 camera->SetEye(player->GetPos());
+                 camera->SetTarget(player->GetTarget());
+                 camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+             }*/
+            camera->SetEye(camera->GetWallEye());
+            camera->SetTarget(camera->GetWallTarget());
+
+
         }
 
 

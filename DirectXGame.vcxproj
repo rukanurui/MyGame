@@ -157,6 +157,7 @@
     <ClCompile Include="3d\model.cpp" />
     <ClCompile Include="3d\Modelfbx.cpp" />
     <ClCompile Include="3d\Object3d.cpp" />
+    <ClCompile Include="3d\PartManager.cpp" />
     <ClCompile Include="3d\Wall.cpp" />
     <ClCompile Include="Collider\BaseCollider.cpp" />
     <ClCompile Include="Collider\BoxCollider.cpp" />
@@ -172,7 +173,6 @@
     <ClCompile Include="Collider\SphereCollider.cpp" />
     <ClCompile Include="Enemy\Enemy.cpp" />
     <ClCompile Include="Enemy\EnemyBullet.cpp" />
-    <ClCompile Include="Enemy\PartEnemy.cpp" />
     <ClCompile Include="Engine\Audio.cpp" />
     <ClCompile Include="Engine\Camera.cpp" />
     <ClCompile Include="Engine\DXCommon.cpp" />
@@ -292,6 +292,7 @@
     <ClInclude Include="3d\model.h" />
     <ClInclude Include="3d\Modelfbx.h" />
     <ClInclude Include="3d\Object3d.h" />
+    <ClInclude Include="3d\PartManager.h" />
     <ClInclude Include="3d\Wall.h" />
     <ClInclude Include="Collider\BaseCollider.h" />
     <ClInclude Include="Collider\BoxCollider.h" />
@@ -308,7 +309,6 @@
     <ClInclude Include="Collider\SphereCollider.h" />
     <ClInclude Include="Enemy\Enemy.h" />
     <ClInclude Include="Enemy\EnemyBullet.h" />
-    <ClInclude Include="Enemy\PartEnemy.h" />
     <ClInclude Include="Engine\Audio.h" />
     <ClInclude Include="Engine\Camera.h" />
     <ClInclude Include="Engine\DXCommon.h" />

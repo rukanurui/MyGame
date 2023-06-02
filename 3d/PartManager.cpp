@@ -1,10 +1,10 @@
-#include "PartEnemy.h"
+#include "PartManager.h"
 
-PartEnemy::PartEnemy()
+PartManager::PartManager()
 {
 }
 
-void PartEnemy::PartInitialize(XMFLOAT3 pos)
+void PartManager::PartInitialize(XMFLOAT3 pos)
 {
 
 	position = pos;
@@ -35,14 +35,14 @@ void PartEnemy::PartInitialize(XMFLOAT3 pos)
 }
 
 
-void PartEnemy::OnCollision(const CollisionInfo& info)
+void PartManager::OnCollision(const CollisionInfo& info)
 {
 
 	
 
 }
 
-void PartEnemy::PartUpdate()
+void PartManager::PartUpdate()
 {
 	
 	//èdóÕâ¡éZ
@@ -141,7 +141,7 @@ void PartEnemy::PartUpdate()
 	}
 }
 
-void PartEnemy::setcol(int Col)
+void PartManager::setcol(int Col)
 {
 	col = Col;
 }

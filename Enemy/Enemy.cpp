@@ -143,7 +143,7 @@ void Enemy::EnemyUpdate(XMFLOAT3 playerpos)
 		//20個までparticle生成
 		if (partcount <= partnum)
 		{
-			std::unique_ptr<PartEnemy>newPart = std::make_unique<PartEnemy>();
+			std::unique_ptr<PartManager>newPart = std::make_unique<PartManager>();
 			newPart->Initialize();
 			newPart->SetScale({ 0.01f,0.01f,0.01f });
 			newPart->SetModel(model2);
@@ -159,7 +159,7 @@ void Enemy::EnemyUpdate(XMFLOAT3 playerpos)
 		//particleの更新
 		if (parttimer <= 60)
 		{
-			for (std::unique_ptr<PartEnemy>& part : particle)
+			for (std::unique_ptr<PartManager>& part : particle)
 			{
 				part->PartUpdate();
 				part->Update();
@@ -439,7 +439,7 @@ void Enemy::BulDraw(ID3D12GraphicsCommandList* cmdList)
 
 void Enemy::PartUpdate()
 {
-	for (std::unique_ptr<PartEnemy>& part : particle)
+	for (std::unique_ptr<PartManager>& part : particle)
 	{
 		part->Update();
 	}
@@ -447,7 +447,7 @@ void Enemy::PartUpdate()
 
 void Enemy::PartDraw(ID3D12GraphicsCommandList* cmdList)
 {
-	for (std::unique_ptr<PartEnemy>& part : particle)
+	for (std::unique_ptr<PartManager>& part : particle)
 	{
 		part->Draw(cmdList);
 	}
@@ -461,7 +461,7 @@ void Enemy::LastUpdate()
 		//20個までparticle生成
 		if (partcount <= partnum)
 		{
-			std::unique_ptr<PartEnemy>newPart = std::make_unique<PartEnemy>();
+			std::unique_ptr<PartManager>newPart = std::make_unique<PartManager>();
 			newPart->Initialize();
 			newPart->SetScale({ 0.01f,0.01f,0.01f });
 			newPart->SetModel(model2);
@@ -477,7 +477,7 @@ void Enemy::LastUpdate()
 		//particleの更新
 		if (parttimer <= 150)
 		{
-			for (std::unique_ptr<PartEnemy>& part : particle)
+			for (std::unique_ptr<PartManager>& part : particle)
 			{
 				part->PartUpdate();
 				part->Update();

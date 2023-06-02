@@ -8,7 +8,7 @@
 #include <list>
 
 #include"EnemyBullet.h"
-#include"PartEnemy.h"
+#include"../3d/PartManager.h"
 
 class Enemy : public FBXobj3d
 {
@@ -56,8 +56,9 @@ private:
 	FbxModel* model2 = nullptr;
 	//Enemybullet* bullet=nullptr;
 	std::list<std::unique_ptr<Enemybullet>> bullets;
-	std::list<std::unique_ptr<PartEnemy>> particle;
+	std::list<std::unique_ptr<PartManager>> particle;
 	
+
 	//“–‚½‚Á‚½‚©‚Ìƒtƒ‰ƒO
 	bool col = false;
 	bool death = false;

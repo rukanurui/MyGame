@@ -1,14 +1,14 @@
 #pragma once
-#include"../3d/fbxobj3d.h"
+#include"fbxobj3d.h"
 #include"../Collider/SphereCollider.h"
 #include"../2d/DebugText.h"
 
-class PartEnemy : public FBXobj3d
+class PartManager : public FBXobj3d
 {
 
 public://メンバ関数
 
-	PartEnemy();
+	PartManager();
 	//衝突時コールバック関数
 	void OnCollision(const CollisionInfo& info)override;
 

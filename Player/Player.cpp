@@ -297,54 +297,9 @@ void Player::OnCollision(const CollisionInfo& info)
 
 	if (info.collider->color == 1)
 	{
-		wallhit = 1;
-		/*position = oldpos;
-		target = oldtarget;*/
-		//球コライダー取得
-		SphereCollider* sphereCollider = dynamic_cast<SphereCollider*>(collider);
-		assert(sphereCollider);
+		wallhit = true;
 
-		class PlayerQueryCallback :public QueryCallback
-		{
-		public:
-			PlayerQueryCallback(Sphere* sphere) :sphere(sphere) {};
-
-			//衝突時コールバック関数
-			bool OnQueryHit(const QueryHit& info)
-			{
-				//ワールドの上方向
-				const XMVECTOR up = { 0,1,0,0 };
-				//排斥方向
-				XMVECTOR rejectDir = XMVector3Normalize(info.reject);
-				//上方向と左右方向の角度差のコサイン値
-				float cos = XMVector3Dot(rejectDir, up).m128_f32[0];
-
-				//押し出し処理
-				sphere->center += info.reject;
-				move += info.reject;
-
-				return true;
-			}
-
-			//クエリ―に使用する球
-			Sphere* sphere = nullptr;
-			//排斥による移動量(累積)
-			XMVECTOR move = {};
-		};
-
-		//クエリ―コールバックの関数オブジェクト
-		PlayerQueryCallback callback(sphereCollider);
-
-		//敵と壁の交差を検索
-		CollisionManager::GetInstance()->CheckQueryBox(*sphereCollider, &callback, COLLISION_COLOR_LANDSHAPE);
-		//交差による排斥分動かす
-		position.x += callback.move.m128_f32[0];
-		//position.y += callback.move.m128_f32[1] * 0.15f;
-		position.z += callback.move.m128_f32[2];
-	}
-	else
-	{
-		wallhit = 0;
+		QueryWall();
 	}
 
 	

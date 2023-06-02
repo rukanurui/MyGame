@@ -51,11 +51,20 @@ public: // メンバ関数
 	/// 注視点座標の取得
 	const XMFLOAT3& GetTarget() { return target; }
 
+	/// 視点座標の取得
+	const XMFLOAT3& GetWallEye() { return walleye; }
+
+	/// 注視点座標の取得
+	const XMFLOAT3& GetWallTarget() { return walltarget; }
+
 	const XMFLOAT3& GetUp() {return up;}
 
 	const XMFLOAT3& GetRoatation() { return rotation; }
 
 	const XMMATRIX& GetmatRot() { return matRot; }
+
+	void Setwallflag(bool flag) { this->wallflag = flag; }
+
 
 	//プロジェクション行列関連
 
@@ -72,6 +81,13 @@ public: // メンバ関数
 
 	/// 注視点座標の設定
 	void SetTarget(XMFLOAT3 target);
+
+	/// 視点座標の設定
+	void SetWallEye(XMFLOAT3 noweye) { this->walleye = noweye; }
+
+	/// 注視点座標の設定
+	void SetWallTarget(XMFLOAT3 nowtarget) { this->walltarget = nowtarget; }
+
 
 	void SetUp(XMFLOAT3 up);
 
@@ -102,6 +118,10 @@ protected://メンバ変数
 	static XMFLOAT3 eye;
 	// 注視点座標(見てる場所)
 	static XMFLOAT3 target;
+	// カメラの座標(壁に当たる前)
+	XMFLOAT3 walleye;
+	// 注視点座標(壁に当たる前)
+	XMFLOAT3 walltarget;
 	// 上方向ベクトル
 	static XMFLOAT3 up;
 	// アスペクト比
@@ -126,6 +146,9 @@ protected://メンバ変数
 	float CurretmouseY = 0;
 
 	XMFLOAT3 Velocity{ 0,0,0 };//速度
+
+	//壁に当たっているか
+	bool wallflag = false;
 
 	// カメラ注視点までの距離
 	float distance = 3;
