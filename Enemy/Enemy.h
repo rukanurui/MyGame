@@ -17,7 +17,7 @@ public://ƒƒ“ƒoŠÖ”
 
 	void EnemyInitialize(bool Shot);
 
-	//
+	//“GŒÅ—Lˆ—
 	void EnemyUpdate(XMFLOAT3 playerpos);
 
 	//UŒ‚ˆ—
@@ -47,7 +47,7 @@ public://ƒƒ“ƒoŠÖ”
 
 	void LastUpdate();
 
-	const int die = 1;
+	const bool die = true;
 
 private:
 

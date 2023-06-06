@@ -21,11 +21,21 @@ public://メンバ関数
 	//更新
 	void PlayerUpdate(const XMFLOAT3& cameratarget);
 
+	//弾更新
 	void BulUpdate();
+	//近接更新
 	void meleeUpdate();
+	//投げた銃更新
 	void throwgunUpdate();
+	//手に持っているときの銃更新
 	void gunUpdate(const XMFLOAT3& cameratarget, const XMFLOAT3& cameraeye);
-	
+
+	//描画
+	void Draw(ID3D12GraphicsCommandList* cmdList);
+
+
+	//particle関連処理
+	void PartUpdate();
 
 	/// 注視点座標の取得
 	const XMFLOAT3& GetTarget() { return target; }
@@ -70,16 +80,6 @@ public://メンバ関数
 	int hit = 0;
 
 	int wallhit = 0;
-
-	//描画
-	void BulDraw(ID3D12GraphicsCommandList* cmdList);
-
-	void meleeDraw(ID3D12GraphicsCommandList* cmdList);
-
-	void throwgunDraw(ID3D12GraphicsCommandList* cmdList);
-
-	void gunDraw(ID3D12GraphicsCommandList* cmdList);
-
 	
 
 
@@ -100,10 +100,10 @@ private://メンバ変数
 	//格闘
 	std::list<std::unique_ptr<melee>> melees;
 	//パーティクル
-	std::list<std::unique_ptr<PartManager>> particle;
+	std::list<std::unique_ptr<PartManager>> particles;
 
 	//パーティクルの数
-	const int partnum = 20;
+	const int partnum = 10;
 
 	//パーティクルの数カウント
 	int partcount = 0;

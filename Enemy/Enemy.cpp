@@ -137,7 +137,7 @@ void Enemy::EnemyUpdate(XMFLOAT3 playerpos)
 
 		//’e‚Ìíœ
 		bullets.remove_if([](std::unique_ptr<Enemybullet>& bullet) {
-			return bullet->Gethit();
+			return bullet->Getdead();
 			});
 
 		//20ŒÂ‚Ü‚Åparticle¶¬
@@ -190,9 +190,30 @@ void Enemy::Attack(XMFLOAT3 playerpos)
 {
 	count++;
 
+	//’e‚ª‰½‚©‚É“–‚½‚Á‚½‚çparticleo‚·
+	for (std::unique_ptr<Enemybullet>& bullet : bullets)
+	{
+		if (bullet->Getdead() == true)
+		{
+			//20ŒÂ‚Ü‚Åparticle¶¬
+			for (int i = 0; i < partnum; i++)
+			{
+				std::unique_ptr<PartManager>newPart = std::make_unique<PartManager>();
+				newPart->Initialize();
+				newPart->SetScale({ 0.003f,0.003f,0.003f });
+				newPart->SetModel(model2);
+				newPart->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+				newPart->PartInitialize(bullet->GetPos());
+
+				//particle‚Ì“o˜^
+				particle.push_back(std::move(newPart));
+			}
+		}
+	}
+
 	//’e‚Ìíœ
 	bullets.remove_if([](std::unique_ptr<Enemybullet>& bullet) {
-		return bullet->Gethit();
+		return bullet->Getdead();
 		});
 
 	//if (count != 0)
@@ -302,6 +323,13 @@ void Enemy::Attack(XMFLOAT3 playerpos)
 	{
 		bullet->bulupdate();
 		bullet->Update();
+	}
+
+	//particle‚ÌXV
+	for (std::unique_ptr<PartManager>& part : particle)
+	{
+		part->PartUpdate();
+		part->Update();
 	}
 }
 
@@ -475,7 +503,7 @@ void Enemy::LastUpdate()
 		}
 
 		//particle‚ÌXV
-		if (parttimer <= 150)
+		if (parttimer <= 60)
 		{
 			for (std::unique_ptr<PartManager>& part : particle)
 			{

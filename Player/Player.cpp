@@ -55,6 +55,29 @@ void Player::MoveVector(const XMVECTOR& move)
 void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 {
 
+	//íeÇ™âΩÇ©Ç…ìñÇΩÇ¡ÇΩÇÁparticleèoÇ∑
+	for (std::unique_ptr<Pbullet>& bullet : bullets)
+	{
+		if (bullet->Getdead() == true)
+		{
+			//20å¬Ç‹Ç≈particleê∂ê¨
+			for (int i = 0; i < partnum; i++)
+			{
+				std::unique_ptr<PartManager>newPart = std::make_unique<PartManager>();
+				newPart->Initialize();
+				newPart->SetScale({ 0.003f,0.003f,0.003f });
+				newPart->SetModel(model2);
+				newPart->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+				newPart->PartInitialize(bullet->GetPos());
+
+				//particleÇÃìoò^
+				particles.push_back(std::move(newPart));
+			}
+		}
+	}
+
+
+
 	//íeÇÃçÌèú
 	bullets.remove_if([](std::unique_ptr<Pbullet>& bullet) {
 		return bullet->Getdead();
@@ -68,6 +91,11 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 	//äiì¨ÇÃçÌèú
 	melees.remove_if([](std::unique_ptr<melee>& melee) {
 		return melee->Getdead();
+		});
+
+	//particleÇÃçÌèú
+	particles.remove_if([](std::unique_ptr<PartManager>& part) {
+		return part->Getdead();
 		});
 
 	UpdateWorld();
@@ -123,6 +151,7 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 		//écíeå∏ÇÁÇ∑
 		magazin--;
 	}
+
 	//èeÇìäÇ∞ÇÈ
 	if (input->PushclickRight() && have==true)
 	{
@@ -149,6 +178,7 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 		//ÉtÉâÉOïœçX
 		have = false;
 	}
+
 	//ãﬂê⁄
 	if (input->PushclickLeft() && have==false&&mctime<=0)
 	{
@@ -198,6 +228,13 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 		melee->Update();
 	}
 
+	//particleÇÃçXêV
+	for (std::unique_ptr<PartManager>& part : particles)
+	{
+		part->PartUpdate();
+		part->Update();
+	}
+
 	UpdateWorld();
 }
 
@@ -223,6 +260,14 @@ void Player::throwgunUpdate()
 	for (std::unique_ptr<PlayerGun>& gun : Guns)
 	{
 		gun->Update();
+	}
+}
+
+void Player::PartUpdate()
+{
+	for (std::unique_ptr<PartManager>& part : particles)
+	{
+		part->Update();
 	}
 }
 
@@ -254,39 +299,36 @@ void Player::gunUpdate(const XMFLOAT3& cameratarget,const XMFLOAT3& cameraeye)
 
 }
 
-void Player::BulDraw(ID3D12GraphicsCommandList* cmdList)
+void Player::Draw(ID3D12GraphicsCommandList* cmdList)
 {
+
+	for (std::unique_ptr<PartManager>& part : particles)
+	{
+		part->Draw(cmdList);
+	}
 
 	for (std::unique_ptr<Pbullet>& bullet : bullets)
 	{
 		bullet->Draw(cmdList);
 	}
-}
 
-void Player::meleeDraw(ID3D12GraphicsCommandList* cmdList)
-{
 	for (std::unique_ptr<melee>& melee : melees)
 	{
 		melee->Draw(cmdList);
 	}
-}
 
-void Player::throwgunDraw(ID3D12GraphicsCommandList* cmdList)
-{
 	for (std::unique_ptr<PlayerGun>& gun : Guns)
 	{
 		gun->Draw(cmdList);
 	}
-}
 
-void Player::gunDraw(ID3D12GraphicsCommandList* cmdList)
-{
-	if (have==true)
+	if (have == true)
 	{
 		Pgun->Draw(cmdList);
 	}
-	
+
 }
+
 
 void Player::OnCollision(const CollisionInfo& info)
 {

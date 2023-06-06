@@ -16,7 +16,7 @@ public:
 	//衝突時コールバック関数
 	void OnCollision(const CollisionInfo& info)override;
 
-	const bool& Gethit() { return dead; }
+	const bool& Getdead() { return dead; }
 
 	void Sethit(bool hit) { this->dead = hit; }
 

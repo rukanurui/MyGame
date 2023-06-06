@@ -792,13 +792,19 @@ void ClearScene::Update()
         if (input->PushKey(DIK_SPACE))
         {
             playscene = 7;
+            ////次のシーンを生成
+            //BaseScene* scene = makeScene<GameScene>();
+            ////シーン切り替え
+            //sceneManager->NextScene(scene);
+            ////現在のプレイ中シーンをシーンマネージャーに渡す
+            //sceneManager->SetplayScene(playscene);
+
             //次のシーンを生成
-            BaseScene* scene = makeScene<GameScene>();
+            BaseScene* scene = makeScene<TitleScene>();
             //シーン切り替え
             sceneManager->NextScene(scene);
-            //現在のプレイ中シーンをシーンマネージャーに渡す
-            sceneManager->SetplayScene(playscene);
             return;
+
         }
     }
 

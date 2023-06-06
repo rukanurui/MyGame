@@ -1569,6 +1569,7 @@ void GameScene::Update()
         player->meleeUpdate();
         player->throwgunUpdate();
         player->gunUpdate(camera->GetTarget(), camera->GetEye());
+        player->PartUpdate();
 
         for (std::unique_ptr<Enemy>& enemy : Stage1Enemy)
         {
@@ -2001,6 +2002,7 @@ void GameScene::Update()
         player->meleeUpdate();
         player->throwgunUpdate();
         player->gunUpdate(camera->GetTarget(), camera->GetEye());
+        player->PartUpdate();
 
         //スプライト更新
         crosshair->Update();
@@ -2310,6 +2312,7 @@ void GameScene::Update()
         player->throwgunUpdate();
         player->gunUpdate(camera->GetTarget(), camera->GetEye());
         tutogun->Update();
+        player->PartUpdate();
 
         //スプライト更新
         crosshair->Update();
@@ -2671,6 +2674,7 @@ void GameScene::Update()
         player->throwgunUpdate();
         player->gunUpdate(camera->GetTarget(), camera->GetEye());
         tutogun->Update();
+        player->PartUpdate();
 
         //スプライト更新
         crosshair->Update();
@@ -3039,10 +3043,7 @@ void GameScene::Draw()
     
 
     //プレイヤー関連
-     player->throwgunDraw(cmdList);
-     player->gunDraw(cmdList);
-     player->BulDraw(cmdList);
-     player->meleeDraw(cmdList);
+    player->Draw(cmdList);
 
      //スプライト描画前処理
      spriteCommon->PreDraw();
@@ -3145,13 +3146,13 @@ void GameScene::transrationScene()
         magazin = 5;
         player->SetMagazin(magazin);
 
-        //listの削除
-        Stage1Enemy.remove_if([](std::unique_ptr<Enemy>& enemy) {
-            return enemy->die;
-            });
-        Stage1Walls.remove_if([](std::unique_ptr<Wall>& wall) {
-            return wall->die;
-            });
+        ////listの削除
+        //Stage1Enemy.remove_if([](std::unique_ptr<Enemy>& enemy) {
+        //    return enemy->die;
+        //    });
+        //Stage1Walls.remove_if([](std::unique_ptr<Wall>& wall) {
+        //    return wall->die;
+        //    });
 
         for (std::unique_ptr<Enemy>& enemy : Stage2Enemy)
         {
@@ -3189,13 +3190,13 @@ void GameScene::transrationScene()
         SwapWallDataS3();
 
 
-        //listの削除
-        Stage2Enemy.remove_if([](std::unique_ptr<Enemy>& enemy) {
-            return enemy->die;
-            });
-        Stage2Walls.remove_if([](std::unique_ptr<Wall>& wall) {
-            return wall->die;
-            });
+        ////listの削除
+        //Stage2Enemy.remove_if([](std::unique_ptr<Enemy>& enemy) {
+        //    return enemy->die;
+        //    });
+        //Stage2Walls.remove_if([](std::unique_ptr<Wall>& wall) {
+        //    return wall->die;
+        //    });
 
         gunstand->SetPosition({ -1000.0f,10.0f,0.0f });
         tutogun->SetPosition({ 0.0f,0.0f,20.0f });
@@ -3226,13 +3227,13 @@ void GameScene::transrationScene()
         SwapWallDataS4();
 
 
-        //listの削除
-        Stage3Enemy.remove_if([](std::unique_ptr<Enemy>& enemy) {
-            return enemy->die;
-            });
-        Stage3Walls.remove_if([](std::unique_ptr<Wall>& wall) {
-            return wall->die;
-            });
+        ////listの削除
+        //Stage3Enemy.remove_if([](std::unique_ptr<Enemy>& enemy) {
+        //    return enemy->die;
+        //    });
+        //Stage3Walls.remove_if([](std::unique_ptr<Wall>& wall) {
+        //    return wall->die;
+        //    });
 
         gunstand->SetPosition({ -1000.0f,10.0f,0.0f });
         tutogun->SetPosition({ 0.0f,0.0f,30.0f });

@@ -18,6 +18,8 @@ public://ƒƒ“ƒoŠÖ”
 
 	void setcol(int Col);
 
+	const bool& Getdead() { return dead; }
+
 private:
 
 	XMVECTOR Vel{0.0f,0.0f,0.0f};
@@ -27,6 +29,10 @@ private:
 	float G = -0.1f;//d—Í‰Á‘¬“x
 
 	bool dead = false;
+
+	float alivecount = 0;
+
+	float alivelimit = 60;
 
 
 

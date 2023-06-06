@@ -65,6 +65,15 @@ void PartManager::PartUpdate()
 	{
 		position.y = 0;
 	}
+
+	//出現時間カウント
+	alivecount++;
+
+	//1秒経過したら
+	if (alivecount >= alivelimit)
+	{
+		dead = true;
+	}
 	
 	
 	HRESULT result;
