@@ -419,11 +419,6 @@ void Enemy::OnCollision(const CollisionInfo& info)
 
 	}
 
-	if (info.collider->color == 6)
-	{
-		
-	}
-
 	//“–‚½‚è”»’èXV
 	if (collider)
 	{

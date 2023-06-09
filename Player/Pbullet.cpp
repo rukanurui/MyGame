@@ -107,8 +107,9 @@ void Pbullet::bulupdate()
 void Pbullet::OnCollision(const CollisionInfo& info)
 {
 
-	if (info.collider->color != 2)
+	if (info.collider->color != 2 && info.collider->color != 16 && info.collider->color != 32)
 	{
+
 
 		dead = true;
 

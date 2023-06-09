@@ -9,7 +9,7 @@ PlayerCol::PlayerCol()
 
 void PlayerCol::OnCollision(const CollisionInfo& info)
 {
-	if (info.collider->color == 8)
+	if (info.collider->color == 8 || info.collider->color == 16)
 	{
 		hit = 1;
 	}

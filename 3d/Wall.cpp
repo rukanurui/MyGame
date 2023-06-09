@@ -20,7 +20,7 @@ void Wall::objgunInitialize()
 void Wall::OnCollision(const CollisionInfo& info)
 {
 	
-	if (collider->color==32&&info.collider->color==4)
+	if (collider->color== 64 && (info.collider->color == 4 || info.collider->color == 2))
 	{
 		scale.x = 0, scale.y = 0, scale.z = 0;
 

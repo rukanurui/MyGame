@@ -19,6 +19,7 @@ void Player::PlayerInitialize(Input* Input)
 	modelballet = FbxLoader::GetInstance()->LoadModelFromFile("bullet");
 	modelgun = FbxLoader::GetInstance()->LoadModelFromFile("gun");
 	model2 = FbxLoader::GetInstance()->LoadModelFromFile("testfbx");
+	gunpix = FbxLoader::GetInstance()->LoadModelFromFile("gunpix");
 
 
 	//e‚Ì¶¬‚Æ‰Šú‰»
@@ -67,8 +68,30 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 				newPart->Initialize();
 				newPart->SetScale({ 0.003f,0.003f,0.003f });
 				newPart->SetModel(model2);
-				newPart->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+				newPart->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 0.5f));
 				newPart->PartInitialize(bullet->GetPos());
+
+				//particle‚Ì“o˜^
+				particles.push_back(std::move(newPart));
+			}
+		}
+	}
+
+
+	//“Š‚°‚½e‚ª‰½‚©‚É“–‚½‚Á‚½‚çparticleo‚·
+	for (std::unique_ptr<PlayerGun>& newgun : Guns)
+	{
+		if (newgun->Getdead() == true)
+		{
+			//20ŒÂ‚Ü‚Åparticle¶¬
+			for (int i = 0; i < partnum; i++)
+			{
+				std::unique_ptr<PartManager>newPart = std::make_unique<PartManager>();
+				newPart->Initialize();
+				newPart->SetScale({ 0.003f,0.003f,0.003f });
+				newPart->SetModel(gunpix);
+				newPart->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+				newPart->PartInitialize(newgun->GetPos());
 
 				//particle‚Ì“o˜^
 				particles.push_back(std::move(newPart));
@@ -239,6 +262,10 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 }
 
 
+void Player::FbxUpdate()
+{
+}
+
 void Player::BulUpdate()
 {
 	for (std::unique_ptr<Pbullet>& bullet : bullets)
@@ -332,7 +359,7 @@ void Player::Draw(ID3D12GraphicsCommandList* cmdList)
 
 void Player::OnCollision(const CollisionInfo& info)
 {
-	if (info.collider->color == 8)
+	if (info.collider->color == 8 || info.collider->color == 16)
 	{
 		hit = 1;
 	}

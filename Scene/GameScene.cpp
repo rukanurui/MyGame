@@ -175,7 +175,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     gunstand->SetPosition({ 0.0f,0.0f,10.0f });
     gunstand->SetScale({ 0.03f,0.04f,0.03f });
     gunstand->SetRotation({ 0.0f,0.0f,0.0f });
-    gunstand->SetCollider(new BoxCollider(XMVECTOR{ 6.0f,6.0f,6.0f,0 }, 1.0f));
+    gunstand->SetCollider(new BoxCollider(XMVECTOR{ 0.0f,0.0f,0.0f,0 }, 1.0f));
     gunstand->WallInitialize();
 
     //e–{‘Ì
@@ -3198,7 +3198,7 @@ void GameScene::transrationScene()
         //    return wall->die;
         //    });
 
-        gunstand->SetPosition({ -1000.0f,10.0f,0.0f });
+        gunstand->SetPosition({ -100.0f,20.0f,0.0f });
         tutogun->SetPosition({ 0.0f,0.0f,20.0f });
         gunstand->Update();
         tutogun->Update();
@@ -3235,7 +3235,7 @@ void GameScene::transrationScene()
         //    return wall->die;
         //    });
 
-        gunstand->SetPosition({ -1000.0f,10.0f,0.0f });
+        gunstand->SetPosition({ -100.0f,10.0f,0.0f });
         tutogun->SetPosition({ 0.0f,0.0f,30.0f });
         gunstand->Update();
         tutogun->Update();

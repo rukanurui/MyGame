@@ -1,4 +1,6 @@
 #include "PartManager.h"
+#include"../Collider/QueryCallback.h"
+#include "../Collider/CollisionManager.h"
 
 PartManager::PartManager()
 {
@@ -38,9 +40,8 @@ void PartManager::PartInitialize(XMFLOAT3 pos)
 void PartManager::OnCollision(const CollisionInfo& info)
 {
 
-	
-
 }
+
 
 void PartManager::PartUpdate()
 {

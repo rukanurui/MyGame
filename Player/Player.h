@@ -21,6 +21,8 @@ public://メンバ関数
 	//更新
 	void PlayerUpdate(const XMFLOAT3& cameratarget);
 
+	//FBX更新
+	void FbxUpdate();
 	//弾更新
 	void BulUpdate();
 	//近接更新
@@ -89,6 +91,7 @@ private://メンバ変数
 	FbxModel* modelballet = nullptr;
 	FbxModel* modelgun = nullptr;
 	FbxModel* model2 = nullptr;
+	FbxModel* gunpix = nullptr;
 
 	//銃本体
 	std::unique_ptr<PlayerGun> Pgun;
@@ -103,7 +106,7 @@ private://メンバ変数
 	std::list<std::unique_ptr<PartManager>> particles;
 
 	//パーティクルの数
-	const int partnum = 10;
+	const int partnum = 15;
 
 	//パーティクルの数カウント
 	int partcount = 0;
