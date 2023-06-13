@@ -57,7 +57,7 @@ void TitleScene::Update()
         title->Update();
         if (input->TriggerKey(DIK_SPACE))
         {
-            playscene = 2;
+            playscene = 5;
             spritesize = { 1280,720 };
             transfrag = true;
             titleflag = false;

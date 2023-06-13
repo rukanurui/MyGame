@@ -189,6 +189,7 @@
     <ClCompile Include="Scene\GameoverScene.cpp" />
     <ClCompile Include="Scene\GameScene.cpp" />
     <ClCompile Include="Scene\SceneManager.cpp" />
+    <ClCompile Include="Scene\StageData.cpp" />
     <ClCompile Include="Scene\TitleScene.cpp" />
     <ClCompile Include="Scene\TransEffect.cpp" />
   </ItemGroup>
@@ -319,6 +320,7 @@
     <ClInclude Include="Scene\GameoverScene.h" />
     <ClInclude Include="Scene\GameScene.h" />
     <ClInclude Include="Scene\SceneManager.h" />
+    <ClInclude Include="Scene\StageData.h" />
     <ClInclude Include="Scene\TitleScene.h" />
     <ClInclude Include="Scene\TransEffect.h" />
   </ItemGroup>

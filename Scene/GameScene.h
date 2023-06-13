@@ -35,6 +35,7 @@
 
 #include"BaseScene.h"
 #include"TransEffect.h"
+#include"StageData.h"
 
 
 
@@ -174,9 +175,11 @@ private://メンバ変数
 	std::stringstream wallDataS3;
 	std::stringstream wallDataS4;
 
+	//壁のvector
+	std::vector<Wall> walls;
+
 	
 	//2面
-	Wall* gunstand = nullptr;
 	FbxModel* modelobjgun = nullptr;
 	Wall* tutogun = nullptr;
 	Wall* stage2Object[3];
@@ -198,6 +201,12 @@ private://メンバ変数
 	std::stringstream enemyDataS2;
 	std::stringstream enemyDataS3;
 	std::stringstream enemyDataS4;
+
+	//Enemyのvector
+	std::vector<Enemy> enemys;
+
+	//チュートリアル
+	std::vector<int> tutonum;
 
 
 	//自機関連

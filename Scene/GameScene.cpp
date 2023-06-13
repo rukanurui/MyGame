@@ -8,7 +8,7 @@
 #include"../Collider/CollisionColor.h"
 #include<fstream>
 #include"SceneManager.h"
-
+#include "StageData.cpp"
 
 using namespace DirectX;
 
@@ -169,14 +169,14 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     ///２面
    
     //銃台座
-    gunstand= new Wall();
+   /* gunstand= new Wall();
     gunstand->Initialize();
     gunstand->SetModel(model2);
     gunstand->SetPosition({ 0.0f,0.0f,10.0f });
     gunstand->SetScale({ 0.03f,0.04f,0.03f });
     gunstand->SetRotation({ 0.0f,0.0f,0.0f });
     gunstand->SetCollider(new BoxCollider(XMVECTOR{ 0.0f,0.0f,0.0f,0 }, 1.0f));
-    gunstand->WallInitialize();
+    gunstand->WallInitialize();*/
 
     //銃本体
     tutogun = new Wall;
@@ -184,8 +184,35 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     tutogun->SetPosition({ 0.0f,6.0f,10.0f });
     tutogun->SetScale({ 0.01f,0.01f,0.01f });
     tutogun->SetModel(modelobjgun);
-    tutogun->SetCollider(new BoxCollider(XMVECTOR{ 6.0f,6.0f,6.0f,0 }, 1.0f));
+    tutogun->SetCollider(new BoxCollider(XMVECTOR{ 4.0f,4.0f,4.0f,0 }, 1.0f));
     tutogun->objgunInitialize();
+
+    //敵初期化
+    uint32_t enemyNum = stageDatas[StageNum].enemyNum;
+    for (int i = 0; i < enemyNum; i++)
+    {
+        std::vector<Enemy> newenemy;
+        newenemy[i].Initialize();
+
+        enemys.push_back(Enemy());
+    }
+
+    for (int i = 0; i < enemyNum; i++)
+    {
+        enemys[i].Initialize();
+    }
+
+
+
+    //壁
+    uint32_t wallNum = stageDatas[StageNum].wallNum;
+
+    //チュートリアル初期化
+    uint32_t tutoNum = stageDatas[StageNum].tutoNum;
+    for (int i = 0; i < tutoNum; i++)
+    {
+
+    }
 
 
     int counter = 0; // アニメーションの経過時間カウンター
@@ -841,6 +868,10 @@ void GameScene::SwapWallDataS2()
             {
                 newwall->SetModel(modelwall);
             }
+            else if (modelname == 2)
+            {
+                newwall->SetModel(model2);
+            }  
 
         }
         else if (word.find("COLLIDER") == 0)
@@ -1123,6 +1154,10 @@ void GameScene::SwapWallDataS3()
             if (modelname == 1)
             {
                 newwall->SetModel(modelwall);
+            }
+            else if (modelname == 2)
+            {
+                newwall->SetModel(model2);
             }
 
         }
@@ -1995,7 +2030,7 @@ void GameScene::Update()
         {
             wall->Update();
         }
-        gunstand->Update();
+        //gunstand->Update();
         tutogun->Update();
         player->BulUpdate();
         backsphere->Update();
@@ -2973,7 +3008,6 @@ void GameScene::Draw()
             wall->Draw(cmdList);
         }
 
-        gunstand->Draw(cmdList);
         tutogun->Draw(cmdList);
     }
 
@@ -3188,19 +3222,8 @@ void GameScene::transrationScene()
         SwapEnemyDataS3();
        LoadWallDataS3();
         SwapWallDataS3();
-
-
-        ////listの削除
-        //Stage2Enemy.remove_if([](std::unique_ptr<Enemy>& enemy) {
-        //    return enemy->die;
-        //    });
-        //Stage2Walls.remove_if([](std::unique_ptr<Wall>& wall) {
-        //    return wall->die;
-        //    });
-
-        gunstand->SetPosition({ -100.0f,20.0f,0.0f });
+     
         tutogun->SetPosition({ 0.0f,0.0f,20.0f });
-        gunstand->Update();
         tutogun->Update();
 
     }
@@ -3235,9 +3258,7 @@ void GameScene::transrationScene()
         //    return wall->die;
         //    });
 
-        gunstand->SetPosition({ -100.0f,10.0f,0.0f });
         tutogun->SetPosition({ 0.0f,0.0f,30.0f });
-        gunstand->Update();
         tutogun->Update();
 
     }
