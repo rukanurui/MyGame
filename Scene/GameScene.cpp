@@ -187,25 +187,34 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     tutogun->SetCollider(new BoxCollider(XMVECTOR{ 4.0f,4.0f,4.0f,0 }, 1.0f));
     tutogun->objgunInitialize();
 
+
+
     //敵初期化
-    uint32_t enemyNum = stageDatas[StageNum].enemyNum;
+    uint32_t enemyNum = EnemyData[StageNum].enemyNum;
     for (int i = 0; i < enemyNum; i++)
     {
         std::vector<Enemy> newenemy;
         newenemy[i].Initialize();
 
-        enemys.push_back(Enemy());
-    }
 
-    for (int i = 0; i < enemyNum; i++)
-    {
-        enemys[i].Initialize();
-    }
 
+        enemys.push_back(newenemy[i]);
+
+    }
 
 
     //壁
     uint32_t wallNum = stageDatas[StageNum].wallNum;
+    for (int i = 0; i < wallNum; i++)
+    {
+        std::vector<Wall> newwall;
+        newwall[i].Initialize();
+
+
+
+        walls.push_back(newwall[i]);
+
+    }
 
     //チュートリアル初期化
     uint32_t tutoNum = stageDatas[StageNum].tutoNum;
@@ -1506,6 +1515,12 @@ void GameScene::Update()
 
 
     //ゲーム本編
+    
+   /* if (transscene == true)
+    {
+
+    }*/
+
     //ステージ１
     if (playscene == 2 && transscene==true)
     {
@@ -1886,10 +1901,7 @@ void GameScene::Update()
             camera->SetEye(camera->GetWallEye());
             camera->SetTarget(camera->GetWallTarget());
 
-
         }
-
-
 
         //プレイヤーに敵が当たったらシーン遷移
         if (player->Gethit() == 1)
