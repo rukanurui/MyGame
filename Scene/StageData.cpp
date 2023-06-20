@@ -1279,9 +1279,9 @@ void StageData::InsertData(int stagenum,int enemynum, std::list<std::unique_ptr<
     SwapWallDataS3();
 
     Stagedata stageDatas[StageNum] = {
-         {Stage1Enemy.size(),Stage1Enemy,Stage1Walls.size(),Stage1Walls,0},
+         {Stage1Enemy.size(),Stage1Enemy,Stage1Walls.size(),Stage1Walls,3},
          {Stage2Enemy.size(),Stage2Enemy,Stage2Walls.size(),Stage2Walls,3},
-         {Stage3Enemy.size(),Stage3Enemy,Stage3Walls.size(),Stage3Walls,5},
+         {Stage3Enemy.size(),Stage3Enemy,Stage3Walls.size(),Stage3Walls,2},
     };
 
     if (stagenum==1)
@@ -1290,7 +1290,7 @@ void StageData::InsertData(int stagenum,int enemynum, std::list<std::unique_ptr<
         enemy = stageDatas[0].Enemy;
         wallnum = stageDatas[0].wallNum;
         wall= stageDatas[0].Walls;
-        tuto = 3;
+        tuto = stageDatas[0].tutoNum;
     }
     else if (stagenum == 2)
     {
@@ -1298,7 +1298,7 @@ void StageData::InsertData(int stagenum,int enemynum, std::list<std::unique_ptr<
         enemy = stageDatas[1].Enemy;
         wallnum = stageDatas[1].wallNum;
         wall = stageDatas[1].Walls;
-        tuto = 3;
+        tuto = stageDatas[1].tutoNum;
     }
     else if (stagenum == 3)
     {
@@ -1306,6 +1306,6 @@ void StageData::InsertData(int stagenum,int enemynum, std::list<std::unique_ptr<
         enemy = stageDatas[2].Enemy;
         wallnum = stageDatas[2].wallNum;
         wall = stageDatas[2].Walls;
-        tuto = 2;
+        tuto = stageDatas[2].tutoNum;
     }
 }

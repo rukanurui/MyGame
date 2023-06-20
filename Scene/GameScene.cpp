@@ -176,6 +176,10 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
 
     stagedata->InsertData(playscene,enemyNum,Enemys,wallNum,Walls,tutonum);
 
+   /* for (int i = 0; i < enemyNum; i++)
+    {
+        std::list
+    }*/
 
     //“G‰Šú‰»
    /* uint32_t enemyNum = stagedata->GetEnemyNum();

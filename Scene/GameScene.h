@@ -203,8 +203,8 @@ private://メンバ変数
 	//std::list<std::unique_ptr<Enemy>> Stage3Enemy;
 	//std::list<std::unique_ptr<Enemy>> Stage4Enemy;
 	//
-	////敵コマンド
-	//std::stringstream enemyDataS1;
+	//敵コマンド
+	std::stringstream enemyData;
 	//std::stringstream enemyDataS2;
 	//std::stringstream enemyDataS3;
 	//std::stringstream enemyDataS4;
