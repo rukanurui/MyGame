@@ -32,17 +32,17 @@ using namespace Microsoft::WRL;
 
 void spritetrans(XMFLOAT2 size,bool flag);
 
-GameScene* reset(GameScene* gameScene,DXCommon* dxcommon, Input* input, Audio* audio, SpriteCommon* spritecommon, WindowsApp* windows)
-{
-    if (gameScene!=nullptr)
-    {
-        delete gameScene;
-    }
-
-    gameScene = new GameScene;
-    gameScene->Initialize(dxcommon, input, audio, spritecommon, windows);
-    return gameScene;
-}
+//GameScene* reset(GameScene* gameScene,DXCommon* dxcommon, Input* input, Audio* audio, SpriteCommon* spritecommon, WindowsApp* windows)
+//{
+//    if (gameScene!=nullptr)
+//    {
+//        delete gameScene;
+//    }
+//
+//    gameScene = new GameScene;
+//    gameScene->Initialize(dxcommon, input, audio, spritecommon, windows);
+//    return gameScene;
+//}
 
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)

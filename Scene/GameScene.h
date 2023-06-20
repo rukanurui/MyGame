@@ -31,7 +31,6 @@
 
 #include <memory>
 #include <list>
-#include<sstream>
 
 #include"BaseScene.h"
 #include"TransEffect.h"
@@ -56,45 +55,45 @@ public://メンバ関数
 
 	//初期化
 	void Initialize(DXCommon* dxcommon, Input* input, Audio* audio, SpriteCommon* spritecommon, WindowsApp* windows)override;
-	//敵データ読み込み
-	void LoadEnemyDataS1();
-	//敵データ受け取り
-	void SwapEnemyDataS1();
-	//地形データ読み込み
-	void LoadWallDataS1();
-	//地形データ更新
-	void SwapWallDataS1();
-	//敵データ読み込み
-	void LoadEnemyDataS2();
-	//敵データ受け取り
-	void SwapEnemyDataS2();
-	//地形データ読み込み
-	void LoadWallDataS2();
-	//地形データ更新
-	void SwapWallDataS2();
-	//敵データ読み込み
-	void LoadEnemyDataS3();
-	//敵データ受け取り
-	void SwapEnemyDataS3();
-	//地形データ読み込み
-	void LoadWallDataS3();
-	//地形データ更新
-	void SwapWallDataS3();
-	//敵データ読み込み
-	void LoadEnemyDataS4();
-	//敵データ受け取り
-	void SwapEnemyDataS4();
-	//地形データ読み込み
-	void LoadWallDataS4();
-	//地形データ更新
-	void SwapWallDataS4();
+	////敵データ読み込み
+	//void LoadEnemyDataS1();
+	////敵データ受け取り
+	//void SwapEnemyDataS1();
+	////地形データ読み込み
+	//void LoadWallDataS1();
+	////地形データ更新
+	//void SwapWallDataS1();
+	////敵データ読み込み
+	//void LoadEnemyDataS2();
+	////敵データ受け取り
+	//void SwapEnemyDataS2();
+	////地形データ読み込み
+	//void LoadWallDataS2();
+	////地形データ更新
+	//void SwapWallDataS2();
+	////敵データ読み込み
+	//void LoadEnemyDataS3();
+	////敵データ受け取り
+	//void SwapEnemyDataS3();
+	////地形データ読み込み
+	//void LoadWallDataS3();
+	////地形データ更新
+	//void SwapWallDataS3();
+	////敵データ読み込み
+	//void LoadEnemyDataS4();
+	////敵データ受け取り
+	//void SwapEnemyDataS4();
+	////地形データ読み込み
+	//void LoadWallDataS4();
+	////地形データ更新
+	//void SwapWallDataS4();
 	//更新
 	void Update()override;
 	//シーン分岐
 	const int& GettutoScene() { return tutoscene; }
 
 	//シーン遷移処理
-	void transrationScene();
+	//void transrationScene();
 	//残弾数のgetter
 	const int& Getmagazin() { return magazin; };
 	//銃を持っているかのgetter
@@ -116,6 +115,7 @@ private://メンバ変数
 	Camera* camera = nullptr;
 	//衝突マネージャー
 	CollisionManager* collisionManager = nullptr;
+	StageData* stagedata = nullptr;
 	
 	char pla[64];
 
@@ -165,15 +165,20 @@ private://メンバ変数
 	std::list<std::unique_ptr<FBXobj3d>> objects;
 
 	//壁のlist
-	std::list<std::unique_ptr<Wall>> Stage1Walls;
-	std::list<std::unique_ptr<Wall>> Stage2Walls;
-	std::list<std::unique_ptr<Wall>> Stage3Walls;
-	std::list<std::unique_ptr<Wall>> Stage4Walls;
-	//壁コマンド
-	std::stringstream wallDataS1;
-	std::stringstream wallDataS2;
-	std::stringstream wallDataS3;
-	std::stringstream wallDataS4;
+	std::list<std::unique_ptr<Wall>> Walls;
+
+	uint32_t wallNum;
+	uint32_t enemyNum;
+
+	//std::list<std::unique_ptr<Wall>> Stage1Walls;
+	//std::list<std::unique_ptr<Wall>> Stage2Walls;
+	//std::list<std::unique_ptr<Wall>> Stage3Walls;
+	//std::list<std::unique_ptr<Wall>> Stage4Walls;
+	////壁コマンド
+	//std::stringstream wallDataS1;
+	//std::stringstream wallDataS2;
+	//std::stringstream wallDataS3;
+	//std::stringstream wallDataS4;
 
 	//壁のvector
 	std::vector<Wall> walls;
@@ -191,22 +196,26 @@ private://メンバ変数
 	//3dモデル(敵)
 
 	//敵のリスト
-	std::list<std::unique_ptr<Enemy>> Stage1Enemy;
-	std::list<std::unique_ptr<Enemy>> Stage2Enemy;
-	std::list<std::unique_ptr<Enemy>> Stage3Enemy;
-	std::list<std::unique_ptr<Enemy>> Stage4Enemy;
-	
-	//敵コマンド
-	std::stringstream enemyDataS1;
-	std::stringstream enemyDataS2;
-	std::stringstream enemyDataS3;
-	std::stringstream enemyDataS4;
+	std::list<std::unique_ptr<Enemy>> Enemys;
+
+	//std::list<std::unique_ptr<Enemy>> Stage1Enemy;
+	//std::list<std::unique_ptr<Enemy>> Stage2Enemy;
+	//std::list<std::unique_ptr<Enemy>> Stage3Enemy;
+	//std::list<std::unique_ptr<Enemy>> Stage4Enemy;
+	//
+	////敵コマンド
+	//std::stringstream enemyDataS1;
+	//std::stringstream enemyDataS2;
+	//std::stringstream enemyDataS3;
+	//std::stringstream enemyDataS4;
 
 	//Enemyのvector
 	std::vector<Enemy> enemys;
 
 	//チュートリアル
-	std::vector<int> tutonum;
+	//std::vector<int> tutonum;
+	int tutonum = 0;
+	int tutocount = 0;
 
 
 	//自機関連

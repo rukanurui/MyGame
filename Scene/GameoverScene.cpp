@@ -57,7 +57,7 @@ void GameoverScene::Update()
     gameover->Update();
    
 
-    if (playscene == 2)
+    if (playscene == 1)
     {
         
         if (input->TriggerKey(DIK_R))
@@ -73,7 +73,7 @@ void GameoverScene::Update()
         }
     }
 
-    if (playscene == 5)
+    if (playscene == 2)
     {
 
         if (input->TriggerKey(DIK_R))
@@ -90,7 +90,7 @@ void GameoverScene::Update()
         }
     }
 
-    if (playscene == 6)
+    if (playscene == 3)
     {
        
         if (input->TriggerKey(DIK_R))
@@ -105,7 +105,7 @@ void GameoverScene::Update()
         }
     }
 
-    if (playscene == 7)
+    if (playscene == 4)
     {
 
         if (input->TriggerKey(DIK_R))

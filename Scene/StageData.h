@@ -5,23 +5,25 @@
 #include <memory>
 #include <list>
 #include<sstream>
+#include <string>
 
-
- struct EnemyData {
-	uint32_t enemyNum;
-	Enemy enemy;
-};
-
-struct WallData {
-	uint32_t wallNum;
-	Wall wall;
-};
 
 const uint32_t StageNum = 3;
 
 class StageData
 {
+
+protected: // エイリアス
+// Microsoft::WRL::を省略
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+	// DirectX::を省略
+	using XMFLOAT2 = DirectX::XMFLOAT2;
+	using XMFLOAT3 = DirectX::XMFLOAT3;
+	using XMFLOAT4 = DirectX::XMFLOAT4;
+	using XMMATRIX = DirectX::XMMATRIX;
+
 public:
+
 	//敵データ読み込み
 	void LoadEnemyDataS1();
 	//敵データ受け取り
@@ -55,8 +57,65 @@ public:
 	//地形データ更新
 	void SwapWallDataS4();
 
+
+	//データ整理
+	void InsertData(int stagenum,int enemynum, std::list<std::unique_ptr<Enemy>> enemy, int wallnum, std::list<std::unique_ptr<Wall>> wall,int tuto);
+
+	const int& GetEnemyNum() { return deta.enemyNum; }
+
+	
+
 private:
 
+	//3dモデル(地形など)
+	FbxModel* model2 = nullptr;
+	FbxModel* modelfloor = nullptr;
+	FbxModel* modelwall = nullptr;
+
+	struct Stagedata {
+		uint32_t enemyNum;
+		std::list<std::unique_ptr<Enemy>> Enemy;
+		uint32_t wallNum;
+		std::list<std::unique_ptr<Wall>> Walls;
+		uint32_t tutoNum;
+	}deta;
+
+	//オブジェクトのリスト
+	std::list<std::unique_ptr<FBXobj3d>> objects;
+
+	//壁のlist
+	std::list<std::unique_ptr<Wall>> Stage1Walls;
+	std::list<std::unique_ptr<Wall>> Stage2Walls;
+	std::list<std::unique_ptr<Wall>> Stage3Walls;
+	std::list<std::unique_ptr<Wall>> Stage4Walls;
+	//壁コマンド
+	std::stringstream wallDataS1;
+	std::stringstream wallDataS2;
+	std::stringstream wallDataS3;
+	std::stringstream wallDataS4;
+
+	//壁のvector
+	//std::vector<Wall> walls;
+
+	//敵のリスト
+	std::list<std::unique_ptr<Enemy>> Stage1Enemy;
+	std::list<std::unique_ptr<Enemy>> Stage2Enemy;
+	std::list<std::unique_ptr<Enemy>> Stage3Enemy;
+	std::list<std::unique_ptr<Enemy>> Stage4Enemy;
+
+	//敵コマンド
+	std::stringstream enemyDataS1;
+	std::stringstream enemyDataS2;
+	std::stringstream enemyDataS3;
+	std::stringstream enemyDataS4;
+
+	//Enemyのvector
+	//std::vector<Enemy> enemys;
+
+	//チュートリアル
+	std::vector<int> tutonum;
+
+	//const uint32_t StageNum = 3;
 };
 
 

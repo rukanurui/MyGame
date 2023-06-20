@@ -39,25 +39,25 @@ void ClearScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Spri
     floor->SetModel(modelfloor);
     floor->SetCollider(new BoxCollider(XMVECTOR{ 100.0f,0.7f,100.0f,0 }, 1.0f));
 
-    if (playscene==2)
+    if (playscene==1)
     {
         LoadWallDataS1();
         SwapWallDataS1();
     }
 
-    if (playscene == 5)
+    if (playscene == 2)
     {
         LoadWallDataS2();
         SwapWallDataS2();
     }
 
-    if (playscene == 6)
+    if (playscene == 3)
     {
         LoadWallDataS3();
         SwapWallDataS3();
     }
 
-    if (playscene == 7)
+    if (playscene == 4)
     {
         LoadWallDataS4();
         SwapWallDataS4();
@@ -740,7 +740,7 @@ void ClearScene::Update()
     //FBX更新
     floor->Update();
 
-    if (playscene == 2)
+    if (playscene == 1)
     {
         for (std::unique_ptr<Wall>& wall : Stage1Walls)
         {
@@ -749,7 +749,7 @@ void ClearScene::Update()
 
         if (input->PushKey(DIK_SPACE))
         {
-            playscene = 5;
+            playscene = 2;
             //次のシーンを生成
             BaseScene* scene = makeScene<GameScene>();
             //シーン切り替え
@@ -760,7 +760,7 @@ void ClearScene::Update()
         }
     }
 
-    if (playscene == 5)
+    if (playscene == 2)
     {
 
         for (std::unique_ptr<Wall>& wall : Stage2Walls)
@@ -770,7 +770,7 @@ void ClearScene::Update()
 
         if (input->PushKey(DIK_SPACE))
         {
-            playscene = 6;
+            playscene = 3;
             //次のシーンを生成
             BaseScene* scene = makeScene<GameScene>();
             //シーン切り替え
@@ -781,7 +781,7 @@ void ClearScene::Update()
         }
     }
 
-    if (playscene == 6)
+    if (playscene == 3)
     {
 
         for (std::unique_ptr<Wall>& wall : Stage3Walls)
@@ -791,7 +791,7 @@ void ClearScene::Update()
 
         if (input->PushKey(DIK_SPACE))
         {
-            playscene = 7;
+            playscene = 4;
             ////次のシーンを生成
             //BaseScene* scene = makeScene<GameScene>();
             ////シーン切り替え
