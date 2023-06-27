@@ -29,8 +29,6 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     this->spriteCommon = spritecommon;
     this->Windows = windows;
 
-
-
     //カメラ生成
     camera = new Camera(this->input,this->Windows);
     camera->Initialize(WindowsApp::window_width, WindowsApp::window_height,this->input);
@@ -173,7 +171,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     tutogun->SetCollider(new BoxCollider(XMVECTOR{ 4.0f,4.0f,4.0f,0 }, 1.0f));
     tutogun->objgunInitialize();
 
-
+    //ステージデータ読み取り
     stagedata->InsertData(playscene,enemyNum,Enemys,wallNum,Walls,tutonum);
 
    /* for (int i = 0; i < enemyNum; i++)
@@ -206,7 +204,6 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
 
 
     //    walls.push_back(newwall[i]);
-
     //}
 
     ////チュートリアル初期化
@@ -234,7 +231,7 @@ void GameScene::Update()
     camera->SetmouseX(CurretmouseX);
     camera->SetmouseY(CurretmouseY);
 
-
+    //画面遷移処理
     if (transscene == false)
     {
         transcount += 1.0f;
@@ -825,8 +822,6 @@ void GameScene::Draw()
     // コマンドリストの取得
     ID3D12GraphicsCommandList* cmdList = dxCommon->GetCommandList();
 
-   
-
     for (std::unique_ptr<Wall>& wall : Walls)
     {
         wall->Draw(cmdList);
@@ -856,8 +851,6 @@ void GameScene::Draw()
          transEffect->Draw(cmdList);
      }
 
-
-
      if (playscene == 1)
      {
          if (tutoscene == 0)tutomove->Draw();
@@ -885,7 +878,6 @@ void GameScene::Draw()
      {
          if (noammoflag == true)noammo->Draw();
      }
-
 
      if (playscene != 0)
      {

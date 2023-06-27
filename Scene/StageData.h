@@ -57,12 +57,8 @@ public:
 	//地形データ更新
 	void SwapWallDataS4();
 
-
 	//データ整理
 	void InsertData(int stagenum,int enemynum, std::list<std::unique_ptr<Enemy>> enemy, int wallnum, std::list<std::unique_ptr<Wall>> wall,int tuto);
-
-	const int& GetEnemyNum() { return deta.enemyNum; }
-
 	
 
 private:
