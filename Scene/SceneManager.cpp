@@ -31,10 +31,11 @@ void SceneManager::Update()
 		//シーンマネージャーをセット
 		scene->SetSceneManager(this);
 
-		//次のシーンを初期化する
-		scene->Initialize(dxCommon,input,audio,spriteCommon,Windows);
 		//現在どのステージなのかを次のシーンに渡す
 		scene->SetSlayScene(playscene);
+		//次のシーンを初期化する
+		scene->Initialize(dxCommon,input,audio,spriteCommon,Windows);
+		
 
 		
 	}

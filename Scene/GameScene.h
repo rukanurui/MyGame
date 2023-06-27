@@ -34,11 +34,14 @@
 
 #include"BaseScene.h"
 #include"TransEffect.h"
-#include"StageData.h"
+
 
 
 
 class CollisionManager;
+class StageData;
+
+
 
 class GameScene : public BaseScene
 {
@@ -102,8 +105,13 @@ public://メンバ関数
 	void Draw()override;
 	//解放
 	void Finalize()override;
-
+	//敵データ受け取り
+	void SwapEnemyData(XMFLOAT3 pos, XMFLOAT3 scale, int modelname, float r, bool mod, int stage, int nextflag);
+	//地形データ受け取り
+	void SwapWallData(XMFLOAT3 pos, XMFLOAT3 scale, XMFLOAT3 rotation, int modelname, XMFLOAT3 r, int nextflag);
 	//const int& GetScene() { return scene; }
+
+	void setepos(XMFLOAT3 pos) { this->enemypos = pos; }
 
 private://メンバ変数
 	WindowsApp * Windows = nullptr;
@@ -167,8 +175,25 @@ private://メンバ変数
 	//壁のlist
 	std::list<std::unique_ptr<Wall>> Walls;
 
-	uint32_t wallNum;
-	uint32_t enemyNum;
+	static int wallNum;
+	static int enemyNum;
+
+
+	//地形1つ分のデータ
+	struct WallData {
+		XMFLOAT3 pos{};//座標
+		XMFLOAT3 scale{};//スケール
+		XMFLOAT3 rotation{};//ローテーション
+		int modelname;//モデルの指定
+		XMFLOAT3 r;//コライダーの半径指定
+		int stage;//ステージの指定
+	}walldata;
+
+	static XMFLOAT3 wallpos;//座標
+	static XMFLOAT3 wallscale;//スケール
+	static XMFLOAT3 wallrotation;
+	static int wallmodelname;//モデルの指定
+	static XMFLOAT3 wallr;//コライダーの半径指定
 
 	//std::list<std::unique_ptr<Wall>> Stage1Walls;
 	//std::list<std::unique_ptr<Wall>> Stage2Walls;
@@ -179,9 +204,6 @@ private://メンバ変数
 	//std::stringstream wallDataS2;
 	//std::stringstream wallDataS3;
 	//std::stringstream wallDataS4;
-
-	//壁のvector
-	std::vector<Wall> walls;
 
 	
 	//2面
@@ -198,23 +220,36 @@ private://メンバ変数
 	//敵のリスト
 	std::list<std::unique_ptr<Enemy>> Enemys;
 
+	//敵1体分のデータ
+	struct EnemyData {
+		XMFLOAT3 pos{0,0,0};//座標
+		XMFLOAT3 scale{0,0,0};//スケール
+		int modelname=0;//モデルの指定
+		float r=0;//コライダーの半径指定
+		bool mod=false;//敵の種類の指定
+	}enemydata;
+	
+	static XMFLOAT3 enemypos;//座標
+	static XMFLOAT3 enemyscale;//スケール
+	static int enemymodelname;//モデルの指定
+	static float enemyr;//コライダーの半径指定
+	static bool emod;//敵の種類の指定
+
 	//std::list<std::unique_ptr<Enemy>> Stage1Enemy;
 	//std::list<std::unique_ptr<Enemy>> Stage2Enemy;
 	//std::list<std::unique_ptr<Enemy>> Stage3Enemy;
 	//std::list<std::unique_ptr<Enemy>> Stage4Enemy;
 	//
 	//敵コマンド
-	std::stringstream enemyData;
 	//std::stringstream enemyDataS2;
 	//std::stringstream enemyDataS3;
 	//std::stringstream enemyDataS4;
 
-	//Enemyのvector
-	std::vector<Enemy> enemys;
+	
 
 	//チュートリアル
 	//std::vector<int> tutonum;
-	int tutonum = 0;
+	static int tutonum;
 	int tutocount = 0;
 
 

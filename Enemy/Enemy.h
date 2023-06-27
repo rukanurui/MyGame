@@ -17,8 +17,11 @@ public://メンバ関数
 
 	void EnemyInitialize(bool Shot);
 
+	void SetModelNum(int num) { this->modelnum = num; }
+
 	//敵固有処理
 	void EnemyUpdate(XMFLOAT3 playerpos);
+
 
 	//攻撃処理
 	void Attack(XMFLOAT3 playerpos);
@@ -58,6 +61,8 @@ private:
 	std::list<std::unique_ptr<Enemybullet>> bullets;
 	std::list<std::unique_ptr<PartManager>> particle;
 	
+	//モデルの番号
+	int modelnum = 0;
 
 	//当たったかのフラグ
 	bool col = false;

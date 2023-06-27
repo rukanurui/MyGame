@@ -6,9 +6,12 @@
 #include <list>
 #include<sstream>
 #include <string>
+#include"GameScene.h"
+
 
 
 const uint32_t StageNum = 3;
+
 
 class StageData
 {
@@ -23,6 +26,8 @@ protected: // エイリアス
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public:
+
+	StageData();
 
 	//敵データ読み込み
 	void LoadEnemyDataS1();
@@ -58,52 +63,29 @@ public:
 	void SwapWallDataS4();
 
 	//データ整理
-	void InsertData(int stagenum,int enemynum, std::list<std::unique_ptr<Enemy>> enemy, int wallnum, std::list<std::unique_ptr<Wall>> wall,int tuto);
+	void InsertData(int stagenum,int tuto,int enemynum,int wallnum);
 	
 
 private:
 
-	//3dモデル(地形など)
-	FbxModel* model2 = nullptr;
-	FbxModel* modelfloor = nullptr;
-	FbxModel* modelwall = nullptr;
+	GameScene* gamescene = nullptr;
 
-	struct Stagedata {
-		uint32_t enemyNum;
-		std::list<std::unique_ptr<Enemy>> Enemy;
-		uint32_t wallNum;
-		std::list<std::unique_ptr<Wall>> Walls;
-		uint32_t tutoNum;
-	}deta;
 
-	//オブジェクトのリスト
-	std::list<std::unique_ptr<FBXobj3d>> objects;
-
-	//壁のlist
-	std::list<std::unique_ptr<Wall>> Stage1Walls;
-	std::list<std::unique_ptr<Wall>> Stage2Walls;
-	std::list<std::unique_ptr<Wall>> Stage3Walls;
-	std::list<std::unique_ptr<Wall>> Stage4Walls;
 	//壁コマンド
 	std::stringstream wallDataS1;
 	std::stringstream wallDataS2;
 	std::stringstream wallDataS3;
 	std::stringstream wallDataS4;
 
-	//壁のvector
-	//std::vector<Wall> walls;
-
-	//敵のリスト
-	std::list<std::unique_ptr<Enemy>> Stage1Enemy;
-	std::list<std::unique_ptr<Enemy>> Stage2Enemy;
-	std::list<std::unique_ptr<Enemy>> Stage3Enemy;
-	std::list<std::unique_ptr<Enemy>> Stage4Enemy;
-
 	//敵コマンド
 	std::stringstream enemyDataS1;
 	std::stringstream enemyDataS2;
 	std::stringstream enemyDataS3;
 	std::stringstream enemyDataS4;
+
+	uint32_t enemyNum;
+	uint32_t wallNum;
+
 
 	//Enemyのvector
 	//std::vector<Enemy> enemys;

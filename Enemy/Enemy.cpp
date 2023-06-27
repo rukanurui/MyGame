@@ -21,6 +21,11 @@ void Enemy::EnemyInitialize(bool shot)
 	model2 = FbxLoader::GetInstance()->LoadModelFromFile("testfbx");
 	count = 0;
 
+	if (modelnum==2)
+	{
+		SetModel(model2);
+	}
+
 	for (std::unique_ptr<Enemybullet>& bullet : bullets)
 	{
 		bullet->SetPosition(position);

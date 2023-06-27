@@ -2,6 +2,14 @@
 #include<fstream>
 #include <iomanip>
 
+
+
+
+StageData::StageData()
+{
+    //gamescene = new GameScene;
+}
+
 void StageData::LoadEnemyDataS1()
 {
     //ファイルを開く
@@ -124,6 +132,7 @@ void StageData::SwapEnemyDataS1() {
     //csvにステージ指定のコマンド入れる
     //読み取ってステージごとにpushback変更する
 
+    gamescene = new GameScene;
 
     //1行分の文字列を入れる変数
     std::string line;
@@ -136,11 +145,7 @@ void StageData::SwapEnemyDataS1() {
     bool mod;//敵の種類の指定
     int stage;//ステージの指定
     int nextflag = 0;
-
-    //敵のlist追加
-    std::unique_ptr<Enemy>newenemy = std::make_unique<Enemy>();
-    newenemy->Initialize();
-
+    int count = 0;
 
     //コマンド実行ループ
     while (getline(enemyDataS1, line))
@@ -175,7 +180,6 @@ void StageData::SwapEnemyDataS1() {
             getline(line_stream, word, ',');
             pos.z = (float)std::atof(word.c_str());
 
-            newenemy->SetPosition({ pos.x,pos.y,pos.z });
 
         }
         else if (word.find("SCALE") == 0)
@@ -192,18 +196,12 @@ void StageData::SwapEnemyDataS1() {
             getline(line_stream, word, ',');
             scale.z = (float)std::atof(word.c_str());
 
-            newenemy->SetScale({ scale.x,scale.y,scale.z });
         }
         else if (word.find("MODEL") == 0)
         {
             //モデルの指定
             getline(line_stream, word, ',');
             modelname = (float)std::atof(word.c_str());
-
-            if (modelname == 1)
-            {
-                newenemy->SetModel(model2);
-            }
 
         }
         else if (word.find("COLLIDER") == 0)
@@ -212,55 +210,30 @@ void StageData::SwapEnemyDataS1() {
             getline(line_stream, word, ',');
             r = (float)std::atof(word.c_str());
 
-            newenemy->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, r));
         }
         else if (word.find("SHOT") == 0)
         {
             //敵の種類指定
             getline(line_stream, word, ',');
             mod = (float)std::atof(word.c_str());
-            if (mod == 0)
-            {
-                newenemy->EnemyInitialize(TRUE);
-            }
-            else if (mod == 1)
-            {
-                newenemy->EnemyInitialize(FALSE);
-            }
         }
         else if (word.find("STAGE") == 0)
         {
             //ステージの指定
             getline(line_stream, word, ',');
             stage = (float)std::atof(word.c_str());
-            if (stage == 1)
-            {
-                Stage1Enemy.push_back(std::move(newenemy));
-            }
-            else if (stage == 2)
-            {
-                Stage2Enemy.push_back(std::move(newenemy));
-            }
+            
+            gamescene->SwapEnemyData(pos, scale, modelname, r, mod, stage, nextflag);
+            count++;
         }
         else if (word.find("NEXT") == 0)
         {
             //ステージの指定
             getline(line_stream, word, ',');
             nextflag = (float)std::atof(word.c_str());
-
-            if (nextflag == 1)
-            {
-                newenemy = std::make_unique<Enemy>();
-                newenemy->Initialize();
-            }
-            else
-            {
-                enemyDataS1.str("");
-                enemyDataS1.clear(std::stringstream::goodbit);
-
-            }
         }
     }
+    enemyNum = count;
 }
 
 void StageData::SwapWallDataS1()
@@ -280,11 +253,9 @@ void StageData::SwapWallDataS1()
     XMFLOAT3 r;//コライダーの半径指定
     int stage;//ステージの指定
     int nextflag = 0;
+    int count = 0;
 
-    //壁のlist追加
-    std::unique_ptr<Wall>newwall = std::make_unique<Wall>();
-    newwall->Initialize();
-
+   
     //コマンド実行ループ
     while (getline(wallDataS1, line))
     {
@@ -318,8 +289,6 @@ void StageData::SwapWallDataS1()
             getline(line_stream, word, ',');
             pos.z = (float)std::atof(word.c_str());
 
-            newwall->SetPosition({ pos.x,pos.y,pos.z });
-
         }
         else if (word.find("SCALE") == 0)
         {
@@ -335,7 +304,6 @@ void StageData::SwapWallDataS1()
             getline(line_stream, word, ',');
             scale.z = (float)std::atof(word.c_str());
 
-            newwall->SetScale({ scale.x,scale.y,scale.z });
         }
         else if (word.find("ROTAT") == 0)
         {
@@ -351,18 +319,12 @@ void StageData::SwapWallDataS1()
             getline(line_stream, word, ',');
             rotation.z = (float)std::atof(word.c_str());
 
-            newwall->SetRotation({ rotation.x,rotation.y,rotation.z });
         }
         else if (word.find("MODEL") == 0)
         {
             //モデルの指定
             getline(line_stream, word, ',');
             modelname = (float)std::atof(word.c_str());
-
-            if (modelname == 1)
-            {
-                newwall->SetModel(modelwall);
-            }
 
         }
         else if (word.find("COLLIDER") == 0)
@@ -377,23 +339,13 @@ void StageData::SwapWallDataS1()
             getline(line_stream, word, ',');
             r.z = (float)std::atof(word.c_str());
 
-            newwall->SetCollider(new BoxCollider(XMVECTOR{ r.x,r.y,r.z,0 }, 1.0f));
         }
         else if (word.find("STAGE") == 0)
         {
             //ステージの指定
             getline(line_stream, word, ',');
             stage = (float)std::atof(word.c_str());
-            if (stage == 1)
-            {
-                newwall->WallInitialize();
-                Stage1Walls.push_back(std::move(newwall));
-            }
-            else if (stage == 2)
-            {
-                newwall->WallInitialize();
-                Stage2Walls.push_back(std::move(newwall));
-            }
+            gamescene->SwapWallData(pos, scale, rotation, modelname, r, nextflag);
         }
         else if (word.find("NEXT") == 0)
         {
@@ -401,15 +353,10 @@ void StageData::SwapWallDataS1()
             getline(line_stream, word, ',');
             nextflag = (float)std::atof(word.c_str());
 
-            if (nextflag == 1)
-            {
-                newwall = std::make_unique<Wall>();
-                newwall->Initialize();
-            }
-
         }
 
     }
+    wallNum = count;
 }
 
 void StageData::SwapEnemyDataS2() {
@@ -429,6 +376,7 @@ void StageData::SwapEnemyDataS2() {
     bool mod;//敵の種類の指定
     int stage;//ステージの指定
     int nextflag = 0;
+    int count = 0;
 
     //敵のlist追加
     std::unique_ptr<Enemy>newenemy = std::make_unique<Enemy>();
@@ -468,7 +416,6 @@ void StageData::SwapEnemyDataS2() {
             getline(line_stream, word, ',');
             pos.z = (float)std::atof(word.c_str());
 
-            newenemy->SetPosition({ pos.x,pos.y,pos.z });
 
         }
         else if (word.find("SCALE") == 0)
@@ -485,18 +432,12 @@ void StageData::SwapEnemyDataS2() {
             getline(line_stream, word, ',');
             scale.z = (float)std::atof(word.c_str());
 
-            newenemy->SetScale({ scale.x,scale.y,scale.z });
         }
         else if (word.find("MODEL") == 0)
         {
             //モデルの指定
             getline(line_stream, word, ',');
             modelname = (float)std::atof(word.c_str());
-
-            if (modelname == 1)
-            {
-                newenemy->SetModel(model2);
-            }
 
         }
         else if (word.find("COLLIDER") == 0)
@@ -505,50 +446,29 @@ void StageData::SwapEnemyDataS2() {
             getline(line_stream, word, ',');
             r = (float)std::atof(word.c_str());
 
-            newenemy->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, r));
         }
         else if (word.find("SHOT") == 0)
         {
             //敵の種類指定
             getline(line_stream, word, ',');
             mod = (float)std::atof(word.c_str());
-            if (mod == 0)
-            {
-                newenemy->EnemyInitialize(TRUE);
-            }
-            else if (mod == 1)
-            {
-                newenemy->EnemyInitialize(FALSE);
-            }
         }
         else if (word.find("STAGE") == 0)
         {
             //ステージの指定
             getline(line_stream, word, ',');
             stage = (float)std::atof(word.c_str());
-            if (stage == 1)
-            {
-                Stage1Enemy.push_back(std::move(newenemy));
-            }
-            else if (stage == 2)
-            {
-                Stage2Enemy.push_back(std::move(newenemy));
-            }
+
+            gamescene->SwapEnemyData(pos, scale, modelname, r, mod, stage, nextflag);
         }
         else if (word.find("NEXT") == 0)
         {
             //ステージの指定
             getline(line_stream, word, ',');
             nextflag = (float)std::atof(word.c_str());
-
-            if (nextflag == 1)
-            {
-                newenemy = std::make_unique<Enemy>();
-                newenemy->Initialize();
-            }
         }
-
     }
+    enemyNum = count;
 }
 
 void StageData::SwapWallDataS2()
@@ -568,6 +488,7 @@ void StageData::SwapWallDataS2()
     XMFLOAT3 r;//コライダーの半径指定
     int stage;//ステージの指定
     int nextflag = 0;
+    int count = 0;
 
     //壁のlist追加
     std::unique_ptr<Wall>newwall = std::make_unique<Wall>();
@@ -606,8 +527,6 @@ void StageData::SwapWallDataS2()
             getline(line_stream, word, ',');
             pos.z = (float)std::atof(word.c_str());
 
-            newwall->SetPosition({ pos.x,pos.y,pos.z });
-
         }
         else if (word.find("SCALE") == 0)
         {
@@ -623,7 +542,6 @@ void StageData::SwapWallDataS2()
             getline(line_stream, word, ',');
             scale.z = (float)std::atof(word.c_str());
 
-            newwall->SetScale({ scale.x,scale.y,scale.z });
         }
         else if (word.find("ROTAT") == 0)
         {
@@ -639,22 +557,12 @@ void StageData::SwapWallDataS2()
             getline(line_stream, word, ',');
             rotation.z = (float)std::atof(word.c_str());
 
-            newwall->SetRotation({ rotation.x,rotation.y,rotation.z });
         }
         else if (word.find("MODEL") == 0)
         {
             //モデルの指定
             getline(line_stream, word, ',');
             modelname = (float)std::atof(word.c_str());
-
-            if (modelname == 1)
-            {
-                newwall->SetModel(modelwall);
-            }
-            else if (modelname == 2)
-            {
-                newwall->SetModel(model2);
-            }
 
         }
         else if (word.find("COLLIDER") == 0)
@@ -669,23 +577,13 @@ void StageData::SwapWallDataS2()
             getline(line_stream, word, ',');
             r.z = (float)std::atof(word.c_str());
 
-            newwall->SetCollider(new BoxCollider(XMVECTOR{ r.x,r.y,r.z,0 }, 1.0f));
         }
         else if (word.find("STAGE") == 0)
         {
             //ステージの指定
             getline(line_stream, word, ',');
             stage = (float)std::atof(word.c_str());
-            if (stage == 1)
-            {
-                newwall->WallInitialize();
-                Stage1Walls.push_back(std::move(newwall));
-            }
-            else if (stage == 2)
-            {
-                newwall->WallInitialize();
-                Stage2Walls.push_back(std::move(newwall));
-            }
+            gamescene->SwapWallData(pos, scale, rotation, modelname, r, nextflag);
         }
         else if (word.find("NEXT") == 0)
         {
@@ -693,15 +591,10 @@ void StageData::SwapWallDataS2()
             getline(line_stream, word, ',');
             nextflag = (float)std::atof(word.c_str());
 
-            if (nextflag == 1)
-            {
-                newwall = std::make_unique<Wall>();
-                newwall->Initialize();
-            }
-
         }
 
     }
+    wallNum = count;
 }
 
 void StageData::SwapEnemyDataS3() {
@@ -721,6 +614,7 @@ void StageData::SwapEnemyDataS3() {
     bool mod;//敵の種類の指定
     int stage;//ステージの指定
     int nextflag = 0;
+    int count = 0;
 
     //敵のlist追加
     std::unique_ptr<Enemy>newenemy = std::make_unique<Enemy>();
@@ -760,7 +654,6 @@ void StageData::SwapEnemyDataS3() {
             getline(line_stream, word, ',');
             pos.z = (float)std::atof(word.c_str());
 
-            newenemy->SetPosition({ pos.x,pos.y,pos.z });
 
         }
         else if (word.find("SCALE") == 0)
@@ -777,18 +670,12 @@ void StageData::SwapEnemyDataS3() {
             getline(line_stream, word, ',');
             scale.z = (float)std::atof(word.c_str());
 
-            newenemy->SetScale({ scale.x,scale.y,scale.z });
         }
         else if (word.find("MODEL") == 0)
         {
             //モデルの指定
             getline(line_stream, word, ',');
             modelname = (float)std::atof(word.c_str());
-
-            if (modelname == 1)
-            {
-                newenemy->SetModel(model2);
-            }
 
         }
         else if (word.find("COLLIDER") == 0)
@@ -797,45 +684,29 @@ void StageData::SwapEnemyDataS3() {
             getline(line_stream, word, ',');
             r = (float)std::atof(word.c_str());
 
-            newenemy->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, r));
         }
         else if (word.find("SHOT") == 0)
         {
             //敵の種類指定
             getline(line_stream, word, ',');
             mod = (float)std::atof(word.c_str());
-            if (mod == 0)
-            {
-                newenemy->EnemyInitialize(TRUE);
-            }
-            else if (mod == 1)
-            {
-                newenemy->EnemyInitialize(FALSE);
-            }
         }
         else if (word.find("STAGE") == 0)
         {
             //ステージの指定
             getline(line_stream, word, ',');
             stage = (float)std::atof(word.c_str());
-            if (stage == 3)
-            {
-                Stage3Enemy.push_back(std::move(newenemy));
-            }
+
+            gamescene->SwapEnemyData(pos, scale, modelname, r, mod, stage, nextflag);
         }
         else if (word.find("NEXT") == 0)
         {
             //ステージの指定
             getline(line_stream, word, ',');
             nextflag = (float)std::atof(word.c_str());
-
-            if (nextflag == 1)
-            {
-                newenemy = std::make_unique<Enemy>();
-                newenemy->Initialize();
-            }
         }
     }
+    enemyNum = count;
 }
 
 void StageData::SwapWallDataS3()
@@ -855,6 +726,7 @@ void StageData::SwapWallDataS3()
     XMFLOAT3 r;//コライダーの半径指定
     int stage;//ステージの指定
     int nextflag = 0;
+    int count = 0;
 
     //壁のlist追加
     std::unique_ptr<Wall>newwall = std::make_unique<Wall>();
@@ -893,8 +765,6 @@ void StageData::SwapWallDataS3()
             getline(line_stream, word, ',');
             pos.z = (float)std::atof(word.c_str());
 
-            newwall->SetPosition({ pos.x,pos.y,pos.z });
-
         }
         else if (word.find("SCALE") == 0)
         {
@@ -910,7 +780,6 @@ void StageData::SwapWallDataS3()
             getline(line_stream, word, ',');
             scale.z = (float)std::atof(word.c_str());
 
-            newwall->SetScale({ scale.x,scale.y,scale.z });
         }
         else if (word.find("ROTAT") == 0)
         {
@@ -926,22 +795,12 @@ void StageData::SwapWallDataS3()
             getline(line_stream, word, ',');
             rotation.z = (float)std::atof(word.c_str());
 
-            newwall->SetRotation({ rotation.x,rotation.y,rotation.z });
         }
         else if (word.find("MODEL") == 0)
         {
             //モデルの指定
             getline(line_stream, word, ',');
             modelname = (float)std::atof(word.c_str());
-
-            if (modelname == 1)
-            {
-                newwall->SetModel(modelwall);
-            }
-            else if (modelname == 2)
-            {
-                newwall->SetModel(model2);
-            }
 
         }
         else if (word.find("COLLIDER") == 0)
@@ -956,18 +815,13 @@ void StageData::SwapWallDataS3()
             getline(line_stream, word, ',');
             r.z = (float)std::atof(word.c_str());
 
-            newwall->SetCollider(new BoxCollider(XMVECTOR{ r.x,r.y,r.z,0 }, 1.0f));
         }
         else if (word.find("STAGE") == 0)
         {
             //ステージの指定
             getline(line_stream, word, ',');
             stage = (float)std::atof(word.c_str());
-            if (stage == 3)
-            {
-                newwall->WallInitialize();
-                Stage3Walls.push_back(std::move(newwall));
-            }
+            gamescene->SwapWallData(pos, scale, rotation, modelname, r, nextflag);
         }
         else if (word.find("NEXT") == 0)
         {
@@ -975,15 +829,10 @@ void StageData::SwapWallDataS3()
             getline(line_stream, word, ',');
             nextflag = (float)std::atof(word.c_str());
 
-            if (nextflag == 1)
-            {
-                newwall = std::make_unique<Wall>();
-                newwall->Initialize();
-            }
-
         }
 
     }
+    wallNum = count;
 }
 
 void StageData::SwapEnemyDataS4() {
@@ -1039,7 +888,6 @@ void StageData::SwapEnemyDataS4() {
             getline(line_stream, word, ',');
             pos.z = (float)std::atof(word.c_str());
 
-            newenemy->SetPosition({ pos.x,pos.y,pos.z });
 
         }
         else if (word.find("SCALE") == 0)
@@ -1056,18 +904,12 @@ void StageData::SwapEnemyDataS4() {
             getline(line_stream, word, ',');
             scale.z = (float)std::atof(word.c_str());
 
-            newenemy->SetScale({ scale.x,scale.y,scale.z });
         }
         else if (word.find("MODEL") == 0)
         {
             //モデルの指定
             getline(line_stream, word, ',');
             modelname = (float)std::atof(word.c_str());
-
-            if (modelname == 1)
-            {
-                newenemy->SetModel(model2);
-            }
 
         }
         else if (word.find("COLLIDER") == 0)
@@ -1076,43 +918,26 @@ void StageData::SwapEnemyDataS4() {
             getline(line_stream, word, ',');
             r = (float)std::atof(word.c_str());
 
-            newenemy->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, r));
         }
         else if (word.find("SHOT") == 0)
         {
             //敵の種類指定
             getline(line_stream, word, ',');
             mod = (float)std::atof(word.c_str());
-            if (mod == 0)
-            {
-                newenemy->EnemyInitialize(TRUE);
-            }
-            else if (mod == 1)
-            {
-                newenemy->EnemyInitialize(FALSE);
-            }
         }
         else if (word.find("STAGE") == 0)
         {
             //ステージの指定
             getline(line_stream, word, ',');
             stage = (float)std::atof(word.c_str());
-            if (stage == 4)
-            {
-                Stage4Enemy.push_back(std::move(newenemy));
-            }
+
+            gamescene->SwapEnemyData(pos, scale, modelname, r, mod, stage, nextflag);
         }
         else if (word.find("NEXT") == 0)
         {
             //ステージの指定
             getline(line_stream, word, ',');
             nextflag = (float)std::atof(word.c_str());
-
-            if (nextflag == 1)
-            {
-                newenemy = std::make_unique<Enemy>();
-                newenemy->Initialize();
-            }
         }
     }
 }
@@ -1172,8 +997,6 @@ void StageData::SwapWallDataS4()
             getline(line_stream, word, ',');
             pos.z = (float)std::atof(word.c_str());
 
-            newwall->SetPosition({ pos.x,pos.y,pos.z });
-
         }
         else if (word.find("SCALE") == 0)
         {
@@ -1189,7 +1012,6 @@ void StageData::SwapWallDataS4()
             getline(line_stream, word, ',');
             scale.z = (float)std::atof(word.c_str());
 
-            newwall->SetScale({ scale.x,scale.y,scale.z });
         }
         else if (word.find("ROTAT") == 0)
         {
@@ -1205,18 +1027,12 @@ void StageData::SwapWallDataS4()
             getline(line_stream, word, ',');
             rotation.z = (float)std::atof(word.c_str());
 
-            newwall->SetRotation({ rotation.x,rotation.y,rotation.z });
         }
         else if (word.find("MODEL") == 0)
         {
             //モデルの指定
             getline(line_stream, word, ',');
             modelname = (float)std::atof(word.c_str());
-
-            if (modelname == 1)
-            {
-                newwall->SetModel(modelwall);
-            }
 
         }
         else if (word.find("COLLIDER") == 0)
@@ -1231,18 +1047,13 @@ void StageData::SwapWallDataS4()
             getline(line_stream, word, ',');
             r.z = (float)std::atof(word.c_str());
 
-            newwall->SetCollider(new BoxCollider(XMVECTOR{ r.x,r.y,r.z,0 }, 1.0f));
         }
         else if (word.find("STAGE") == 0)
         {
             //ステージの指定
             getline(line_stream, word, ',');
             stage = (float)std::atof(word.c_str());
-            if (stage == 4)
-            {
-                newwall->WallInitialize();
-                Stage4Walls.push_back(std::move(newwall));
-            }
+            gamescene->SwapWallData(pos, scale, rotation, modelname, r, nextflag);
         }
         else if (word.find("NEXT") == 0)
         {
@@ -1250,62 +1061,43 @@ void StageData::SwapWallDataS4()
             getline(line_stream, word, ',');
             nextflag = (float)std::atof(word.c_str());
 
-            if (nextflag == 1)
-            {
-                newwall = std::make_unique<Wall>();
-                newwall->Initialize();
-            }
-
         }
 
     }
 }
 
 
-void StageData::InsertData(int stagenum,int enemynum, std::list<std::unique_ptr<Enemy>> enemy,int wallnum, std::list<std::unique_ptr<Wall>> wall,int tuto)
+void StageData::InsertData(int stagenum,int tuto,int enemynum,int wallnum)
 {
-    //全データ読み込み
-    LoadEnemyDataS1();
-    SwapEnemyDataS1();
-    LoadEnemyDataS2();
-    SwapEnemyDataS2();
-    LoadEnemyDataS3();
-    SwapEnemyDataS3();
-    LoadWallDataS1();
-    SwapWallDataS1();
-    LoadWallDataS2();
-    SwapWallDataS2();
-    LoadWallDataS3();
-    SwapWallDataS3();
-
-    Stagedata stageDatas[StageNum] = {
-         {Stage1Enemy.size(),Stage1Enemy,Stage1Walls.size(),Stage1Walls,3},
-         {Stage2Enemy.size(),Stage2Enemy,Stage2Walls.size(),Stage2Walls,3},
-         {Stage3Enemy.size(),Stage3Enemy,Stage3Walls.size(),Stage3Walls,2},
-    };
 
     if (stagenum==1)
     {
-        enemynum = stageDatas[0].enemyNum;
-        enemy = stageDatas[0].Enemy;
-        wallnum = stageDatas[0].wallNum;
-        wall= stageDatas[0].Walls;
-        tuto = stageDatas[0].tutoNum;
+        LoadEnemyDataS1();
+        SwapEnemyDataS1();
+        LoadWallDataS1();
+        SwapWallDataS1();
+        enemynum = enemyNum;
+        wallnum = wallNum;
+        tuto = 3;
     }
     else if (stagenum == 2)
     {
-        enemynum = stageDatas[1].enemyNum;
-        enemy = stageDatas[1].Enemy;
-        wallnum = stageDatas[1].wallNum;
-        wall = stageDatas[1].Walls;
-        tuto = stageDatas[1].tutoNum;
+        LoadEnemyDataS2();
+        SwapEnemyDataS2();
+        LoadWallDataS2();
+        SwapWallDataS2();
+        enemynum = enemyNum;
+        wallnum = wallNum;
+        tuto = 3;
     }
     else if (stagenum == 3)
     {
-        enemynum = stageDatas[2].enemyNum;
-        enemy = stageDatas[2].Enemy;
-        wallnum = stageDatas[2].wallNum;
-        wall = stageDatas[2].Walls;
-        tuto = stageDatas[2].tutoNum;
+        LoadEnemyDataS3();
+        SwapEnemyDataS3();
+        LoadWallDataS3();
+        SwapWallDataS3();
+        enemynum = enemyNum;
+        wallnum = wallNum;
+        tuto = 2;
     }
 }
