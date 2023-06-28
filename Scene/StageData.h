@@ -6,13 +6,13 @@
 #include <list>
 #include<sstream>
 #include <string>
-#include"GameScene.h"
+
 
 
 
 const uint32_t StageNum = 3;
 
-
+class GameScene;
 class StageData
 {
 
@@ -63,7 +63,9 @@ public:
 	void SwapWallDataS4();
 
 	//ƒf[ƒ^®—
-	void InsertData(int stagenum,int tuto,int enemynum,int wallnum);
+	void InsertData(int& stagenum,int& tuto,int& enemynum,int& wallnum);
+
+	const int& GetenemyNum() { return enemyNum; }
 	
 
 private:

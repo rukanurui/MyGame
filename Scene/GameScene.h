@@ -35,12 +35,12 @@
 #include"BaseScene.h"
 #include"TransEffect.h"
 
+#include"StageData.h"
+
 
 
 
 class CollisionManager;
-class StageData;
-
 
 
 class GameScene : public BaseScene
@@ -58,38 +58,7 @@ public://メンバ関数
 
 	//初期化
 	void Initialize(DXCommon* dxcommon, Input* input, Audio* audio, SpriteCommon* spritecommon, WindowsApp* windows)override;
-	////敵データ読み込み
-	//void LoadEnemyDataS1();
-	////敵データ受け取り
-	//void SwapEnemyDataS1();
-	////地形データ読み込み
-	//void LoadWallDataS1();
-	////地形データ更新
-	//void SwapWallDataS1();
-	////敵データ読み込み
-	//void LoadEnemyDataS2();
-	////敵データ受け取り
-	//void SwapEnemyDataS2();
-	////地形データ読み込み
-	//void LoadWallDataS2();
-	////地形データ更新
-	//void SwapWallDataS2();
-	////敵データ読み込み
-	//void LoadEnemyDataS3();
-	////敵データ受け取り
-	//void SwapEnemyDataS3();
-	////地形データ読み込み
-	//void LoadWallDataS3();
-	////地形データ更新
-	//void SwapWallDataS3();
-	////敵データ読み込み
-	//void LoadEnemyDataS4();
-	////敵データ受け取り
-	//void SwapEnemyDataS4();
-	////地形データ読み込み
-	//void LoadWallDataS4();
-	////地形データ更新
-	//void SwapWallDataS4();
+	
 	//更新
 	void Update()override;
 	//シーン分岐
@@ -106,12 +75,17 @@ public://メンバ関数
 	//解放
 	void Finalize()override;
 	//敵データ受け取り
-	void SwapEnemyData(XMFLOAT3 pos, XMFLOAT3 scale, int modelname, float r, bool mod, int stage, int nextflag);
+	void SwapEnemyData(XMFLOAT3& pos, XMFLOAT3& scale, int& modelname, float& r, bool& mod, int& stage, int& nextflag);
 	//地形データ受け取り
-	void SwapWallData(XMFLOAT3 pos, XMFLOAT3 scale, XMFLOAT3 rotation, int modelname, XMFLOAT3 r, int nextflag);
+	void SwapWallData(XMFLOAT3& pos, XMFLOAT3& scale, XMFLOAT3& rotation, int& modelname, XMFLOAT3& r,int& numcount);
 	//const int& GetScene() { return scene; }
 
 	void setepos(XMFLOAT3 pos) { this->enemypos = pos; }
+	void setescale(XMFLOAT3 scale) { this->enemyscale = scale; }
+	//void setepos(XMFLOAT3 pos) { this->enemypos = pos; }
+	//void setepos(XMFLOAT3 pos) { this->enemypos = pos; }
+
+	void setenemynum(int enemynum) { this->enemyNum = enemynum; }
 
 private://メンバ変数
 	WindowsApp * Windows = nullptr;
@@ -175,8 +149,10 @@ private://メンバ変数
 	//壁のlist
 	std::list<std::unique_ptr<Wall>> Walls;
 
-	static int wallNum;
-	static int enemyNum;
+
+	static  int wallNum;
+	static  int enemyNum;
+
 
 
 	//地形1つ分のデータ
@@ -189,7 +165,7 @@ private://メンバ変数
 		int stage;//ステージの指定
 	}walldata;
 
-	static XMFLOAT3 wallpos;//座標
+	static XMFLOAT3 wallpos[];//座標
 	static XMFLOAT3 wallscale;//スケール
 	static XMFLOAT3 wallrotation;
 	static int wallmodelname;//モデルの指定

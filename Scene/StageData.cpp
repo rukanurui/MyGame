@@ -1,6 +1,7 @@
 #include"StageData.h"
 #include<fstream>
 #include <iomanip>
+#include"GameScene.h"
 
 
 
@@ -346,6 +347,7 @@ void StageData::SwapWallDataS1()
             getline(line_stream, word, ',');
             stage = (float)std::atof(word.c_str());
             gamescene->SwapWallData(pos, scale, rotation, modelname, r, nextflag);
+            count++;
         }
         else if (word.find("NEXT") == 0)
         {
@@ -1067,7 +1069,7 @@ void StageData::SwapWallDataS4()
 }
 
 
-void StageData::InsertData(int stagenum,int tuto,int enemynum,int wallnum)
+void StageData::InsertData(int& stagenum,int& tuto, int& enemynum, int& wallnum)
 {
 
     if (stagenum==1)
@@ -1076,7 +1078,8 @@ void StageData::InsertData(int stagenum,int tuto,int enemynum,int wallnum)
         SwapEnemyDataS1();
         LoadWallDataS1();
         SwapWallDataS1();
-        enemynum = enemyNum;
+
+        enemynum = GetenemyNum();
         wallnum = wallNum;
         tuto = 3;
     }

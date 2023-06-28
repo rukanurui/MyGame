@@ -6,7 +6,7 @@
 #include"../Collider/Collision.h"
 #include"../Collider/CollisionColor.h"
 #include"SceneManager.h"
-#include"StageData.h"
+
 
 using namespace DirectX;
 XMFLOAT3 GameScene::enemypos = { 0,0,0 };
@@ -16,7 +16,7 @@ float GameScene::enemyr=0;//コライダーの半径指定
 bool GameScene::emod=0;//敵の種類の指定
 
 
-XMFLOAT3 GameScene::wallpos{ 0,0,0 };//座標
+//XMFLOAT3 GameScene::wallpos[]{};//座標
 XMFLOAT3 GameScene::wallscale{ 0,0,0 };//スケール
 XMFLOAT3 GameScene::wallrotation{ 0,0,0 };
 int GameScene::wallmodelname=0;//モデルの指定
@@ -146,6 +146,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     modelobjgun = FbxLoader::GetInstance()->LoadModelFromFile("gun");
     model2 = FbxLoader::GetInstance()->LoadModelFromFile("testfbx");
     modelBack = FbxLoader::GetInstance()->LoadModelFromFile("back");
+    modelwall = FbxLoader::GetInstance()->LoadModelFromFile("colorwall");
 
 
      //背景
@@ -217,7 +218,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     {
         std::unique_ptr<Wall>newwall = std::make_unique<Wall>();
           newwall->Initialize();
-          newwall->SetPosition({ wallpos.x,wallpos.y,wallpos.z });
+          newwall->SetPosition({ wallpos[i].x,wallpos[i].y,wallpos[i].z});
           newwall->SetScale({ wallscale.x,wallscale.y,wallscale.z });
           newwall->SetRotation({ wallrotation.x,wallrotation.y,wallrotation.z });
           if (wallmodelname == 1)
@@ -1083,55 +1084,24 @@ void GameScene::Finalize()
 
 }
 
-void GameScene::SwapEnemyData(XMFLOAT3 pos,XMFLOAT3 scale, int modelname, float r, bool mod, int stage, int nextflag)
+void GameScene::SwapEnemyData(XMFLOAT3& pos,XMFLOAT3& scale, int& modelname, float& r, bool& mod, int& stage, int& nextflag)
 {
-    
     enemypos = pos;
     enemyscale = scale;
     enemymodelname = modelname;
     enemyr = r;
     emod = mod;
-
-   /* newenemy->SetPosition({ pos.x,pos.y,pos.z });
-    newenemy->SetScale({ scale.x,scale.y,scale.z });
-    if (modelname == 1)
-    {
-        newenemy->SetModel(model2);
-    }
-    newenemy->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, r));
-    if (mod == 0)
-    {
-        newenemy->EnemyInitialize(TRUE);
-    }
-    else if (mod == 1)
-    {
-        newenemy->EnemyInitialize(FALSE);
-    }
-    Enemys.push_back(std::move(newenemy));*/
-    
-
 }
 
-void GameScene::SwapWallData(XMFLOAT3 pos, XMFLOAT3 scale, XMFLOAT3 rotation, int modelname, XMFLOAT3 r, int nextflag)
+void GameScene::SwapWallData(XMFLOAT3& pos, XMFLOAT3& scale, XMFLOAT3& rotation, int& modelname, XMFLOAT3& r,int& numcount)
 {
-    wallpos = pos;
+    int count = 1;
+
+    count = numcount;
+
+    wallpos[numcount] = pos;
     wallscale = scale;
     wallrotation = rotation;
     wallmodelname = modelname;
     wallr = r;
-   
-   /* newwall->Initialize();
-    newwall->SetPosition({ pos.x,pos.y,pos.z });
-    newwall->SetScale({ scale.x,scale.y,scale.z });
-    newwall->SetRotation({ rotation.x,rotation.y,rotation.z });
-    if (modelname == 1)
-    {
-        newwall->SetModel(modelwall);
-    }
-    else if (modelname == 2)
-    {
-        newwall->SetModel(model2);
-    }
-    newwall->SetCollider(new BoxCollider(XMVECTOR{ r.x,r.y,r.z,0 }, 1.0f));
-    Walls.push_back(std::move(newwall));*/
 }
