@@ -9,18 +9,6 @@
 
 
 using namespace DirectX;
-XMFLOAT3 GameScene::enemypos = { 0,0,0 };
-XMFLOAT3 GameScene::enemyscale = { 0,0,0 };
-int GameScene::enemymodelname=0;//モデルの指定
-float GameScene::enemyr=0;//コライダーの半径指定
-bool GameScene::emod=0;//敵の種類の指定
-
-
-//XMFLOAT3 GameScene::wallpos[]{};//座標
-XMFLOAT3 GameScene::wallscale{ 0,0,0 };//スケール
-XMFLOAT3 GameScene::wallrotation{ 0,0,0 };
-int GameScene::wallmodelname=0;//モデルの指定
-XMFLOAT3 GameScene::wallr{ 0,0,0 };//コライダーの半径指定
 
 int GameScene::tutonum = 0;
 int GameScene::enemyNum = 0;
@@ -36,10 +24,10 @@ BaseScene* BaseScene::makeScene<GameScene>() {
 }
 
 
-void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, SpriteCommon* spritecommon,WindowsApp*windows)
+void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, SpriteCommon* spritecommon, WindowsApp* windows)
 {
     //ポインタ置き場
-    
+
     this->dxCommon = dxcommon;
     this->input = input;
     this->audio = audio;
@@ -48,8 +36,8 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     stagedata = new StageData;
 
     //カメラ生成
-    camera = new Camera(this->input,this->Windows);
-    camera->Initialize(WindowsApp::window_width, WindowsApp::window_height,this->input);
+    camera = new Camera(this->input, this->Windows);
+    camera->Initialize(WindowsApp::window_width, WindowsApp::window_height, this->input);
 
 
 #pragma region 描画初期化処理
@@ -75,7 +63,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     spriteCommon->LoadTexture(101, L"Resources/White1x1.png");
 
     //スプライト生成
-    
+
     crosshair = Sprite::Create(spriteCommon, 1);
     crosshair->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
     crosshair->TransferVertexBuffer();
@@ -127,7 +115,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     trans->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
     trans->SetSize({ Effectsize });
     trans->TransferVertexBuffer();
-    
+
     int PFnum = 101;
     //ポストエフェクトの初期化
     transEffect = TransEffect::Create(spriteCommon, PFnum, { 0,0 }, false, false);
@@ -149,7 +137,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     modelwall = FbxLoader::GetInstance()->LoadModelFromFile("colorwall");
 
 
-     //背景
+    //背景
     backsphere = new FBXobj3d;
     backsphere->Initialize();
     backsphere->SetPosition({ 0.0f,0.0f,0.0f });
@@ -176,64 +164,79 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     floor->SetCollider(new BoxCollider(XMVECTOR{ 100.0f,0.7f,100.0f,0 }, 1.0f));
 
     ////壁のスケール0.1=ワールドで10
-    
-
-    //銃本体
-    tutogun = new Wall;
-    tutogun->Initialize();
-    tutogun->SetPosition({ 0.0f,6.0f,10.0f });
-    tutogun->SetScale({ 0.01f,0.01f,0.01f });
-    tutogun->SetModel(modelobjgun);
-    tutogun->SetCollider(new BoxCollider(XMVECTOR{ 4.0f,4.0f,4.0f,0 }, 1.0f));
-    tutogun->objgunInitialize();
-
 
     //ステージデータ読み取り
-    stagedata->InsertData(playscene,tutonum,enemyNum,wallNum);
+    stagedata->InsertData(playscene, tutonum, enemyNum, wallNum,
+        enemypos, enemyscale, enemymodelname, enemyr, enemymod,
+        wallpos, wallscale, wallrotation, wallmodelname, wallr);
+
 
     //敵の生成
     for (int i = 0; i < enemyNum; i++)
     {
         std::unique_ptr<Enemy>newenemy = std::make_unique<Enemy>();
         newenemy->Initialize();
-        newenemy->SetPosition({ enemypos.x,enemypos.y,enemypos.z });
-        newenemy->SetScale({ enemyscale.x,enemyscale.y,enemyscale.z });
-        if (enemymodelname == 1)
+        newenemy->SetPosition({ enemypos[i].x,enemypos[i].y,enemypos[i].z });
+        newenemy->SetScale({ enemyscale[i].x,enemyscale[i].y,enemyscale[i].z });
+        if (enemymodelname[i] == 1)
         {
             newenemy->SetModel(model2);
         }
-        newenemy->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, enemyr));
-        if (emod == 0)
+        newenemy->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, enemyr[i]));
+        if (enemymod[i] == 0)
         {
             newenemy->EnemyInitialize(TRUE);
         }
-        else if (emod == 1)
+        else if (enemymod[i] == 1)
         {
             newenemy->EnemyInitialize(FALSE);
         }
         Enemys.push_back(std::move(newenemy));
     }
-    
+
     for (int i = 0; i < wallNum; i++)
     {
         std::unique_ptr<Wall>newwall = std::make_unique<Wall>();
-          newwall->Initialize();
-          newwall->SetPosition({ wallpos[i].x,wallpos[i].y,wallpos[i].z});
-          newwall->SetScale({ wallscale.x,wallscale.y,wallscale.z });
-          newwall->SetRotation({ wallrotation.x,wallrotation.y,wallrotation.z });
-          if (wallmodelname == 1)
-         {
-             newwall->SetModel(modelwall);
-          }
-         else if (wallmodelname == 2)
-         {
-             newwall->SetModel(model2);
-          }
-          newwall->SetCollider(new BoxCollider(XMVECTOR{ wallr.x,wallr.y,wallr.z,0 }, 1.0f));
-          Walls.push_back(std::move(newwall));
+        newwall->Initialize();
+        newwall->SetPosition({ wallpos[i].x,wallpos[i].y,wallpos[i].z });
+        newwall->SetScale({ wallscale[i].x,wallscale[i].y,wallscale[i].z });
+        newwall->SetRotation({ wallrotation[i].x,wallrotation[i].y,wallrotation[i].z });
+        if (wallmodelname[i] == 1)
+        {
+            newwall->SetModel(modelwall);
+        }
+        else if (wallmodelname[i] == 2)
+        {
+            newwall->SetModel(model2);
+        }
+        newwall->SetCollider(new BoxCollider(XMVECTOR{ wallr[i].x,wallr[i].y,wallr[i].z,0 }, 1.0f));
+        newwall->WallInitialize();
+        Walls.push_back(std::move(newwall));
     }
-   
 
+    //銃本体
+    if (playscene == 2)
+    {
+        tutogun = new Wall;
+        tutogun->Initialize();
+        tutogun->SetPosition({ 0.0f,6.0f,10.0f });
+        tutogun->SetScale({ 0.01f,0.01f,0.01f });
+        tutogun->SetModel(modelobjgun);
+        tutogun->SetCollider(new BoxCollider(XMVECTOR{ 6.0f,6.0f,6.0f,0 }, 1.0f));
+        tutogun->objgunInitialize();
+    }
+
+    if (playscene == 3)
+    {
+        tutogun = new Wall;
+        tutogun->Initialize();
+        tutogun->SetPosition({ 0.0f,0.0f,20.0f });
+        tutogun->SetScale({ 0.01f,0.01f,0.01f });
+        tutogun->SetModel(modelobjgun);
+        tutogun->SetCollider(new BoxCollider(XMVECTOR{ 3.0f,2.0f,3.0f,0 }, 1.0f));
+        tutogun->objgunInitialize();
+    }
+    
 
     int counter = 0; // アニメーションの経過時間カウンター
 
@@ -262,6 +265,50 @@ void GameScene::Update()
             //transrationScene();
             transcount = 0.0f;
             transscene = true;
+            if (playscene==1)
+            {
+                const XMFLOAT3 respos = { 0,5,0 };
+
+                camera->SetTarget({ 0, 5, 0 });
+                camera->SetEye(respos);
+                camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+                camera->CurrentUpdate(player->GetVelocity());
+
+                player->Sethave(true);
+                player->SetPosition(camera->GetEye());
+                player->PlayerUpdate(camera->GetTarget());
+                magazin = 5;
+                player->SetMagazin(magazin);
+
+            }
+            else if (playscene == 2)
+            {
+                const XMFLOAT3 respos = { 0,5,0 };
+
+                camera->SetTarget({ 0, 5, 0 });
+                camera->SetEye(respos);
+                camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+                camera->CurrentUpdate(player->GetVelocity());
+
+                player->Sethave(false);
+                player->SetPosition(camera->GetEye());
+                player->PlayerUpdate(camera->GetTarget());
+
+            }
+            else if (playscene == 3)
+            {
+                const XMFLOAT3 respos = { 0,5,0 };
+                camera->SetTarget({ 0, 5, 0 });
+                camera->SetEye(respos);
+                camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+                camera->CurrentUpdate(player->GetVelocity());
+
+                magazin = 0;
+                player->SetMagazin(magazin);
+                player->Sethave(true);
+                player->SetPosition(camera->GetEye());
+                player->PlayerUpdate(camera->GetTarget());
+            }
         }
     }
 
@@ -285,6 +332,9 @@ void GameScene::Update()
             {
                 if (tutocount == 0)
                 {
+                    tutomove->SetSize(movesize);
+                    tutomove->TransferVertexBuffer();
+                    tutomove->Update();
 
                     if (movesize.x >= 800)
                     {
@@ -297,8 +347,8 @@ void GameScene::Update()
 
                     if (transfrag == true)
                     {
-                        movesize.x -= 0.2f;
-                        movesize.y -= 0.2f;
+                        movesize.x -= 0.6f;
+                        movesize.y -= 0.6f;
                     }
                     else
                     {
@@ -324,8 +374,8 @@ void GameScene::Update()
 
                     if (transfrag == true)
                     {
-                        spritesize.x -= 1.0f;
-                        spritesize.y -= 1.0f;
+                        spritesize.x -= 4.0f;
+                        spritesize.y -= 4.0f;
                     }
                     wait++;
                     if (wait >= 60)
@@ -346,8 +396,8 @@ void GameScene::Update()
 
                     if (transfrag == true)
                     {
-                        spritesize.x -= 1.0f;
-                        spritesize.y -= 1.0f;
+                        spritesize.x -= 4.0f;
+                        spritesize.y -= 4.0f;
                     }
 
                     wait++;
@@ -358,6 +408,20 @@ void GameScene::Update()
                     }
                 }
             }
+            tutomouse->SetSize(spritesize);
+            
+            tutoshot->SetSize(spritesize);
+            tutorule->SetSize(spritesize);
+
+            tutomouse->TransferVertexBuffer();
+            
+            tutoshot->TransferVertexBuffer();
+            tutorule->TransferVertexBuffer();
+
+            tutomouse->Update();
+            
+            tutoshot->Update();
+            tutorule->Update();
         }
 
         //チュートリアル
@@ -374,8 +438,8 @@ void GameScene::Update()
 
                     if (transfrag == true)
                     {
-                        spritesize.x -= 1.0f;
-                        spritesize.y -= 1.0f;
+                        spritesize.x -= 4.0f;
+                        spritesize.y -= 4.0f;
                     }
 
                     wait++;
@@ -397,8 +461,8 @@ void GameScene::Update()
 
                     if (transfrag == true)
                     {
-                        spritesize.x -= 1.0f;
-                        spritesize.y -= 1.0f;
+                        spritesize.x -= 4.0f;
+                        spritesize.y -= 4.0f;
                     }
                     wait++;
                     if (wait >= 60)
@@ -410,7 +474,7 @@ void GameScene::Update()
                     }
                 }
 
-                if (tutoscene == 3)
+                if (tutocount == 2)
                 {
                     if (movesize.x >= 800)
                     {
@@ -423,13 +487,13 @@ void GameScene::Update()
 
                     if (transfrag == true)
                     {
-                        movesize.x -= 0.2f;
-                        movesize.y -= 0.2f;
+                        movesize.x -= 0.6f;
+                        movesize.y -= 0.6f;
                     }
                     else
                     {
-                        movesize.x += 0.2f;
-                        movesize.y += 0.2f;
+                        movesize.x += 0.6f;
+                        movesize.y += 0.6f;
                     }
 
                     wait++;
@@ -441,6 +505,18 @@ void GameScene::Update()
                     }
                 }
             }
+
+            tutopickup->SetSize(movesize);
+            tutogunpick1->SetSize(spritesize);
+            tutogunpick2->SetSize(spritesize);
+
+            tutopickup->TransferVertexBuffer();
+            tutogunpick1->TransferVertexBuffer();
+            tutogunpick2->TransferVertexBuffer();
+
+            tutopickup->Update();
+            tutogunpick1->Update();
+            tutogunpick2->Update();
         }
 
         //チュートリアル
@@ -457,8 +533,8 @@ void GameScene::Update()
 
                     if (transfrag == true)
                     {
-                        spritesize.x -= 2.0f;
-                        spritesize.y -= 2.0f;
+                        spritesize.x -= 4.0f;
+                        spritesize.y -= 4.0f;
                     }
                     wait++;
                     if (wait >= 60)
@@ -470,7 +546,7 @@ void GameScene::Update()
                     }
                 }
 
-                if (tutoscene == 1)
+                if (tutocount == 1)
                 {
                     if (movesize.x >= 800)
                     {
@@ -483,13 +559,13 @@ void GameScene::Update()
 
                     if (transfrag == true)
                     {
-                        movesize.x -= 0.2f;
-                        movesize.y -= 0.2f;
+                        movesize.x -= 0.6f;
+                        movesize.y -= 0.6f;
                     }
                     else
                     {
-                        movesize.x += 0.2f;
-                        movesize.y += 0.2f;
+                        movesize.x += 0.6f;
+                        movesize.y += 0.6f;
                     }
 
                     wait++;
@@ -500,7 +576,19 @@ void GameScene::Update()
 
                     }
                 }
+
+                tutostage3->SetSize(spritesize);
+
             }
+
+            tutothrow->SetSize(movesize);
+            tutostage3->SetSize(spritesize);
+
+            tutothrow->TransferVertexBuffer();
+            tutostage3->TransferVertexBuffer();
+
+            tutothrow->Update();
+            tutostage3->Update();
         }
 
 
@@ -528,23 +616,23 @@ void GameScene::Update()
 
         //スプライト更新
         crosshair->Update();
-        tutomouse->SetSize(spritesize);
-        tutomove->SetSize(movesize);
-        tutoshot->SetSize(spritesize);
-        tutorule->SetSize(spritesize);
-
-        tutomouse->TransferVertexBuffer();
-        tutomove->TransferVertexBuffer();
-        tutoshot->TransferVertexBuffer();
-        tutorule->TransferVertexBuffer();
-
-        tutomouse->Update();
-        tutomove->Update();
-        tutoshot->Update();
-        tutorule->Update();
-
         noammo->Update();
 
+        if (playscene >=2) //プレイヤーの銃のフラグ管理)
+        {
+            tutogun->Update();
+            //プレイヤーの銃のフラグ管理
+            if (player->Gethave() == false)
+            {
+                player->Sethave(tutogun->Gethave());
+            }
+            if (player->Gethave() == true)
+            {
+                tutogun->Sethave(false);
+            }
+        }
+        
+       
 
         //動いていない状態で攻撃したら
         if (tutonum >= tutocount)
@@ -682,8 +770,8 @@ void GameScene::Update()
 
         if (noammoflag == true)
         {
-            spritesize.x -= 2.0f;
-            spritesize.y -= 2.0f;
+            spritesize.x -= 3.0f;
+            spritesize.y -= 3.0f;
             wait++;
         }
 
@@ -693,6 +781,10 @@ void GameScene::Update()
             noammoflag = false;
             wait = 0;
         }
+
+        noammo->SetSize(spritesize);
+        noammo->TransferVertexBuffer();
+        noammo->Update();
 
         timecount++;
 
@@ -851,6 +943,16 @@ void GameScene::Draw()
     //ステージオブジェクト
     floor->Draw(cmdList);
 
+    if (playscene==2)
+    {
+        tutogun->Draw(cmdList);
+    }
+
+    if (playscene == 3)
+    {
+        tutogun->Draw(cmdList);
+    }
+
     //敵関連
     for (std::unique_ptr<Enemy>& enemy : Enemys)
     {
@@ -874,23 +976,30 @@ void GameScene::Draw()
 
      if (playscene == 1)
      {
-         if (tutoscene == 0)tutomove->Draw();
-         if (tutoscene == 1)tutomouse->Draw();
-         if (tutoscene == 2)tutorule->Draw();
+         if (tutocount == 0)
+         {
+             tutomove->Draw();
+         }
+         if (tutocount == 1)
+         {
+
+             tutomouse->Draw();
+         }
+         if (tutocount == 2)tutorule->Draw();
          if (noammoflag == true)noammo->Draw();
      }
      if (playscene == 2)
      {
-         if (tutoscene == 3)tutogunpick1->Draw();
-         if (tutoscene == 4)tutogunpick2->Draw();
-         if (tutoscene == 5)tutopickup->Draw();
+         if (tutocount == 0)tutogunpick1->Draw();
+         if (tutocount== 1)tutogunpick2->Draw();
+         if (tutocount == 2)tutopickup->Draw();
          if (noammoflag == true)noammo->Draw();
      }
 
      if (playscene == 3)
      {
-         if (tutoscene == 6)tutostage3->Draw();
-         if (tutoscene == 7)tutothrow->Draw();
+         if (tutocount == 0)tutostage3->Draw();
+         if (tutocount == 1)tutothrow->Draw();
 
          if (noammoflag == true)noammo->Draw();
      }
@@ -910,142 +1019,6 @@ void GameScene::Draw()
     //debugText->DrawAll();
 }
 
-
-//void GameScene::transrationScene()
-//{
-//    //ステージ1
-//    if (playscene==1)
-//    {
-//
-//        const XMFLOAT3 respos = { 0,5,0 };
-//
-//        camera->SetTarget({ 0, 5, 0 });
-//        camera->SetEye(respos);
-//        camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-//        camera->CurrentUpdate(player->GetVelocity());
-//
-//        player->Sethave(true);
-//        player->SetPosition(camera->GetEye());
-//        player->PlayerUpdate(camera->GetTarget());
-//
-//        tutoscene = 0;
-//
-//        LoadEnemyDataS1();
-//        SwapEnemyDataS1();
-//        LoadWallDataS1();
-//        SwapWallDataS1();
-//
-//    }
-//
-//    //ステージ2
-//    if (playscene==2)
-//    {
-//        const XMFLOAT3 respos={0,5,0};
-//       
-//        camera->SetTarget({ 0, 5, 0 });
-//        camera->SetEye(respos);
-//        camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-//        camera->CurrentUpdate(player->GetVelocity());
-//
-//        player->Sethave(false);
-//        player->SetPosition(camera->GetEye());
-//        player->PlayerUpdate(camera->GetTarget());
-//
-//        tutoscene = 3;
-//       
-//        LoadEnemyDataS2();
-//        SwapEnemyDataS2();
-//        LoadWallDataS2();
-//        SwapWallDataS2();
-//
-//        magazin = 5;
-//        player->SetMagazin(magazin);
-//
-//        ////listの削除
-//        //Stage1Enemy.remove_if([](std::unique_ptr<Enemy>& enemy) {
-//        //    return enemy->die;
-//        //    });
-//        //Stage1Walls.remove_if([](std::unique_ptr<Wall>& wall) {
-//        //    return wall->die;
-//        //    });
-//
-//        for (std::unique_ptr<Enemy>& enemy : Stage2Enemy)
-//        {
-//            enemy->PartUpdate();
-//            enemy->BulUpdate();
-//            enemy->Update();
-//        }
-//        for (std::unique_ptr<Wall>& wall : Stage2Walls)
-//        {
-//            wall->Update();
-//        }
-//
-//    }
-//
-//    //ステージ3
-//    if (playscene==3)
-//    {
-//        const XMFLOAT3 respos = { 0,5,0 };
-//        camera->SetTarget({ 0, 5, 0 });
-//        camera->SetEye(respos);
-//        camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-//        camera->CurrentUpdate(player->GetVelocity());
-//
-//        magazin = 0;
-//        player->SetMagazin(magazin);
-//        player->Sethave(true);
-//        player->SetPosition(camera->GetEye());
-//        player->PlayerUpdate(camera->GetTarget());
-//
-//        tutoscene = 6;
-//
-//        LoadEnemyDataS3();
-//        SwapEnemyDataS3();
-//       LoadWallDataS3();
-//        SwapWallDataS3();
-//     
-//        tutogun->SetPosition({ 0.0f,0.0f,20.0f });
-//        tutogun->Update();
-//
-//    }
-//
-//    //ステージ4
-//    if (playscene == 4)
-//    {
-//        const XMFLOAT3 respos = { 0,5,0 };
-//        player->Sethave(false);
-//        camera->SetTarget({ 0, 5, 0 });
-//        camera->SetEye(respos);
-//        camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-//        camera->CurrentUpdate(player->GetVelocity());
-//
-//        magazin = 5;
-//        player->SetMagazin(magazin);
-//        player->SetPosition(camera->GetEye());
-//        player->PlayerUpdate(camera->GetTarget());
-//        player->Sethave(true);
-//
-//        LoadEnemyDataS4();
-//        SwapEnemyDataS4();
-//        LoadWallDataS4();
-//        SwapWallDataS4();
-//
-//
-//        ////listの削除
-//        //Stage3Enemy.remove_if([](std::unique_ptr<Enemy>& enemy) {
-//        //    return enemy->die;
-//        //    });
-//        //Stage3Walls.remove_if([](std::unique_ptr<Wall>& wall) {
-//        //    return wall->die;
-//        //    });
-//
-//        tutogun->SetPosition({ 0.0f,0.0f,30.0f });
-//        tutogun->Update();
-//
-//    }
-//    
-//}
-// 
 
 void GameScene::Finalize()
 {
@@ -1084,24 +1057,22 @@ void GameScene::Finalize()
 
 }
 
-void GameScene::SwapEnemyData(XMFLOAT3& pos,XMFLOAT3& scale, int& modelname, float& r, bool& mod, int& stage, int& nextflag)
+void GameScene::SwapEnemyData(XMFLOAT3& pos,XMFLOAT3& scale, int& modelname, float& r, bool& mod)
 {
-    enemypos = pos;
-    enemyscale = scale;
-    enemymodelname = modelname;
-    enemyr = r;
-    emod = mod;
+    enemypos.push_back(std::move(pos));
+    enemyscale.push_back(std::move(scale));
+    enemymodelname.push_back(std::move(modelname));
+    enemyr.push_back(std::move(r));
+    enemymod.push_back(std::move(mod));
+    
 }
 
 void GameScene::SwapWallData(XMFLOAT3& pos, XMFLOAT3& scale, XMFLOAT3& rotation, int& modelname, XMFLOAT3& r,int& numcount)
 {
-    int count = 1;
 
-    count = numcount;
-
-    wallpos[numcount] = pos;
-    wallscale = scale;
-    wallrotation = rotation;
-    wallmodelname = modelname;
-    wallr = r;
+    wallpos.push_back(std::move(pos));
+    wallscale.push_back(std::move(scale));
+    wallrotation.push_back(std::move(rotation));
+    wallmodelname.push_back(std::move(modelname));
+    wallr.push_back(std::move(r));
 }

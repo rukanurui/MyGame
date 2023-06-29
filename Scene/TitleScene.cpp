@@ -42,13 +42,13 @@ void TitleScene::Update()
 
         if (transfrag == true)
         {
-            spritesize.x -= 0.4f;
-            spritesize.y -= 0.3f;
+            spritesize.x -= 1.0f;
+            spritesize.y -= 1.0f;
         }
         else
         {
-            spritesize.x += 0.4f;
-            spritesize.y += 0.3f;
+            spritesize.x +=1.0f;
+            spritesize.y +=1.0f;
         }
 
         //title->SetRotation(spriteangle);

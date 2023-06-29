@@ -224,7 +224,12 @@ void StageData::SwapEnemyDataS1() {
             getline(line_stream, word, ',');
             stage = (float)std::atof(word.c_str());
             
-            gamescene->SwapEnemyData(pos, scale, modelname, r, mod, stage, nextflag);
+            enemypos.push_back(std::move(pos));
+            enemyscale.push_back(std::move(scale));
+            enemymodelname.push_back(std::move(modelname));
+            enemyr.push_back(std::move(r));
+            enemymod.push_back(std::move(mod));
+
             count++;
         }
         else if (word.find("NEXT") == 0)
@@ -346,7 +351,13 @@ void StageData::SwapWallDataS1()
             //ステージの指定
             getline(line_stream, word, ',');
             stage = (float)std::atof(word.c_str());
-            gamescene->SwapWallData(pos, scale, rotation, modelname, r, nextflag);
+            
+            wallpos.push_back(std::move(pos));
+            wallscale.push_back(std::move(scale));
+            wallrotation.push_back(std::move(rotation));
+            wallmodelname.push_back(std::move(modelname));
+            wallr.push_back(std::move(r));
+
             count++;
         }
         else if (word.find("NEXT") == 0)
@@ -354,7 +365,6 @@ void StageData::SwapWallDataS1()
             //ステージの指定
             getline(line_stream, word, ',');
             nextflag = (float)std::atof(word.c_str());
-
         }
 
     }
@@ -461,7 +471,12 @@ void StageData::SwapEnemyDataS2() {
             getline(line_stream, word, ',');
             stage = (float)std::atof(word.c_str());
 
-            gamescene->SwapEnemyData(pos, scale, modelname, r, mod, stage, nextflag);
+            enemypos.push_back(std::move(pos));
+            enemyscale.push_back(std::move(scale));
+            enemymodelname.push_back(std::move(modelname));
+            enemyr.push_back(std::move(r));
+            enemymod.push_back(std::move(mod));
+            count++;
         }
         else if (word.find("NEXT") == 0)
         {
@@ -585,7 +600,13 @@ void StageData::SwapWallDataS2()
             //ステージの指定
             getline(line_stream, word, ',');
             stage = (float)std::atof(word.c_str());
-            gamescene->SwapWallData(pos, scale, rotation, modelname, r, nextflag);
+            
+            wallpos.push_back(std::move(pos));
+            wallscale.push_back(std::move(scale));
+            wallrotation.push_back(std::move(rotation));
+            wallmodelname.push_back(std::move(modelname));
+            wallr.push_back(std::move(r));
+            count++;
         }
         else if (word.find("NEXT") == 0)
         {
@@ -699,7 +720,12 @@ void StageData::SwapEnemyDataS3() {
             getline(line_stream, word, ',');
             stage = (float)std::atof(word.c_str());
 
-            gamescene->SwapEnemyData(pos, scale, modelname, r, mod, stage, nextflag);
+            enemypos.push_back(std::move(pos));
+            enemyscale.push_back(std::move(scale));
+            enemymodelname.push_back(std::move(modelname));
+            enemyr.push_back(std::move(r));
+            enemymod.push_back(std::move(mod));
+            count++;
         }
         else if (word.find("NEXT") == 0)
         {
@@ -823,7 +849,12 @@ void StageData::SwapWallDataS3()
             //ステージの指定
             getline(line_stream, word, ',');
             stage = (float)std::atof(word.c_str());
-            gamescene->SwapWallData(pos, scale, rotation, modelname, r, nextflag);
+            wallpos.push_back(std::move(pos));
+            wallscale.push_back(std::move(scale));
+            wallrotation.push_back(std::move(rotation));
+            wallmodelname.push_back(std::move(modelname));
+            wallr.push_back(std::move(r));
+            count++;
         }
         else if (word.find("NEXT") == 0)
         {
@@ -850,6 +881,7 @@ void StageData::SwapEnemyDataS4() {
     bool mod;//敵の種類の指定
     int stage;//ステージの指定
     int nextflag = 0;
+    int count = 0;
 
     //敵のlist追加
     std::unique_ptr<Enemy>newenemy = std::make_unique<Enemy>();
@@ -932,8 +964,9 @@ void StageData::SwapEnemyDataS4() {
             //ステージの指定
             getline(line_stream, word, ',');
             stage = (float)std::atof(word.c_str());
+            count++;
+            gamescene->SwapEnemyData(pos, scale, modelname, r, mod);
 
-            gamescene->SwapEnemyData(pos, scale, modelname, r, mod, stage, nextflag);
         }
         else if (word.find("NEXT") == 0)
         {
@@ -942,6 +975,7 @@ void StageData::SwapEnemyDataS4() {
             nextflag = (float)std::atof(word.c_str());
         }
     }
+    enemyNum = count;
 }
 
 void StageData::SwapWallDataS4()
@@ -1055,7 +1089,12 @@ void StageData::SwapWallDataS4()
             //ステージの指定
             getline(line_stream, word, ',');
             stage = (float)std::atof(word.c_str());
-            gamescene->SwapWallData(pos, scale, rotation, modelname, r, nextflag);
+            //gamescene->SwapWallData(pos, scale, rotation, modelname, r, nextflag);
+            wallpos.push_back(std::move(pos));
+            wallscale.push_back(std::move(scale));
+            wallrotation.push_back(std::move(rotation));
+            wallmodelname.push_back(std::move(modelname));
+            wallr.push_back(std::move(r));
         }
         else if (word.find("NEXT") == 0)
         {
@@ -1069,7 +1108,10 @@ void StageData::SwapWallDataS4()
 }
 
 
-void StageData::InsertData(int& stagenum,int& tuto, int& enemynum, int& wallnum)
+void StageData::InsertData
+(int& stagenum,int& tuto, int& enemynum, int& wallnum,
+    std::vector<XMFLOAT3>& epos, std::vector<XMFLOAT3>& escale, std::vector<int>& ename, std::vector<float>& er, std::vector<bool>& emod,
+    std::vector<XMFLOAT3>& wpos, std::vector<XMFLOAT3>& wscale, std::vector<XMFLOAT3>& wrotation, std::vector<int>& wname, std::vector<XMFLOAT3>& wr)
 {
 
     if (stagenum==1)
@@ -1078,6 +1120,18 @@ void StageData::InsertData(int& stagenum,int& tuto, int& enemynum, int& wallnum)
         SwapEnemyDataS1();
         LoadWallDataS1();
         SwapWallDataS1();
+
+        epos = enemypos;
+        escale = enemyscale;
+        ename = enemymodelname;
+        er = enemyr;
+        emod = enemymod;
+
+        wpos = wallpos;
+        wscale = wallscale;
+        wrotation = wallrotation;
+        wname = wallmodelname;
+        wr = wallr;
 
         enemynum = GetenemyNum();
         wallnum = wallNum;
@@ -1089,6 +1143,19 @@ void StageData::InsertData(int& stagenum,int& tuto, int& enemynum, int& wallnum)
         SwapEnemyDataS2();
         LoadWallDataS2();
         SwapWallDataS2();
+
+        epos = enemypos;
+        escale = enemyscale;
+        ename = enemymodelname;
+        er = enemyr;
+        emod = enemymod;
+
+        wpos = wallpos;
+        wscale = wallscale;
+        wrotation = wallrotation;
+        wname = wallmodelname;
+        wr = wallr;
+
         enemynum = enemyNum;
         wallnum = wallNum;
         tuto = 3;
@@ -1099,6 +1166,19 @@ void StageData::InsertData(int& stagenum,int& tuto, int& enemynum, int& wallnum)
         SwapEnemyDataS3();
         LoadWallDataS3();
         SwapWallDataS3();
+
+        epos = enemypos;
+        escale = enemyscale;
+        ename = enemymodelname;
+        er = enemyr;
+        emod = enemymod;
+
+        wpos = wallpos;
+        wscale = wallscale;
+        wrotation = wallrotation;
+        wname = wallmodelname;
+        wr = wallr;
+
         enemynum = enemyNum;
         wallnum = wallNum;
         tuto = 2;

@@ -763,10 +763,10 @@ void ClearScene::Update()
     if (playscene == 2)
     {
 
-        for (std::unique_ptr<Wall>& wall : Stage2Walls)
+        /*for (std::unique_ptr<Wall>& wall : Stage2Walls)
         {
             wall->Update();
-        }
+        }*/
 
         if (input->PushKey(DIK_SPACE))
         {

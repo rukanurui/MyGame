@@ -75,15 +75,10 @@ public://メンバ関数
 	//解放
 	void Finalize()override;
 	//敵データ受け取り
-	void SwapEnemyData(XMFLOAT3& pos, XMFLOAT3& scale, int& modelname, float& r, bool& mod, int& stage, int& nextflag);
+	void SwapEnemyData(XMFLOAT3& pos, XMFLOAT3& scale, int& modelname, float& r, bool& mod);
 	//地形データ受け取り
 	void SwapWallData(XMFLOAT3& pos, XMFLOAT3& scale, XMFLOAT3& rotation, int& modelname, XMFLOAT3& r,int& numcount);
 	//const int& GetScene() { return scene; }
-
-	void setepos(XMFLOAT3 pos) { this->enemypos = pos; }
-	void setescale(XMFLOAT3 scale) { this->enemyscale = scale; }
-	//void setepos(XMFLOAT3 pos) { this->enemypos = pos; }
-	//void setepos(XMFLOAT3 pos) { this->enemypos = pos; }
 
 	void setenemynum(int enemynum) { this->enemyNum = enemynum; }
 
@@ -153,33 +148,18 @@ private://メンバ変数
 	static  int wallNum;
 	static  int enemyNum;
 
+	std::vector<XMFLOAT3> wallpos;//座標
+	std::vector<XMFLOAT3> wallscale;//スケール
+	std::vector<XMFLOAT3> wallrotation;//ローテーション
+	std::vector<int>  wallmodelname;//モデルの指定
+	std::vector<XMFLOAT3> wallr;//コライダーの半径指定
 
-
-	//地形1つ分のデータ
-	struct WallData {
-		XMFLOAT3 pos{};//座標
-		XMFLOAT3 scale{};//スケール
-		XMFLOAT3 rotation{};//ローテーション
-		int modelname;//モデルの指定
-		XMFLOAT3 r;//コライダーの半径指定
-		int stage;//ステージの指定
-	}walldata;
-
-	static XMFLOAT3 wallpos[];//座標
-	static XMFLOAT3 wallscale;//スケール
-	static XMFLOAT3 wallrotation;
-	static int wallmodelname;//モデルの指定
-	static XMFLOAT3 wallr;//コライダーの半径指定
-
-	//std::list<std::unique_ptr<Wall>> Stage1Walls;
-	//std::list<std::unique_ptr<Wall>> Stage2Walls;
-	//std::list<std::unique_ptr<Wall>> Stage3Walls;
-	//std::list<std::unique_ptr<Wall>> Stage4Walls;
-	////壁コマンド
-	//std::stringstream wallDataS1;
-	//std::stringstream wallDataS2;
-	//std::stringstream wallDataS3;
-	//std::stringstream wallDataS4;
+	//仮データ
+	XMFLOAT3 epos;//座標
+	XMFLOAT3 escale;//スケール
+	int  ename;//モデルの指定
+	float er;//コライダーの半径指定
+	bool emod;//敵の種類の指定
 
 	
 	//2面
@@ -196,32 +176,14 @@ private://メンバ変数
 	//敵のリスト
 	std::list<std::unique_ptr<Enemy>> Enemys;
 
-	//敵1体分のデータ
-	struct EnemyData {
-		XMFLOAT3 pos{0,0,0};//座標
-		XMFLOAT3 scale{0,0,0};//スケール
-		int modelname=0;//モデルの指定
-		float r=0;//コライダーの半径指定
-		bool mod=false;//敵の種類の指定
-	}enemydata;
 	
-	static XMFLOAT3 enemypos;//座標
-	static XMFLOAT3 enemyscale;//スケール
-	static int enemymodelname;//モデルの指定
-	static float enemyr;//コライダーの半径指定
-	static bool emod;//敵の種類の指定
-
-	//std::list<std::unique_ptr<Enemy>> Stage1Enemy;
-	//std::list<std::unique_ptr<Enemy>> Stage2Enemy;
-	//std::list<std::unique_ptr<Enemy>> Stage3Enemy;
-	//std::list<std::unique_ptr<Enemy>> Stage4Enemy;
-	//
-	//敵コマンド
-	//std::stringstream enemyDataS2;
-	//std::stringstream enemyDataS3;
-	//std::stringstream enemyDataS4;
-
 	
+	std::vector<XMFLOAT3> enemypos;//座標
+	std::vector<XMFLOAT3> enemyscale;//スケール
+	std::vector<int>  enemymodelname;//モデルの指定
+	std::vector<float> enemyr;//コライダーの半径指定
+	std::vector<bool> enemymod;//敵の種類の指定
+
 
 	//チュートリアル
 	//std::vector<int> tutonum;

@@ -63,7 +63,11 @@ public:
 	void SwapWallDataS4();
 
 	//データ整理
-	void InsertData(int& stagenum,int& tuto,int& enemynum,int& wallnum);
+	void InsertData
+	(int& stagenum,int& tuto,int& enemynum,int& wallnum,
+		std::vector<XMFLOAT3>& epos, std::vector<XMFLOAT3>& escale, std::vector<int>& ename, std::vector<float>& er, std::vector<bool>& emod,
+		std::vector<XMFLOAT3>& wpos, std::vector<XMFLOAT3>& wscale, std::vector<XMFLOAT3>& rotation, std::vector<int>& wname, std::vector<XMFLOAT3>& wr
+	);
 
 	const int& GetenemyNum() { return enemyNum; }
 	
@@ -88,6 +92,17 @@ private:
 	uint32_t enemyNum;
 	uint32_t wallNum;
 
+	std::vector<XMFLOAT3> wallpos;//座標
+	std::vector<XMFLOAT3> wallscale;//スケール
+	std::vector<XMFLOAT3> wallrotation;
+	std::vector<int>  wallmodelname;//モデルの指定
+	std::vector<XMFLOAT3> wallr;//コライダーの半径指定
+
+	std::vector<XMFLOAT3> enemypos;//座標
+	std::vector<XMFLOAT3> enemyscale;//スケール
+	std::vector<int>  enemymodelname;//モデルの指定
+	std::vector<float> enemyr;//コライダーの半径指定
+	std::vector<bool> enemymod;//敵の種類の指定
 
 	//Enemyのvector
 	//std::vector<Enemy> enemys;
