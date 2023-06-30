@@ -104,6 +104,7 @@ private://メンバ変数
 	Sprite* tutomouse = nullptr;
 	Sprite* tutoshot = nullptr;
 	Sprite* tutorule = nullptr;
+	Sprite* tutotime = nullptr;
 	Sprite* tutopickup = nullptr;
 	Sprite* tutogunpick1 = nullptr;
 	Sprite* tutogunpick2 = nullptr;
@@ -154,13 +155,6 @@ private://メンバ変数
 	std::vector<int>  wallmodelname;//モデルの指定
 	std::vector<XMFLOAT3> wallr;//コライダーの半径指定
 
-	//仮データ
-	XMFLOAT3 epos;//座標
-	XMFLOAT3 escale;//スケール
-	int  ename;//モデルの指定
-	float er;//コライダーの半径指定
-	bool emod;//敵の種類の指定
-
 	
 	//2面
 	FbxModel* modelobjgun = nullptr;
@@ -176,7 +170,6 @@ private://メンバ変数
 	//敵のリスト
 	std::list<std::unique_ptr<Enemy>> Enemys;
 
-	
 	
 	std::vector<XMFLOAT3> enemypos;//座標
 	std::vector<XMFLOAT3> enemyscale;//スケール

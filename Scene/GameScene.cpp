@@ -58,6 +58,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     spriteCommon->LoadTexture(12, L"Resources/noammo.png");
     spriteCommon->LoadTexture(13, L"Resources/stage3tuto.png");
     spriteCommon->LoadTexture(14, L"Resources/throwguntuto.png");
+    spriteCommon->LoadTexture(15, L"Resources/tutotime.png");
 
     //ポストエフェクト用テクスチャの読み込み
     spriteCommon->LoadTexture(101, L"Resources/White1x1.png");
@@ -105,6 +106,10 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     tutothrow->SetPosition({ WindowsApp::window_width / 2,600,0 });
     tutomove->SetSize(movesize);
     tutothrow->TransferVertexBuffer();
+
+    tutotime = Sprite::Create(spriteCommon, 15);
+    tutotime->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    tutotime->TransferVertexBuffer();
 
     noammo = Sprite::Create(spriteCommon, 12);
     noammo->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
@@ -407,19 +412,43 @@ void GameScene::Update()
                         wait = 0;
                     }
                 }
+
+                if (tutocount == 3)
+                {
+                    if (spritesize.x >= 1280)
+                    {
+                        transfrag = true;
+                    }
+
+                    if (transfrag == true)
+                    {
+                        spritesize.x -= 4.0f;
+                        spritesize.y -= 4.0f;
+                    }
+
+                    wait++;
+                    if (wait >= 60)
+                    {
+                        tutocount++;
+                        spritesize = { 1280,720 };
+                        wait = 0;
+                        transfrag = true;
+                    }
+                }
             }
             tutomouse->SetSize(spritesize);
             
             tutoshot->SetSize(spritesize);
             tutorule->SetSize(spritesize);
+            tutotime->SetSize(spritesize);
 
             tutomouse->TransferVertexBuffer();
-            
+            tutotime->TransferVertexBuffer();
             tutoshot->TransferVertexBuffer();
             tutorule->TransferVertexBuffer();
 
             tutomouse->Update();
-            
+            tutotime->Update();
             tutoshot->Update();
             tutorule->Update();
         }
@@ -976,16 +1005,13 @@ void GameScene::Draw()
 
      if (playscene == 1)
      {
-         if (tutocount == 0)
-         {
-             tutomove->Draw();
-         }
-         if (tutocount == 1)
-         {
-
-             tutomouse->Draw();
-         }
-         if (tutocount == 2)tutorule->Draw();
+         if (tutocount == 0)tutomove->Draw();
+        
+         if (tutocount == 1)tutomouse->Draw();
+       
+         if (tutocount == 2)tutotime->Draw();
+         if (tutocount == 3)tutorule->Draw();
+         
          if (noammoflag == true)noammo->Draw();
      }
      if (playscene == 2)

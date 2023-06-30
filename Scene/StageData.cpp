@@ -1135,7 +1135,7 @@ void StageData::InsertData
 
         enemynum = GetenemyNum();
         wallnum = wallNum;
-        tuto = 3;
+        tuto = 4;
     }
     else if (stagenum == 2)
     {
