@@ -112,11 +112,17 @@ private://ÉÅÉìÉoïœêî
 	Sprite* trans = nullptr;
 	Sprite* tutostage3 = nullptr;
 	Sprite* tutothrow = nullptr;
+	Sprite* play = nullptr;
+	Sprite* stop = nullptr;
+	Sprite* ammo = nullptr;
+	Sprite* ammoone[5];
 	TransEffect* transEffect = nullptr;
 
 	XMFLOAT3 spritepos{ WindowsApp::window_width / 2 ,WindowsApp::window_height / 2,0 };
 	XMFLOAT2 spritesize{ 1280,720 };
 	XMFLOAT2 movesize = { 800,300 };
+	XMFLOAT2 ammosize{ 200.0f,200.0f };
+	XMFLOAT2 ammoonesize{ 50.0f,100.0f };
 
 	XMFLOAT2 Effectsize{ 0,0 };
 	float transcount = 0;

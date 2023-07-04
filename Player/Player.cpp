@@ -197,7 +197,7 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 		//’e‚Ì“o˜^
 		Guns.push_back(std::move(newGun));
 		//c’e–ß‚·
-		magazin=5;
+		magazin=0;
 		//ƒtƒ‰ƒO•ÏX
 		have = false;
 	}

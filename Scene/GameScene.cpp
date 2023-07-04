@@ -59,6 +59,11 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     spriteCommon->LoadTexture(13, L"Resources/stage3tuto.png");
     spriteCommon->LoadTexture(14, L"Resources/throwguntuto.png");
     spriteCommon->LoadTexture(15, L"Resources/tutotime.png");
+    spriteCommon->LoadTexture(16, L"Resources/play.png");
+    spriteCommon->LoadTexture(17, L"Resources/stop.png");
+    spriteCommon->LoadTexture(18, L"Resources/ammo.png");
+    spriteCommon->LoadTexture(19, L"Resources/ammoone.png");
+
 
     //ポストエフェクト用テクスチャの読み込み
     spriteCommon->LoadTexture(101, L"Resources/White1x1.png");
@@ -110,6 +115,28 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     tutotime = Sprite::Create(spriteCommon, 15);
     tutotime->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
     tutotime->TransferVertexBuffer();
+
+    play = Sprite::Create(spriteCommon, 16);
+    play->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    play->TransferVertexBuffer();
+
+    stop = Sprite::Create(spriteCommon, 17);
+    stop->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    stop->TransferVertexBuffer();
+
+    ammo = Sprite::Create(spriteCommon, 18);
+    ammo->SetPosition({ 1000,100,0 });
+    ammo->SetSize(ammosize);
+    ammo->TransferVertexBuffer();
+
+    for (int i = 0; i < 5; i++)
+    {
+        ammoone[i] = Sprite::Create(spriteCommon, 19);
+        ammoone[i]->SetPosition({ 1080.0f+i*15.0f,100.0f,0 });
+        ammoone[i]->SetSize(ammoonesize);
+        ammoone[i]->TransferVertexBuffer();
+    }
+    
 
     noammo = Sprite::Create(spriteCommon, 12);
     noammo->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
@@ -646,6 +673,12 @@ void GameScene::Update()
         //スプライト更新
         crosshair->Update();
         noammo->Update();
+        ammo->Update();
+        
+        for (int i = 0; i < 5; i++)
+        {
+            ammoone[i]->Update();
+        }
 
         if (playscene >=2) //プレイヤーの銃のフラグ管理)
         {
@@ -775,7 +808,14 @@ void GameScene::Update()
             player->SetRotation(camera->GetRoatation());
             player->PlayerUpdate(camera->GetTarget());
             player->gunUpdate(camera->GetTarget(), camera->GetEye());
-            tutogun->Update();
+            
+
+
+            if (playscene>=2)
+            {
+                tutogun->Update();
+            }
+            
 
             //残弾数の取得
             magazin = player->Getmagazin();
@@ -996,6 +1036,13 @@ void GameScene::Draw()
 
      //スプライト描画前処理
      spriteCommon->PreDraw();
+
+     ammo->Draw();
+
+     for (int i = 0; i < magazin; i++)
+     {
+         ammoone[i]->Draw();
+     }
 
      //シーン切り替え処理
      if (transscene == false)
