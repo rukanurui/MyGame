@@ -116,6 +116,11 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 		return melee->Getdead();
 		});
 
+	//E‚¤ƒAƒNƒVƒ‡ƒ“‚Ìíœ
+	picks.remove_if([](std::unique_ptr<Pick>& pick) {
+		return pick->Getdead();
+		});
+
 	//particle‚Ìíœ
 	particles.remove_if([](std::unique_ptr<PartManager>& part) {
 		return part->Getdead();
@@ -133,6 +138,7 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 
 	ctime--;
 	mctime--;
+	picktime--;
 
 	if (ctime <= 0)
 	{
@@ -142,6 +148,11 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 	if (mctime <= 0)
 	{
 		mctime = 0;
+	}
+
+	if (picktime <= 0)
+	{
+		picktime = 0;
 	}
 
 	UpdateWorld();
@@ -197,7 +208,7 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 		//’e‚Ì“o˜^
 		Guns.push_back(std::move(newGun));
 		//c’e–ß‚·
-		magazin=5                    ;
+		magazin=5;
 		//ƒtƒ‰ƒO•ÏX
 		have = false;
 	}
@@ -229,6 +240,32 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 		mctime = 30;
 	}
 
+	//e‚ğE‚¤
+	if (input->TriggerKey(DIK_F) && have == false)
+	{
+		const float bulspeed = 1.0f;
+		XMVECTOR Velocity{ 0,0,bulspeed };
+
+		XMFLOAT3 meleepos = position;
+
+
+		Velocity = { target.x - position.x, target.y - position.y, target.z - position.z };
+
+		Velocity = XMVector3Normalize(Velocity) * bulspeed;
+
+		//Ši“¬‚Ì¶¬‚Æ‰Šú‰»
+		std::unique_ptr<Pick>newpick = std::make_unique<Pick>();
+		newpick->Initialize();
+		newpick->SetScale({ 0.01f,0.01f,0.03f });
+		newpick->SetModel(model2);
+		newpick->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 2.0f));
+		newpick->pickInitialize();
+		newpick->create(position, Velocity);
+		//Ši“¬‚Ì“o˜^
+		picks.push_back(std::move(newpick));
+		picktime = 15;
+	}
+
 	//’e‚ÌXV
 	for (std::unique_ptr<Pbullet>& bullet : bullets)
 	{
@@ -249,6 +286,13 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 	{
 		melee->meleeupdate();
 		melee->Update();
+	}
+
+	//E‚¤ƒAƒNƒVƒ‡ƒ“‚ÌXV
+	for (std::unique_ptr<Pick>& pick : picks)
+	{
+		pick->pickupdate();
+		pick->Update();
 	}
 
 	//particle‚ÌXV

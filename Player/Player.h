@@ -2,6 +2,7 @@
 #include"Pbullet.h"
 #include"melee.h"
 #include"PlayerGun.h"
+#include"PickUp.h"
 #include"../3d/fbxobj3d.h"
 #include"../Collider/SphereCollider.h"
 #include "../3d/FbxLoader.h"
@@ -27,6 +28,8 @@ public://メンバ関数
 	void BulUpdate();
 	//近接更新
 	void meleeUpdate();
+	//銃拾う動作更新
+	void pickupdate();
 	//投げた銃更新
 	void throwgunUpdate();
 	//手に持っているときの銃更新
@@ -102,6 +105,8 @@ private://メンバ変数
 	std::list<std::unique_ptr<Pbullet>> bullets;
 	//格闘
 	std::list<std::unique_ptr<melee>> melees;
+	//格闘
+	std::list<std::unique_ptr<Pick>> picks;
 	//パーティクル
 	std::list<std::unique_ptr<PartManager>> particles;
 
@@ -138,6 +143,8 @@ private://メンバ変数
 
 	//格闘のクールタイム
 	int mctime = 0;
+	//銃拾うクールタイム
+	int picktime = 0;
 
 	XMFLOAT3 oldpos;
 	XMFLOAT3 oldtarget;

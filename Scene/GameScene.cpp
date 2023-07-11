@@ -553,7 +553,7 @@ void GameScene::Update()
                     }
 
                     wait++;
-                    if (wait >= 60 && input->PushclickLeft())
+                    if (wait >= 60 && input->TriggerKey(DIK_F))
                     {
                         tutocount++;
                         wait = 0;
