@@ -130,6 +130,7 @@ private://ƒƒ“ƒo•Ï”
 	
 
 	bool transfrag = true;
+	bool playflag = false;
 	float spriteangle = 0;
 	bool overfrag = true;
 	int wait = 0;

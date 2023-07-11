@@ -674,6 +674,9 @@ void GameScene::Update()
         crosshair->Update();
         noammo->Update();
         ammo->Update();
+        play->Update();
+        stop->Update();
+
         
         for (int i = 0; i < 5; i++)
         {
@@ -741,6 +744,18 @@ void GameScene::Update()
                     attack = false;
                     movect = 0;
                 }
+            }
+        }
+
+        if (tutonum == tutocount)
+        {
+            if (input->PushKey(DIK_W) || input->PushKey(DIK_A) || input->PushKey(DIK_S) || input->PushKey(DIK_D))
+            {
+                playflag = true;
+            }
+            else
+            {
+                playflag = false;
             }
         }
 
