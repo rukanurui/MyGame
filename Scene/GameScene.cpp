@@ -182,6 +182,10 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     player->Initialize();
     player->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 0.5f));
     player->PlayerInitialize(this->input);
+    player->setscene(playscene);
+    player->settuto(tutonum);
+    camera->Setscene(playscene);
+    camera->Settuto(tutonum);
     player->SetPosition({ 0,4,0 });
     player->SetTarget({ 0,4,0 });
 
@@ -246,7 +250,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
         Walls.push_back(std::move(newwall));
     }
 
-    //銃本体
+    //落ちている銃
     if (playscene == 2)
     {
         tutogun = new Wall;
@@ -270,7 +274,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     }
     
 
-    int counter = 0; // アニメーションの経過時間カウンター
+    int counter = 0; // アニメーションの経過時間カウンター(アニメーションするfbxの時のみ使用)
 
 }
 
@@ -478,6 +482,11 @@ void GameScene::Update()
             tutotime->Update();
             tutoshot->Update();
             tutorule->Update();
+
+            //カメラとplayerに現在のチュートリアル渡す
+            player->setnowtuto(tutocount);
+            camera->Setnowtuto(tutocount);
+
         }
 
         //チュートリアル
@@ -573,6 +582,11 @@ void GameScene::Update()
             tutopickup->Update();
             tutogunpick1->Update();
             tutogunpick2->Update();
+
+            //カメラとplayerに現在のチュートリアル渡す
+            player->setnowtuto(tutocount);
+            camera->Setnowtuto(tutocount);
+
         }
 
         //チュートリアル
@@ -645,6 +659,11 @@ void GameScene::Update()
 
             tutothrow->Update();
             tutostage3->Update();
+
+            //カメラとplayerに現在のチュートリアル渡す
+            player->setnowtuto(tutocount);
+            camera->Setnowtuto(tutocount);
+
         }
 
 
@@ -697,8 +716,8 @@ void GameScene::Update()
             }
         }
         
-       
-
+        
+        
         //動いていない状態で攻撃したら
         if (tutonum >= tutocount)
         {

@@ -64,6 +64,8 @@ public://メンバ関数
 	//シーン分岐
 	const int& GettutoScene() { return tutoscene; }
 
+
+
 	//シーン遷移処理
 	//void transrationScene();
 	//残弾数のgetter

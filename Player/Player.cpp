@@ -100,7 +100,6 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 	}
 
 
-
 	//’e‚Ìíœ
 	bullets.remove_if([](std::unique_ptr<Pbullet>& bullet) {
 		return bullet->Getdead();
@@ -117,9 +116,9 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 		});
 
 	//E‚¤ƒAƒNƒVƒ‡ƒ“‚Ìíœ
-	picks.remove_if([](std::unique_ptr<Pick>& pick) {
+	/*picks.remove_if([](std::unique_ptr<Pick>& pick) {
 		return pick->Getdead();
-		});
+		});*/
 
 	//particle‚Ìíœ
 	particles.remove_if([](std::unique_ptr<PartManager>& part) {
@@ -140,131 +139,123 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 	mctime--;
 	picktime--;
 
-	if (ctime <= 0)
+	if (ctime <= 0)ctime = 0;
+	
+	if (mctime <= 0)mctime = 0;
+	
+	if (picktime <= 0)picktime = 0;
+	
+	if (tutonum>=nowtuto)
 	{
-		ctime = 0;
+		//’e‚Ì”­Ë
+		if (input->PushclickLeft() && ctime <= 0 && magazin >= 1 && have == true)
+		{
+			//’e‚Ì‘¬“x
+			const float bulspeed = 1.5f;
+			XMVECTOR Velocity{ 0,0,bulspeed };
+
+			Velocity = { cameratarget.x - position.x, cameratarget.y - position.y, cameratarget.z - position.z };
+
+			Velocity = XMVector3Normalize(Velocity) * bulspeed;
+
+			//’e‚Ì¶¬‚Æ‰Šú‰»
+			//bullet->create(position, Velocity);
+			std::unique_ptr<Pbullet>newBullet = std::make_unique<Pbullet>();
+			newBullet->Initialize();
+			newBullet->SetScale({ 0.01f,0.01f,0.01f });
+			newBullet->SetModel(modelballet);
+			newBullet->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+			newBullet->BulInitialize();
+			newBullet->create(position, Velocity);
+			//’e‚Ì“o˜^
+			bullets.push_back(std::move(newBullet));
+			ctime = 30;
+			//c’eŒ¸‚ç‚·
+			magazin--;
+		}
+
+		//e‚ğ“Š‚°‚é
+		if (input->PushclickRight() && have == true)
+		{
+			//’e‚Ì‘¬“x
+			const float bulspeed = 1.0f;
+			XMVECTOR Velocity{ 0,0,bulspeed };
+
+			Velocity = { target.x - position.x, target.y - position.y, target.z - position.z };
+
+			Velocity = XMVector3Normalize(Velocity) * bulspeed;
+
+			//’e‚Ì¶¬‚Æ‰Šú‰»
+			std::unique_ptr<PlayerGun>newGun = std::make_unique<PlayerGun>();
+			newGun->Initialize();
+			newGun->SetScale({ 0.01f,0.01f,0.01f });
+			newGun->SetModel(modelgun);
+			newGun->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+			newGun->GunInitialize();
+			newGun->create(position, Velocity);
+			//’e‚Ì“o˜^
+			Guns.push_back(std::move(newGun));
+			//c’e–ß‚·
+			magazin = 5;
+			//ƒtƒ‰ƒO•ÏX
+			have = false;
+		}
+
+		//‹ßÚ
+		if (input->PushclickLeft() && have == false && mctime <= 0)
+		{
+			//’e‚Ì‘¬“x
+			const float bulspeed = 1.0f;
+			XMVECTOR Velocity{ 0,0,bulspeed };
+
+			XMFLOAT3 meleepos = position;
+
+
+			Velocity = { target.x - position.x, target.y - position.y, target.z - position.z };
+
+			Velocity = XMVector3Normalize(Velocity) * bulspeed;
+
+			//Ši“¬‚Ì¶¬‚Æ‰Šú‰»
+			std::unique_ptr<melee>newMelee = std::make_unique<melee>();
+			newMelee->Initialize();
+			newMelee->SetScale({ 0.01f,0.01f,0.03f });
+			newMelee->SetModel(model2);
+			newMelee->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+			newMelee->meleeInitialize();
+			newMelee->create(position, Velocity);
+			//Ši“¬‚Ì“o˜^
+			melees.push_back(std::move(newMelee));
+			mctime = 30;
+		}
+
+		//e‚ğE‚¤
+		/*
+		if (input->TriggerKey(DIK_F) && have == false)
+		{
+			const float bulspeed = 1.0f;
+			XMVECTOR Velocity{ 0,0,bulspeed };
+
+			XMFLOAT3 meleepos = position;
+
+
+			Velocity = { target.x - position.x, target.y - position.y, target.z - position.z };
+
+			Velocity = XMVector3Normalize(Velocity) * bulspeed;
+
+			//Ši“¬‚Ì¶¬‚Æ‰Šú‰»
+			std::unique_ptr<Pick>newpick = std::make_unique<Pick>();
+			newpick->Initialize();
+			newpick->SetScale({ 0.01f,0.01f,0.03f });
+			newpick->SetModel(model2);
+			newpick->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 2.0f));
+			newpick->pickInitialize();
+			newpick->create(position, Velocity);
+			//Ši“¬‚Ì“o˜^
+			picks.push_back(std::move(newpick));
+			picktime = 15;
+		}*/
 	}
-
-	if (mctime <= 0)
-	{
-		mctime = 0;
-	}
-
-	if (picktime <= 0)
-	{
-		picktime = 0;
-	}
-
-	UpdateWorld();
-
-
-
-	//’e‚Ì”­Ë
-	if (input->PushclickLeft() && ctime <= 0 && magazin >= 1 && have == true)
-	{
-		//’e‚Ì‘¬“x
-		const float bulspeed = 1.5f;
-		XMVECTOR Velocity{ 0,0,bulspeed };
-
-		Velocity={ cameratarget.x - position.x, cameratarget.y - position.y, cameratarget.z - position.z };
-
-		Velocity = XMVector3Normalize(Velocity) * bulspeed;
-
-		//’e‚Ì¶¬‚Æ‰Šú‰»
-		//bullet->create(position, Velocity);
-		std::unique_ptr<Pbullet>newBullet = std::make_unique<Pbullet>();
-		newBullet->Initialize();
-		newBullet->SetScale({ 0.01f,0.01f,0.01f });
-		newBullet->SetModel(modelballet);
-		newBullet->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
-		newBullet->BulInitialize();
-		newBullet->create(position, Velocity);
-		//’e‚Ì“o˜^
-		bullets.push_back(std::move(newBullet));
-		ctime = 30;
-		//c’eŒ¸‚ç‚·
-		magazin--;
-	}
-
-	//e‚ğ“Š‚°‚é
-	if (input->PushclickRight() && have==true)
-	{
-		//’e‚Ì‘¬“x
-		const float bulspeed = 1.0f;
-		XMVECTOR Velocity{ 0,0,bulspeed };
-
-		Velocity = { target.x - position.x, target.y - position.y, target.z - position.z };
-
-		Velocity = XMVector3Normalize(Velocity) * bulspeed;
-
-		//’e‚Ì¶¬‚Æ‰Šú‰»
-		std::unique_ptr<PlayerGun>newGun = std::make_unique<PlayerGun>();
-		newGun->Initialize();
-		newGun->SetScale({ 0.01f,0.01f,0.01f });
-		newGun->SetModel(modelgun);
-		newGun->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
-		newGun->GunInitialize();
-		newGun->create(position, Velocity);
-		//’e‚Ì“o˜^
-		Guns.push_back(std::move(newGun));
-		//c’e–ß‚·
-		magazin=5;
-		//ƒtƒ‰ƒO•ÏX
-		have = false;
-	}
-
-	//‹ßÚ
-	if (input->PushclickLeft() && have==false&&mctime<=0)
-	{
-		//’e‚Ì‘¬“x
-		const float bulspeed = 1.0f;
-		XMVECTOR Velocity{ 0,0,bulspeed };
-		
-		XMFLOAT3 meleepos = position;
-
-
-		Velocity = { target.x - position.x, target.y - position.y, target.z - position.z };
-
-		Velocity = XMVector3Normalize(Velocity) * bulspeed;
-
-		//Ši“¬‚Ì¶¬‚Æ‰Šú‰»
-		std::unique_ptr<melee>newMelee = std::make_unique<melee>();
-		newMelee->Initialize();
-		newMelee->SetScale({ 0.01f,0.01f,0.03f });
-		newMelee->SetModel(model2);
-		newMelee->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
-		newMelee->meleeInitialize();
-		newMelee->create(position, Velocity);
-		//Ši“¬‚Ì“o˜^
-		melees.push_back(std::move(newMelee));
-		mctime = 30;
-	}
-
-	//e‚ğE‚¤
-	if (input->TriggerKey(DIK_F) && have == false)
-	{
-		const float bulspeed = 1.0f;
-		XMVECTOR Velocity{ 0,0,bulspeed };
-
-		XMFLOAT3 meleepos = position;
-
-
-		Velocity = { target.x - position.x, target.y - position.y, target.z - position.z };
-
-		Velocity = XMVector3Normalize(Velocity) * bulspeed;
-
-		//Ši“¬‚Ì¶¬‚Æ‰Šú‰»
-		std::unique_ptr<Pick>newpick = std::make_unique<Pick>();
-		newpick->Initialize();
-		newpick->SetScale({ 0.01f,0.01f,0.03f });
-		newpick->SetModel(model2);
-		newpick->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 2.0f));
-		newpick->pickInitialize();
-		newpick->create(position, Velocity);
-		//Ši“¬‚Ì“o˜^
-		picks.push_back(std::move(newpick));
-		picktime = 15;
-	}
+	
 
 	//’e‚ÌXV
 	for (std::unique_ptr<Pbullet>& bullet : bullets)
@@ -272,7 +263,6 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 		bullet->bulupdate();
 		bullet->Update();
 	}
-
 
 	//“Š‚°‚½e‚ÌXV
 	for (std::unique_ptr<PlayerGun>& gun : Guns)
@@ -289,11 +279,11 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 	}
 
 	//E‚¤ƒAƒNƒVƒ‡ƒ“‚ÌXV
-	for (std::unique_ptr<Pick>& pick : picks)
+	/*for (std::unique_ptr<Pick>& pick : picks)
 	{
 		pick->pickupdate();
 		pick->Update();
-	}
+	}*/
 
 	//particle‚ÌXV
 	for (std::unique_ptr<PartManager>& part : particles)
@@ -405,7 +395,7 @@ void Player::OnCollision(const CollisionInfo& info)
 {
 	if (info.collider->color == 8 || info.collider->color == 16)
 	{
-		hit = 1;
+		hit = true;
 	}
 
 	if (info.collider->color == 1)
@@ -507,7 +497,3 @@ void Player::QueryWall()
 	UpdateWorld();
 }
 
-void Player::sethit(int Hit)
-{
-	hit = Hit;
-}

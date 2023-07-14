@@ -74,17 +74,19 @@ public://メンバ関数
 	void QueryWall();
 	void Setwallflag(bool flag) { this->wallhit = flag; }
 
-
 	//hitのゲッター
-	const int& Gethit() { return hit; }
+	const bool& Gethit() { return hit; }
 
-	const int& Getwallhit() { return wallhit; }
+	const bool& Getwallhit() { return wallhit; }
 
-	void sethit(int Hit);
+	void sethit(bool Hit) { this->hit = Hit; }
 
-	int hit = 0;
-
-	int wallhit = 0;
+	//面のセット
+	void setscene(int scene) { this->nowscene = scene; }
+	//チュートリアルのセット
+	void setnowtuto(int tuto) { this->nowtuto = tuto; }
+	//チュートリアルのセット
+	void settuto(int tutoNum) { this->tutonum = tutoNum; }
 	
 
 
@@ -106,7 +108,7 @@ private://メンバ変数
 	//格闘
 	std::list<std::unique_ptr<melee>> melees;
 	//格闘
-	std::list<std::unique_ptr<Pick>> picks;
+	//std::list<std::unique_ptr<Pick>> picks;
 	//パーティクル
 	std::list<std::unique_ptr<PartManager>> particles;
 
@@ -117,6 +119,13 @@ private://メンバ変数
 	int partcount = 0;
 	int parttimer = 0;
 
+	//現在の面
+	int nowscene = 0;
+	//現在のチュートリアル
+	int nowtuto = 0;
+	//面ごとのチュートリアルの数
+	int tutonum = 0;
+
 	//注視点
 	XMFLOAT3 target{ 0.0f,4.0f,0.0f };
 	//注視点までのきょり
@@ -124,13 +133,18 @@ private://メンバ変数
 
 	//持っている銃の場所決め(右下)
 	const float gundistance = 1.5f;
-	const float gunTdistance = 0.5;
 	XMFLOAT3 guntarget{};
 	XMFLOAT3 gunpos;
 	XMFLOAT3 Velocity{};
 	XMVECTOR Velocity2{ -gundistance,-gundistance,gundistance };
 
 	XMFLOAT3 currentangle;
+
+	//敵に当たったか
+	bool hit = false;
+
+	//壁に当たっているか
+	bool wallhit = false;
 	
 
 	//攻撃関連

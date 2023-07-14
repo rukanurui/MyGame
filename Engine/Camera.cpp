@@ -198,111 +198,110 @@ void Camera::CurrentUpdate(XMFLOAT3 vel)
 	// マウスの入力を取得
 	Input::MouseMove mouseMove = input->GetMouseMove();
 
-	if (mouseMove.lX==CurretmouseX || mouseMove.lY == CurretmouseY)
+
+	//チュートリアルが終わったら
+	if (tutonum >= nowtuto)
 	{
-
-		if (wallflag == false)
+		if (mouseMove.lX == CurretmouseX || mouseMove.lY == CurretmouseY)
 		{
-			float dy = (mouseMove.lX * scaleX) * 0.25;
-			float dx = (mouseMove.lY * scaleY) * 0.25;
 
-			angleX = -dx * XM_PI;
-			angleY = -dy * XM_PI;
+			if (wallflag == false)
+			{
+				float dy = (mouseMove.lX * scaleX) * 0.25;
+				float dx = (mouseMove.lY * scaleY) * 0.25;
+
+				angleX = -dx * XM_PI;
+				angleY = -dy * XM_PI;
+
+				viewDirtyFlag = true;
+			}
+		}
+
+		anglelimitX += angleX;
+		anglelimitY += angleY;
+
+		if (anglelimitX <= 1.4f && anglelimitX >= -1.4f)
+		{
+			angleculentX = anglelimitX;
+		}
+		else
+		{
+			anglelimitX = angleculentX;
+		}
+
+		//座標操作
+		if (!input->PushKey(DIK_A) && !input->PushKey(DIK_D)) Velocity.x = 0;
+		if ((input->PushKey(DIK_A) || input->PushKey(DIK_D)) && wallflag == false)
+		{
+
+			if (input->PushKey(DIK_A)) Velocity.x = -0.3f;
+			else
+			{
+				if (input->PushKey(DIK_D)) Velocity.x = 0.3f;
+			}
+
+			XMVECTOR move = { Velocity.x,Velocity.y,0,0 };
+
+			move = XMVector3Transform(move, matRot);
+			MoveTarget(move);
+		}
 
 
+		if (!input->PushKey(DIK_W) && !input->PushKey(DIK_S)) Velocity.z = 0;
+		if ((input->PushKey(DIK_W) || input->PushKey(DIK_S)) && wallflag == false)
+		{
+			if (input->PushKey(DIK_S)) Velocity.z = -0.5f;
+			else
+			{
+				if (input->PushKey(DIK_W)) Velocity.z = 0.5f;
+			}
+
+
+			XMVECTOR move = { 0,0,Velocity.z,0 };
+
+			move = XMVector3Transform(move, matRot);
+			MoveTarget(move);
+
+		}
+
+		if (wallflag == true)
+		{
 
 			viewDirtyFlag = true;
+
 		}
-	}
 
-	anglelimitX += angleX;
-	anglelimitY += angleY;
+		//padの入力
+		/*Pad->Update();
 
-	if (anglelimitX <= 1.4f&&anglelimitX>=-1.4f)
-	{
-		angleculentX = anglelimitX;
-	}
-	else
-	{
-		anglelimitX = angleculentX;
-	}
-
-	//座標操作
-	if (!input->PushKey(DIK_A) && !input->PushKey(DIK_D)) Velocity.x = 0;
-	if ((input->PushKey(DIK_A) || input->PushKey(DIK_D)) && wallflag == false)
-	{
-
-		if (input->PushKey(DIK_A)) Velocity.x = -0.3f;
-		else
+		if (Pad->state.Gamepad.sThumbLX!=0)
 		{
-			if (input->PushKey(DIK_D)) Velocity.x = 0.3f;
+			float dy = Pad->state.Gamepad.sThumbLX * scaleX;
+			float dx = Pad->state.Gamepad.sThumbLY * scaleY;
+
+			angleX = -dy * XM_PI;
+			angleY = -dx * XM_PI;
+			viewDirtyFlag = true;
 		}
 
-		XMVECTOR move = { Velocity.x,Velocity.y,0,0 };
-
-		move = XMVector3Transform(move, matRot);
-		MoveTarget(move);
-	}
-
-
-	if (!input->PushKey(DIK_W) && !input->PushKey(DIK_S)) Velocity.z = 0;
-	if ((input->PushKey(DIK_W) || input->PushKey(DIK_S)) && wallflag == false)
-	{
-		if (input->PushKey(DIK_S)) Velocity.z = -0.5f;
-		else
+		if (Pad->state.Gamepad.sThumbLY != 0)
 		{
-			if (input->PushKey(DIK_W)) Velocity.z = 0.5f;
-		}
-		
+			float dy = Pad->state.Gamepad.sThumbLX * scaleX;
+			float dx = Pad->state.Gamepad.sThumbLY * scaleY;
 
-		XMVECTOR move = { 0,0,Velocity.z,0 };
+			angleX = -dy * XM_PI;
+			angleY = -dx * XM_PI;
+			viewDirtyFlag = true;
+		}*/
 
-		move = XMVector3Transform(move, matRot);
-		MoveTarget(move);
+		if (target.y <= 5)target.y = 5;//注視点が0以下になりそうだったら
 
-	}
-
-	if (wallflag == true)
-	{
-
-		viewDirtyFlag = true;
+		if (target.y >= 5)target.y = 5;//注視点が5以上になりそうだったら
 
 	}
 
 	
-
-	//padの入力
-	/*Pad->Update();
-
-	if (Pad->state.Gamepad.sThumbLX!=0)
-	{
-		float dy = Pad->state.Gamepad.sThumbLX * scaleX;
-		float dx = Pad->state.Gamepad.sThumbLY * scaleY;
-
-		angleX = -dy * XM_PI;
-		angleY = -dx * XM_PI;
-		viewDirtyFlag = true;
-	}
-
-	if (Pad->state.Gamepad.sThumbLY != 0)
-	{
-		float dy = Pad->state.Gamepad.sThumbLX * scaleX;
-		float dx = Pad->state.Gamepad.sThumbLY * scaleY;
-
-		angleX = -dy * XM_PI;
-		angleY = -dx * XM_PI;
-		viewDirtyFlag = true;
-	}*/
-
-
-	
-
-	if (target.y <= 5)target.y = 5;//注視点が0以下になりそうだったら
-
-	if (target.y >= 5)target.y = 5;//注視点が5以上になりそうだったら
-
-	
-	if (viewDirtyFlag)
+	if (viewDirtyFlag == true)
 	{
 		XMMATRIX matRotNew = XMMatrixIdentity();
 		
@@ -310,13 +309,6 @@ void Camera::CurrentUpdate(XMFLOAT3 vel)
 		matRotNew*=XMMatrixRotationY(-anglelimitY);
 
 		matRot = matRotNew;
-
-
-		/*if (target.y >= 10 && eye.y <= 9) distance = 3;
-		else
-		{
-			distance = 3;
-		}*/
 
 		// 注視点から視点へのベクトルと、上方向ベクトル
 		XMVECTOR vTargetEye = { 0.0f, 0.0f, -distance, 1.0f };
@@ -328,7 +320,7 @@ void Camera::CurrentUpdate(XMFLOAT3 vel)
 		const XMFLOAT3& Target = GetTarget();
 		
 		SetEye({ Target.x + vTargetEye.m128_f32[0], Target.y + vTargetEye.m128_f32[1], Target.z + vTargetEye.m128_f32[2] });
-		//SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });
+		//SetUp({ vUp.m128_f32[0], vUp.m128_f32[1], vUp.m128_f32[2] });//今回は使用せず
 
 	}
 

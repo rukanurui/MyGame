@@ -99,6 +99,12 @@ public: // メンバ関数
 
 	void SetmouseY(float mouseY);
 
+	void Setscene(int scene) { this->nowscene = scene; }
+
+	void Setnowtuto(int tuto) { this->nowtuto = tuto; }
+
+	void Settuto(int tutoNum) { this->tutonum = tutoNum; }
+
 
 protected://メンバ変数
 	Input* input=nullptr;
@@ -152,6 +158,13 @@ protected://メンバ変数
 
 	// カメラ注視点までの距離
 	float distance = 3;
+
+	//現在何面か
+	int nowscene = 0;
+	//現在のチュートリアル
+	int nowtuto = 0;
+	//面ごとのチュートリアルの数
+	int tutonum = 0;
 
 
 	float angleX = 0.0f;
