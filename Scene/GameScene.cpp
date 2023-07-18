@@ -182,10 +182,6 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     player->Initialize();
     player->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 0.5f));
     player->PlayerInitialize(this->input);
-    player->setscene(playscene);
-    player->settuto(tutonum);
-    camera->Setscene(playscene);
-    camera->Settuto(tutonum);
     player->SetPosition({ 0,4,0 });
     player->SetTarget({ 0,4,0 });
 
@@ -205,6 +201,13 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     stagedata->InsertData(playscene, tutonum, enemyNum, wallNum,
         enemypos, enemyscale, enemymodelname, enemyr, enemymod,
         wallpos, wallscale, wallrotation, wallmodelname, wallr);
+
+    player->setscene(playscene);
+    player->settuto(tutonum);
+    player->setnowtuto(tutocount);
+    camera->Setscene(playscene);
+    camera->Settuto(tutonum);
+    camera->Setnowtuto(tutocount);
 
 
     //敵の生成
@@ -255,7 +258,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     {
         tutogun = new Wall;
         tutogun->Initialize();
-        tutogun->SetPosition({ 0.0f,6.0f,10.0f });
+        tutogun->SetPosition({ 0.0f,5.0f,8.0f });
         tutogun->SetScale({ 0.01f,0.01f,0.01f });
         tutogun->SetModel(modelobjgun);
         tutogun->SetCollider(new BoxCollider(XMVECTOR{ 6.0f,6.0f,6.0f,0 }, 1.0f));
@@ -298,17 +301,17 @@ void GameScene::Update()
 
         if (transcount >= 120.0f)
         {
-            //transrationScene();
             transcount = 0.0f;
             transscene = true;
             if (playscene==1)
             {
                 const XMFLOAT3 respos = { 0,5,0 };
 
-                camera->SetTarget({ 0, 5, 0 });
-                camera->SetEye(respos);
+                camera->SetTarget(respos);
+                //camera->SetEye(respos);
+                
                 camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-                camera->CurrentUpdate(player->GetVelocity());
+                //camera->CurrentUpdate(player->GetVelocity());
 
                 player->Sethave(true);
                 player->SetPosition(camera->GetEye());
@@ -393,7 +396,7 @@ void GameScene::Update()
                     }
 
                     wait++;
-                    if (wait >= 60 && input->PushKey(DIK_W) || input->PushKey(DIK_A) || input->PushKey(DIK_S) || input->PushKey(DIK_D))
+                    if (wait >= 60 && player->GetPosX()>=12.0f)
                     {
                         tutocount++;
                         wait = 0;
@@ -414,7 +417,7 @@ void GameScene::Update()
                         spritesize.y -= 4.0f;
                     }
                     wait++;
-                    if (wait >= 60)
+                    if (wait >= 60 && camera->Getnowtuto()==2)
                     {
                         tutocount++;
                         spritesize = { 1280,720 };
@@ -458,7 +461,7 @@ void GameScene::Update()
                     }
 
                     wait++;
-                    if (wait >= 60)
+                    if (wait >= 60 && input->PushclickLeft())
                     {
                         tutocount++;
                         spritesize = { 1280,720 };
@@ -562,7 +565,7 @@ void GameScene::Update()
                     }
 
                     wait++;
-                    if (wait >= 60 && input->TriggerKey(DIK_F))
+                    if (input->TriggerKey(DIK_F))
                     {
                         tutocount++;
                         wait = 0;
@@ -643,7 +646,6 @@ void GameScene::Update()
                     {
                         tutocount++;
                         wait = 0;
-
                     }
                 }
 
@@ -676,6 +678,7 @@ void GameScene::Update()
         player->throwgunUpdate();
         player->gunUpdate(camera->GetTarget(), camera->GetEye());
         player->PartUpdate();
+        camera->Update(WindowsApp::window_width, WindowsApp::window_height);
 
         for (std::unique_ptr<Enemy>& enemy : Enemys)
         {
@@ -713,13 +716,58 @@ void GameScene::Update()
             if (player->Gethave() == true)
             {
                 tutogun->Sethave(false);
+                
             }
         }
         
-        
+        if (playscene >= 2)
+        {
+            if (!input->PushclickLeft() && !input->PushKey(DIK_Q) && input->PushKey(DIK_F))
+            {
+                //フラグをtrueにする
+                gunpick = true;
+            }
+
+            if (gunpick==true)
+            {
+                movect++;
+            }
+        }
+
+        if (gunpick == true)
+        {
+            movect++;
+
+            //プレイy－更新
+            player->Setoldpos(camera->GetEye());
+            player->SetoldTarget(camera->GetTarget());
+            camera->CurrentUpdate(player->GetVelocity());
+            camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+            player->SetTarget(camera->GetTarget());
+            player->SetPosition(camera->GetEye());
+            player->SetRotation(camera->GetRoatation());
+            player->PlayerUpdate(camera->GetTarget());
+            player->gunUpdate(camera->GetTarget(), camera->GetEye());
+
+            if (playscene >= 2)
+            {
+                tutogun->Update();
+            }
+
+            //残弾数の取得
+            magazin = player->Getmagazin();
+            //銃を持っているか
+            have = player->Gethave();
+
+            if (movect >= 15)
+            {
+                gunpick = false;
+                movect = 0;
+            }
+        }
         
         //動いていない状態で攻撃したら
-        if (tutonum >= tutocount)
+        if (tutonum <= tutocount)
         {
             if (input->PushclickLeft() && !input->PushKey(DIK_Q))
             {
@@ -727,46 +775,9 @@ void GameScene::Update()
                 attack = true;
             }
 
-            if (attack == true)
-            {
-                movect++;
-
-                //敵更新
-                for (std::unique_ptr<Enemy>& enemy : Enemys)
-                {
-                    enemy->EnemyUpdate(player->GetPos());
-                }
-
-                for (std::unique_ptr<Wall>& wall : Walls)
-                {
-                    wall->Update();
-                }
-
-                //プレイy－更新
-                player->Setoldpos(camera->GetEye());
-                player->SetoldTarget(camera->GetTarget());
-                camera->CurrentUpdate(player->GetVelocity());
-                camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-                player->SetTarget(camera->GetTarget());
-                player->SetPosition(camera->GetEye());
-                player->SetRotation(camera->GetRoatation());
-                player->PlayerUpdate(camera->GetTarget());
-                player->gunUpdate(camera->GetTarget(), camera->GetEye());
-
-                //残弾数の取得
-                magazin = player->Getmagazin();
-                //銃を持っているか
-                have = player->Gethave();
-
-                if (movect >= 15)
-                {
-                    attack = false;
-                    movect = 0;
-                }
-            }
         }
 
-        if (tutonum == tutocount)
+        if (tutonum <= tutocount)
         {
             if (input->PushKey(DIK_W) || input->PushKey(DIK_A) || input->PushKey(DIK_S) || input->PushKey(DIK_D))
             {
@@ -900,7 +911,7 @@ void GameScene::Update()
         if (input->PushKey(DIK_W) || input->PushKey(DIK_A) || input->PushKey(DIK_S) || input->PushKey(DIK_D))
         {
 
-            if (tutonum >= tutocount)
+            if (tutonum <= tutocount)
             {
                 //敵更新
                 for (std::unique_ptr<Enemy>& enemy : Enemys)
@@ -909,12 +920,14 @@ void GameScene::Update()
                 }
             }
 
-
             //プレイy－更新
             player->Setoldpos(camera->GetEye());
             player->SetoldTarget(camera->GetTarget());
-            camera->CurrentUpdate(player->GetVelocity());
-            camera->Update(WindowsApp::window_width, WindowsApp::window_height);
+            if (gunpick==false && attack==false && gunthrow == false)
+            {
+                camera->CurrentUpdate(player->GetVelocity());
+            }
+            
             player->SetTarget(camera->GetTarget());
             player->SetPosition(camera->GetEye());
             player->SetRotation(camera->GetRoatation());
@@ -968,8 +981,6 @@ void GameScene::Update()
         //すべての衝突をチェック
         collisionManager->CheckAllCollisions();
 
-        camera->Setwallflag(player->Getwallhit());
-
         if (player->Getwallhit() == true)
         {
             camera->Setwallflag(player->Getwallhit());
@@ -986,8 +997,9 @@ void GameScene::Update()
                  camera->SetTarget(player->GetTarget());
                  camera->Update(WindowsApp::window_width, WindowsApp::window_height);
              }*/
-            camera->SetEye(camera->GetWallEye());
-            camera->SetTarget(camera->GetWallTarget());
+
+            camera->CurrentUpdate(player->GetVelocity());
+            
 
         }
 

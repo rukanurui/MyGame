@@ -82,7 +82,7 @@ public://メンバ関数
 	void SwapWallData(XMFLOAT3& pos, XMFLOAT3& scale, XMFLOAT3& rotation, int& modelname, XMFLOAT3& r,int& numcount);
 	//const int& GetScene() { return scene; }
 
-	void setenemynum(int enemynum) { this->enemyNum = enemynum; }
+	void setenemynum(int &enemynum) { this->enemyNum = enemynum; }
 
 private://メンバ変数
 	WindowsApp * Windows = nullptr;
@@ -202,6 +202,8 @@ private://メンバ変数
 	bool attack = false;
 	//銃を投げたか
 	bool gunthrow = false;
+	//銃を拾うアクションをしたか
+	bool gunpick = false;
 	//銃を持っているか
 	bool have = false;
 	//残弾数

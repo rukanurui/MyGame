@@ -50,12 +50,19 @@ public: // メンバ関数
 
 	/// 注視点座標の取得
 	const XMFLOAT3& GetTarget() { return target; }
+	const float& GetTargetX() { return target.x; }
+	const float& GetTargetY() { return target.y; }
+	const float& GetTargetZ() { return target.z; }
 
 	/// 視点座標の取得
 	const XMFLOAT3& GetWallEye() { return walleye; }
 
 	/// 注視点座標の取得
 	const XMFLOAT3& GetWallTarget() { return walltarget; }
+	const float& GetWallTargetX() { return walltarget.x; }
+	const float& GetWallTargetY() { return walltarget.y; }
+	const float& GetWallTargetZ() { return walltarget.z; }
+
 
 	const XMFLOAT3& GetUp() {return up;}
 
@@ -99,11 +106,13 @@ public: // メンバ関数
 
 	void SetmouseY(float mouseY);
 
-	void Setscene(int scene) { this->nowscene = scene; }
+	void Setscene(int &scene) { this->nowscene = scene; }
 
-	void Setnowtuto(int tuto) { this->nowtuto = tuto; }
+	void Setnowtuto(int &tuto) { this->nowtuto = tuto; }
 
-	void Settuto(int tutoNum) { this->tutonum = tutoNum; }
+	const int& Getnowtuto() { return nowtuto; }
+
+	void Settuto(int &tutoNum) { this->tutonum = tutoNum; }
 
 
 protected://メンバ変数

@@ -99,6 +99,15 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 		}
 	}
 
+	//eE‚Á‚Ä‚¢‚½‚çc’i”•â[
+	for (std::unique_ptr<Pick>& pick : picks)
+	{
+		if (pick->Getpick() == true)
+		{
+			magazin = 5;
+		}
+	}
+
 
 	//’e‚Ìíœ
 	bullets.remove_if([](std::unique_ptr<Pbullet>& bullet) {
@@ -116,9 +125,9 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 		});
 
 	//E‚¤ƒAƒNƒVƒ‡ƒ“‚Ìíœ
-	/*picks.remove_if([](std::unique_ptr<Pick>& pick) {
+	picks.remove_if([](std::unique_ptr<Pick>& pick) {
 		return pick->Getdead();
-		});*/
+		});
 
 	//particle‚Ìíœ
 	particles.remove_if([](std::unique_ptr<PartManager>& part) {
@@ -145,10 +154,9 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 	
 	if (picktime <= 0)picktime = 0;
 	
-	if (tutonum>=nowtuto)
-	{
-		//’e‚Ì”­Ë
-		if (input->PushclickLeft() && ctime <= 0 && magazin >= 1 && have == true)
+	
+	//’e‚Ì”­Ë
+	if (input->PushclickLeft() && ctime <= 0 && magazin >= 1 && have == true)
 		{
 			//’e‚Ì‘¬“x
 			const float bulspeed = 1.5f;
@@ -174,8 +182,8 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 			magazin--;
 		}
 
-		//e‚ğ“Š‚°‚é
-		if (input->PushclickRight() && have == true)
+	//e‚ğ“Š‚°‚é
+	if (input->PushclickRight() && have == true)
 		{
 			//’e‚Ì‘¬“x
 			const float bulspeed = 1.0f;
@@ -196,13 +204,13 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 			//’e‚Ì“o˜^
 			Guns.push_back(std::move(newGun));
 			//c’e–ß‚·
-			magazin = 5;
+			magazin = 0;
 			//ƒtƒ‰ƒO•ÏX
 			have = false;
 		}
 
-		//‹ßÚ
-		if (input->PushclickLeft() && have == false && mctime <= 0)
+	//‹ßÚ
+	if (input->PushclickLeft() && have == false && mctime <= 0)
 		{
 			//’e‚Ì‘¬“x
 			const float bulspeed = 1.0f;
@@ -228,9 +236,8 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 			mctime = 30;
 		}
 
-		//e‚ğE‚¤
-		/*
-		if (input->TriggerKey(DIK_F) && have == false)
+	//e‚ğE‚¤
+	if (input->TriggerKey(DIK_F) && have == false)
 		{
 			const float bulspeed = 1.0f;
 			XMVECTOR Velocity{ 0,0,bulspeed };
@@ -253,8 +260,8 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 			//Ši“¬‚Ì“o˜^
 			picks.push_back(std::move(newpick));
 			picktime = 15;
-		}*/
-	}
+		}
+
 	
 
 	//’e‚ÌXV
@@ -279,11 +286,11 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 	}
 
 	//E‚¤ƒAƒNƒVƒ‡ƒ“‚ÌXV
-	/*for (std::unique_ptr<Pick>& pick : picks)
+	for (std::unique_ptr<Pick>& pick : picks)
 	{
 		pick->pickupdate();
 		pick->Update();
-	}*/
+	}
 
 	//particle‚ÌXV
 	for (std::unique_ptr<PartManager>& part : particles)

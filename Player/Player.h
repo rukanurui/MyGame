@@ -29,7 +29,7 @@ public://メンバ関数
 	//近接更新
 	void meleeUpdate();
 	//銃拾う動作更新
-	void pickupdate();
+	void pickUpdate();
 	//投げた銃更新
 	void throwgunUpdate();
 	//手に持っているときの銃更新
@@ -82,11 +82,11 @@ public://メンバ関数
 	void sethit(bool Hit) { this->hit = Hit; }
 
 	//面のセット
-	void setscene(int scene) { this->nowscene = scene; }
+	void setscene(int &scene) { this->nowscene = scene; }
 	//チュートリアルのセット
-	void setnowtuto(int tuto) { this->nowtuto = tuto; }
+	void setnowtuto(int &tuto) { this->nowtuto = tuto; }
 	//チュートリアルのセット
-	void settuto(int tutoNum) { this->tutonum = tutoNum; }
+	void settuto(int &tutoNum) { this->tutonum = tutoNum; }
 	
 
 
@@ -107,8 +107,8 @@ private://メンバ変数
 	std::list<std::unique_ptr<Pbullet>> bullets;
 	//格闘
 	std::list<std::unique_ptr<melee>> melees;
-	//格闘
-	//std::list<std::unique_ptr<Pick>> picks;
+	//銃拾う
+	std::list<std::unique_ptr<Pick>> picks;
 	//パーティクル
 	std::list<std::unique_ptr<PartManager>> particles;
 

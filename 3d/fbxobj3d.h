@@ -68,6 +68,9 @@ public://ƒƒ“ƒoŠÖ”
 	const XMMATRIX& GetMatWorld() { return matWorld; }
 
 	const XMFLOAT3& GetPos() { return position; }
+	const float& GetPosX() { return position.x; }
+	const float& GetPosY() { return position.y; }
+	const float& GetPosZ() { return position.z; }
 
 	const XMFLOAT3& GetScale() { return scale; }
 

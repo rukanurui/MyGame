@@ -7,9 +7,9 @@ XMMATRIX Camera::matProjection = {};
 XMMATRIX Camera::matViewProjection = {};
 XMMATRIX Camera::matWorld = {};
 XMFLOAT3 Camera::eye = { 0, 4.0f, 0.0f };
-XMFLOAT3 Camera::target = { 0, 9.0f, 0 };
+XMFLOAT3 Camera::target = { 0, 5.0f, 0 };
 XMFLOAT3 Camera::up = { 0, 1, 0 };
-XMFLOAT3 Camera::rotation = { 45, 0, 0 };
+XMFLOAT3 Camera::rotation = { 0, 0, 0 };
 
 
 
@@ -198,9 +198,77 @@ void Camera::CurrentUpdate(XMFLOAT3 vel)
 	// マウスの入力を取得
 	Input::MouseMove mouseMove = input->GetMouseMove();
 
+	//1面用のチュートリアル
+	if (nowscene == 1)
+	{
+		if (nowtuto == 0)
+		{
+			viewDirtyFlag = true;
+
+			anglelimitY = -1.4f;
+
+			if (!input->PushKey(DIK_W) && !input->PushKey(DIK_S)) Velocity.z = 0;
+			if ((input->PushKey(DIK_W) || input->PushKey(DIK_S)) && wallflag == false)
+			{
+
+				{
+					if (input->PushKey(DIK_W)) Velocity.z = 0.5f;
+				}
+
+				XMVECTOR move = { 0,0,Velocity.z,0 };
+
+				move = XMVector3Transform(move, matRot);
+				MoveTarget(move);
+
+			}
+		}
+
+		if (nowtuto == 1)
+		{
+			if (mouseMove.lX == CurretmouseX || mouseMove.lY == CurretmouseY)
+			{
+
+				if (wallflag == false)
+				{
+					float dy = (mouseMove.lX * scaleX) * 0.25;
+					float dx = (mouseMove.lY * scaleY) * 0.25;
+
+					angleX = -dx * XM_PI;
+					angleY = -dy * XM_PI;
+
+					viewDirtyFlag = true;
+				}
+			}
+
+			anglelimitY += angleY;
+
+			//正面向いたら次へ
+			if (anglelimitY >= -1.0f || anglelimitY <= -6.3f)
+			{
+				nowtuto = 2;
+			}
+
+			if (target.y <= 5 || target.y >= 5)target.y = 5;//注視点が5以下になりそうだったら
+		}
+
+	}
+
+	//2面のチュートリアル
+	if (nowscene == 2 && tutonum > nowtuto)
+	{
+		viewDirtyFlag = true;
+
+	}
+
+	//3面のチュートリアル
+	if (nowscene == 3 && tutonum > nowtuto)
+	{
+		viewDirtyFlag = true;
+
+	}
 
 	//チュートリアルが終わったら
-	if (tutonum >= nowtuto)
+	if (tutonum <= nowtuto)
 	{
 		if (mouseMove.lX == CurretmouseX || mouseMove.lY == CurretmouseY)
 		{
@@ -264,11 +332,34 @@ void Camera::CurrentUpdate(XMFLOAT3 vel)
 
 		}
 
-		if (wallflag == true)
+		//壁に当たっているとき
+		if ((input->PushKey(DIK_A) || input->PushKey(DIK_D)) && wallflag == true)
 		{
 
-			viewDirtyFlag = true;
+			if (input->PushKey(DIK_A)) Velocity.x = 0.4f;
+			else
+			{
+				if (input->PushKey(DIK_D)) Velocity.x = -0.4f;
+			}
 
+			XMVECTOR move = { Velocity.x,0,0,0 };
+
+			move = XMVector3Transform(move, matRot);
+			MoveVector(move);
+		}
+		if ((input->PushKey(DIK_W) || input->PushKey(DIK_S)) && wallflag == true)
+		{
+			if (input->PushKey(DIK_S)) Velocity.z = 0.6f;
+			else
+			{
+				if (input->PushKey(DIK_W)) Velocity.z = -0.6f;
+			}
+
+
+			XMVECTOR move = { 0,0,Velocity.z,0 };
+
+			move = XMVector3Transform(move, matRot);
+			MoveVector(move);
 		}
 
 		//padの入力
