@@ -72,7 +72,7 @@ public://メンバ関数
 	void ColInitialize();
 	//壁との排斥処理
 	void QueryWall();
-	void Setwallflag(bool flag) { this->wallhit = flag; }
+	void Setwallhit(bool flag) { this->wallhit = flag; }
 
 	//hitのゲッター
 	const bool& Gethit() { return hit; }

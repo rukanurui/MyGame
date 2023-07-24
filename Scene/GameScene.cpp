@@ -396,7 +396,7 @@ void GameScene::Update()
                     }
 
                     wait++;
-                    if (wait >= 60 && player->GetPosX()>=12.0f)
+                    if (player->GetPosX() >= 15.0f)
                     {
                         tutocount++;
                         wait = 0;
@@ -411,13 +411,23 @@ void GameScene::Update()
                         transfrag = true;
                     }
 
+                    if (spritesize.x <= 1000)
+                    {
+                        transfrag = false;
+                    }
+
                     if (transfrag == true)
                     {
                         spritesize.x -= 4.0f;
                         spritesize.y -= 4.0f;
                     }
+                    else
+                    {
+                        spritesize.x += 4.0f;
+                        spritesize.y += 4.0f;
+                    }
                     wait++;
-                    if (wait >= 60 && camera->Getnowtuto()==2)
+                    if (camera->Getnowtuto()==2)
                     {
                         tutocount++;
                         spritesize = { 1280,720 };
@@ -433,12 +443,21 @@ void GameScene::Update()
                         transfrag = true;
                     }
 
+                    if (spritesize.x <= 1000)
+                    {
+                        transfrag = false;
+                    }
+
                     if (transfrag == true)
                     {
                         spritesize.x -= 4.0f;
                         spritesize.y -= 4.0f;
                     }
-
+                    else
+                    {
+                        spritesize.x += 4.0f;
+                        spritesize.y += 4.0f;
+                    }
                     wait++;
                     if (wait >= 60)
                     {
@@ -454,14 +473,24 @@ void GameScene::Update()
                         transfrag = true;
                     }
 
+                    if (spritesize.x <= 1000)
+                    {
+                        transfrag = false;
+                    }
+
                     if (transfrag == true)
                     {
                         spritesize.x -= 4.0f;
                         spritesize.y -= 4.0f;
                     }
+                    else
+                    {
+                        spritesize.x += 4.0f;
+                        spritesize.y += 4.0f;
+                    }
 
                     wait++;
-                    if (wait >= 60 && input->PushclickLeft())
+                    if (input->PushclickLeft())
                     {
                         tutocount++;
                         spritesize = { 1280,720 };
@@ -976,7 +1005,9 @@ void GameScene::Update()
             }
         }
 
-        player->Setwallflag(false);
+        //壁と当たっているかのフラグを下げる
+        player->Setwallhit(false);
+        camera->Setwallflag(player->Getwallhit());
 
         //すべての衝突をチェック
         collisionManager->CheckAllCollisions();

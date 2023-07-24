@@ -241,9 +241,10 @@ void Camera::CurrentUpdate(XMFLOAT3 vel)
 			}
 
 			anglelimitY += angleY;
+			
 
 			//³–ÊŒü‚¢‚½‚çŽŸ‚Ö
-			if (anglelimitY >= -1.0f || anglelimitY <= -6.3f)
+			if (anglelimitY >= 0.0f || anglelimitY <= -6.3f)
 			{
 				nowtuto = 2;
 			}
@@ -285,8 +286,11 @@ void Camera::CurrentUpdate(XMFLOAT3 vel)
 			}
 		}
 
-		anglelimitX += angleX;
-		anglelimitY += angleY;
+		if (wallflag == false)
+		{
+			anglelimitX += angleX;
+			anglelimitY += angleY;
+		}
 
 		if (anglelimitX <= 1.4f && anglelimitX >= -1.4f)
 		{
@@ -318,10 +322,10 @@ void Camera::CurrentUpdate(XMFLOAT3 vel)
 		if (!input->PushKey(DIK_W) && !input->PushKey(DIK_S)) Velocity.z = 0;
 		if ((input->PushKey(DIK_W) || input->PushKey(DIK_S)) && wallflag == false)
 		{
-			if (input->PushKey(DIK_S)) Velocity.z = -0.5f;
+			if (input->PushKey(DIK_S)) Velocity.z = -0.3f;
 			else
 			{
-				if (input->PushKey(DIK_W)) Velocity.z = 0.5f;
+				if (input->PushKey(DIK_W)) Velocity.z = 0.3f;
 			}
 
 
@@ -332,36 +336,38 @@ void Camera::CurrentUpdate(XMFLOAT3 vel)
 
 		}
 
+		
 		//•Ç‚É“–‚½‚Á‚Ä‚¢‚é‚Æ‚«
-		if ((input->PushKey(DIK_A) || input->PushKey(DIK_D)) && wallflag == true)
+		if (wallflag == true)
 		{
-
-			if (input->PushKey(DIK_A)) Velocity.x = 0.4f;
-			else
+			if (Velocity.x > 0 || Velocity.x < 0)
 			{
-				if (input->PushKey(DIK_D)) Velocity.x = -0.4f;
+				Velocity.x *= -1.0f;
+
+				XMVECTOR move = { Velocity.x,0,0,0 };
+
+				move = XMVector3Transform(move, matRot);
+
+				MoveTarget(move);
+
+				viewDirtyFlag = true;
+
 			}
 
-			XMVECTOR move = { Velocity.x,0,0,0 };
-
-			move = XMVector3Transform(move, matRot);
-			MoveVector(move);
-		}
-		if ((input->PushKey(DIK_W) || input->PushKey(DIK_S)) && wallflag == true)
-		{
-			if (input->PushKey(DIK_S)) Velocity.z = 0.6f;
-			else
+			if (Velocity.z > 0 || Velocity.z < 0)
 			{
-				if (input->PushKey(DIK_W)) Velocity.z = -0.6f;
+				Velocity.z *= -1.0f;
+
+				XMVECTOR move = { 0,0,Velocity.z,0 };
+
+				move = XMVector3Transform(move, matRot);
+
+				MoveTarget(move);
+
+				viewDirtyFlag = true;
+
 			}
-
-
-			XMVECTOR move = { 0,0,Velocity.z,0 };
-
-			move = XMVector3Transform(move, matRot);
-			MoveVector(move);
 		}
-
 		//pad‚Ì“ü—Í
 		/*Pad->Update();
 
