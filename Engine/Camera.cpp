@@ -223,7 +223,7 @@ void Camera::CurrentUpdate(XMFLOAT3 vel)
 			}
 		}
 
-		if (nowtuto == 1)
+		if (nowtuto == 2)
 		{
 			if (mouseMove.lX == CurretmouseX || mouseMove.lY == CurretmouseY)
 			{
@@ -246,7 +246,7 @@ void Camera::CurrentUpdate(XMFLOAT3 vel)
 			//正面向いたら次へ
 			if (anglelimitY >= 0.0f || anglelimitY <= -6.3f)
 			{
-				nowtuto = 2;
+				nowtuto++;
 			}
 
 			if (target.y <= 5 || target.y >= 5)target.y = 5;//注視点が5以下になりそうだったら
@@ -255,18 +255,12 @@ void Camera::CurrentUpdate(XMFLOAT3 vel)
 	}
 
 	//2面のチュートリアル
-	if (nowscene == 2 && tutonum > nowtuto)
+	if (nowscene >= 2 && tutonum > nowtuto)
 	{
 		viewDirtyFlag = true;
 
 	}
 
-	//3面のチュートリアル
-	if (nowscene == 3 && tutonum > nowtuto)
-	{
-		viewDirtyFlag = true;
-
-	}
 
 	//チュートリアルが終わったら
 	if (tutonum <= nowtuto)

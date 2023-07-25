@@ -106,6 +106,8 @@ private://ƒƒ“ƒo•Ï”
 	Sprite* tutomouse = nullptr;
 	Sprite* tutoshot = nullptr;
 	Sprite* tutorule = nullptr;
+	Sprite* Wtuto = nullptr;
+	Sprite* lefttuto = nullptr;
 	Sprite* tutotime = nullptr;
 	Sprite* tutopickup = nullptr;
 	Sprite* tutogunpick1 = nullptr;

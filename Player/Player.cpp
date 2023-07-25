@@ -179,7 +179,11 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 			bullets.push_back(std::move(newBullet));
 			ctime = 30;
 			//c’eŒ¸‚ç‚·
-			magazin--;
+			if (nowscene >= 2)
+			{
+				magazin--;
+			}
+			
 		}
 
 	//e‚ğ“Š‚°‚é

@@ -48,21 +48,23 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
 
     // スプライト共通テクスチャ読み込み
     spriteCommon->LoadTexture(1, L"Resources/1432.png");
-    spriteCommon->LoadTexture(5, L"Resources/tutomove.png");
-    spriteCommon->LoadTexture(6, L"Resources/tutomouse.png");
-    spriteCommon->LoadTexture(7, L"Resources/tutoshot.png");
-    spriteCommon->LoadTexture(8, L"Resources/tutorule.png");
+    spriteCommon->LoadTexture(5, L"Resources/stage1tuto/tutomove.png");
+    spriteCommon->LoadTexture(6, L"Resources/stage1tuto/tutomouse.png");
+    spriteCommon->LoadTexture(7, L"Resources/stage1tuto/tutoshot.png");
+    spriteCommon->LoadTexture(8, L"Resources/stage1tuto/tutorule.png");
     spriteCommon->LoadTexture(9, L"Resources/pickuptuto.png");
     spriteCommon->LoadTexture(10, L"Resources/stage2tuto1.png");
     spriteCommon->LoadTexture(11, L"Resources/stage2tuto2.png");
     spriteCommon->LoadTexture(12, L"Resources/noammo.png");
     spriteCommon->LoadTexture(13, L"Resources/stage3tuto.png");
     spriteCommon->LoadTexture(14, L"Resources/throwguntuto.png");
-    spriteCommon->LoadTexture(15, L"Resources/tutotime.png");
+    spriteCommon->LoadTexture(15, L"Resources/stage1tuto/tutotime.png");
     spriteCommon->LoadTexture(16, L"Resources/play.png");
     spriteCommon->LoadTexture(17, L"Resources/stop.png");
     spriteCommon->LoadTexture(18, L"Resources/ammo.png");
     spriteCommon->LoadTexture(19, L"Resources/ammoone.png");
+    spriteCommon->LoadTexture(20, L"Resources/stage1tuto/Wmovetuto.png");
+    spriteCommon->LoadTexture(21, L"Resources/stage1tuto/lefttuto.png");
 
 
     //ポストエフェクト用テクスチャの読み込み
@@ -136,13 +138,21 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
         ammoone[i]->SetSize(ammoonesize);
         ammoone[i]->TransferVertexBuffer();
     }
+
+    Wtuto = Sprite::Create(spriteCommon, 20);
+    Wtuto->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    Wtuto->TransferVertexBuffer();
+
+    lefttuto = Sprite::Create(spriteCommon, 21);
+    lefttuto->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
+    lefttuto->TransferVertexBuffer();
     
 
     noammo = Sprite::Create(spriteCommon, 12);
     noammo->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
     noammo->TransferVertexBuffer();
 
-
+   
     trans = Sprite::Create(spriteCommon, 101);
     trans->SetPosition({ WindowsApp::window_width / 2,WindowsApp::window_height / 2,0 });
     trans->SetSize({ Effectsize });
@@ -386,19 +396,20 @@ void GameScene::Update()
 
                     if (transfrag == true)
                     {
-                        movesize.x -= 0.6f;
-                        movesize.y -= 0.6f;
+                        movesize.x -= 1.0f;
+                        movesize.y -= 1.0f;
                     }
                     else
                     {
-                        movesize.x += 0.2f;
-                        movesize.y += 0.2f;
+                        movesize.x += 0.4f;
+                        movesize.y += 0.4f;
                     }
 
                     wait++;
                     if (player->GetPosX() >= 15.0f)
                     {
                         tutocount++;
+                        movesize.x = 800;
                         wait = 0;
                         transfrag = true;
                     }
@@ -427,7 +438,7 @@ void GameScene::Update()
                         spritesize.y += 4.0f;
                     }
                     wait++;
-                    if (camera->Getnowtuto()==2)
+                    if (wait>=120)
                     {
                         tutocount++;
                         spritesize = { 1280,720 };
@@ -438,35 +449,67 @@ void GameScene::Update()
 
                 if (tutocount == 2)
                 {
-                    if (spritesize.x >= 1280)
+                    if (movesize.x >= 800)
                     {
                         transfrag = true;
                     }
-
-                    if (spritesize.x <= 1000)
+                    if (movesize.x <= 750)
                     {
                         transfrag = false;
                     }
 
                     if (transfrag == true)
                     {
-                        spritesize.x -= 4.0f;
-                        spritesize.y -= 4.0f;
+                        movesize.x -= 1.0f;
+                        movesize.y -= 1.0f;
                     }
                     else
                     {
-                        spritesize.x += 4.0f;
-                        spritesize.y += 4.0f;
+                        movesize.x += 0.4f;
+                        movesize.y += 0.4f;
                     }
                     wait++;
-                    if (wait >= 60)
+                    if (camera->Getnowtuto() == 3)
                     {
                         tutocount++;
+                        spritesize = { 1280,720 };
+                        transfrag = true;
                         wait = 0;
                     }
                 }
 
                 if (tutocount == 3)
+                {
+                    if (movesize.x >= 800)
+                    {
+                        transfrag = true;
+                    }
+                    if (movesize.x <= 750)
+                    {
+                        transfrag = false;
+                    }
+
+                    if (transfrag == true)
+                    {
+                        movesize.x -= 0.6f;
+                        movesize.y -= 0.6f;
+                    }
+                    else
+                    {
+                        movesize.x += 0.2f;
+                        movesize.y += 0.2f;
+                    }
+                    wait++;
+                    if (input->PushclickLeft())
+                    {
+                        attack = true;
+                        tutocount++;
+                        spritesize = { 1280,720 };
+                        wait = 0;
+                    }
+                }
+
+                if (tutocount == 4)
                 {
                     if (spritesize.x >= 1280)
                     {
@@ -490,7 +533,40 @@ void GameScene::Update()
                     }
 
                     wait++;
-                    if (input->PushclickLeft())
+                    if (wait>=120)
+                    {
+                        tutocount++;
+                        spritesize = { 1280,720 };
+                        wait = 0;
+                        transfrag = true;
+                    }
+                }
+
+                if (tutocount == 5)
+                {
+                    if (spritesize.x >= 1280)
+                    {
+                        transfrag = true;
+                    }
+
+                    if (spritesize.x <= 1000)
+                    {
+                        transfrag = false;
+                    }
+
+                    if (transfrag == true)
+                    {
+                        spritesize.x -= 4.0f;
+                        spritesize.y -= 4.0f;
+                    }
+                    else
+                    {
+                        spritesize.x += 4.0f;
+                        spritesize.y += 4.0f;
+                    }
+
+                    wait++;
+                    if (wait >= 120)
                     {
                         tutocount++;
                         spritesize = { 1280,720 };
@@ -499,17 +575,23 @@ void GameScene::Update()
                     }
                 }
             }
+
+            Wtuto->SetSize(movesize);
+            lefttuto->SetSize(movesize);;
             tutomouse->SetSize(spritesize);
-            
-            tutoshot->SetSize(spritesize);
+            tutoshot->SetSize(movesize);
             tutorule->SetSize(spritesize);
             tutotime->SetSize(spritesize);
 
+            Wtuto->TransferVertexBuffer();
+            lefttuto->TransferVertexBuffer();
             tutomouse->TransferVertexBuffer();
             tutotime->TransferVertexBuffer();
             tutoshot->TransferVertexBuffer();
             tutorule->TransferVertexBuffer();
 
+            Wtuto->Update();
+            lefttuto->Update();
             tutomouse->Update();
             tutotime->Update();
             tutoshot->Update();
@@ -798,7 +880,7 @@ void GameScene::Update()
         //動いていない状態で攻撃したら
         if (tutonum <= tutocount)
         {
-            if (input->PushclickLeft() && !input->PushKey(DIK_Q))
+            if (input->PushclickLeft() && !input->PushclickRight())
             {
                 //フラグをtrueにする
                 attack = true;
@@ -1129,12 +1211,19 @@ void GameScene::Draw()
 
      if (playscene == 1)
      {
-         if (tutocount == 0)tutomove->Draw();
+         if (tutocount == 0)Wtuto->Draw();
         
          if (tutocount == 1)tutomouse->Draw();
        
-         if (tutocount == 2)tutotime->Draw();
-         if (tutocount == 3)tutorule->Draw();
+         if (tutocount == 2)lefttuto->Draw();
+         if (tutocount == 3)tutoshot->Draw();
+         if (tutocount == 4)tutotime->Draw();
+         if (tutocount == 5)tutorule->Draw();
+
+         if (tutocount>=tutonum)
+         {
+             tutomove->Draw();
+         }
          
          if (noammoflag == true)noammo->Draw();
      }
