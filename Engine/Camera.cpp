@@ -205,8 +205,10 @@ void Camera::CurrentUpdate(XMFLOAT3 vel)
 		{
 			viewDirtyFlag = true;
 
+			//カメラの角度右に向ける
 			anglelimitY = -1.4f;
 
+			//前後の移動処理
 			if (!input->PushKey(DIK_W) && !input->PushKey(DIK_S)) Velocity.z = 0;
 			if ((input->PushKey(DIK_W) || input->PushKey(DIK_S)) && wallflag == false)
 			{
@@ -255,7 +257,19 @@ void Camera::CurrentUpdate(XMFLOAT3 vel)
 	}
 
 	//2面のチュートリアル
-	if (nowscene >= 2 && tutonum > nowtuto)
+	if (nowscene == 2 && tutonum > nowtuto)
+	{
+		if (nowtuto==0)
+		{
+			//カメラの角度斜め下に
+			anglelimitX = -0.3f;
+			viewDirtyFlag = true;
+		}
+		viewDirtyFlag = true;
+
+	}
+
+	if (nowscene == 3 && tutonum > nowtuto)
 	{
 		viewDirtyFlag = true;
 

@@ -16,6 +16,7 @@ void Player::PlayerInitialize(Input* Input)
 	//‘®«‚Ì’Ç‰Á
 	collider->SetColor(COLLISION_COLOR_PLAYER);
 
+	//ƒ‚ƒfƒ‹‚Ì“Ç‚Ýž‚Ý
 	modelballet = FbxLoader::GetInstance()->LoadModelFromFile("bullet");
 	modelgun = FbxLoader::GetInstance()->LoadModelFromFile("gun");
 	model2 = FbxLoader::GetInstance()->LoadModelFromFile("testfbx");

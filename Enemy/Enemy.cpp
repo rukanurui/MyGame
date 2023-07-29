@@ -18,7 +18,7 @@ void Enemy::EnemyInitialize(bool shot)
 	Shot = shot;
 	//ƒ‚ƒfƒ‹“Ç‚Ýž‚Ý
 	modelballet = FbxLoader::GetInstance()->LoadModelFromFile("bullet");
-	model2 = FbxLoader::GetInstance()->LoadModelFromFile("testfbx");
+	model2 = FbxLoader::GetInstance()->LoadModelFromFile("enemy");
 	count = 0;
 
 	if (modelnum==2)
@@ -206,7 +206,7 @@ void Enemy::Attack(XMFLOAT3 playerpos)
 				std::unique_ptr<PartManager>newPart = std::make_unique<PartManager>();
 				newPart->Initialize();
 				newPart->SetScale({ 0.003f,0.003f,0.003f });
-				newPart->SetModel(model2);
+				newPart->SetModel(model2    );
 				newPart->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
 				newPart->PartInitialize(bullet->GetPos());
 

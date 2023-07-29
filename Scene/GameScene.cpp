@@ -175,6 +175,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     modelfloor = FbxLoader::GetInstance()->LoadModelFromFile("floor");
     modelobjgun = FbxLoader::GetInstance()->LoadModelFromFile("gun");
     model2 = FbxLoader::GetInstance()->LoadModelFromFile("testfbx");
+    modelenemy = FbxLoader::GetInstance()->LoadModelFromFile("enemy");
     modelBack = FbxLoader::GetInstance()->LoadModelFromFile("back");
     modelwall = FbxLoader::GetInstance()->LoadModelFromFile("colorwall");
 
@@ -229,7 +230,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
         newenemy->SetScale({ enemyscale[i].x,enemyscale[i].y,enemyscale[i].z });
         if (enemymodelname[i] == 1)
         {
-            newenemy->SetModel(model2);
+            newenemy->SetModel(modelenemy);
         }
         newenemy->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, enemyr[i]));
         if (enemymod[i] == 0)
@@ -256,7 +257,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
         }
         else if (wallmodelname[i] == 2)
         {
-            newwall->SetModel(model2);
+            newwall->SetModel(modelenemy);
         }
         newwall->SetCollider(new BoxCollider(XMVECTOR{ wallr[i].x,wallr[i].y,wallr[i].z,0 }, 1.0f));
         newwall->WallInitialize();
@@ -268,10 +269,10 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     {
         tutogun = new Wall;
         tutogun->Initialize();
-        tutogun->SetPosition({ 0.0f,5.0f,8.0f });
+        tutogun->SetPosition({ 0.0f,1.0f,8.0f });
         tutogun->SetScale({ 0.01f,0.01f,0.01f });
         tutogun->SetModel(modelobjgun);
-        tutogun->SetCollider(new BoxCollider(XMVECTOR{ 6.0f,6.0f,6.0f,0 }, 1.0f));
+        tutogun->SetCollider(new BoxCollider(XMVECTOR{ 3.0f,2.0f,3.0f,0 }, 1.0f));
         tutogun->objgunInitialize();
     }
 
@@ -334,20 +335,21 @@ void GameScene::Update()
             {
                 const XMFLOAT3 respos = { 0,5,0 };
 
-                camera->SetTarget({ 0, 5, 0 });
-                camera->SetEye(respos);
+                camera->SetTarget({respos});
+                //camera->SetEye(respos);
                 camera->Update(WindowsApp::window_width, WindowsApp::window_height);
-                camera->CurrentUpdate(player->GetVelocity());
+                //camera->CurrentUpdate(player->GetVelocity());
 
                 player->Sethave(false);
                 player->SetPosition(camera->GetEye());
                 player->PlayerUpdate(camera->GetTarget());
+                magazin = 0;
 
             }
             else if (playscene == 3)
             {
                 const XMFLOAT3 respos = { 0,5,0 };
-                camera->SetTarget({ 0, 5, 0 });
+                camera->SetTarget(respos);
                 camera->SetEye(respos);
                 camera->Update(WindowsApp::window_width, WindowsApp::window_height);
                 camera->CurrentUpdate(player->GetVelocity());
@@ -371,7 +373,6 @@ void GameScene::Update()
             camera->CurrentUpdate(player->GetVelocity());
             camera->Update(WindowsApp::window_width, WindowsApp::window_height);
             firstfrag = 0;
-
         }
 
         //チュートリアル
@@ -1282,6 +1283,7 @@ void GameScene::Finalize()
     /*delete dxCommon;
     delete audio;*/
     delete model2;
+    delete modelenemy;
     delete modelfloor;
     delete modelwall;
     delete modelBack;

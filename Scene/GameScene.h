@@ -142,6 +142,7 @@ private://メンバ変数
 
 	//3dモデル(地形など)
 	FbxModel* model2 = nullptr;
+	FbxModel* modelenemy = nullptr;
 	FbxModel* modelfloor = nullptr;
 	FbxModel* modelwall = nullptr;
 	FbxModel* modelglasswall = nullptr;
