@@ -206,7 +206,7 @@ void Enemy::Attack(XMFLOAT3 playerpos)
 				std::unique_ptr<PartManager>newPart = std::make_unique<PartManager>();
 				newPart->Initialize();
 				newPart->SetScale({ 0.003f,0.003f,0.003f });
-				newPart->SetModel(model2    );
+				newPart->SetModel(modelballet);
 				newPart->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
 				newPart->PartInitialize(bullet->GetPos());
 
@@ -221,82 +221,7 @@ void Enemy::Attack(XMFLOAT3 playerpos)
 		return bullet->Getdead();
 		});
 
-	//if (count != 0)
-	//{
-	//	//プレイヤーの座標
-	//	Playerpos.m128_f32[0] = playerpos.x;
-	//	Playerpos.m128_f32[1] = playerpos.y;
-	//	Playerpos.m128_f32[2] = playerpos.z;
-
-	//	//敵の座標
-	//	Vecpos.m128_f32[0] = position.x;
-	//	Vecpos.m128_f32[1] = position.y;
-	//	Vecpos.m128_f32[2] = position.z;
-
-	//	//差分ベクトルの計算
-	//	XMVECTOR Toenemy;
-	//	Toenemy = Playerpos - Vecpos;
-	//	Toenemy = XMVector3Normalize(Toenemy);
-
-	//	Vel = Toenemy * 0.12f;
-
-	//	XMMATRIX matScale, matRot, matTrans;
-	//	// スケール、回転、平行移動行列の計算
-	//	matScale = XMMatrixScaling(scale.x, scale.y, scale.z);
-	//	matRot = XMMatrixIdentity();
-	//	matRot *= XMMatrixRotationZ(XMConvertToRadians(rotation.z));
-	//	matRot *= XMMatrixRotationX(XMConvertToRadians(rotation.x));
-	//	matRot *= XMMatrixRotationY(XMConvertToRadians(rotation.y));
-	//	matTrans = XMMatrixTranslation(position.x += Vel.m128_f32[0], position.y += Vel.m128_f32[1], position.z += Vel.m128_f32[2]);
-
-	//	// ワールド行列の合成
-	//	matWorld = XMMatrixIdentity(); // 変形をリセット
-	//	matWorld *= matScale; // ワールド行列にスケーリングを反映
-	//	matWorld *= matRot; // ワールド行列に回転を反映
-	//	matWorld *= matTrans; // ワールド行列に平行移動を反映
-
-	//	//球コライダー取得
-	//	SphereCollider* sphereCollider = dynamic_cast<SphereCollider*>(collider);
-	//	assert(sphereCollider);
-
-	//	class EnemyQueryCallback :public QueryCallback
-	//	{
-	//	public:
-	//		EnemyQueryCallback(Sphere* sphere) :sphere(sphere) {};
-
-	//		//衝突時コールバック関数
-	//		bool OnQueryHit(const QueryHit& info)
-	//		{
-	//			//ワールドの上方向
-	//			const XMVECTOR up = { 0,1,0,0 };
-	//			//排斥方向
-	//			XMVECTOR rejectDir = XMVector3Normalize(info.reject);
-	//			//上方向と左右方向の角度差のコサイン値
-	//			float cos = XMVector3Dot(rejectDir, up).m128_f32[0];
-
-	//			//押し出し処理
-	//			sphere->center += info.reject;
-	//			move += info.reject;
-
-	//			return true;
-	//		}
-	//		//クエリ―に使用する球
-	//		Sphere* sphere = nullptr;
-	//		//排斥による移動量(累積)
-	//		XMVECTOR move = {};
-	//	};
-
-	//	//クエリ―コールバックの関数オブジェクト
-	//	EnemyQueryCallback callback(sphereCollider);
-
-	//	//敵と敵の交差を検索
-	//	CollisionManager::GetInstance()->CheckQuerySphere(*sphereCollider, &callback, COLLISION_COLOR_ENEMY);
-	//	//交差による排斥分動かす
-	//	position.x += callback.move.m128_f32[0];
-	//	position.y += callback.move.m128_f32[1];
-	//	position.z += callback.move.m128_f32[2];
-	//}
-
+	//2秒たったら弾発射処理
 	if (count >= 120)
 	{
 		count = 0;

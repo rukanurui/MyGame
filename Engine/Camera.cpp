@@ -219,7 +219,9 @@ void Camera::CurrentUpdate(XMFLOAT3 vel)
 
 				XMVECTOR move = { 0,0,Velocity.z,0 };
 
+				//vector‚ðXMFLOAT3‚É•ÏŠ·
 				move = XMVector3Transform(move, matRot);
+				//target‚ð“®‚©‚·
 				MoveTarget(move);
 
 			}

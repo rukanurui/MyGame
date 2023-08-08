@@ -22,8 +22,6 @@ public://メンバ関数
 	//更新
 	void PlayerUpdate(const XMFLOAT3& cameratarget);
 
-	//FBX更新
-	void FbxUpdate();
 	//弾更新
 	void BulUpdate();
 	//近接更新

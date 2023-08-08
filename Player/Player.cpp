@@ -68,7 +68,7 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 				std::unique_ptr<PartManager>newPart = std::make_unique<PartManager>();
 				newPart->Initialize();
 				newPart->SetScale({ 0.003f,0.003f,0.003f });
-				newPart->SetModel(model2);
+				newPart->SetModel(gunpix);
 				newPart->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 0.5f));
 				newPart->PartInitialize(bullet->GetPos());
 
@@ -105,7 +105,8 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 	{
 		if (pick->Getpick() == true)
 		{
-			magazin = 5;
+			const int full = 5;
+			magazin = full;
 		}
 	}
 
@@ -135,8 +136,10 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 		return part->Getdead();
 		});
 
+	//ワールド座標更新
 	UpdateWorld();
 
+	//壁との当たり判定
 	QueryWall();
 
 	//当たり判定更新
@@ -145,14 +148,12 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 		collider->Update();
 	}
 
+	//各クールタイムのカウントダウン処理
 	ctime--;
 	mctime--;
 	picktime--;
-
 	if (ctime <= 0)ctime = 0;
-	
 	if (mctime <= 0)mctime = 0;
-	
 	if (picktime <= 0)picktime = 0;
 	
 	
@@ -163,8 +164,9 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 			const float bulspeed = 1.5f;
 			XMVECTOR Velocity{ 0,0,bulspeed };
 
+			//カメラのターゲット座標からプレイヤーの座標を引いた距離を求める
 			Velocity = { cameratarget.x - position.x, cameratarget.y - position.y, cameratarget.z - position.z };
-
+			//Vectorの正規化しつつ速度を掛ける
 			Velocity = XMVector3Normalize(Velocity) * bulspeed;
 
 			//弾の生成と初期化
@@ -190,12 +192,13 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 	//銃を投げる
 	if (input->PushclickRight() && have == true)
 		{
-			//弾の速度
+			//速度
 			const float bulspeed = 1.0f;
 			XMVECTOR Velocity{ 0,0,bulspeed };
 
-			Velocity = { target.x - position.x, target.y - position.y, target.z - position.z };
-
+			//カメラのターゲット座標からプレイヤーの座標を引いた距離を求める
+			Velocity = { cameratarget.x - position.x, cameratarget.y - position.y, cameratarget.z - position.z };
+			//Vectorの正規化しつつ速度を掛ける
 			Velocity = XMVector3Normalize(Velocity) * bulspeed;
 
 			//弾の生成と初期化
@@ -217,15 +220,15 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 	//近接
 	if (input->PushclickLeft() && have == false && mctime <= 0)
 		{
-			//弾の速度
+			//速度
 			const float bulspeed = 1.0f;
 			XMVECTOR Velocity{ 0,0,bulspeed };
 
 			XMFLOAT3 meleepos = position;
 
-
-			Velocity = { target.x - position.x, target.y - position.y, target.z - position.z };
-
+			//カメラのターゲット座標からプレイヤーの座標を引いた距離を求める
+			Velocity = { cameratarget.x - position.x, cameratarget.y - position.y, cameratarget.z - position.z };
+			//Vectorの正規化しつつ速度を掛ける
 			Velocity = XMVector3Normalize(Velocity) * bulspeed;
 
 			//格闘の生成と初期化
@@ -241,17 +244,17 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 			mctime = 30;
 		}
 
-	//銃を拾う
+	//銃を拾うアクション
 	if (input->TriggerKey(DIK_F) && have == false)
 		{
 			const float bulspeed = 1.0f;
 			XMVECTOR Velocity{ 0,0,bulspeed };
 
-			XMFLOAT3 meleepos = position;
+			XMFLOAT3 grappos = position;
 
-
-			Velocity = { target.x - position.x, target.y - position.y, target.z - position.z };
-
+			//カメラのターゲット座標からプレイヤーの座標を引いた距離を求める
+			Velocity = { cameratarget.x - position.x, cameratarget.y - position.y, cameratarget.z - position.z };
+			//Vectorの正規化しつつ速度を掛ける
 			Velocity = XMVector3Normalize(Velocity) * bulspeed;
 
 			//格闘の生成と初期化
@@ -304,13 +307,11 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 		part->Update();
 	}
 
+	//world座標の更新
 	UpdateWorld();
 }
 
 
-void Player::FbxUpdate()
-{
-}
 
 void Player::BulUpdate()
 {
