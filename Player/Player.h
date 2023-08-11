@@ -20,7 +20,7 @@ public://メンバ関数
 	//初期化
 	void PlayerInitialize(Input*Input);
 	//更新
-	void PlayerUpdate(const XMFLOAT3& cameratarget);
+	void PlayerUpdate(const XMFLOAT3& cameratarget,const XMFLOAT3& cameraeye);
 
 	//弾更新
 	void BulUpdate();
@@ -39,6 +39,7 @@ public://メンバ関数
 
 	//particle関連処理
 	void PartUpdate();
+	void BullisticUpdate();
 
 	/// 注視点座標の取得
 	const XMFLOAT3& GetTarget() { return target; }
@@ -95,6 +96,7 @@ private://メンバ変数
 	FbxModel* modelgun = nullptr;
 	FbxModel* model2 = nullptr;
 	FbxModel* gunpix = nullptr;
+	FbxModel* modelbullistic = nullptr;
 
 	//銃本体
 	std::unique_ptr<PlayerGun> Pgun;
@@ -109,6 +111,8 @@ private://メンバ変数
 	std::list<std::unique_ptr<Pick>> picks;
 	//パーティクル
 	std::list<std::unique_ptr<PartManager>> particles;
+	//弾道
+	std::list<std::unique_ptr<PartManager>> bullistic;
 
 	//パーティクルの数
 	const int partnum = 15;
@@ -150,6 +154,10 @@ private://メンバ変数
 	bool have = true;
 	//残弾
 	int magazin = 5;
+
+	//クールタイム設定値
+	const int MaxCool = 30;
+
 	//弾のクールタイム
 	int ctime = 0;
 

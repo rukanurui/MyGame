@@ -21,6 +21,7 @@ void Player::PlayerInitialize(Input* Input)
 	modelgun = FbxLoader::GetInstance()->LoadModelFromFile("gun");
 	model2 = FbxLoader::GetInstance()->LoadModelFromFile("testfbx");
 	gunpix = FbxLoader::GetInstance()->LoadModelFromFile("gunpix");
+	modelbullistic = FbxLoader::GetInstance()->LoadModelFromFile("bullistic");
 
 
 	//e‚Ì¶¬‚Æ‰Šú‰»
@@ -54,14 +55,21 @@ void Player::MoveVector(const XMVECTOR& move)
 }
 
 
-void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
+void Player::PlayerUpdate(const XMFLOAT3& cameratarget, const XMFLOAT3& cameraeye)
 {
+
 
 	//’e‚ª‰½‚©‚É“–‚½‚Á‚½‚çparticleo‚·
 	for (std::unique_ptr<Pbullet>& bullet : bullets)
 	{
 		if (bullet->Getdead() == true)
 		{
+			//’e“¹‚Ìíœ
+			for (std::unique_ptr<PartManager>& bulli : bullistic)
+			{
+				bulli->Setdead(true);
+			}
+
 			//20ŒÂ‚Ü‚Åparticle¶¬
 			for (int i = 0; i < partnum; i++)
 			{
@@ -136,6 +144,11 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 		return part->Getdead();
 		});
 
+	//’e“¹‚Ìíœ
+	bullistic.remove_if([](std::unique_ptr<PartManager>& part) {
+		return part->Getdead();
+		});
+
 	//ƒ[ƒ‹ƒhÀ•WXV
 	UpdateWorld();
 
@@ -163,9 +176,10 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 			//’e‚Ì‘¬“x
 			const float bulspeed = 1.5f;
 			XMVECTOR Velocity{ 0,0,bulspeed };
-
+			const XMFLOAT3 bulpos = { position.x,position.y ,position.z -0.5f };
 			//ƒJƒƒ‰‚Ìƒ^[ƒQƒbƒgÀ•W‚©‚çƒvƒŒƒCƒ„[‚ÌÀ•W‚ğˆø‚¢‚½‹——£‚ğ‹‚ß‚é
 			Velocity = { cameratarget.x - position.x, cameratarget.y - position.y, cameratarget.z - position.z };
+			
 			//Vector‚Ì³‹K‰»‚µ‚Â‚Â‘¬“x‚ğŠ|‚¯‚é
 			Velocity = XMVector3Normalize(Velocity) * bulspeed;
 
@@ -180,7 +194,29 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 			newBullet->create(position, Velocity);
 			//’e‚Ì“o˜^
 			bullets.push_back(std::move(newBullet));
-			ctime = 30;
+			
+			XMFLOAT3 angle;
+
+			Velocity2 = { cameratarget.x - cameraeye.x, cameratarget.y - cameraeye.y, cameratarget.z - cameraeye.z };
+
+			Velocity2 = XMVector3Normalize(Velocity2);
+
+			//‰ñ“]Šp‚ğŒvZ
+			angle.x = atan2(Velocity2.m128_f32[1], Velocity2.m128_f32[2]);
+			angle.y = atan2(Velocity2.m128_f32[0], Velocity2.m128_f32[2]);
+
+			//’e“¹‚Ì¶¬‚Æ‰Šú‰»
+			std::unique_ptr<PartManager>newBullistic = std::make_unique<PartManager>();
+			newBullistic->Initialize();
+			newBullistic->SetScale({ 0.001f,0.001f,0.003f });
+			newBullistic->SetModel(modelbullistic);
+			newBullistic->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+			newBullistic->BullisticInitialize(position, Velocity,angle);
+
+			//’e“¹‚Ì“o˜^
+			bullistic.push_back(std::move(newBullistic));
+			//ƒN[ƒ‹ƒ^ƒCƒ€İ’è
+			ctime = MaxCool;
 			//c’eŒ¸‚ç‚·
 			if (nowscene >= 2)
 			{
@@ -241,7 +277,7 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 			newMelee->create(position, Velocity);
 			//Ši“¬‚Ì“o˜^
 			melees.push_back(std::move(newMelee));
-			mctime = 30;
+			mctime = MaxCool;
 		}
 
 	//e‚ğE‚¤ƒAƒNƒVƒ‡ƒ“
@@ -267,8 +303,9 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 			newpick->create(position, Velocity);
 			//Ši“¬‚Ì“o˜^
 			picks.push_back(std::move(newpick));
-			picktime = 15;
+			picktime = MaxCool;
 		}
+
 
 	
 
@@ -305,6 +342,13 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget)
 	{
 		part->PartUpdate();
 		part->Update();
+	}
+
+	//’e“¹‚ÌXV
+	for (std::unique_ptr<PartManager>& bulli : bullistic)
+	{
+		bulli->BullisticUpdate();
+		bulli->Update();
 	}
 
 	//worldÀ•W‚ÌXV
@@ -345,6 +389,14 @@ void Player::PartUpdate()
 	}
 }
 
+void Player::BullisticUpdate()
+{
+	for (std::unique_ptr<PartManager>& bulli : bullistic)
+	{
+		bulli->Update();
+	}
+}
+
 void Player::gunUpdate(const XMFLOAT3& cameratarget,const XMFLOAT3& cameraeye)
 {
 
@@ -352,8 +404,6 @@ void Player::gunUpdate(const XMFLOAT3& cameratarget,const XMFLOAT3& cameraeye)
 
 	//e‚ÌXV
 	gunpos = cameraeye;
-
-	float cameramatrot = atan2(cameratarget.y,cameratarget.x);
 
 	Velocity2 = { cameratarget.x - cameraeye.x, cameratarget.y - cameraeye.y, cameratarget.z - cameraeye.z };
 
@@ -365,7 +415,7 @@ void Player::gunUpdate(const XMFLOAT3& cameratarget,const XMFLOAT3& cameraeye)
 	//À•WˆÚ“®ˆ—
 	gunpos.x += move.m128_f32[0]; gunpos.y += move.m128_f32[1]; gunpos.z += move.m128_f32[2];
 
-	angle.x = atan2(Velocity2.m128_f32[2], Velocity2.m128_f32[1]);
+	angle.x = atan2(Velocity2.m128_f32[1], Velocity2.m128_f32[2]);
 	angle.y = atan2(Velocity2.m128_f32[0], Velocity2.m128_f32[2]);
 
 	Pgun->gunupdate(gunpos, Velocity2,angle);
@@ -377,6 +427,11 @@ void Player::Draw(ID3D12GraphicsCommandList* cmdList)
 {
 
 	for (std::unique_ptr<PartManager>& part : particles)
+	{
+		part->Draw(cmdList);
+	}
+
+	for (std::unique_ptr<PartManager>& part : bullistic)
 	{
 		part->Draw(cmdList);
 	}

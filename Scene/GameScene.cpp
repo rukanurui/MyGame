@@ -326,7 +326,7 @@ void GameScene::Update()
 
                 player->Sethave(true);
                 player->SetPosition(camera->GetEye());
-                player->PlayerUpdate(camera->GetTarget());
+                player->PlayerUpdate(camera->GetTarget(), camera->GetEye());
                 magazin = 5;
                 player->SetMagazin(magazin);
 
@@ -342,7 +342,7 @@ void GameScene::Update()
 
                 player->Sethave(false);
                 player->SetPosition(camera->GetEye());
-                player->PlayerUpdate(camera->GetTarget());
+                player->PlayerUpdate(camera->GetTarget(), camera->GetEye());
                 magazin = 0;
 
             }
@@ -358,7 +358,7 @@ void GameScene::Update()
                 player->SetMagazin(magazin);
                 player->Sethave(true);
                 player->SetPosition(camera->GetEye());
-                player->PlayerUpdate(camera->GetTarget());
+                player->PlayerUpdate(camera->GetTarget(), camera->GetEye());
             }
         }
     }
@@ -790,6 +790,7 @@ void GameScene::Update()
         player->throwgunUpdate();
         player->gunUpdate(camera->GetTarget(), camera->GetEye());
         player->PartUpdate();
+        player->BullisticUpdate();
         camera->Update(WindowsApp::window_width, WindowsApp::window_height);
 
         for (std::unique_ptr<Enemy>& enemy : Enemys)
@@ -858,7 +859,7 @@ void GameScene::Update()
             player->SetTarget(camera->GetTarget());
             player->SetPosition(camera->GetEye());
             player->SetRotation(camera->GetRoatation());
-            player->PlayerUpdate(camera->GetTarget());
+            player->PlayerUpdate(camera->GetTarget(), camera->GetEye());
             player->gunUpdate(camera->GetTarget(), camera->GetEye());
 
             if (playscene >= 2)
@@ -919,7 +920,7 @@ void GameScene::Update()
             player->SetTarget(camera->GetTarget());
             player->SetPosition(camera->GetEye());
             player->SetRotation(camera->GetRoatation());
-            player->PlayerUpdate(camera->GetTarget());
+            player->PlayerUpdate(camera->GetTarget(), camera->GetEye());
             player->gunUpdate(camera->GetTarget(), camera->GetEye());
 
             //Žc’e”‚ÌŽæ“¾
@@ -963,7 +964,7 @@ void GameScene::Update()
             player->SetTarget(camera->GetTarget());
             player->SetPosition(camera->GetEye());
             player->SetRotation(camera->GetRoatation());
-            player->PlayerUpdate(camera->GetTarget());
+            player->PlayerUpdate(camera->GetTarget(), camera->GetEye());
             player->gunUpdate(camera->GetTarget(), camera->GetEye());
             
 
@@ -1043,7 +1044,7 @@ void GameScene::Update()
             player->SetTarget(camera->GetTarget());
             player->SetPosition(camera->GetEye());
             player->SetRotation(camera->GetRoatation());
-            player->PlayerUpdate(camera->GetTarget());
+            player->PlayerUpdate(camera->GetTarget(), camera->GetEye());
             player->gunUpdate(camera->GetTarget(), camera->GetEye());
 
         }
@@ -1066,7 +1067,7 @@ void GameScene::Update()
             player->SetTarget(camera->GetTarget());
             player->SetPosition(camera->GetEye());
             player->SetRotation(camera->GetRoatation());
-            player->PlayerUpdate(camera->GetTarget());
+            player->PlayerUpdate(camera->GetTarget(), camera->GetEye());
             player->gunUpdate(camera->GetTarget(), camera->GetEye());
 
             timecount = 0;

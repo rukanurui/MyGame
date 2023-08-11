@@ -11,7 +11,6 @@ void Pbullet::create(const XMFLOAT3& Playerpos, const XMVECTOR& velocity)
 {
 	position = Playerpos;
 	//position.y -= 1.5f;
-	position.y = 4.0f;
 	Vel = velocity;
 }
 

@@ -77,6 +77,8 @@ public://メンバ関数
 	const XMFLOAT3& GetRotation() { return rotation; }
 
 	const float& GetScaleX() { return scale.x; }
+	const float& GetScaleY() { return scale.y; }
+	const float& GetScaleZ() { return scale.z; }
 
 	const XMMATRIX& GetmatTrans() { return matTrans; }
 	
@@ -93,8 +95,10 @@ public://メンバ関数
 	void SetmatTrans(XMMATRIX Mattrans) { this->matTrans = Mattrans; }
 	//コライダーのセット
 	void SetCollider(BaseCollider* collider);
-
+	//ワールド座標更新
 	void UpdateWorld();
+	//弾道に合わせたスケール変化
+	void MoveScaleZ(float Velocity);
 
 protected://メンバ変数
 	//定数バッファ

@@ -36,6 +36,21 @@ void PartManager::PartInitialize(XMFLOAT3 pos)
 	collider->SetColor(COLLISION_COLOR_PART);
 }
 
+void PartManager::BullisticInitialize(XMFLOAT3& pos,XMVECTOR& Velocity,XMFLOAT3& angle)
+{
+
+	position = pos;
+
+	//弾のベクトルを代入
+	Vel = Velocity;
+
+	rotation.y = angle.y * 55;
+	rotation.x = angle.x * -55;
+	
+	//コライダーの属性設定
+	collider->SetColor(COLLISION_COLOR_PART);
+}
+
 
 void PartManager::OnCollision(const CollisionInfo& info)
 {
@@ -144,14 +159,18 @@ void PartManager::PartUpdate()
 		constBufferTransform->Unmap(0, nullptr);
 	}
 
-	//当たり判定更新
-	if (collider)
-	{
-		collider->Update();
-	}
 }
 
-void PartManager::setcol(int Col)
+void PartManager::BullisticUpdate()
 {
-	col = Col;
+
+	position.x += Vel.m128_f32[0];
+	position.y += Vel.m128_f32[1];
+	position.z += Vel.m128_f32[2];
+
+	MoveScaleZ(Vel.m128_f32[2]*0.1);
+
+	//座標更新
+	UpdateWorld();
 }
+

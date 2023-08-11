@@ -325,6 +325,11 @@ void FBXobj3d::UpdateWorld()
 	}
 }
 
+void FBXobj3d::MoveScaleZ(float Velocity)
+{
+	scale.z += Velocity;
+}
+
 void FBXobj3d::Draw(ID3D12GraphicsCommandList* cmdList)
 {
 	// nullptrチェック

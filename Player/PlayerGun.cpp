@@ -38,9 +38,10 @@ void PlayerGun::gunupdate(const XMFLOAT3& Playerpos,const XMVECTOR& velocity, co
 	position.y = Playerpos.y + (velocity.m128_f32[1] * 3.0f);
 	position.z = Playerpos.z + (velocity.m128_f32[2] * 3.0f);
 
-	angleVec.m128_f32[0]= anglevelocity.x * 55;
+	angleVec.m128_f32[0]= anglevelocity.x * -55;
 	angleVec.m128_f32[1] = anglevelocity.y * 55;
 
+	rotation.x = angleVec.m128_f32[0];
 	rotation.y = angleVec.m128_f32[1];
 
 	HRESULT result;
