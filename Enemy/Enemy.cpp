@@ -11,25 +11,32 @@ Enemy::Enemy() : FBXobj3d()
 }
 
 
-void Enemy::EnemyInitialize(bool shot)
+void Enemy::EnemyInitialize(bool shot,Camera* Camera,DXCommon* dxcommon)
 {
+	this->dxCommon = dxcommon;
+	
+	particle2d = ParticleManager2d::Create(dxCommon->GetDevice(), camera);
+
 	//‘®«‚Ì’Ç‰Á
 	collider->SetColor(COLLISION_COLOR_ENEMY);
 	Shot = shot;
 	//ƒ‚ƒfƒ‹“Ç‚İ‚İ
 	modelballet = FbxLoader::GetInstance()->LoadModelFromFile("bullet");
-	model2 = FbxLoader::GetInstance()->LoadModelFromFile("enemy");
+	modelenemy = FbxLoader::GetInstance()->LoadModelFromFile("enemy");
+	modelbullistic = FbxLoader::GetInstance()->LoadModelFromFile("bullistic");
+
 	count = 0;
 
 	if (modelnum==2)
 	{
-		SetModel(model2);
+		SetModel(modelenemy);
 	}
 
 	for (std::unique_ptr<Enemybullet>& bullet : bullets)
 	{
 		bullet->SetPosition(position);
 	}
+
 }
 
 void Enemy::EnemyUpdate(XMFLOAT3 playerpos)
@@ -131,6 +138,7 @@ void Enemy::EnemyUpdate(XMFLOAT3 playerpos)
 		}
 	}
 
+
 	//€–S‚µ‚Ä‚¢‚½‚ç
 	if (col==true)
 	{
@@ -145,37 +153,9 @@ void Enemy::EnemyUpdate(XMFLOAT3 playerpos)
 			return bullet->Getdead();
 			});
 
-		//20ŒÂ‚Ü‚Åparticle¶¬
-		if (partcount <= partnum)
-		{
-			std::unique_ptr<PartManager>newPart = std::make_unique<PartManager>();
-			newPart->Initialize();
-			newPart->SetScale({ 0.01f,0.01f,0.01f });
-			newPart->SetModel(model2);
-			newPart->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
-			newPart->PartInitialize(position);
+		CreateParticles(position);
 
-			//’e‚Ì“o˜^
-			particle.push_back(std::move(newPart));
-
-			partcount++;
-		}
-
-		//particle‚ÌXV
-		if (parttimer <= 60)
-		{
-			for (std::unique_ptr<PartManager>& part : particle)
-			{
-				part->PartUpdate();
-				part->Update();
-			}
-			parttimer++;
-		}
-		else
-		{
-			death = true;
-		}
-		
+		particle2d->Update();
 
 	}
 	
@@ -194,12 +174,22 @@ void Enemy::EnemyUpdate(XMFLOAT3 playerpos)
 void Enemy::Attack(XMFLOAT3 playerpos)
 {
 	count++;
+	const int MAXCOUNT = 120;
+	int num = 999;
 
 	//’e‚ª‰½‚©‚É“–‚½‚Á‚½‚çparticleo‚·
 	for (std::unique_ptr<Enemybullet>& bullet : bullets)
 	{
 		if (bullet->Getdead() == true)
 		{
+
+			//Á‚¦‚é’e‚Ì”’l‚ğ“ü‚ê‚é
+			num = bullet->Getbulletnum();
+
+			/*bullistic.remove_if([](std::unique_ptr<PartManager>& part) {
+				return part->Getbullisticnum() == num;
+				});*/
+
 			//20ŒÂ‚Ü‚Åparticle¶¬
 			for (int i = 0; i < partnum; i++)
 			{
@@ -216,13 +206,29 @@ void Enemy::Attack(XMFLOAT3 playerpos)
 		}
 	}
 
+	//ƒtƒ‰ƒO—§‚Ä‚é
+	for (std::unique_ptr<PartManager>& bullet : bullistic)
+	{
+		if (bullet->Getbullisticnum() == num)
+		{
+			bullet->Setdead(true);
+		}
+	}
+
 	//’e‚Ìíœ
 	bullets.remove_if([](std::unique_ptr<Enemybullet>& bullet) {
 		return bullet->Getdead();
 		});
 
+	//’e“¹‚Ìíœ
+	bullistic.remove_if([](std::unique_ptr<PartManager>& part) {
+		return part->Getdead();
+		});
+
+	
+
 	//2•b‚½‚Á‚½‚ç’e”­Ëˆ—
-	if (count >= 120)
+	if (count >= MAXCOUNT)
 	{
 		count = 0;
 
@@ -241,11 +247,36 @@ void Enemy::Attack(XMFLOAT3 playerpos)
 		newBullet->SetScale({ 0.01f,0.01f,0.01f });
 		newBullet->SetModel(modelballet);
 		newBullet->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
-		newBullet->BulInitialize();
+		newBullet->BulInitialize(bulnum);
 		newBullet->create(position, Velocity);
+
+		XMFLOAT3 angle;
+
+		Velocity2 = { playerpos.x - position.x, playerpos.y - position.y, playerpos.z - position.z };
+
+		Velocity2 = XMVector3Normalize(Velocity2);
+
+		//‰ñ“]Šp‚ğŒvZ
+		//angle.x = atan2(Velocity2.m128_f32[1], Velocity2.m128_f32[2]);
+		angle.y = atan2(Velocity2.m128_f32[0], Velocity2.m128_f32[2]);
+
+		//’e“¹‚Ì¶¬‚Æ‰Šú‰»
+		std::unique_ptr<PartManager>newBullistic = std::make_unique<PartManager>();
+		newBullistic->Initialize();
+		newBullistic->SetScale({ 0.001f,0.001f,0.003f });
+		newBullistic->SetModel(modelbullistic);
+		newBullistic->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 0.0f));
+		newBullistic->BullisticInitializeEnemy(position, Velocity, angle,bulnum);
+
+
+		//’e“¹‚Ì“o˜^
+		bullistic.push_back(std::move(newBullistic));
 		
 		//’e‚Ì“o˜^
 		bullets.push_back(std::move(newBullet));
+
+		//’e‚Ì”‚Ì‰ÁZ
+		bulnum++;
 	}
 
 	//’e‚ÌXV
@@ -255,12 +286,20 @@ void Enemy::Attack(XMFLOAT3 playerpos)
 		bullet->Update();
 	}
 
-	//particle‚ÌXV
 	for (std::unique_ptr<PartManager>& part : particle)
 	{
 		part->PartUpdate();
 		part->Update();
 	}
+
+	//’e“¹‚ÌXV
+	for (std::unique_ptr<PartManager>& bulli : bullistic)
+	{
+		bulli->BullisticUpdateEnemy();
+		bulli->Update();
+	}
+
+
 }
 
 
@@ -358,13 +397,10 @@ void Enemy::OnCollision(const CollisionInfo& info)
 
 }
 
-
-
 void Enemy::colReset()
 {
 	col = false;
 }
-
 
 void Enemy::move()
 {
@@ -379,7 +415,6 @@ void Enemy::BulUpdate()
 	}
 
 }
-
 
 void Enemy::BulDraw(ID3D12GraphicsCommandList* cmdList)
 {
@@ -396,6 +431,42 @@ void Enemy::PartUpdate()
 	{
 		part->Update();
 	}
+
+	particle2d->Update();
+	
+}
+
+void Enemy::BullisticUpdate()
+{
+	for (std::unique_ptr<PartManager>& bulli : bullistic)
+	{
+		bulli->Update();
+	}
+}
+
+void Enemy::CreateParticles(XMFLOAT3 Pos)
+{
+	for (int i = 0; i < 10; i++) {
+		// X,Y,Z‘S‚Ä[-5.0f,+5.0f]‚Åƒ‰ƒ“ƒ_ƒ€‚É•ª•z
+		const float rnd_pos = 10.0f;
+		XMFLOAT3 pos = Pos;
+		/*pos.x = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
+		pos.y = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
+		pos.z = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;*/
+
+		const float rnd_vel = 0.1f;
+		XMFLOAT3 vel{};
+		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+		vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+		vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+
+		XMFLOAT3 acc{};
+		const float rnd_acc = 0.001f;
+		acc.y = -(float)rand() / RAND_MAX * rnd_acc;
+
+		// ’Ç‰Á
+		particle2d->Add(60, pos, vel, acc, 1.0f, 0.0f);
+	}
 }
 
 void Enemy::PartDraw(ID3D12GraphicsCommandList* cmdList)
@@ -404,6 +475,20 @@ void Enemy::PartDraw(ID3D12GraphicsCommandList* cmdList)
 	{
 		part->Draw(cmdList);
 	}
+
+	particle2d->Draw(cmdList);
+}
+
+void Enemy::PartDraw2d(ID3D12GraphicsCommandList* cmdList)
+{
+}
+
+void Enemy::BullisticDraw(ID3D12GraphicsCommandList* cmdList)
+{
+	for (std::unique_ptr<PartManager>& bulli : bullistic)
+	{
+		bulli->Draw(cmdList);
+	}
 }
 
 void Enemy::LastUpdate()
@@ -411,37 +496,9 @@ void Enemy::LastUpdate()
 	//€–S‚µ‚Ä‚¢‚½‚ç
 	if (col == true)
 	{
-		//20ŒÂ‚Ü‚Åparticle¶¬
-		if (partcount <= partnum)
-		{
-			std::unique_ptr<PartManager>newPart = std::make_unique<PartManager>();
-			newPart->Initialize();
-			newPart->SetScale({ 0.01f,0.01f,0.01f });
-			newPart->SetModel(model2);
-			newPart->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
-			newPart->PartInitialize(position);
+		CreateParticles(position);
 
-			//’e‚Ì“o˜^
-			particle.push_back(std::move(newPart));
-
-			partcount++;
-		}
-
-		//particle‚ÌXV
-		if (parttimer <= 60)
-		{
-			for (std::unique_ptr<PartManager>& part : particle)
-			{
-				part->PartUpdate();
-				part->Update();
-			}
-			parttimer++;
-		}
-		else
-		{
-			death = true;
-		}
-
+		particle2d->Update();
 
 	}
 }

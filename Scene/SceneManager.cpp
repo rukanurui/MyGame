@@ -36,8 +36,6 @@ void SceneManager::Update()
 		//次のシーンを初期化する
 		scene->Initialize(dxCommon,input,audio,spriteCommon,Windows);
 		
-
-		
 	}
 
 	//シーン更新

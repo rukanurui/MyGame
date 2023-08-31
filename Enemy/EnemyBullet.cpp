@@ -14,8 +14,9 @@ void Enemybullet::create(const XMFLOAT3& Enemypos, const XMVECTOR& velocity)
 	Vel = velocity;
 }
 
-void Enemybullet::BulInitialize()
+void Enemybullet::BulInitialize(int& num)
 {
+	numbullet = num;
 	//‘®«‚Ì’Ç‰Á
 	collider->SetColor(COLLISION_COLOR_ENEMYBULET);
 }
@@ -105,7 +106,7 @@ void Enemybullet::bulupdate()
 
 void Enemybullet::OnCollision(const CollisionInfo& info)
 {
-	if (info.collider->color != 4 && info.collider->color != 8)
+	if (info.collider->color != 4 && info.collider->color != 8 && info.collider->color != 32)
 	{
 		
 		dead = true;

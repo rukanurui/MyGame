@@ -221,6 +221,7 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
     camera->Setnowtuto(tutocount);
 
 
+
     //敵の生成
     for (int i = 0; i < enemyNum; i++)
     {
@@ -228,6 +229,8 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
         newenemy->Initialize();
         newenemy->SetPosition({ enemypos[i].x,enemypos[i].y,enemypos[i].z });
         newenemy->SetScale({ enemyscale[i].x,enemyscale[i].y,enemyscale[i].z });
+
+
         if (enemymodelname[i] == 1)
         {
             newenemy->SetModel(modelenemy);
@@ -235,11 +238,11 @@ void GameScene::Initialize(DXCommon* dxcommon, Input* input, Audio* audio, Sprit
         newenemy->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, enemyr[i]));
         if (enemymod[i] == 0)
         {
-            newenemy->EnemyInitialize(TRUE);
+            newenemy->EnemyInitialize(TRUE,camera, dxcommon);
         }
         else if (enemymod[i] == 1)
         {
-            newenemy->EnemyInitialize(FALSE);
+            newenemy->EnemyInitialize(FALSE,camera, dxcommon);
         }
         Enemys.push_back(std::move(newenemy));
     }
@@ -797,6 +800,7 @@ void GameScene::Update()
         {
             enemy->PartUpdate();
             enemy->BulUpdate();
+            enemy->BullisticUpdate();
             enemy->Update();
         }
 
@@ -1119,7 +1123,7 @@ void GameScene::Update()
         }
 
         //プレイヤーに敵が当たったらシーン遷移
-        if (player->Gethit() == 1)
+        if (player->Gethit() == true)
         {
             //次のシーンを生成
             BaseScene* scene = makeScene<GameoverScene>();
@@ -1188,6 +1192,7 @@ void GameScene::Draw()
     {
         enemy->BulDraw(cmdList);
         enemy->PartDraw(cmdList);
+        enemy->BullisticDraw(cmdList);
         enemy->Draw(cmdList);
     }
     

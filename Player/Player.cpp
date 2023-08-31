@@ -58,24 +58,27 @@ void Player::MoveVector(const XMVECTOR& move)
 void Player::PlayerUpdate(const XMFLOAT3& cameratarget, const XMFLOAT3& cameraeye)
 {
 
+	int num = 0;
 
 	//弾が何かに当たったらparticle出す
 	for (std::unique_ptr<Pbullet>& bullet : bullets)
 	{
 		if (bullet->Getdead() == true)
 		{
+
 			//弾道の削除
 			for (std::unique_ptr<PartManager>& bulli : bullistic)
 			{
 				bulli->Setdead(true);
 			}
 
+
 			//20個までparticle生成
 			for (int i = 0; i < partnum; i++)
 			{
 				std::unique_ptr<PartManager>newPart = std::make_unique<PartManager>();
 				newPart->Initialize();
-				newPart->SetScale({ 0.003f,0.003f,0.003f });
+				newPart->SetScale({ 0.0003f,0.003f,0.003f });
 				newPart->SetModel(gunpix);
 				newPart->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 0.5f));
 				newPart->PartInitialize(bullet->GetPos());
@@ -176,7 +179,6 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget, const XMFLOAT3& cameraey
 			//弾の速度
 			const float bulspeed = 1.5f;
 			XMVECTOR Velocity{ 0,0,bulspeed };
-			const XMFLOAT3 bulpos = { position.x,position.y ,position.z -0.5f };
 			//カメラのターゲット座標からプレイヤーの座標を引いた距離を求める
 			Velocity = { cameratarget.x - position.x, cameratarget.y - position.y, cameratarget.z - position.z };
 			
@@ -187,7 +189,7 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget, const XMFLOAT3& cameraey
 			//bullet->create(position, Velocity);
 			std::unique_ptr<Pbullet>newBullet = std::make_unique<Pbullet>();
 			newBullet->Initialize();
-			newBullet->SetScale({ 0.01f,0.01f,0.01f });
+			newBullet->SetScale({ 0.001f,0.001f,0.001f });
 			newBullet->SetModel(modelballet);
 			newBullet->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
 			newBullet->BulInitialize();
@@ -208,9 +210,9 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget, const XMFLOAT3& cameraey
 			//弾道の生成と初期化
 			std::unique_ptr<PartManager>newBullistic = std::make_unique<PartManager>();
 			newBullistic->Initialize();
-			newBullistic->SetScale({ 0.001f,0.001f,0.003f });
+			newBullistic->SetScale({ 0.0005f,0.0005f,0.003f });
 			newBullistic->SetModel(modelbullistic);
-			newBullistic->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 1.0f));
+			newBullistic->SetCollider(new SphereCollider(XMVECTOR{ 0,0,0,0 }, 0.0f));
 			newBullistic->BullisticInitialize(position, Velocity,angle);
 
 			//弾道の登録
@@ -306,8 +308,6 @@ void Player::PlayerUpdate(const XMFLOAT3& cameratarget, const XMFLOAT3& cameraey
 			picktime = MaxCool;
 		}
 
-
-	
 
 	//弾の更新
 	for (std::unique_ptr<Pbullet>& bullet : bullets)
@@ -457,7 +457,6 @@ void Player::Draw(ID3D12GraphicsCommandList* cmdList)
 	}
 
 }
-
 
 void Player::OnCollision(const CollisionInfo& info)
 {

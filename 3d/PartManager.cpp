@@ -41,22 +41,43 @@ void PartManager::BullisticInitialize(XMFLOAT3& pos,XMVECTOR& Velocity,XMFLOAT3&
 
 	position = pos;
 
+	//angleにかける定数値
+	const int reverveangle = 55;
+
 	//弾のベクトルを代入
 	Vel = Velocity;
 
-	rotation.y = angle.y * 55;
-	rotation.x = angle.x * -55;
+	rotation.y = angle.y * reverveangle;
+	rotation.x = angle.x * -reverveangle;
 	
 	//コライダーの属性設定
 	collider->SetColor(COLLISION_COLOR_PART);
 }
 
+void PartManager::BullisticInitializeEnemy(XMFLOAT3& pos, XMVECTOR& Velocity, XMFLOAT3& angle, int& num)
+{
+
+	numbullistic = num;
+
+	position = pos;
+
+	//angleにかける定数値
+	const int reverveangle = 58;
+
+	//弾のベクトルを代入
+	Vel = Velocity;
+
+	rotation.y = angle.y * reverveangle;
+	//rotation.x = angle.x * -55;
+
+	//コライダーの属性設定
+	collider->SetColor(COLLISION_COLOR_PART);
+}
 
 void PartManager::OnCollision(const CollisionInfo& info)
 {
 
 }
-
 
 void PartManager::PartUpdate()
 {
@@ -164,13 +185,49 @@ void PartManager::PartUpdate()
 void PartManager::BullisticUpdate()
 {
 
-	position.x += Vel.m128_f32[0];
-	position.y += Vel.m128_f32[1];
-	position.z += Vel.m128_f32[2];
+	const int wait = 15;
+	count++;
 
-	MoveScaleZ(Vel.m128_f32[2]*0.1);
-
-	//座標更新
-	UpdateWorld();
+	if (count>=wait)
+	{
+		//positionを変える
+		position.x += Vel.m128_f32[0];
+		position.y += Vel.m128_f32[1];
+		position.z += Vel.m128_f32[2];
+		//座標更新
+		UpdateWorld();
+	}
+	else
+	{
+		//スケールを伸ばす
+		MoveScaleZ(Vel.m128_f32[2] * 0.01);
+		//座標更新
+		UpdateWorld();
+	}
 }
+
+void PartManager::BullisticUpdateEnemy()
+{
+	const int wait = 45;
+	count++;
+
+	if (count >= wait)
+	{
+		//positionを変える
+		position.x += Vel.m128_f32[0];
+		position.y += Vel.m128_f32[1];
+		position.z += Vel.m128_f32[2];
+		//座標更新
+		UpdateWorld();
+	}
+	else
+	{
+		//スケールを伸ばす
+		MoveScaleZ(Vel.m128_f32[2] * 0.01);
+		//座標更新
+		UpdateWorld();
+	}
+}
+
+
 

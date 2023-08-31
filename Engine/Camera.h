@@ -4,7 +4,6 @@
 #include"Input.h"
 #include"WindowsApp.h"
 #include"pad.h"
-//#include"Player.h"
 
 #define DIRECTINPUT_VERSION     0x0800   // DirectInputのバージョン指定
 
@@ -79,6 +78,9 @@ public: // メンバ関数
 
 	const XMMATRIX& GetViewProjectionMatrix() {return matViewProjection;}
 
+	inline const XMMATRIX& GetBillboardMatrix() {
+		return matBillboard;
+	}
 
 	//Setter
 	//ビュー行列関連
@@ -121,6 +123,10 @@ protected://メンバ変数
 	//pad* Pad = nullptr;
 	// ビュー行列
 	static XMMATRIX matView;
+	// ビルボード行列
+	XMMATRIX matBillboard = DirectX::XMMatrixIdentity();
+	// Y軸回りビルボード行列
+	XMMATRIX matBillboardY = DirectX::XMMatrixIdentity();
 	// 射影行列
 	static XMMATRIX matProjection;
 	// ビュープロジェクション行列

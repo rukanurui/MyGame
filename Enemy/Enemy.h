@@ -9,15 +9,19 @@
 
 #include"EnemyBullet.h"
 #include"../3d/PartManager.h"
+#include "../2d/Partmanager2d.h"
+#include"../Engine/DXCommon.h"
+
+
 
 class Enemy : public FBXobj3d
 {
 public://メンバ関数
 	Enemy();
 
-	void EnemyInitialize(bool Shot);
+	void EnemyInitialize(bool Shot, Camera* camera,DXCommon* dxcommon);
 
-	void SetModelNum(int num) { this->modelnum = num; }
+	void SetModelNum(int &num) { this->modelnum = num; }
 
 	//敵固有処理
 	void EnemyUpdate(XMFLOAT3 playerpos);
@@ -45,10 +49,17 @@ public://メンバ関数
 
 	//particle関連処理
 	void PartUpdate();
+	void BullisticUpdate();
+
+	void CreateParticles(XMFLOAT3 Pos);
 
 	void PartDraw(ID3D12GraphicsCommandList* cmdList);
+	void PartDraw2d(ID3D12GraphicsCommandList* cmdList);
+	void BullisticDraw(ID3D12GraphicsCommandList* cmdList);
 
 	void LastUpdate();
+
+	const int & getbulnum() { return bulnum; }
 
 	const bool die = true;
 
@@ -56,10 +67,19 @@ private:
 
 	//ポインタ
 	FbxModel* modelballet = nullptr;
-	FbxModel* model2 = nullptr;
-	//Enemybullet* bullet=nullptr;
+	FbxModel* modelenemy = nullptr;
+	FbxModel* modelbullistic = nullptr;
+	WindowsApp* Windows = nullptr;
+	DXCommon* dxCommon = nullptr;
+	ParticleManager2d* particle2d = nullptr;
+	
+	
+	//リスト
 	std::list<std::unique_ptr<Enemybullet>> bullets;
 	std::list<std::unique_ptr<PartManager>> particle;
+	//弾道
+	std::list<std::unique_ptr<PartManager>> bullistic;
+	//std::list<std::unique_ptr<ParticleManager2d>> particle2d;
 	
 	//モデルの番号
 	int modelnum = 0;
@@ -68,6 +88,8 @@ private:
 	bool col = false;
 	bool death = false;
 
+	XMVECTOR Velocity2{};
+
 	//パーティクルの数
 	const int partnum = 20;
 
@@ -75,6 +97,10 @@ private:
 	int partcount = 0;
 	int parttimer = 0;
 
+	bool partflag = false;
+
+	//弾の数カウント
+	int bulnum = 0;
 
 
 	float G = -0.1;//重力加速度

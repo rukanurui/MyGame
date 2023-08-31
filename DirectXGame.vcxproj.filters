@@ -195,6 +195,9 @@
     <ClCompile Include="Player\PickUp.cpp">
       <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
+    <ClCompile Include="2d\Partmanager2d.cpp">
+      <Filter>ソース ファイル\2d</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\BasicVS.hlsl">
@@ -392,6 +395,9 @@
     </ClInclude>
     <ClInclude Include="Player\PickUp.h">
       <Filter>ヘッダー ファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="2d\Partmanager2d.h">
+      <Filter>ヘッダー ファイル\2d</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
