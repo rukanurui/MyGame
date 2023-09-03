@@ -155,7 +155,15 @@ void Enemy::EnemyUpdate(XMFLOAT3 playerpos)
 
 		CreateParticles(position);
 
-		particle2d->Update();
+		if (parttimer <= 60)
+		{
+			particle2d->Update();
+			parttimer++;
+		}
+		else
+		{
+			death = true;
+		}
 
 	}
 	
@@ -465,7 +473,7 @@ void Enemy::CreateParticles(XMFLOAT3 Pos)
 		acc.y = -(float)rand() / RAND_MAX * rnd_acc;
 
 		// ’Ç‰Á
-		particle2d->Add(60, pos, vel, acc, 1.0f, 0.0f);
+		particle2d->Add(30, pos, vel, acc, 1.0f, 0.0f);
 	}
 }
 
@@ -498,7 +506,16 @@ void Enemy::LastUpdate()
 	{
 		CreateParticles(position);
 
-		particle2d->Update();
+		if (parttimer <= 60)
+		{
+			particle2d->Update();
+			parttimer++;
+		}
+		else
+		{
+			death = true;
+		}
+		
 
 	}
 }
