@@ -26,6 +26,7 @@ public: // サブクラス
 	{
 		XMFLOAT3 pos; // xyz座標
 		float scale; // スケール
+		float roatation;//回転
 	};
 
 	// 定数バッファ用データ構造体
@@ -57,7 +58,7 @@ public: // サブクラス
 		// スケール
 		float scale = 1.0f;
 		// 回転
-		float rotation = 0.0f;
+		float rotation;
 		// 初期値
 		XMFLOAT3 s_color = {};
 		float s_scale = 1.0f;
@@ -76,60 +77,35 @@ private: // 定数
 	static const int vertexCount = 65536;		// 頂点数
 
 public: // 静的メンバ関数
-	/// <summary>
 	/// インスタンス生成
-	/// </summary>
-	/// <returns>インスタンス</returns>
 	static ParticleManager2d* Create(ID3D12Device* device, Camera* camera);
 
 public: // メンバ関数	
-	/// <summary>
-	/// 初期化
-	/// </summary>
-	/// <returns></returns>
+
+	// 初期化
 	void Initialize();
-	/// <summary>
-	/// 毎フレーム処理
-	/// </summary>
+
+	// 更新
 	void Update();
 
-	/// <summary>
-	/// 描画
-	/// </summary>
+	// 描画
 	void Draw(ID3D12GraphicsCommandList* cmdList);
 
-	/// <summary>
-	/// パーティクルの追加
-	/// </summary>
-	/// <param name="life">生存時間</param>
-	/// <param name="position">初期座標</param>
-	/// <param name="velocity">速度</param>
-	/// <param name="accel">加速度</param>
-	/// <param name="start_scale">開始時スケール</param>
-	/// <param name="end_scale">終了時スケール</param>
+	// パーティクルの追加
 	void Add(int life, XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel, float start_scale, float end_scale);
 
-	/// <summary>
-	/// デスクリプタヒープの初期化
-	/// </summary>
-	/// <returns></returns>
+	// デスクリプタヒープの初期化
 	void InitializeDescriptorHeap();
 
-	/// <summary>
-	/// グラフィックパイプライン生成
-	/// </summary>
-	/// <returns>成否</returns>
+	// グラフィックパイプライン生成
 	void InitializeGraphicsPipeline();
 
-	/// <summary>
-	/// テクスチャ読み込み
-	/// </summary>
-	/// <returns>成否</returns>
+	
+	// テクスチャ読み込み
 	void LoadTexture();
 
-	/// <summary>
-	/// モデル作成
-	/// </summary>
+	
+	// モデル作成
 	void CreateModel();
 
 private: // メンバ変数
@@ -160,11 +136,7 @@ private: // メンバ変数
 	// カメラ
 	Camera* camera = nullptr;
 private:
-	/// <summary>
-	/// コンストラクタ
-	/// </summary>
-	/// <param name="device">デバイス</param>
-	/// <param name="camera">カメラ</param>
+	// コンストラクタ
 	ParticleManager2d(ID3D12Device* device, Camera* camera);
 };
 

@@ -88,9 +88,7 @@ void ParticleManager2d::Update()
 	particles.remove_if([](Particle& x) { return x.frame >= x.num_frame; });
 
 	// 全パーティクル更新
-	for (std::forward_list<Particle>::iterator it = particles.begin();
-		it != particles.end();
-		it++) {
+	for (std::forward_list<Particle>::iterator it = particles.begin(); it != particles.end();it++) {
 
 		// 経過フレーム数をカウント
 		it->frame++;
@@ -126,6 +124,8 @@ void ParticleManager2d::Update()
 			vertMap->pos = it->position;
 			// スケール
 			vertMap->scale = it->scale;
+			//回転
+		    vertMap->roatation = it->rotation;
 			// 次の頂点へ
 			vertMap++;
 			if (++vertCount >= vertexCount) {
@@ -192,6 +192,8 @@ void ParticleManager2d::Add(int life, XMFLOAT3 position, XMFLOAT3 velocity, XMFL
 	p.s_scale = start_scale;
 	p.e_scale = end_scale;
 	p.num_frame = life;
+	p.s_rotation = 0.0f;
+	p.e_rotation = 10.0f;
 }
 
 void ParticleManager2d::InitializeDescriptorHeap()
@@ -301,6 +303,11 @@ void ParticleManager2d::InitializeGraphicsPipeline()
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
+		{ // 回転
+			"ROATATION", 0, DXGI_FORMAT_R32_FLOAT, 0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
+		},
 	};
 
 	// グラフィックスパイプラインの流れを設定
@@ -323,11 +330,11 @@ void ParticleManager2d::InitializeGraphicsPipeline()
 	// レンダーターゲットのブレンド設定
 	D3D12_RENDER_TARGET_BLEND_DESC blenddesc{};
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;	// RBGA全てのチャンネルを描画
-	blenddesc.BlendEnable = true;
+	blenddesc.BlendEnable = false;
 	// 加算ブレンディング
-	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
+	/*blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
 	blenddesc.SrcBlend = D3D12_BLEND_ONE;
-	blenddesc.DestBlend = D3D12_BLEND_ONE;
+	blenddesc.DestBlend = D3D12_BLEND_ONE;*/
 	//// 減算ブレンディング
 	//blenddesc.BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;
 	//blenddesc.SrcBlend = D3D12_BLEND_ONE;

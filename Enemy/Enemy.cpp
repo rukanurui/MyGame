@@ -152,19 +152,6 @@ void Enemy::EnemyUpdate(XMFLOAT3 playerpos)
 		bullets.remove_if([](std::unique_ptr<Enemybullet>& bullet) {
 			return bullet->Getdead();
 			});
-
-		CreateParticles(position);
-
-		if (parttimer <= 60)
-		{
-			particle2d->Update();
-			parttimer++;
-		}
-		else
-		{
-			death = true;
-		}
-
 	}
 	
 	Update();
@@ -440,7 +427,21 @@ void Enemy::PartUpdate()
 		part->Update();
 	}
 
+	if (col==true)
+	{
+		if (parttimer <= 60)
+		{
+			CreateParticles(position);
+			parttimer++;
+		}
+		else
+		{
+			death = true;
+		}
+	}
+
 	particle2d->Update();
+	
 	
 }
 
@@ -455,12 +456,16 @@ void Enemy::BullisticUpdate()
 void Enemy::CreateParticles(XMFLOAT3 Pos)
 {
 	for (int i = 0; i < 10; i++) {
-		// X,Y,Z全て[-5.0f,+5.0f]でランダムに分布
-		const float rnd_pos = 10.0f;
+		
+
+		const int life = 15;
+
 		XMFLOAT3 pos = Pos;
-		/*pos.x = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
-		pos.y = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
-		pos.z = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;*/
+		// X,Y,Z全て[-5.0f,+5.0f]でランダムに分布
+		const float rnd_pos = 5.0f;
+		pos.x += (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
+		pos.y += (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
+		//pos.z = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
 
 		const float rnd_vel = 0.1f;
 		XMFLOAT3 vel{};
@@ -469,11 +474,15 @@ void Enemy::CreateParticles(XMFLOAT3 Pos)
 		vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 
 		XMFLOAT3 acc{};
-		const float rnd_acc = 0.001f;
+		const float rnd_acc = 0.005f;
 		acc.y = -(float)rand() / RAND_MAX * rnd_acc;
 
+		//開始時と終了時のスケール
+		const float scalef = 1.0f;
+		const float scalee = 0.0f;
+
 		// 追加
-		particle2d->Add(30, pos, vel, acc, 1.0f, 0.0f);
+		particle2d->Add(life, pos, vel, acc, scalef, scalee);
 	}
 }
 
@@ -504,11 +513,9 @@ void Enemy::LastUpdate()
 	//死亡していたら
 	if (col == true)
 	{
-		CreateParticles(position);
-
 		if (parttimer <= 60)
 		{
-			particle2d->Update();
+			CreateParticles(position);
 			parttimer++;
 		}
 		else
